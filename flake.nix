@@ -45,7 +45,7 @@
     homeConfigurations."eldios@mininixos" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = commonSpecialArgs;
-      modules = [ ./users/eldios/LeleM1/home.nix ];
+      modules = [ ./users/eldios/mininixos/home.nix ];
     };
 
     # intel NUC
@@ -57,7 +57,7 @@
     homeConfigurations."eldios@nucone" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = commonSpecialArgs;
-      modules = [ ./users/eldios/lelex1yoga/home.nix ];
+      modules = [ ./users/eldios/nucone/home.nix ];
     };
 
     # Darwin (macOS) configurations
