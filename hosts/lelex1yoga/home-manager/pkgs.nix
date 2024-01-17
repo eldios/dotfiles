@@ -132,8 +132,7 @@
       # BEGIN Sway confguration
       alacritty # gpu accelerated terminal
       alacritty-theme # alacritty themes
-      #dbus-sway-environment
-      #configure-gtk
+      dconf
       wayland
       xdg-utils # for opening default programs when clicking links
       dracula-theme # gtk theme

@@ -97,6 +97,7 @@
     libgcc
     pinentry-curses # required by GPG
     wget
+    ripgrep
 
     # Docker
     devspace
