@@ -24,7 +24,12 @@
     # Define common specialArgs for nixosConfigurations and homeConfigurations
     commonSpecialArgs = { inherit self inputs nixvim flake-parts nix-colors ; };
 
-    # Lele's X1 Yoga config
+    # nixOS configuration entrypoint
+    #   'nixos-rebuild --flake .#your-hostname'
+    # Home-manager configuration standalone entrypoint
+    #   'home-manager --flake .#your-username@your-hostname'
+
+    # Lele's X1 Yoga
     nixosConfigurations.lelex1yoga = nixpkgs.lib.nixosSystem {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       specialArgs = commonSpecialArgs;
@@ -36,7 +41,7 @@
       modules = [ ./hosts/lelex1yoga/home.nix ];
     };
 
-    # Minis NUC NixOS config
+    # Minis NUC
     nixosConfigurations.mininixos = nixpkgs.lib.nixosSystem {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       specialArgs = commonSpecialArgs;
@@ -60,7 +65,7 @@
       modules = [ ./hosts/nucone/home.nix ];
     };
 
-    # Darwin (macOS) configurations
+    # LeleM1 (macOS)
     darwinConfigurations.LeleM1 = darwin.lib.darwinSystem {
       specialArgs = commonSpecialArgs;
       modules = [ ./hosts/LeleM1/configuration.nix ];
