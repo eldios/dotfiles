@@ -2,12 +2,13 @@
   description = "Lele's nix conf - for macOS and nixOS";
 
   inputs = {
-    nixpkgs.url        = "github:nixos/nixpkgs/nixos-unstable";
-    darwin.url         = "github:lnl7/nix-darwin";
-    home-manager.url   = "github:nix-community/home-manager";
-    nixvim.url         = "github:nix-community/nixvim";
-    nix-colors.url     = "github:misterio77/nix-colors";
-    nixos-hardware.url = "github:nixos/nixos-hardware";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url   = "github:nixos/nixpkgs/nixos-23.11";
+    darwin.url           = "github:lnl7/nix-darwin";
+    home-manager.url     = "github:nix-community/home-manager";
+    nixvim.url           = "github:nix-community/nixvim";
+    nix-colors.url       = "github:misterio77/nix-colors";
+    nixos-hardware.url   = "github:nixos/nixos-hardware";
   };
 
   outputs = {
@@ -22,6 +23,12 @@
     ...
   } @ inputs: let
     inherit (self) outputs;
+
+    forAllSystems = nixpkgs.lib.genAttrs [
+      "aarch64-darwin"
+      "aarch64-linux"
+      "x86_64-linux"
+    ];
 
     # Define common specialArgs for nixosConfigurations and homeConfigurations
     commonSpecialArgs = { inherit 
@@ -89,6 +96,8 @@
     nixosConfigurations  = nixosConfigurations;
     darwinConfigurations = darwinConfigurations;
     homeConfigurations   = homeConfigurations;
+
+    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
   };
 }
 
