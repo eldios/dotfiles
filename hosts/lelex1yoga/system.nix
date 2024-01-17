@@ -73,6 +73,16 @@
   environment.variables.EDITOR = "nvim";
 
   environment.systemPackages = with pkgs; [
+    # hard reqs
+    binutils
+    git
+    python3
+    screen
+    tmux
+    libgcc
+    pinentry-curses # required by GPG
+    wget
+
     # Docker
     devspace
     docker
@@ -85,13 +95,11 @@
 
     # utils
     btop
-    binutils
     byobu
+    #codeium
     colorls # like `ls --color=auto -F` but cooler
-    codeium
     cryptomator
     ffmpeg
-    git
     gnumake
     htop
     imagemagick
@@ -99,16 +107,8 @@
     lshw
     manix
     neofetch
-    python3
     rclone
-    screen
-    tmux
-    wget
     yt-dlp
-
-    # main OS libs
-    libgcc
-    pinentry-curses # required by GPG
 
     # Virtualisation
     virt-manager
@@ -119,10 +119,6 @@
     glib # gsettings
   ];
 
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.packageOverrides = pkgs: {
-    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
-  };
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
