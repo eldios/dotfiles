@@ -9,13 +9,10 @@
     sessionVariables = {
       TERM = "xterm-256color";
     };
-
-    imports = [
-      ./pkgs.nix
-    ];
   }; # EOM home
 
   imports = [
+    ./pkgs.nix
     ./display.nix
     ./services.nix
     ./programs.nix
