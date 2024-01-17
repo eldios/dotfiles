@@ -63,7 +63,7 @@
       skaffold
       helmfile
       terracognita
-      terraform
+      #terraform
       terraform-compliance
       terraform-landscape
       terraformer
@@ -118,17 +118,17 @@
 
       # GUI stuff
       cryptomator
-      discord
+      #discord
       light # brightness control
       paperview
       redshift
       kitty
-      spotify
+      #spotify
       variety
       vesktop # discord + some fixes
-      vivaldi # preferred browser
-      vivaldi-ffmpeg-codecs # codecs for vivaldi
-      vscode
+      #vivaldi # preferred browser
+      #vivaldi-ffmpeg-codecs # codecs for vivaldi
+      #vscode
 
       # fonts
       anonymousPro
