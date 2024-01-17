@@ -115,7 +115,7 @@
     # utils
     btop
     byobu
-    #codeium
+    codeium
     colorls # like `ls --color=auto -F` but cooler
     cryptomator
     ffmpeg
