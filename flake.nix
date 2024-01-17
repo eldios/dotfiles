@@ -24,7 +24,16 @@
     inherit (self) outputs;
 
     # Define common specialArgs for nixosConfigurations and homeConfigurations
-    commonSpecialArgs = { inherit self inputs nixvim home-manager flake-parts nix-colors ; };
+    commonSpecialArgs = { inherit 
+      self
+      inputs
+      home-manager
+      nixos-hardware
+      nixvim
+      flake-parts
+      nix-colors
+      ;
+    };
 
     # nixOS configuration entrypoint
     #   'nixos-rebuild --flake .#your-hostname'
