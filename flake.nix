@@ -2,11 +2,12 @@
   description = "Lele's nix conf - for macOS and nixOS";
 
   inputs = {
-    nixpkgs.url =       "github:nixos/nixpkgs/nixos-unstable";
-    darwin.url =        "github:lnl7/nix-darwin";
-    home-manager.url =  "github:nix-community/home-manager";
-    nixvim.url =        "github:nix-community/nixvim";
-    nix-colors.url =    "github:misterio77/nix-colors";
+    nixpkgs.url        = "github:nixos/nixpkgs/nixos-unstable";
+    darwin.url         = "github:lnl7/nix-darwin";
+    home-manager.url   = "github:nix-community/home-manager";
+    nixvim.url         = "github:nix-community/nixvim";
+    nix-colors.url     = "github:misterio77/nix-colors";
+    nixos-hardware.url = "github:nixos/nixos-hardware";
   };
 
   outputs = {
