@@ -63,7 +63,8 @@
       skaffold
       helmfile
       terracognita
-      #terraform
+      terraform
+      opentofu
       terraform-compliance
       terraform-landscape
       terraformer
@@ -118,17 +119,17 @@
 
       # GUI stuff
       cryptomator
-      #discord
+      discord
       light # brightness control
       paperview
       redshift
       kitty
-      #spotify
+      spotify
       variety
       vesktop # discord + some fixes
-      #vivaldi # preferred browser
-      #vivaldi-ffmpeg-codecs # codecs for vivaldi
-      #vscode
+      vivaldi # preferred browser
+      vivaldi-ffmpeg-codecs # codecs for vivaldi
+      vscode
 
       # fonts
       anonymousPro
@@ -639,4 +640,4 @@
 
 } # EOF
 
-# vim: set ts=2 sw=2 et ai list nu */
+# vim: set ts=2 sw=2 et ai list nu

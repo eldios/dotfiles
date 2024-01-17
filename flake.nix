@@ -42,7 +42,6 @@
 
     # Lele's X1 Yoga
     nixosConfigurations.lelex1yoga = nixpkgs.lib.nixosSystem {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
       specialArgs = commonSpecialArgs;
       modules = [ ./hosts/lelex1yoga/configuration.nix ];
     };
@@ -54,7 +53,6 @@
 
     # Minis NUC
     nixosConfigurations.mininixos = nixpkgs.lib.nixosSystem {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
       specialArgs = commonSpecialArgs;
       modules = [ ./hosts/mininixos/configuration.nix ];
     };
@@ -66,7 +64,6 @@
 
     # intel NUC
     nixosConfigurations.nucone = nixpkgs.lib.nixosSystem {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
       specialArgs = commonSpecialArgs;
       modules = [ ./hosts/nucone/configuration.nix ];
     };
