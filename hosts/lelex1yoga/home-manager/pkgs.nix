@@ -1,5 +1,6 @@
 { pkgs, ... }:
 {
+  home = {
     packages = with pkgs; [
       # CLI utils
       asciiquarium
@@ -146,7 +147,8 @@
       bemenu # wayland clone of dmenu
       mako # notification system developed by swaywm maintainer
       wdisplays # tool to configure displays
-    ];
+    ]; # EOM pkgs
+  }; # EOM home
 }
 
 # vim: set ts=2 sw=2 et ai list nu
