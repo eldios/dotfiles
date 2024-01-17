@@ -28,47 +28,47 @@
     nixosConfigurations.lelex1yoga = nixpkgs.lib.nixosSystem {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       specialArgs = commonSpecialArgs;
-      modules = [ ./system/lelex1yoga/configuration.nix ];
+      modules = [ ./hosts/lelex1yoga/configuration.nix ];
     };
     homeConfigurations."eldios@lelex1yoga" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = commonSpecialArgs;
-      modules = [ ./users/eldios/lelex1yoga/home.nix ];
+      modules = [ ./hosts/lelex1yoga/home.nix ];
     };
 
     # Minis NUC NixOS config
     nixosConfigurations.mininixos = nixpkgs.lib.nixosSystem {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       specialArgs = commonSpecialArgs;
-      modules = [ ./system/mininixos/configuration.nix ];
+      modules = [ ./hosts/mininixos/configuration.nix ];
     };
     homeConfigurations."eldios@mininixos" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = commonSpecialArgs;
-      modules = [ ./users/eldios/mininixos/home.nix ];
+      modules = [ ./hosts/mininixos/home.nix ];
     };
 
     # intel NUC
     nixosConfigurations.nucone = nixpkgs.lib.nixosSystem {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       specialArgs = commonSpecialArgs;
-      modules = [ ./system/nucone/configuration.nix ];
+      modules = [ ./hosts/nucone/configuration.nix ];
     };
     homeConfigurations."eldios@nucone" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = commonSpecialArgs;
-      modules = [ ./users/eldios/nucone/home.nix ];
+      modules = [ ./hosts/nucone/home.nix ];
     };
 
     # Darwin (macOS) configurations
     darwinConfigurations.LeleM1 = darwin.lib.darwinSystem {
       specialArgs = commonSpecialArgs;
-      modules = [ ./system/LeleM1/configuration.nix ];
+      modules = [ ./hosts/LeleM1/configuration.nix ];
     };
     homeConfigurations."eldios@LeleM1" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.aarch64-darwin;
       extraSpecialArgs = commonSpecialArgs;
-      modules = [ ./users/eldios/LeleM1/home.nix ];
+      modules = [ ./hosts/LeleM1/home.nix ];
     };
 
   in {
