@@ -43,23 +43,11 @@
     };
   };
 
-  #nixpkgs = {
-  #  overlays = [ # You can add overlays here
-  #    # If you want to use overlays exported from other flakes:
-  #    # neovim-nightly-overlay.overlays.default
-
-  #    # Or define it inline, for example:
-  #    # (final: prev: {
-  #    #   hi = final.hello.overrideAttrs (oldAttrs: {
-  #    #     patches = [ ./change-hello-to-hi.patch ];
-  #    #   });
-  #    # })
-  #  ];
-
-  #  config = { # Configure your nixpkgs instance
-  #    allowUnfree = true; # Allow unfree packages #FIXME: DOES THIS EVEN WORK?
-  #  };
-  #};
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+    };
+  };
 
   # nix
   nix = {
@@ -68,13 +56,17 @@
     registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
     # This will additionally add your inputs to the system's legacy channels
     # Making legacy nix commands consistent as well, awesome!
-    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}")
-    config.nix.registry;
+    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
     settings = { # Nix Settings
       auto-optimise-store = true; # Auto Optimize nix store.
       experimental-features = [ "nix-command" "flakes" ]; # Enable experimental features.
     };
-    #trusted-users = [ "root" "alex" "susu"]; #fix trusted user issue
+    gc = {
+      automatic = true;
+      persistent = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
   };
 
   services = {
