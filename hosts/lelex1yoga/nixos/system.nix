@@ -70,10 +70,6 @@
   };
 
   services = {
-    # # i3 config
-    # xserver.enable = true;
-    # xserver.displayManager.sddm.enable = true;
-    # xserver.windowManager.i3.enable = true;
 
     zfs = {
       autoScrub.enable = true;
