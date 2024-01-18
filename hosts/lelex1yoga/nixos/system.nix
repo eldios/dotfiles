@@ -1,8 +1,5 @@
 { inputs , pkgs , config , lib , ... }:
 {
-  time.timeZone       = "Europe/Rome";
-  i18n.defaultLocale  = "en_US.UTF-8";
-
   zramSwap.enable = true;
   systemd.services.zfs-mount.enable = false;
 
@@ -83,6 +80,23 @@
     pcscd.enable = true;
 
     tailscale.enable = true;
+
+    xserver = {
+      enable = true;
+      autorun = true;
+
+      displayManager = {
+        sddm.enable = false;
+
+        gdm.enable = true;
+        gdm.wayland = true;
+
+        sessionPackages = with pkgs; [ 
+          sway
+          hyprland
+        ];
+      };
+    };
   };
 
   environment.variables.EDITOR = "nvim";
@@ -161,7 +175,11 @@
   # printing and others.
   services.dbus.enable = true;
 
+  # Add any users in the 'wheel' group to the 'libvirt' group.
+  users.groups.libvirt.members = builtins.filter (x: builtins.elem "wheel" config.users.users."${x}".extraGroups) (builtins.attrNames config.users.users);
   virtualisation = {
+
+    containerd.enable = true;
     docker = {
       enable = true;
       storageDriver = "zfs";
@@ -171,16 +189,30 @@
       };
     };
 
-    containerd.enable = true;
+    libvirtd = {
+      enable = true;
 
-    libvirtd.enable = true;
+      qemu = {
+        ovmf.enable = true;
+        runAsRoot = false;
+      };
+
+      onBoot = "ignore";
+      onShutdown = "shutdown";
+    };
   };
 
-  security.polkit.enable = true;
-  security.sudo = {
-    enable = true;
-    wheelNeedsPassword = false;
+  security = {
+    pam.services.swaylock = {};
+
+    polkit.enable = true;
+
+    sudo = {
+      enable = true;
+      wheelNeedsPassword = false;
+    };
   };
+
 }
 
 # vim: set ts=2 sw=2 et ai list nu

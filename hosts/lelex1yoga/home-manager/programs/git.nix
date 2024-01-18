@@ -53,6 +53,7 @@
         options = {
           navigate = true;
           line-numbers = true;
+          light = false;
         };
       };
     }; # EOM git

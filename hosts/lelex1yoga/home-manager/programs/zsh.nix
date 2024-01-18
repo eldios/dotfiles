@@ -15,6 +15,8 @@
       localVariables = {
         POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD = true;
         POWERLEVEL10K_DISABLE_CONFIGURATION_WIZARD = true;
+        ZELLIJ_AUTO_ATTACH = false;
+        ZELLIJ_AUTO_EXIT = false;
       };
 
       history = {
