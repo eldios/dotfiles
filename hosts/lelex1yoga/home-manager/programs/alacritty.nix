@@ -52,17 +52,12 @@
         keyboard.bindings = [
           {
             key = "C";
-            mods = "Control";
+            mods = "Shift|Control";
             action = "Copy";
           }
           {
-            key = "C";
-            mods = "Shift|Control";
-            action = "ReceiveChar";
-          }
-          {
             key = "V";
-            mods = "Control";
+            mods = "Shift|Control";
             action = "Paste";
           }
           {
