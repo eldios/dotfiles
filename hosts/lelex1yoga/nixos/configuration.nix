@@ -16,6 +16,7 @@
       ./boot.nix
       ./network.nix
       ./users.nix
+      ./locale.nix
 
       home-manager.nixosModules.home-manager
       {
