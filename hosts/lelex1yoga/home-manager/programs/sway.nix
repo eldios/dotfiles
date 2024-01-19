@@ -3,10 +3,12 @@
 let
   inherit (config.colorScheme) colors;
 
-  quick_menu = "rofi -show run -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
-  full_menu = "rofi -show drun -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
+  quick_menu = "rofi -show run -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail";
+  full_menu = "rofi -show drun -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail";
 
   lockscreen = "swaylock -c '#000000'";
+
+  daynightscreen = "wlsunset -l 43.841667 -L 10.502778";
 
   powermenu = "wlogout";
 
@@ -48,7 +50,9 @@ in
       menu = "rofi";
 
       startup = [
-        #{ command = "alacritty"; }
+        { command = "syncthing-tray"; }
+        { command = "${daynightscreen}"; }
+        { command = "variety"; }
       ];
 
       output = {

@@ -3,6 +3,9 @@
   home = {
     packages = with pkgs; [
       # CLI utils
+      syncthing
+      syncthing-cli
+      syncthing-tray
       nil # NIx Language server
       fd # A simple, fast and user-friendly alternative to find
       sshfs
@@ -132,6 +135,9 @@
       vivaldi-ffmpeg-codecs # codecs for vivaldi
       vscode
       zoom-us
+      steam
+      pavucontrol
+      geoclue2
 
       # fonts
       corefonts
@@ -179,7 +185,6 @@
       slurp # screenshot functionality
       swaybg
       swayidle
-      #swaylock
       swaylock-effects
       swaynotificationcenter
       swayr

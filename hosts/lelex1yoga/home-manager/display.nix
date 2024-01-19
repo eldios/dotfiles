@@ -7,17 +7,25 @@
     ./programs/waybar.nix
   ];
 
-  gtk.enable = true;
-  qt.enable = false;
 
-  # QT theme
-  qt.platformTheme = "gtk";
 
-  # name of gtk theme
-  qt.style.name = "adwaita-dark";
+  gtk = {
+    enable = true;
+    theme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome.gnome-themes-extra;
+    };
+  };
 
-  # package to use
-  qt.style.package = pkgs.adwaita-qt;
+  qt = {
+    enable = true;
+    platformTheme = "gtk";
+    style = {
+      name = "adwaita-dark";
+      package = pkgs.adwaita-qt;
+    };
+  };
+
 
   home = {
     pointerCursor = {
