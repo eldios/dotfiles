@@ -124,6 +124,7 @@
       light # brightness control
       paperview
       redshift
+      slack
       spotify-unwrapped
       variety
       vesktop # discord + some fixes
