@@ -8,15 +8,13 @@
   }; # EOM programs
 
   imports = [
+
     ./programs/var.nix
 
     ./programs/git.nix
     ./programs/neovim.nix
     ./programs/zellij.nix
     ./programs/zsh.nix
-
-    ./programs/sway.nix
-    ./programs/hyprland.nix
 
     ./programs/mako.nix
     ./programs/alacritty.nix

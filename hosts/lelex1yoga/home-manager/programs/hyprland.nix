@@ -1,9 +1,15 @@
 { config, pkgs, inputs, ...}:
 let
   inherit (config.colorScheme) colors;
+
   terminal = "alacritty";
-  launcher = "rofi";
+
+  quick_menu = "rofi -show run -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
+  full_menu = "rofi -show drun -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
+  file_menu = "rofi -show filebrowser -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
+
   powermenu = "wlogout";
+
   swaylock = pkgs.writeShellScriptBin "swaylock-script" ''
     swaylock-effects \
     --screenshots \
@@ -126,6 +132,7 @@ in
         (f "Color Picker")
         (f "xdg-desktop-portal")
         (f "xdg-desktop-portal-gnome")
+        (f "xdg-desktop-portal-hyprland")
       ];
 
       binds = {
@@ -177,93 +184,94 @@ in
         ];
       };
 
-        "$mod" = "SUPER";
-        bind = [
-          "$mod SHIFT, C, killactive ,"
+      "$mod" = "SUPER";
+      bind = [
+        "$mod SHIFT     , C, killactive ,"
 
-          "$mod      , Q, togglespecialworkspace"
-          "$mod SHIFT, Q, movetoworkspace, special"
+        "$mod           , Q, togglespecialworkspace"
+        "$mod SHIFT     , Q, movetoworkspace, special"
 
-          "$mod      , D , exec , ${launcher}"
-          "$mod SHIFT, E , exec , thunar"
+        "$mod           , D , exec , ${full_menu}"
+        "$mod SHIFT     , D , exec , ${quick_menu}"
+        "$mod SHIFT     , E , exec , ${file_menu}"
 
-          "$mod      , F , fullscreen , 0"
-          "$mod SHIFT, Space , togglefloating ,"
+        "$mod           , F , fullscreen , 0"
+        "$mod SHIFT     , Space , togglefloating ,"
 
-          "$mod      , R , togglegroup ,"
-          "$mod SHIFT, J , changegroupactive, f"
-          "$mod SHIFT, K , changegroupactive, b"
+        "$mod           , R , togglegroup ,"
+        "$mod SHIFT     , J , changegroupactive, f"
+        "$mod SHIFT     , K , changegroupactive, b"
 
-          "$mod      , X , exec , ${powermenu}"
-          "$mod      , Return , exec , ${terminal}"
+        "$mod           , Return , exec , ${terminal}"
 
-          "$mod CRLT SHIFT , Q, exit ,"
+        "$mod CTRL      , Q , exec , ${powermenu}"
+        "$mod CRLT SHIFT, Q , exit ,"
 
-          # "$mod , E  , exec , emacsclient -c -a 'nvim'"
-          # "ALT   , E , exec , emacsclient -c -eval '(dired nil)'"
+        # "$mod , E  , exec , emacsclient -c -a 'nvim'"
+        # "ALT   , E , exec , emacsclient -c -eval '(dired nil)'"
 
-          ", print, exec , wl-ocr"
-          "CTRL   , Print , exec , grimblast save area - | swappy -f -"
-          "ALT    , Print , exec , grimblast --notify --cursor copysave output ~/Pictures/Screenshots/$(date +'%s.png')"
+        "               , print, exec , wl-ocr"
+        "CTRL           , print, exec , grimblast save area - | swappy -f -"
+        "ALT            , print, exec , grimblast --notify --cursor copysave output ~/Pictures/Screenshots/$(date +'%s.png')"
 
-          # Dwindle Keybind
-          "$mod , h , resizeactive , -20 0"
-          "$mod , l , resizeactive , 20 0"
-          "$mod , k , movefocus , u"
-          "$mod , j , movefocus , d"
+        # Dwindle Keybind
+        "$mod           , h , movefocus , l"
+        "$mod           , j , movefocus , d"
+        "$mod           , k , movefocus , u"
+        "$mod           , l , movefocus , r"
 
-          "$mod , left , movewindow , l"
-          "$mod , right , movewindow , r"
-          "$mod , up , movewindow , u"
-          "$mod , down , movewindow , d"
-          "$mod SHIFT , h , movewindow , l"
-          "$mod SHIFT , l , movewindow , r"
-          "$mod SHIFT , k , movewindow , u"
-          "$mod SHIFT , j , movewindow , d"
+        "$mod           , left  , movewindow , l"
+        "$mod           , right , movewindow , r"
+        "$mod           , up    , movewindow , u"
+        "$mod           , down  , movewindow , d"
+        "$mod SHIFT     , h , movewindow , l"
+        "$mod SHIFT     , j , movewindow , d"
+        "$mod SHIFT     , k , movewindow , u"
+        "$mod SHIFT     , l , movewindow , r"
 
-          "$mod , 1 , workspace , 1"
-          "$mod , 2 , workspace , 2"
-          "$mod , 3 , workspace , 3"
-          "$mod , 4 , workspace , 4"
-          "$mod , 5 , workspace , 5"
-          "$mod , 6 , workspace , 6"
-          "$mod , 7 , workspace , 7"
-          "$mod , 8 , workspace , 8"
-          "$mod , 9 , workspace , 9"
-          "$mod , 0 , workspace , 10"
+        "$mod           , 1 , workspace , 1"
+        "$mod           , 2 , workspace , 2"
+        "$mod           , 3 , workspace , 3"
+        "$mod           , 4 , workspace , 4"
+        "$mod           , 5 , workspace , 5"
+        "$mod           , 6 , workspace , 6"
+        "$mod           , 7 , workspace , 7"
+        "$mod           , 8 , workspace , 8"
+        "$mod           , 9 , workspace , 9"
+        "$mod           , 0 , workspace , 10"
 
-          "$mod SHIFT , 1 , movetoworkspacesilent , 1"
-          "$mod SHIFT , 2 , movetoworkspacesilent , 2"
-          "$mod SHIFT , 3 , movetoworkspacesilent , 3"
-          "$mod SHIFT , 4 , movetoworkspacesilent , 4"
-          "$mod SHIFT , 5 , movetoworkspacesilent , 5"
-          "$mod SHIFT , 6 , movetoworkspacesilent , 6"
-          "$mod SHIFT , 7 , movetoworkspacesilent , 7"
-          "$mod SHIFT , 8 , movetoworkspacesilent , 8"
-          "$mod SHIFT , 9 , movetoworkspacesilent , 9"
-          "$mod SHIFT , 0 , movetoworkspacesilent , 10"
+        "$mod SHIFT     , 1 , movetoworkspacesilent , 1"
+        "$mod SHIFT     , 2 , movetoworkspacesilent , 2"
+        "$mod SHIFT     , 3 , movetoworkspacesilent , 3"
+        "$mod SHIFT     , 4 , movetoworkspacesilent , 4"
+        "$mod SHIFT     , 5 , movetoworkspacesilent , 5"
+        "$mod SHIFT     , 6 , movetoworkspacesilent , 6"
+        "$mod SHIFT     , 7 , movetoworkspacesilent , 7"
+        "$mod SHIFT     , 8 , movetoworkspacesilent , 8"
+        "$mod SHIFT     , 9 , movetoworkspacesilent , 9"
+        "$mod SHIFT     , 0 , movetoworkspacesilent , 10"
 
-          ", XF86AudioNext , exec , ${pkgs.playerctl}/bin/playerctl next"
-          ", XF86AudioPrev , exec , ${pkgs.playerctl}/bin/playerctl previous"
-          ", XF86AudioPlay , exec , ${pkgs.playerctl}/bin/playerctl play-pause"
-          ", XF86AudioPause , exec , ${pkgs.playerctl}/bin/playerctl pause"
-          ", XF86AudioStop , exec , ${pkgs.playerctl}/bin/playerctl stop"
-        ];
+        "               , XF86AudioNext  , exec , ${pkgs.playerctl}/bin/playerctl next"
+        "               , XF86AudioPrev  , exec , ${pkgs.playerctl}/bin/playerctl previous"
+        "               , XF86AudioPlay  , exec , ${pkgs.playerctl}/bin/playerctl play-pause"
+        "               , XF86AudioPause , exec , ${pkgs.playerctl}/bin/playerctl pause"
+        "               , XF86AudioStop  , exec , ${pkgs.playerctl}/bin/playerctl stop"
+      ];
 
-        binde = [
-          ", XF86AudioRaiseVolume , exec , ${pkgs.alsa-utils}/bin/amixer -q set Master 5%+"
-          ", XF86AudioLowerVolume , exec , ${pkgs.alsa-utils}/bin/amixer -q set Master 5%-"
+      binde = [
+        "               , XF86AudioRaiseVolume  , exec , ${pkgs.alsa-utils}/bin/amixer -q set Master 5%+"
+        "               , XF86AudioLowerVolume  , exec , ${pkgs.alsa-utils}/bin/amixer -q set Master 5%-"
 
-          ", XF86MonBrightnessUp , exec , ${pkgs.brightnessctl}/bin/brightnessctl set 5%+"
-          ", XF86MonBrightnessDown , exec , ${pkgs.brightnessctl}/bin/brightnessctl set 5%-"
-        ];
+        "               , XF86MonBrightnessUp   , exec , ${pkgs.brightnessctl}/bin/brightnessctl set 5%+"
+        "               , XF86MonBrightnessDown , exec , ${pkgs.brightnessctl}/bin/brightnessctl set 5%-"
+      ];
 
-        bindm = [
-          "$mod , mouse:272 , movewindow"
-          "$mod , mouse:273 , resizewindow"
-        ];
+      bindm = [
+        "$mod           , mouse:272 , movewindow"
+        "$mod           , mouse:273 , resizewindow"
+      ];
 
-        xwayland.force_zero_scaling = true;
+      xwayland.force_zero_scaling = true;
     };
   };
 
