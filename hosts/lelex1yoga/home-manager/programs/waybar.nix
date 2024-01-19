@@ -205,7 +205,7 @@ in
             text = "";
             tooltip = ''$(${cat} /etc/os-release | ${grep} PRETTY_NAME | ${cut} -d '"' -f2)'';
           };
-          on-click-left = "wofi -S drun -x 10 -y 10 -W 25% -H 60%";
+          on-click-left = "rofi -S drun -x 10 -y 10 -W 25% -H 60%";
           on-click-right = "swaymsg scratchpad show";
         };
 
