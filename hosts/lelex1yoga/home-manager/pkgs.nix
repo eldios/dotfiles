@@ -3,9 +3,6 @@
   home = {
     packages = with pkgs; [
       # CLI utils
-      syncthing
-      syncthing-cli
-      syncthing-tray
       nil # NIx Language server
       fd # A simple, fast and user-friendly alternative to find
       sshfs
@@ -138,6 +135,13 @@
       steam
       pavucontrol
       geoclue2
+      # 2nd Brain stuff
+      syncthing
+      syncthing-cli
+      syncthing-tray
+      #obsidian
+      cryptomator
+
 
       # fonts
       corefonts
