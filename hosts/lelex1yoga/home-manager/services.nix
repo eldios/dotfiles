@@ -4,6 +4,11 @@
   systemd.user.startServices = "sd-switch";
 
   services = {
+
+    syncthing = {
+      enable = true;
+    };
+
     gpg-agent = {
       enable = true;
       pinentryFlavor = "curses";
