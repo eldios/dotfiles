@@ -7,6 +7,7 @@ let
   full_menu = "rofi -show drun -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail";
 
   lockscreen = "swaylock -c '#000000'";
+  idle_and_lockscreen = "swayidle -w timeout 300 'swaylock -f -c 000000' timeout 600  'swaymsg \"output * dpms off\"' resume 'swaymsg \output * dpms on\"' before-sleep 'swaylock -f -c 000000'\"";
 
   daynightscreen = "wlsunset -l 43.841667 -L 10.502778";
 
@@ -53,6 +54,7 @@ in
         { command = "syncthing-tray"; }
         { command = "${daynightscreen}"; }
         { command = "variety"; }
+        { command = "${idle_and_lockscreen}"; }
       ];
 
       output = {
