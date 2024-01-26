@@ -99,6 +99,11 @@
     pcscd.enable = true;
 
     tailscale.enable = true;
+
+    cockpit = {
+      enable = false;
+      openFirewall = true;
+    };
   };
 
   environment.variables.EDITOR = "nvim";
