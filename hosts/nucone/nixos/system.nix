@@ -68,13 +68,32 @@
 
   services = {
 
+    /* enable is using ZFS
+    */
     zfs = {
-      autoScrub.enable = true;
+      autoScrub = {
+        enable = true;
+        interval = "weekly";
+      };
       trim.enable = true;
+    };
+
+    /* enable is using BTRFS
+    */
+    btrfs = {
+      autoScrub = {
+        enable = false;
+        interval = "weekly";
+      };
     };
 
     openssh = {
       enable = true;
+    };
+
+    smartd = {
+      enable = true;
+      autodetect = true;
     };
 
     pcscd.enable = true;
@@ -95,6 +114,9 @@
     pinentry-curses # required by GPG
     wget
     ripgrep
+    zfs
+    btrfs-progs
+    smartmontools
 
     # Docker
     devspace
