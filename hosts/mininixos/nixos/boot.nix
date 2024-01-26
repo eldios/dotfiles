@@ -17,7 +17,7 @@
     ];
 
     initrd = {
-      supportedFilesystems = [ "zfs" ];
+      supportedFilesystems = [ "zfs" "btrfs" ];
       kernelModules = [ "uas" "usbcore" "usb_storage" "usbhid" "vfat" "nls_cp437" "nls_iso8859_1" ];
 
       # Support for Yubikey PBA
@@ -46,8 +46,8 @@
         ];
 
         devices = {
-          "nixK" = {
-            device = "/dev/sda2"; # << LUKS partition
+          "K" = {
+            device = "/dev/nvme0n1p2"; # << LUKS partition
             preLVM = true;
 
             # insert this section only if you're using a YubiKey
@@ -56,7 +56,7 @@
               twoFactor = false; # set to true to input password (2FA)
 
               storage = {
-                device = "/dev/sda1"; # << SALT /boot partition
+                device = "/dev/nvme0n1p1"; # << SALT /boot partition
                 fsType = "vfat";
               };
             };

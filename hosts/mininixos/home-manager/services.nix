@@ -9,6 +9,11 @@
       enable = true;
     };
 
+    cockpit = {
+      enable = false;
+      openFirewall = true;
+    };
+
     gpg-agent = {
       enable = true;
       pinentryFlavor = "curses";

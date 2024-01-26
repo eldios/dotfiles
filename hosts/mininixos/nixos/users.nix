@@ -7,16 +7,17 @@
     extraGroups = [
       "wheel"
       "docker"
-      "video"
     ];
 
     openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPCw0YM8/ughhM6Q0Ol/81uXMeIV+6PpJ0Mvrz+7E+qZ eldios@lelex1yoga"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPdQy58cEJ3mzNn1mhX89LbTqBKE3pA0NpIQWgqiRpF1 lele@mac13M1"
     ];
   };
 
   users.users.root = {
     openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPCw0YM8/ughhM6Q0Ol/81uXMeIV+6PpJ0Mvrz+7E+qZ eldios@lelex1yoga"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPdQy58cEJ3mzNn1mhX89LbTqBKE3pA0NpIQWgqiRpF1 lele@mac13M1"
     ];
   };
