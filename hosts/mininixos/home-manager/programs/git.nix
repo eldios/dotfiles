@@ -22,14 +22,11 @@
           gpgsign = true;
         };
         user = {
-          signinkey = "64F87759366D72D60055C0BD3EDE14869955C119";
-          username = "eldios";
-          name = "Emanuele \"Lele\" Calo";
+          name = "Emanuele \"Lele\" Calo (on mininixos)";
           email = "emanuele.lele.calo@gmail.com ";
+          username = "eldios";
+          signinkey = "0ED4A215592399B261CAB2CCD20249ABC1857E60";
         };
-        #gpg = {
-        #  program = "/Users/eldios/.nix-profile/bin/gpg" ;
-        #};
         color = {
           ui = true;
         };
