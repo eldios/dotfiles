@@ -1,6 +1,5 @@
-{ config, pkgs, nix-colors, ... }:
+{ pkgs, nix-colors, ... }:
 {
-  nixpkgs.config.allowUnfree = true;
 
   home = {
     stateVersion = "23.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
@@ -20,8 +19,6 @@
   imports = [
     #nix-colors.homeManagerModules.default
     ./pkgs.nix
-    ./display.nix
-    ./services.nix
     ./programs.nix
   ];
 

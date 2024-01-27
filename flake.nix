@@ -5,7 +5,10 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.url          = "github:nixos/nixpkgs/nixos-23.11";
     darwin.url           = "github:lnl7/nix-darwin";
-    home-manager.url     = "github:nix-community/home-manager";
+
+    home-manager.url     = "github:nix-community/home-manager/release-23.11";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
     nixvim.url           = "github:nix-community/nixvim";
     nix-colors.url       = "github:misterio77/nix-colors";
     nixos-hardware.url   = "github:nixos/nixos-hardware";
@@ -83,12 +86,12 @@
     # LeleM1 (macOS)
     darwinConfigurations.LeleM1 = darwin.lib.darwinSystem {
       specialArgs = commonSpecialArgs;
-      modules = [ ./hosts/LeleM1/darwin/configuration.nix ];
+      modules = [ /Users/eldios/go/src/github.com/eldios/.dotfiles/hosts/LeleM1/darwin/configuration.nix ];
     };
     homeConfigurations."eldios@LeleM1" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.aarch64-darwin;
       extraSpecialArgs = commonSpecialArgs;
-      modules = [ ./hosts/LeleM1/home-manager/home.nix ];
+      modules = [ /Users/eldios/go/src/github.com/eldios/.dotfiles/hosts/LeleM1/home-manager/home.nix ];
     };
 
   in {
