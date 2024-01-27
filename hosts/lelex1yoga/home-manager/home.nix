@@ -1,8 +1,12 @@
-{ pkgs, nix-colors, ... }:
+{ config, pkgs, nix-colors, ... }:
 {
+  nixpkgs.config.allowUnfree = true;
 
   home = {
-    stateVersion = "24.05"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+    stateVersion = "23.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+
+    username = "eldios";
+    homeDirectory = "/Users/eldios";
 
     file = { };
 
