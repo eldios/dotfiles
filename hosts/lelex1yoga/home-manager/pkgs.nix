@@ -120,7 +120,7 @@
       (bluemail.overrideAttrs (previousAttrs: {
         src = pkgs.fetchurl {
           url  = "https://download.bluemail.me/BlueMail/deb/BlueMail.deb";
-          hash = pkgs.lib.fakeHash;
+          hash = "sha256-L9mCUjsEcalVxzl80P3QzVclCKa75So2sBG7KjjBVIc=";
         };
       }))
       cryptomator
