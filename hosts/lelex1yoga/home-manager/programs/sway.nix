@@ -78,7 +78,7 @@ in
         "${modifier}+Shift+d"         = "exec ${quick_menu}";
 
         "${modifier}+Shift+c"         = "kill";
-        "${modifier}+Shift+f"         = "fullscreen toggle";
+        "${modifier}+f"               = "fullscreen toggle";
 
         "${modifier}+Ctrl+q"          = "exec ${lockscreen}";
 

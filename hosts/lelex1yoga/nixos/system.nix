@@ -2,6 +2,7 @@
 {
   zramSwap.enable = true;
   systemd.services.zfs-mount.enable = false;
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   system = {
     stateVersion = "23.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

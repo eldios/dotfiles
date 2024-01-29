@@ -7,8 +7,6 @@
     ./programs/waybar.nix
   ];
 
-
-
   gtk = {
     enable = true;
     theme = {
