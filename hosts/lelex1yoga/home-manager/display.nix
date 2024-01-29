@@ -37,16 +37,5 @@
     };
   };
 
-  xdg.portal = {
-    enable = true;
-    #wlr.enable = true;
-    # gtk portal needed to make gtk apps happy
-    config.common.default = "*" ;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-wlr
-      pkgs.xdg-desktop-portal-hyprland
-    ];
-  };
 } # EOF
 # vim: set ts=2 sw=2 et ai list nu
