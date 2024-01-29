@@ -117,6 +117,12 @@
 
       # GUI stuff
       beeper
+      (bluemail.overrideAttrs (previousAttrs: {
+        src = pkgs.fetchurl {
+          url  = "https://download.bluemail.me/BlueMail/deb/BlueMail.deb";
+          hash = pkgs.lib.fakeHash;
+        };
+      }))
       cryptomator
       # davinci-resolve
       discord

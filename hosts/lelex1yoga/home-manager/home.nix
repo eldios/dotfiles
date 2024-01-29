@@ -6,7 +6,6 @@
     stateVersion = "23.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
 
     username = "eldios";
-    homeDirectory = "/Users/eldios";
 
     file = { };
 
