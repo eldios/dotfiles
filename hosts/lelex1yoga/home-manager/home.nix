@@ -11,6 +11,7 @@
 
     sessionVariables = {
       TERM = "xterm-256color";
+      NIXOS_OZONE_WL = "1";
     };
   }; # EOM home
 
