@@ -94,6 +94,17 @@
       modules = [ /Users/eldios/go/src/github.com/eldios/.dotfiles/hosts/LeleM1/home-manager/home.nix ];
     };
 
+    # SOX1 Xtreme Gen2
+    nixosConfigurations.sox1x = nixpkgs.lib.nixosSystem {
+      specialArgs = commonSpecialArgs;
+      modules = [ ./hosts/sox1x/nixos/configuration.nix ];
+    };
+    homeConfigurations."eldios@sox1x" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      extraSpecialArgs = commonSpecialArgs;
+      modules = [ ./hosts/sox1x/home-manager/home.nix ];
+    };
+
   in {
     # Return all the configurations
     nixosConfigurations  = nixosConfigurations;
