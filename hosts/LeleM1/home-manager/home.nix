@@ -21,7 +21,6 @@
     #nix-colors.homeManagerModules.default
     ./pkgs.nix
     ./programs.nix
-    #./apps_workaround.nix
   ];
 
 } # EOF
