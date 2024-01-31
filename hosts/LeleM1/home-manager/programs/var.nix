@@ -11,7 +11,6 @@
     };
 
     dircolors.enable = true;
-    eza.enable       = true;
     htop.enable      = true;
     info.enable      = true;
     jq.enable        = true;

@@ -2,12 +2,17 @@
   description = "Lele's nix conf - for macOS and nixOS";
 
   inputs = {
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.url          = "github:nixos/nixpkgs/nixos-23.11";
-    darwin.url           = "github:lnl7/nix-darwin";
-
     home-manager.url     = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-darwin.url   = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
+    darwin.url           = "github:lnl7/nix-darwin";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
+
+    # base imports
+    utils.url = "github:numtide/flake-utils";
 
     nixvim.url           = "github:nix-community/nixvim";
     nix-colors.url       = "github:misterio77/nix-colors";
@@ -15,8 +20,10 @@
   };
 
   outputs = {
-    darwin,
+    nixpkgs,
+    nixpkgs-darwin,
     home-manager,
+    darwin,
     nixos-hardware,
     nixvim,
     flake-parts,
@@ -25,6 +32,7 @@
   } @ inputs: let
     inherit (
       nixpkgs
+      home-manager-darwin
     );
 
     nixpkgs = inputs.nixpkgs ;
@@ -38,6 +46,8 @@
     # Define common specialArgs for nixosConfigurations and homeConfigurations
     commonSpecialArgs = { inherit
       inputs
+      nixpkgs
+      nixpkgs-darwin
       home-manager
       nixos-hardware
       nixvim
@@ -86,13 +96,13 @@
 
     # LeleM1 (macOS)
     darwinConfigurations.LeleM1 = darwin.lib.darwinSystem {
-      specialArgs = commonSpecialArgs;
+      specialArgs = commonSpecialArgs ;
       system = "aarch64-darwin";
       modules = [ /Users/eldios/go/src/github.com/eldios/.dotfiles/hosts/LeleM1/darwin/configuration.nix ];
     };
-    homeConfigurations."eldios@LeleM1" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-      extraSpecialArgs = commonSpecialArgs;
+    homeConfigurations."eldios@LeleM1" = home-manager.darwinModules.home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs-darwin.legacyPackages.aarch64-darwin;
+      extraSpecialArgs = commonSpecialArgs ;
       modules = [ /Users/eldios/go/src/github.com/eldios/.dotfiles/hosts/LeleM1/home-manager/home.nix ];
     };
 

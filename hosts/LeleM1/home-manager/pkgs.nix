@@ -4,6 +4,7 @@
     packages = with pkgs; [
       colorls # like `ls --color=auto -F` but cooler
       dbeaver
+      discord
       ffmpeg
       imagemagick
       neofetch
@@ -12,8 +13,7 @@
       sshfs
       gnupg
       sipcalc
-
-      warp-terminal
+      util-linux
     ]; # EOM pkgs
   }; # EOM home
 }
