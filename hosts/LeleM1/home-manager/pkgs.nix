@@ -3,8 +3,6 @@
   home = {
     packages = with pkgs; [
       colorls # like `ls --color=auto -F` but cooler
-      dbeaver
-      discord
       ffmpeg
       imagemagick
       neofetch

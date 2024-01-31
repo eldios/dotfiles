@@ -7,12 +7,15 @@
 
     # can make darwin-rebuild much slower (otherwise i'd forget to do it ever though)
     casks = [
-      "hammerspoon"
-      "amethyst"
       "alfred"
+      "amethyst"
+      "dbeaver-community"
+      "discord"
+      "hammerspoon"
+      "iina"
       "logseq"
       "rectangle"
-      "iina"
+      "warp"
     ];
   };
 }
