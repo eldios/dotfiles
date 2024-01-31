@@ -1,5 +1,15 @@
 { pkgs, ... }:
 {
+  home = {
+    packages = with pkgs; [
+      carapace
+      nil # NIx Language server
+      rnix-lsp
+      terraform-ls
+      terraform-lsp
+      typescript
+    ];
+  }; # EOM nvim deps
 
   programs = {
 

@@ -3,14 +3,13 @@
 
   home = {
     packages = with pkgs; [
-      # ZSH deps
       neofetch
       carapace
       thefuck
       zoxide
       fzf
     ];
-  };
+  }; # EOM ZSH deps
 
   programs = {
 
