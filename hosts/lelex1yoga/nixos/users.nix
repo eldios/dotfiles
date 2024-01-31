@@ -9,6 +9,8 @@
       "networkmanager"
       "docker"
       "video"
+      "input" # needed by xRemap
+      "uinput" # needed by xRemap
     ];
 
     openssh.authorizedKeys.keys = [
