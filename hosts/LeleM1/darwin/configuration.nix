@@ -1,6 +1,8 @@
 { config, lib, pkgs, nixos-hardware, home-manager, ... }:
 
 {
+  nixpkgs.config.allowUnfree = true;
+
   imports =
     [
       # select hardware from https://github.com/NixOS/nixos-hardware/blob/master/flake.nix

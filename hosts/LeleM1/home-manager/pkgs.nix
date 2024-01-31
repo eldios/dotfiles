@@ -10,12 +10,10 @@
       yt-dlp
       rclone
       sshfs
-
-      # ZSH deps
-      carapace
       gnupg
       sipcalc
-      thefuck
+
+      warp-terminal
     ]; # EOM pkgs
   }; # EOM home
 }

@@ -1,6 +1,14 @@
 { config, pkgs, ... }:
 {
 
+  home = {
+    packages = with pkgs; [
+      # ZSH deps
+      carapace
+      thefuck
+    ];
+  };
+
   programs = {
 
     zsh = {
@@ -105,7 +113,8 @@
         zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
         source <(carapace _carapace zsh)
 
-        eval $(thefuck --alias)
+        eval "$(thefuck --alias)"
+        eval "$(zoxide init zsh)"
 
         export PATH=$PATH:/opt/homebrew/bin
       '';

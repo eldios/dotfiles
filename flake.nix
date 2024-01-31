@@ -15,8 +15,6 @@
   };
 
   outputs = {
-    self,
-    nixpkgs,
     darwin,
     home-manager,
     nixos-hardware,
@@ -25,7 +23,11 @@
     nix-colors,
     ...
   } @ inputs: let
-    inherit (self) outputs;
+    inherit (
+      nixpkgs
+    );
+
+    nixpkgs = inputs.nixpkgs ;
 
     forAllSystems = nixpkgs.lib.genAttrs [
       "aarch64-darwin"
@@ -35,7 +37,6 @@
 
     # Define common specialArgs for nixosConfigurations and homeConfigurations
     commonSpecialArgs = { inherit
-      self
       inputs
       home-manager
       nixos-hardware
