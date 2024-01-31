@@ -1,4 +1,4 @@
-{ pkgs, nix-colors, ... }:
+{ pkgs, lib, nixpkgs, nix-colors, ... }:
 {
   nixpkgs.config.allowUnfree = true;
 
@@ -6,7 +6,7 @@
     stateVersion = "23.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
 
     username = "eldios";
-    homeDirectory = "/Users/eldios";
+    #homeDirectory = lib.mkForce "/Users/eldios";
 
     file = { };
 
@@ -15,12 +15,13 @@
     };
   }; # EOM home
 
-  colorScheme = nix-colors.colorSchemes.gruvbox-dark-soft;
+  #colorScheme = nix-colors.colorSchemes.gruvbox-dark-soft;
 
   imports = [
-     nix-colors.homeManagerModules.default
+    #nix-colors.homeManagerModules.default
     ./pkgs.nix
     ./programs.nix
+    #./apps_workaround.nix
   ];
 
 } # EOF

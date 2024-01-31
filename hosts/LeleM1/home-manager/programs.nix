@@ -8,7 +8,6 @@
   }; # EOM programs
 
   imports = [
-
     ./programs/var.nix
 
     ./programs/git.nix

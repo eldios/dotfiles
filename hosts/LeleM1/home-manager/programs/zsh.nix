@@ -4,8 +4,11 @@
   home = {
     packages = with pkgs; [
       # ZSH deps
+      neofetch
       carapace
       thefuck
+      zoxide
+      fzf
     ];
   };
 
@@ -108,13 +111,13 @@
         #export EDITOR="$(which nvim)";
         #export VISUAL="$(which nvim)";
 
-        neofetch
+        ${pkgs.neofetch}/bin/neofetch
 
         zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
-        source <(carapace _carapace zsh)
+        source <(${pkgs.carapace}/bin/carapace _carapace zsh)
 
-        eval "$(thefuck --alias)"
-        eval "$(zoxide init zsh)"
+        eval "$(${pkgs.thefuck}/bin/thefuck --alias)"
+        eval "$(${pkgs.zoxide}/bin/zoxide init zsh)"
 
         export PATH=$PATH:/opt/homebrew/bin
       '';
