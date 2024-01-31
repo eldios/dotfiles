@@ -153,6 +153,8 @@
   hardware = {
     enableAllFirmware = true;
 
+    uinput.enable = true; # needed by xRemap
+
     bluetooth = {
       enable = true;
       powerOnBoot = true ;

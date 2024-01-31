@@ -1,4 +1,4 @@
-{ pkgs, nix-colors, ... }:
+{ pkgs, ... }:
 {
 
   home = {
@@ -11,10 +11,7 @@
     };
   }; # EOM home
 
-  #colorScheme = nix-colors.colorSchemes.gruvbox-dark-soft;
-
   imports = [
-    #nix-colors.homeManagerModules.default
     ./pkgs.nix
     ./services.nix
     ./programs.nix

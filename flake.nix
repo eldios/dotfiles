@@ -17,6 +17,9 @@
     nixvim.url           = "github:nix-community/nixvim";
     nix-colors.url       = "github:misterio77/nix-colors";
     nixos-hardware.url   = "github:nixos/nixos-hardware";
+
+    # additinoal utils
+    xremap.url = "github:xremap/nix-flake";
   };
 
   outputs = {
@@ -27,7 +30,7 @@
     nixos-hardware,
     nixvim,
     flake-parts,
-    nix-colors,
+    xremap,
     ...
   } @ inputs: let
     inherit (
@@ -36,6 +39,7 @@
     );
 
     nixpkgs = inputs.nixpkgs ;
+    lib = nixpkgs.lib;
 
     forAllSystems = nixpkgs.lib.genAttrs [
       "aarch64-darwin"
@@ -52,7 +56,7 @@
       nixos-hardware
       nixvim
       flake-parts
-      nix-colors
+      xremap
       ;
     };
 
