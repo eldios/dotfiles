@@ -14,10 +14,10 @@
     };
   }; # EOM home
 
-  #colorScheme = nix-colors.colorSchemes.gruvbox-dark-soft;
+  colorScheme = nix-colors.colorSchemes.gruvbox-dark-soft;
 
   imports = [
-    #nix-colors.homeManagerModules.default
+     nix-colors.homeManagerModules.default
     ./pkgs.nix
     ./programs.nix
   ];

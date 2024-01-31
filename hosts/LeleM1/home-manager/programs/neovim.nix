@@ -11,6 +11,11 @@
       vimAlias = true;
       vimdiffAlias = true;
 
+      extraPackages = with pkgs; [
+        rnix-lsp
+        ripgrep
+      ];
+
       extraConfig = ''
         set modeline
 
