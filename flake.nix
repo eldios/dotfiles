@@ -9,7 +9,7 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-darwin.url   = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
     darwin.url           = "github:lnl7/nix-darwin";
-    darwin.inputs.nixpkgs.follows = "nixpkgs";
+    darwin.inputs.nixpkgs.follows = "nixpkgs-darwin";
 
     # base imports
     utils.url = "github:numtide/flake-utils";
@@ -98,12 +98,16 @@
     darwinConfigurations.LeleM1 = darwin.lib.darwinSystem {
       specialArgs = commonSpecialArgs ;
       system = "aarch64-darwin";
-      modules = [ /Users/eldios/go/src/github.com/eldios/.dotfiles/hosts/LeleM1/darwin/configuration.nix ];
+      modules = [
+        ./hosts/LeleM1/darwin/configuration.nix
+      ];
     };
-    homeConfigurations."eldios@LeleM1" = home-manager.darwinModules.home-manager.lib.homeManagerConfiguration {
+    homeConfigurations."eldios@LeleM1" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs-darwin.legacyPackages.aarch64-darwin;
       extraSpecialArgs = commonSpecialArgs ;
-      modules = [ /Users/eldios/go/src/github.com/eldios/.dotfiles/hosts/LeleM1/home-manager/home.nix ];
+      modules = [
+        ./hosts/LeleM1/home-manager/home.nix
+      ];
     };
 
     # SOX1 Xtreme Gen2
