@@ -118,13 +118,13 @@
 
         eval "$(${pkgs.thefuck}/bin/thefuck --alias)"
         eval "$(${pkgs.zoxide}/bin/zoxide init zsh)"
-
-        export PATH=$PATH:/opt/homebrew/bin
       '';
 
+      /*
       initExtraBeforeCompInit = ''
         fpath+=("${config.home.profileDirectory}"/share/zsh/site-functions "${config.home.profileDirectory}"/share/zsh/$ZSH_VERSION/functions "${config.home.profileDirectory}"/share/zsh/vendor-completions)
       '';
+      */
     }; # EOM zsh
 
   }; # EOM programs
