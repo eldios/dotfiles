@@ -87,6 +87,7 @@
     # LeleM1 (macOS)
     darwinConfigurations.LeleM1 = darwin.lib.darwinSystem {
       specialArgs = commonSpecialArgs;
+      system = "aarch64-darwin";
       modules = [ /Users/eldios/go/src/github.com/eldios/.dotfiles/hosts/LeleM1/darwin/configuration.nix ];
     };
     homeConfigurations."eldios@LeleM1" = home-manager.lib.homeManagerConfiguration {
