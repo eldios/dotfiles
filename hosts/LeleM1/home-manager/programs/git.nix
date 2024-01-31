@@ -33,7 +33,7 @@
           email = "emanuele.lele.calo@gmail.com ";
         };
         gpg = {
-          program = "/Users/eldios/.nix-profile/bin/gpg" ;
+          program = "/etc/profiles/per-user/eldios/bin/gpg";
         };
         color = {
           ui = true;
