@@ -58,6 +58,7 @@
         l   = "ls -lhtra";
 
         g   = "git";
+        lg  = "lazygit";
 
         # Kubectl
         k = "kubectl";
