@@ -107,14 +107,9 @@
         zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
         source <(carapace _carapace zsh)
 
-        eval $(thefuck --alias)
+        eval "$(thefuck --alias)"
+        eval "$(zoxide init zsh)"
       '';
-
-      /* FIXME
-      initExtraBeforeCompInit = ''
-      fpath+=("${config.home.profileDirectory}"/share/zsh/site-functions "${config.home.profileDirectory}"/share/zsh/$ZSH_VERSION/functions "${config.home.profileDirectory}"/share/zsh/vendor-completions)
-      '';
-      */
     }; # EOM zsh
 
   }; # EOM programs
