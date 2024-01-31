@@ -1,4 +1,4 @@
-{ pkgs, lib, nixpkgs, nix-colors, ... }:
+{ pkgs, lib, nixpkgs, ... }:
 {
   nixpkgs.config.allowUnfree = true;
 
@@ -15,10 +15,7 @@
     };
   }; # EOM home
 
-  #colorScheme = nix-colors.colorSchemes.gruvbox-dark-soft;
-
   imports = [
-    #nix-colors.homeManagerModules.default
     ./pkgs.nix
     ./programs.nix
   ];
