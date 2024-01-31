@@ -17,11 +17,13 @@ in
 {
 
   # BEGIN Sway confguration
-  packages = with pkgs; [
-    (pkgs.writeShellScriptBin "fix-wm" ''
-      pkill waybar && sway reload
-    '') # EOF fix-wm script
-  ];
+  home = {
+    packages = with pkgs; [
+      (pkgs.writeShellScriptBin "fix-wm" ''
+        pkill waybar && sway reload
+      '') # EOF fix-wm script
+    ];
+  };
 
   wayland.windowManager.sway = {
 
