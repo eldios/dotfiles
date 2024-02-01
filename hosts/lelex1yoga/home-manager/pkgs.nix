@@ -137,7 +137,6 @@
       vivaldi # preferred browser
       vivaldi-ffmpeg-codecs # codecs for vivaldi
       vscode
-      wezterm
       zoom-us
 
       # 2nd Brain stuff
