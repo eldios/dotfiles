@@ -1,6 +1,16 @@
 { pkgs, ... }:
 {
 
+  home = {
+    packages = with pkgs; [
+      neofetch
+      carapace
+      thefuck
+      zoxide
+      fzf
+    ];
+  }; # EOM ZSH deps
+
   programs = {
 
     zsh = {
@@ -13,8 +23,13 @@
       };
 
       localVariables = {
+        TERM   = "xterm-256color";
+        EDITOR = "${pkgs.neovim}/bin/nvim";
+        VISUAL = "${pkgs.neovim}/bin/nvim";
+
         POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD = true;
         POWERLEVEL10K_DISABLE_CONFIGURATION_WIZARD = true;
+
         ZELLIJ_AUTO_ATTACH = false;
         ZELLIJ_AUTO_EXIT = false;
       };
@@ -99,17 +114,13 @@
       };
 
       initExtra = ''
-        export TERM="xterm-256color";
-        export EDITOR="$(which nvim)";
-        export VISUAL="$(which nvim)";
-
-        neofetch
+        ${pkgs.neofetch}/bin/neofetch
 
         zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
-        source <(carapace _carapace zsh)
+        source <(${pkgs.carapace}/bin/carapace _carapace zsh)
 
-        eval "$(thefuck --alias)"
-        eval "$(zoxide init zsh)"
+        eval "$(${pkgs.thefuck}/bin/thefuck --alias)"
+        eval "$(${pkgs.zoxide}/bin/zoxide init zsh)"
       '';
     }; # EOM zsh
 
