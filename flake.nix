@@ -38,9 +38,6 @@
       home-manager-darwin
     );
 
-    nixpkgs = inputs.nixpkgs ;
-    lib = nixpkgs.lib;
-
     forAllSystems = nixpkgs.lib.genAttrs [
       "aarch64-darwin"
       "aarch64-linux"
