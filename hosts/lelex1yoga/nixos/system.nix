@@ -45,6 +45,7 @@
     config = {
       allowUnfree = true;
     };
+    hostPlatform = "x86_64-linux";
   };
 
   # nix
@@ -56,8 +57,6 @@
     # Making legacy nix commands consistent as well, awesome!
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
     settings = { # Nix Settings
-      auto-optimise-store = true; # Auto Optimize nix store.
-      experimental-features = [ "nix-command" "flakes" ]; # Enable experimental features.
     };
     gc = {
       automatic = true;
@@ -65,9 +64,23 @@
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
+    package = pkgs.nix;
+    settings = {
+      auto-optimise-store = true; # Auto Optimize nix store.
+      experimental-features = [ "nix-command" "flakes" ]; # Enable experimental features.
+      substituters = [
+        "https://cache.nixos.org"
+        "https://nix-community.cachix.org"
+      ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
+    };
   };
 
   services = {
+    nix-daemon.enable = true;
 
     zfs = {
       autoScrub.enable = true;
@@ -115,6 +128,8 @@
     pinentry-curses # required by GPG
     wget
     ripgrep
+    nix
+    home-manager
 
     # Docker
     devspace
