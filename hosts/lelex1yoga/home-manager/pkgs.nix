@@ -115,6 +115,10 @@
           hash = "sha256-L9mCUjsEcalVxzl80P3QzVclCKa75So2sBG7KjjBVIc=";
         };
       }))
+      #fix-wm
+      (pkgs.writeShellScriptBin "bluemail-wayland" ''
+        ${pkgs.bluemail}/bin/bluemail --no-sandbox
+      '')
       # davinci-resolve
       alacritty # gpu accelerated terminal
       alacritty-theme # alacritty themes
