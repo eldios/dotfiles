@@ -19,6 +19,7 @@
     ./programs/mako.nix
     ./programs/alacritty.nix
     ./programs/kitty.nix
+    ./programs/wezterm.nix
 
   ];
 
