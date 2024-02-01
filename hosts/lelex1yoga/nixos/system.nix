@@ -80,8 +80,6 @@
   };
 
   services = {
-    nix-daemon.enable = true;
-
     zfs = {
       autoScrub.enable = true;
       trim.enable = true;
