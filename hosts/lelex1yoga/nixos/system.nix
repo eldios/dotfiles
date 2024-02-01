@@ -104,6 +104,8 @@
 
   environment.systemPackages = with pkgs; [
     # hard reqs
+    util-linux
+    file
     binutils
     git
     python3
