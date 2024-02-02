@@ -35,7 +35,9 @@
       "autodesk-fusion360"
       "balenaetcher"
       "bartender"
+      "beeper"
       "bitwarden"
+      "canva"
       "cryptomator"
       "dbeaver-community"
       "discord"
@@ -48,6 +50,7 @@
       "inkscape"
       "istat-menus"
       "keybase"
+      "element"
       "obs"
       "obs-virtualcam"
       "obsbot-center"
@@ -56,6 +59,8 @@
       "pock" # macOS dock app (made by an italian)
       "qmk-toolbox"
       "rectangle" # tiling window manager for Mac
+      "signal"
+      "slack"
       "smplayer"
       "spotify"
       "syncthing"
@@ -66,6 +71,7 @@
       "vlc"
       "vlc-webplugin"
       "warp" # https://warp.dev - fancy terminal
+      "whatsapp"
       "zoom"
     ];
   };
