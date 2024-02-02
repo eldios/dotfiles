@@ -14,6 +14,7 @@
     ./programs/neovim.nix
     ./programs/zellij.nix
     ./programs/zsh.nix
+    ./programs/alacritty.nix
   ];
 
 } # EOF
