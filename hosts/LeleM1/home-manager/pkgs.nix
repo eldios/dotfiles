@@ -12,6 +12,14 @@
       gnupg
       sipcalc
       util-linux
+
+      # fonts
+      anonymousPro
+      corefonts
+      fira-code-nerdfont
+      font-awesome
+      meslo-lgs-nf
+      nerdfonts
     ]; # EOM pkgs
   }; # EOM home
 }
