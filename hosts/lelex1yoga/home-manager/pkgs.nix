@@ -41,6 +41,7 @@
       pdfposter
       playerctl
       pls
+      powertop
       pv
       pwgen
       ranger
