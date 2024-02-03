@@ -165,6 +165,12 @@
     glib # gsettings
   ];
 
+  powerManagement = {
+    enable = false;
+    cpuFreqGovernor = "powersave";
+    powertop.enable = true;
+  };
+
   hardware = {
     enableAllFirmware = true;
 
