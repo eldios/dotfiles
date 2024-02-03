@@ -57,11 +57,6 @@
       ;
     };
 
-    # nixOS configuration entrypoint
-    #   nixos-rebuild --flake '/flake/directory/.#your-hostname'
-    # Home-manager configuration standalone entrypoint
-    #   home-manager --flake '/flake/directory/.#your-username@your-hostname'
-
     # Lele's X1 Yoga
     nixosConfigurations.lelex1yoga = nixpkgs.lib.nixosSystem {
       specialArgs = commonSpecialArgs;
