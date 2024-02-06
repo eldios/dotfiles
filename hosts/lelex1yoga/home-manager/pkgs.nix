@@ -1,7 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
+let
+  #unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.x86_64-linux { config.allowUnfree = true; } ;
+  unstablePkgs = import <nixpkgs-unstable> { config.allowUnfree = true; } ;
+in
 {
   home = {
-    packages = with pkgs; [
+    packages = (with pkgs; [
       # CLI utils
       fd # A simple, fast and user-friendly alternative to find
       sshfs
@@ -110,16 +114,6 @@
 
       # GUI stuff
       beeper
-      (bluemail.overrideAttrs (previousAttrs: {
-        src = pkgs.fetchurl {
-          url  = "https://download.bluemail.me/BlueMail/deb/BlueMail.deb";
-          hash = "sha256-L9mCUjsEcalVxzl80P3QzVclCKa75So2sBG7KjjBVIc=";
-        };
-      }))
-      #fix-wm
-      (pkgs.writeShellScriptBin "bluemail-wayland" ''
-        ${pkgs.bluemail}/bin/bluemail --no-sandbox
-      '')
       # davinci-resolve
       alacritty # gpu accelerated terminal
       alacritty-theme # alacritty themes
@@ -139,8 +133,6 @@
       syncthing-tray
       variety
       vesktop # discord + some fixes
-      vivaldi # preferred browser
-      vivaldi-ffmpeg-codecs # codecs for vivaldi
       vscode
       zoom-us
 
@@ -154,7 +146,15 @@
       font-awesome
       nerdfonts
       fira-code-nerdfont
-    ]; # EOM pkgs
+    ]) # EOM pkgs
+    ++ ( with unstablePkgs; [
+      bluemail
+      (unstablePkgs.writeShellScriptBin "bluemail-wayland" ''
+        ${unstablePkgs.bluemail}/bin/bluemail --no-sandbox
+      '')
+      vivaldi # preferred browser
+      vivaldi-ffmpeg-codecs # codecs for vivaldi
+    ]); # EOM unstablePkgs
   }; # EOM home
 }
 
