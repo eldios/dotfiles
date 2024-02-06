@@ -39,6 +39,7 @@
       "bitwarden"
       "brave-browser"
       "canva"
+      "coconutbattery"
       "cryptomator"
       "dbeaver-community"
       "discord"
