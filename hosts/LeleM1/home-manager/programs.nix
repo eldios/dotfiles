@@ -12,8 +12,10 @@
 
     ./programs/git.nix
     ./programs/neovim.nix
+
     ./programs/zellij.nix
     ./programs/zsh.nix
+
     ./programs/alacritty.nix
   ];
 
