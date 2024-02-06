@@ -37,11 +37,13 @@
       "bartender"
       "beeper"
       "bitwarden"
+      "brave-browser"
       "canva"
       "cryptomator"
       "dbeaver-community"
       "discord"
       "displaylink"
+      "element"
       "elgato-stream-deck"
       "firefox"
       "gimp"
@@ -50,13 +52,14 @@
       "inkscape"
       "istat-menus"
       "keybase"
-      "element"
+      "mailspring"
       "obs"
       "obs-virtualcam"
       "obsbot-center"
       "obsidian" # notetaking 2nd brain
       "orbstack" # https://github.com/OrbStack/orbstack - docker on steroid
       "pock" # macOS dock app (made by an italian)
+      "qflipper"
       "qmk-toolbox"
       "rectangle" # tiling window manager for Mac
       "signal"
@@ -67,7 +70,7 @@
       "tailscale"
       "telegram-desktop"
       "utm" # QEMU GUI
-      "vivaldi" # QEMU GUI
+      "vivaldi" # browser
       "vlc"
       "vlc-webplugin"
       "warp" # https://warp.dev - fancy terminal
