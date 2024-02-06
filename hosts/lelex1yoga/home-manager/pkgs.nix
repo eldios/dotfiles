@@ -113,11 +113,13 @@ in
       prefetch-npm-deps
 
       # GUI stuff
-      beeper
-      # davinci-resolve
       alacritty # gpu accelerated terminal
       alacritty-theme # alacritty themes
+      beeper
+      bitwarden
+      brave
       cryptomator
+      # davinci-resolve
       discord
       geoclue2
       kitty
@@ -148,12 +150,7 @@ in
       fira-code-nerdfont
     ]) # EOM pkgs
     ++ ( with unstablePkgs; [
-      bluemail
-      (unstablePkgs.writeShellScriptBin "bluemail-wayland" ''
-        ${unstablePkgs.bluemail}/bin/bluemail --no-sandbox
-      '')
-      vivaldi # preferred browser
-      vivaldi-ffmpeg-codecs # codecs for vivaldi
+      mailspring
     ]); # EOM unstablePkgs
   }; # EOM home
 }
