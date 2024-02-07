@@ -32,6 +32,13 @@
 
   programs.zsh.enable = true;  # default shell on catalina
 
+  system = {
+    keyboard = {
+      enableKeyMapping = true;
+      remapCapsLockToEscape = true;
+    };
+  };
+
   users.users.eldios = {
     home = "/Users/eldios";
     shell = pkgs.zsh;
