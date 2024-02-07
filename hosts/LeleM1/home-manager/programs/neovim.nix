@@ -1,6 +1,21 @@
 { pkgs, ... }:
 {
 
+  home = {
+    packages = with pkgs; [
+      # Golang
+      go
+      # Rust
+      cargo
+      rustc
+      #rustup
+      rustfmt
+      # Haskell
+      ghc
+      haskell-language-server
+    ];
+  };
+
   programs = {
 
     neovim = {
