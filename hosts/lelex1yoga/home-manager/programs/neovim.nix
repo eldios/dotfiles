@@ -1,15 +1,20 @@
 { pkgs, ... }:
 {
+
   home = {
     packages = with pkgs; [
-      carapace
-      nil # NIx Language server
-      rnix-lsp
-      terraform-ls
-      terraform-lsp
-      typescript
+      # Golang
+      go
+      # Rust
+      cargo
+      rustc
+      #rustup
+      rustfmt
+      # Haskell
+      ghc
+      haskell-language-server
     ];
-  }; # EOM nvim deps
+  };
 
   programs = {
 
@@ -20,6 +25,11 @@
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
+
+      extraPackages = with pkgs; [
+        rnix-lsp
+        ripgrep
+      ];
 
       extraConfig = ''
         set modeline
@@ -197,6 +207,7 @@
 
         # Eyecandy
         gruvbox-material # theme & colors
+        gruvbox          # theme & colors
         material-nvim
         indentLine # show indentLine vertical lines
         bufferline-nvim # fancy buffer line with tags support
