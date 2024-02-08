@@ -35,10 +35,12 @@
         efiSysMountPoint = "/boot";
       };
       grub = {
-        enable           = true;
-        device           = "nodev";
-        efiSupport       = true;
-        enableCryptodisk = true;
+        enable             = true;
+        device             = "nodev";
+        efiSupport         = true;
+        zfsSupport         = true;
+        enableCryptodisk   = true;
+        configurationLimit = 14;
       };
     };
   };
