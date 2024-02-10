@@ -68,10 +68,12 @@
       };
 
       shellAliases = {
+        ls  = "colorls";
         ll  = "ls -lh";
         l   = "ls -lhtra";
 
         g   = "git";
+        lg  = "lazygit";
 
         # Kubectl
         k = "kubectl";
@@ -81,6 +83,13 @@
         tfp = "tf plan";
         tfa = "tf apply -auto-approve";
         tfd = "tf destroy -auto-approve";
+
+        cg  = "cargo";
+        cgb = "cg build";
+        cgc = "cg check";
+        cgn = "cg new";
+        cgr = "cg run";
+        cgt = "cg test";
 
         ipcalc    = "sipcalc";
 
