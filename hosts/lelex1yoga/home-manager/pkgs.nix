@@ -136,6 +136,7 @@ in
       variety
       vesktop # discord + some fixes
       vscode
+      widevine-cdm
       zoom-us
 
       # 2nd Brain stuff

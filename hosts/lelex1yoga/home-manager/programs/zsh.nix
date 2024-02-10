@@ -84,6 +84,13 @@
         tfa = "tf apply -auto-approve";
         tfd = "tf destroy -auto-approve";
 
+        cg  = "cargo";
+        cgb = "cg build";
+        cgc = "cg check";
+        cgn = "cg new";
+        cgr = "cg run";
+        cgt = "cg test";
+
         ipcalc    = "sipcalc";
 
         nixs      = "nix search nixpkgs";
@@ -109,8 +116,6 @@
 
       dirHashes = {
         dl = "$HOME/Downloads";
-        platform = "$HOME/go/src/github.com/tint-ai/tint-platform";
-        infra = "$HOME/go/src/github.com/tint-ai/infra";
       };
 
       initExtra = ''
