@@ -6,9 +6,10 @@
       # Golang
       go
       # Rust
-      cargo
-      rustc
       #rustup
+      cargo
+      rust-analyzer
+      rustc
       rustfmt
       # Haskell
       ghc
@@ -28,7 +29,6 @@
 
       extraPackages = with pkgs; [
         rnix-lsp
-        ripgrep
       ];
 
       extraConfig = ''
