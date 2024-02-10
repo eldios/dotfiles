@@ -29,7 +29,6 @@
 
       extraPackages = with pkgs; [
         rnix-lsp
-        ripgrep
       ];
 
       extraConfig = ''
