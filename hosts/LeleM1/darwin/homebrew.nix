@@ -6,6 +6,7 @@
     global.autoUpdate = true;
     onActivation = {
       upgrade = true;
+      autoUpdate = true;
       cleanup = "uninstall";
       extraFlags = [
         "--force"
