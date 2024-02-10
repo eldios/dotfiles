@@ -6,9 +6,10 @@
       # Golang
       go
       # Rust
-      cargo
-      rustc
       #rustup
+      cargo
+      rust-analyzer
+      rustc
       rustfmt
       # Haskell
       ghc
@@ -118,6 +119,8 @@
               'terraform-ls', 'serve'
             },
           }
+
+          lsp.rust_analyzer.setup {}
 
           lsp.tflint.setup {}
 
