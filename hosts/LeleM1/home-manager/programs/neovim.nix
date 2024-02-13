@@ -36,12 +36,18 @@
 
       extraConfig = ''
         set modeline
+        nnoremap <space>cc <cmd>CodeiumEnable<cr>
+        nnoremap <space>cC <cmd>CodeiumDisable<cr>
 
         " Config using Vim syntax
         nnoremap <space>ff <cmd>Telescope find_files<cr>
         nnoremap <space>fg <cmd>Telescope live_grep<cr>
         nnoremap <space>fb <cmd>Telescope buffers<cr>
         nnoremap <space>fh <cmd>Telescope help_tags<cr>
+
+        nnoremap <space>fr <cmd>Telescope lsp_references<cr>
+        nnoremap <space>fd <cmd>Telescope lsp_definitions<cr>
+        nnoremap <space>fi <cmd>Telescope lsp_implementations<cr>
 
         " colorscheme gruvbox-material
         colorscheme material-darker
@@ -122,11 +128,13 @@
             },
           }
 
+          -- Rust Setup
           lsp.rust_analyzer.setup {}
-
-          lsp.tflint.setup {}
+          vim.cmd([[let g:LanguageClient_serverCommands = { 'rust': ['rust-analyzer'] }]])
 
           -- Terraform setup
+          lsp.tflint.setup {}
+
           vim.cmd([[silent! autocmd! filetypedetect BufRead,BufNewFile *.tf]])
           vim.cmd([[autocmd BufRead,BufNewFile *.hcl set filetype=hcl]])
           vim.cmd([[autocmd BufRead,BufNewFile .terraformrc,terraform.rc set filetype=hcl]])
