@@ -14,6 +14,9 @@
       # Haskell
       ghc
       haskell-language-server
+      # vars
+      ripgrep     # used by space-f-g
+      ripgrep-all # used by space-f-g
     ];
   };
 

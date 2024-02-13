@@ -4,14 +4,15 @@
     packages = with pkgs; [
       colorls # like `ls --color=auto -F` but cooler
       ffmpeg
+      gnupg
       imagemagick
       neofetch
-      yt-dlp
       rclone
-      sshfs
-      gnupg
+      ripgrep-all
       sipcalc
+      sshfs
       util-linux
+      yt-dlp
 
       # fonts
       anonymousPro
