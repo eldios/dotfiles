@@ -49,6 +49,11 @@
         nnoremap <space>fd <cmd>Telescope lsp_definitions<cr>
         nnoremap <space>fi <cmd>Telescope lsp_implementations<cr>
 
+        " Rust key-bindings
+        nnoremap <space>rr <cmd>RustRun<cr>
+        nnoremap <space>rf <cmd>RustFmt<cr>
+        nnoremap <space>rF <cmd>RustFmtRange<cr>
+
         " colorscheme gruvbox-material
         colorscheme material-darker
         " source ~/.config/nvim/themes/argonaut.vim
@@ -66,6 +71,9 @@
         set hidden noshowmode scrolloff=8
         set updatetime=250 encoding=UTF-8 mouse=a
         set conceallevel=0
+
+        " https://github.com/rust-lang/rust.vim/issues/461
+        set shell=${pkgs.bash}/bin/bash
 
         " Config using LUA Syntax
         lua << EOF
@@ -129,8 +137,33 @@
           }
 
           -- Rust Setup
-          lsp.rust_analyzer.setup {}
-          vim.cmd([[let g:LanguageClient_serverCommands = { 'rust': ['rust-analyzer'] }]])
+          local nvim_lsp = require'lspconfig'
+
+          local on_attach = function(client)
+              require'completion'.on_attach(client)
+          end
+
+          nvim_lsp.rust_analyzer.setup({
+              on_attach=on_attach,
+              settings = {
+                  ["rust-analyzer"] = {
+                      imports = {
+                          granularity = {
+                              group = "module",
+                          },
+                          prefix = "self",
+                      },
+                      cargo = {
+                          buildScripts = {
+                              enable = true,
+                          },
+                      },
+                      procMacro = {
+                          enable = true
+                      },
+                  }
+              }
+          })
 
           -- Terraform setup
           lsp.tflint.setup {}
