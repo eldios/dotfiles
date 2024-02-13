@@ -54,10 +54,10 @@
         nnoremap <space>rf <cmd>RustFmt<cr>
         nnoremap <space>rF <cmd>RustFmtRange<cr>
 
-        " colorscheme gruvbox-material
         colorscheme material-darker
-        " source ~/.config/nvim/themes/argonaut.vim
-        syntax on
+
+        syntax enable
+        filetype plugin indent on
 
         set foldmethod=expr
         set foldexpr=nvim_treesitter#foldexpr()
@@ -247,6 +247,7 @@
         cmp-path #
         cmp-cmdline #
         cmp-nvim-lsp #
+        rust-vim
 
         # Treesitter code highlighting and more
         nvim-treesitter.withAllGrammars
