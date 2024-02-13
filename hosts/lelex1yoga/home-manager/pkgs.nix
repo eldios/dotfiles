@@ -49,6 +49,7 @@ in
       pv
       pwgen
       ranger
+      ripgrep
       ripgrep-all
       sipcalc
       thefuck
