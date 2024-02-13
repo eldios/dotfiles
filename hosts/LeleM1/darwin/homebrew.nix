@@ -33,7 +33,6 @@
     casks = [
       "alfred"
       "amethyst"
-      "autodesk-fusion360"
       "balenaetcher"
       "bartender"
       "beeper"
