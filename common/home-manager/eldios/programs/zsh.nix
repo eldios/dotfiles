@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
 
   home = {
@@ -91,20 +91,27 @@
         cgr = "cg run";
         cgt = "cg test";
 
-        ipcalc    = "sipcalc";
+        ipcalc     = "sipcalc";
 
-        nixs      = "nix search nixpkgs";
+        nixs       = "nix search nixpkgs";
+        nixe       = "$EDITOR $HOME/.dotfiles/hosts/$(hostname)";
 
-        nixe      = "nvim /etc/nixos/home.nix";
+        nixu       = "sudo nixos-rebuild switch --impure --flake $HOME/.dotfiles";
+        nixU       = "sudo nix flake update $HOME/.dotfiles && nixu";
 
-        nixu      = "sudo nixos-rebuild switch";
-        nixU      = "sudo nix flake update /etc/nixos && nixu";
+        nixa       = "nixe && nixu";
+        nixA       = "nixe && nixU";
 
-        nixa      = "nixe && nixu";
-        nixA      = "nixe && nixU";
-
-        hm-cleanup= "home-manager expire-generations '-7 days' && nix-store --gc";
-        hm-edit   = "home-manager edit";
+        hm         = "home-manager";
+        hmc        = "hm-cleanup";
+        hme        = "hm-edit";
+        hmu        = "hm-update";
+        hmU        = "nixu && hm-update";
+        hma        = "hme && hmu";
+        hmA        = "hme && hmU";
+        hm-cleanup = "home-manager expire-generations '-7 days' && nix-store --gc";
+        hm-edit    = "home-manager edit";
+        hm-update  = "home-manager switch -b backup --flake $HOME/.dotfiles'";
 
         SHX = "exec \$SHELL -l";
       };
@@ -127,6 +134,12 @@
         eval "$(${pkgs.thefuck}/bin/thefuck --alias)"
         eval "$(${pkgs.zoxide}/bin/zoxide init zsh)"
       '';
+
+      /*
+      initExtraBeforeCompInit = ''
+        fpath+=("${config.home.profileDirectory}"/share/zsh/site-functions "${config.home.profileDirectory}"/share/zsh/$ZSH_VERSION/functions "${config.home.profileDirectory}"/share/zsh/vendor-completions)
+      '';
+      */
     }; # EOM zsh
 
   }; # EOM programs

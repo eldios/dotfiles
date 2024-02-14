@@ -1,27 +1,10 @@
 { pkgs, ... }:
 {
 
-  programs = {
-    home-manager = {
-      enable = true;
-    };
-  }; # EOM programs
 
   imports = [
 
-    ./programs/var.nix
-
     ./programs/git.nix
-    ./programs/neovim.nix
-    ./programs/zellij.nix
-    ./programs/zsh.nix
-
-    ./programs/mako.nix
-    ./programs/alacritty.nix
-    ./programs/kitty.nix
-    ./programs/wezterm.nix
-
-    ./programs/firefox.nix
 
   ];
 
