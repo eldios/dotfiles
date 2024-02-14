@@ -36,6 +36,8 @@
 
       extraConfig = ''
         set modeline
+        nnoremap <space>cc <cmd>CodeiumEnable<cr>
+        nnoremap <space>cC <cmd>CodeiumDisable<cr>
 
         " Config using Vim syntax
         nnoremap <space>ff <cmd>Telescope find_files<cr>
@@ -43,10 +45,19 @@
         nnoremap <space>fb <cmd>Telescope buffers<cr>
         nnoremap <space>fh <cmd>Telescope help_tags<cr>
 
-        " colorscheme gruvbox-material
+        nnoremap <space>fr <cmd>Telescope lsp_references<cr>
+        nnoremap <space>fd <cmd>Telescope lsp_definitions<cr>
+        nnoremap <space>fi <cmd>Telescope lsp_implementations<cr>
+
+        " Rust key-bindings
+        nnoremap <space>rr <cmd>RustRun<cr>
+        nnoremap <space>rf <cmd>RustFmt<cr>
+        nnoremap <space>rF <cmd>RustFmtRange<cr>
+
         colorscheme material-darker
-        " source ~/.config/nvim/themes/argonaut.vim
-        syntax on
+
+        syntax enable
+        filetype plugin indent on
 
         set foldmethod=expr
         set foldexpr=nvim_treesitter#foldexpr()
@@ -60,6 +71,9 @@
         set hidden noshowmode scrolloff=8
         set updatetime=250 encoding=UTF-8 mouse=a
         set conceallevel=0
+
+        " https://github.com/rust-lang/rust.vim/issues/461
+        " set shell=${pkgs.bash}/bin/bash
 
         " Config using LUA Syntax
         lua << EOF
@@ -122,9 +136,38 @@
             },
           }
 
-          lsp.tflint.setup {}
+          -- Rust Setup
+          local nvim_lsp = require'lspconfig'
+
+          local on_attach = function(client)
+              require'completion'.on_attach(client)
+          end
+
+          nvim_lsp.rust_analyzer.setup({
+              on_attach=on_attach,
+              settings = {
+                  ["rust-analyzer"] = {
+                      imports = {
+                          granularity = {
+                              group = "module",
+                          },
+                          prefix = "self",
+                      },
+                      cargo = {
+                          buildScripts = {
+                              enable = true,
+                          },
+                      },
+                      procMacro = {
+                          enable = true
+                      },
+                  }
+              }
+          })
 
           -- Terraform setup
+          lsp.tflint.setup {}
+
           vim.cmd([[silent! autocmd! filetypedetect BufRead,BufNewFile *.tf]])
           vim.cmd([[autocmd BufRead,BufNewFile *.hcl set filetype=hcl]])
           vim.cmd([[autocmd BufRead,BufNewFile .terraformrc,terraform.rc set filetype=hcl]])
@@ -204,6 +247,7 @@
         cmp-path #
         cmp-cmdline #
         cmp-nvim-lsp #
+        rust-vim
 
         # Treesitter code highlighting and more
         nvim-treesitter.withAllGrammars

@@ -42,7 +42,7 @@
 
         cursor = {
           style = {
-            shape = "Block"; 
+            shape = "Block";
             blinking = "On";
           };
 
