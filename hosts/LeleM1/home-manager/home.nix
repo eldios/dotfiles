@@ -2,6 +2,12 @@
 {
   nixpkgs.config.allowUnfree = true;
 
+  programs = {
+    home-manager = { # set home-manager to handle itself
+      enable = true;
+    };
+  }; # EOM programs
+
   home = {
     stateVersion = "23.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
 
@@ -17,7 +23,9 @@
 
   imports = [
     ./pkgs.nix
-    ./programs.nix
+
+    ./common_programs.nix
+    ./programs/git.nix
   ];
 
 } # EOF

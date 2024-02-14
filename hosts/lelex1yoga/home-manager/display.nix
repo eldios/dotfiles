@@ -1,11 +1,29 @@
 { config, pkgs, ...}:
-
+let
+  #repo_dir            = "${config.home.homeDirectory}/.dotfiles";
+  repo_dir            = "/home/eldios/.dotfiles";
+  common_mods_dir     = "${repo_dir}/common";
+  common_hm_dir       = "${common_mods_dir}/home-manager/eldios";
+  common_programs_dir = "${common_hm_dir}/programs";
+in
 {
   imports = [
-    ./programs/sway.nix
-    ./programs/hyprland.nix
-    ./programs/waybar.nix
+    "${common_programs_dir}/mako.nix"
+    "${common_programs_dir}/sway.nix"
+    "${common_programs_dir}/hyprland.nix"
+    "${common_programs_dir}/waybar.nix"
   ];
+
+  dconf.settings = {
+    "org/virt-manager/virt-manager/connections" = {
+      autoconnect = ["qemu:///system"];
+      uris = ["qemu:///system"];
+    };
+
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+    };
+  };
 
   gtk = {
     enable = true;
@@ -23,7 +41,6 @@
       package = pkgs.adwaita-qt;
     };
   };
-
 
   home = {
     pointerCursor = {
