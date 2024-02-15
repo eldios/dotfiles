@@ -1,11 +1,21 @@
-{ pkgs, inputs, ... }:
+{ lib, pkgs, inputs, ... }:
 let
   #unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.x86_64-linux { config.allowUnfree = true; } ;
   unstablePkgs = import <nixpkgs-unstable> { config.allowUnfree = true; } ;
+
+  # obsidian - 2nd brain - patch taken from https://github.com/NixOS/nixpkgs/issues/273611
+  obsidian = lib.throwIf (lib.versionOlder "1.4.16" pkgs.obsidian.version) "Obsidian no longer requires EOL Electron" (
+    pkgs.obsidian.override {
+      electron = pkgs.electron_25.overrideAttrs (_: {
+        preFixup = "patchelf --add-needed ${pkgs.libglvnd}/lib/libEGL.so.1 $out/bin/electron"; # NixOS/nixpkgs#272912
+        meta.knownVulnerabilities = [ ]; # NixOS/nixpkgs#273611
+      });
+    }
+  );
 in
 {
   home = {
-    packages = (with pkgs; [
+    packages = ([ obsidian ]) ++ (with pkgs; [
       # CLI utils
       fd # A simple, fast and user-friendly alternative to find
       sshfs
@@ -139,9 +149,6 @@ in
       vscode
       widevine-cdm
       zoom-us
-
-      # 2nd Brain stuff
-      #obsidian
 
       # fonts
       corefonts
