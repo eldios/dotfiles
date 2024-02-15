@@ -138,15 +138,18 @@ in
       paperview
       pavucontrol
       redshift
+      signal-desktop
       slack
       spotify-unwrapped
       steam
       syncthing
       syncthing-cli
       syncthing-tray
+      telegram-desktop
       variety
       vesktop # discord + some fixes
       vscode
+      whatsapp-for-linux
       widevine-cdm
       zoom-us
 
