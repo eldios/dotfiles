@@ -20,7 +20,9 @@
     ];
 
     # Apps from the Apple Store
-    #masApps = [];
+    masApps = {
+      "Edison Mail - Email" = 1489591003;
+    };
 
     # Brews
     brews = [
@@ -53,7 +55,6 @@
       "inkscape"
       "istat-menus"
       "keybase"
-      "mailspring"
       "obs"
       "obs-virtualcam"
       "obsbot-center"
