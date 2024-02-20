@@ -53,6 +53,8 @@
         nnoremap <space>rr <cmd>RustRun<cr>
         nnoremap <space>rf <cmd>RustFmt<cr>
         nnoremap <space>rF <cmd>RustFmtRange<cr>
+        nnoremap <space>rt <cmd>RustTest<cr>
+        nnoremap <space>rT <cmd>RustTest!<cr>
 
         colorscheme material-darker
 
