@@ -13,6 +13,7 @@
       sshfs
       util-linux
       yt-dlp
+      yazi
 
       # fonts
       anonymousPro
