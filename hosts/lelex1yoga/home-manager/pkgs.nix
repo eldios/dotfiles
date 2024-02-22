@@ -69,6 +69,7 @@ in
       whois
       wmctrl
       yubikey-personalization
+      yazi
 
       # DevOps Experimental stuff
       devspace
@@ -154,12 +155,12 @@ in
       zoom-us
 
       # fonts
-      corefonts
       anonymousPro
-      meslo-lgs-nf
-      font-awesome
-      nerdfonts
+      corefonts
       fira-code-nerdfont
+      font-awesome
+      meslo-lgs-nf
+      nerdfonts
     ]) # EOM pkgs
     ++ ( with unstablePkgs; [
       mailspring
