@@ -36,6 +36,7 @@
 
       extraConfig = ''
         set modeline
+
         nnoremap <space>cc <cmd>CodeiumEnable<cr>
         nnoremap <space>cC <cmd>CodeiumDisable<cr>
 
@@ -74,9 +75,6 @@
         set updatetime=250 encoding=UTF-8 mouse=a
         set conceallevel=0
 
-        " https://github.com/rust-lang/rust.vim/issues/461
-        " set shell=${pkgs.bash}/bin/bash
-
         " Config using LUA Syntax
         lua << EOF
           -- Treesitter syntax-highlighting
@@ -103,22 +101,40 @@
           })
 
           cmp.setup {
-            mappings = {
-              ['<CR>']  = cmp.mapping(cmp.mapping.confirm{select = true}),
-              ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-              ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4),  { 'i', 'c' }),
+            mappings = cmp.mapping.preset.insert({
               ['<C-y>'] = cmp.config.disable,
-              ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-              ['<C-e>'] = cmp.mapping({
-                i = cmp.mapping.abort(),
-                c = cmp.mapping.close(),
-              }),
-            },
-            sources = {
-              {{ name = 'nvim_lsp' }},
-              {{ name = 'buffer'   }},
-            }
+              ['<Tab>'] = cmp.mapping.select_next_time(),
+              ['<S-Tab>'] = cmp.mapping.select_prev_time(),
+              ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+              ['<C-f>'] = cmp.mapping.scroll_docs(4),
+              ['<C-Space>'] = cmp.mapping.complete(),
+              ['<C-e>'] = cmp.mapping.close(),
+              ['<S-C-e>'] = cmp.mapping.abort(),
+              ['<CR>']  = cmp.mapping.confirm({
+                behavior = cmp.ConfirmBehavior.Insert,
+                select = true
+              }),  -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+            }),
+            sources = cmp.config.sources({
+              { name = 'nvim_lsp' },
+            }, {
+              { name = 'buffer', keyword_length = 2 },
+            })
           }
+
+          -- LSP settings (the `on_attach` function is from the nvim-lspconfig wiki)
+          local on_attach = function(client, bufnr)
+            local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+            local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+            -- Enable completion triggered by <c-x><c-o>
+            buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+            -- Mappings.
+            local opts = { noremap=true, silent=true }
+            buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+            buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+          end
 
           -- additional plugins
           require'bufferline'.setup {}
@@ -127,6 +143,9 @@
 
           -- common LSP setup
           local lsp = require'lspconfig'
+          local on_attach = function(client)
+              require'completion'.on_attach(client)
+          end
 
           -- rnix LSP
           lsp.rnix.setup {}
@@ -138,14 +157,7 @@
             },
           }
 
-          -- Rust Setup
-          local nvim_lsp = require'lspconfig'
-
-          local on_attach = function(client)
-              require'completion'.on_attach(client)
-          end
-
-          nvim_lsp.rust_analyzer.setup({
+          lsp.rust_analyzer.setup({
               on_attach=on_attach,
               settings = {
                   ["rust-analyzer"] = {
@@ -170,6 +182,7 @@
           -- Terraform setup
           lsp.tflint.setup {}
 
+          -- Var settings
           vim.cmd([[silent! autocmd! filetypedetect BufRead,BufNewFile *.tf]])
           vim.cmd([[autocmd BufRead,BufNewFile *.hcl set filetype=hcl]])
           vim.cmd([[autocmd BufRead,BufNewFile .terraformrc,terraform.rc set filetype=hcl]])
