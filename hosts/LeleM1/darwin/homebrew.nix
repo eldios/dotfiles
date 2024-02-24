@@ -27,6 +27,7 @@
     # Brews
     brews = [
       "colima" # based on lima - Docker in Lima VM
+      "libiconv"
       "lima" # QEMU GUI tool
       "teensy_loader_cli" # needed for some ESP32 or ESP8266
     ];
