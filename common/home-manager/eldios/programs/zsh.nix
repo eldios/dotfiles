@@ -13,6 +13,11 @@
 
   programs = {
 
+    starship = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
     zsh = {
       enable                   = true;
       enableAutosuggestions    = true;
@@ -27,9 +32,6 @@
         EDITOR = "${pkgs.neovim}/bin/nvim";
         VISUAL = "${pkgs.neovim}/bin/nvim";
 
-        POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD = true;
-        POWERLEVEL10K_DISABLE_CONFIGURATION_WIZARD = true;
-
         ZELLIJ_AUTO_ATTACH = false;
         ZELLIJ_AUTO_EXIT = false;
       };
@@ -43,28 +45,6 @@
           "pkill"
         ];
         share = true;
-      };
-
-      prezto = {
-        enable = true;
-        color = true;
-        prompt = {
-          theme = "powerlevel10k";
-          pwdLength = "short";
-        };
-        pmodules = [
-          "completion"
-          "directory"
-          "docker"
-          "editor"
-          "environment"
-          "git"
-          "history"
-          "prompt"
-          "spectrum"
-          "terminal"
-          "utility"
-        ];
       };
 
       shellAliases = {
@@ -126,20 +106,14 @@
       };
 
       initExtra = ''
-        ${pkgs.neofetch}/bin/neofetch
-
         zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
         source <(${pkgs.carapace}/bin/carapace _carapace zsh)
 
         eval "$(${pkgs.thefuck}/bin/thefuck --alias)"
         eval "$(${pkgs.zoxide}/bin/zoxide init zsh)"
-      '';
 
-      /*
-      initExtraBeforeCompInit = ''
-        fpath+=("${config.home.profileDirectory}"/share/zsh/site-functions "${config.home.profileDirectory}"/share/zsh/$ZSH_VERSION/functions "${config.home.profileDirectory}"/share/zsh/vendor-completions)
+        ${pkgs.neofetch}/bin/neofetch
       '';
-      */
     }; # EOM zsh
 
   }; # EOM programs
