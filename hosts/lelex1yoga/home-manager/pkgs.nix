@@ -1,6 +1,5 @@
-{ lib, pkgs, inputs, ... }:
+{ lib, pkgs, ... }:
 let
-  #unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.x86_64-linux { config.allowUnfree = true; } ;
   unstablePkgs = import <nixpkgs-unstable> { config.allowUnfree = true; } ;
 
   # obsidian - 2nd brain - patch taken from https://github.com/NixOS/nixpkgs/issues/273611
