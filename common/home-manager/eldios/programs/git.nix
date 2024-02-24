@@ -3,11 +3,19 @@
   home = {
     packages = with pkgs; [
       github-cli
-      lazygit
     ];
   };
 
   programs = {
+
+    lazygit = {
+      enable = true;
+      settings = {
+        git = {
+          overrideGpg = false;
+        };
+      };
+    }; # EOM lazygit
 
     git = {
       enable = true;
