@@ -3,6 +3,13 @@
   zramSwap.enable = true;
   systemd.services.zfs-mount.enable = false;
 
+  # workaround as shown here https://github.com/NixOS/nixpkgs/issues/180175#issuecomment-1658731959
+  systemd.services.NetworkManager-wait-online = {
+    serviceConfig = {
+      ExecStart = [ "" "${pkgs.networkmanager}/bin/nm-online -q" ];
+    };
+  };
+
   system = {
     stateVersion = "23.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = true;
