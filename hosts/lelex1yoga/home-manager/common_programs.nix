@@ -11,7 +11,9 @@ in rec
   imports = [
 
     "${common_programs_dir}/neovim.nix"
+    "${common_programs_dir}/lunarvim.nix"
     "${common_programs_dir}/zellij.nix"
+
     "${common_programs_dir}/zsh.nix"
 
     "${common_programs_dir}/alacritty.nix"
@@ -21,6 +23,8 @@ in rec
     "${common_programs_dir}/firefox.nix"
 
     "${common_programs_dir}/git.nix"
+
+    "${common_programs_dir}/var.nix"
 
   ];
 

@@ -12,13 +12,15 @@ in
 
     "${common_programs_dir}/neovim.nix"
     "${common_programs_dir}/lunarvim.nix"
-
     "${common_programs_dir}/zellij.nix"
+
     "${common_programs_dir}/zsh.nix"
 
     "${common_programs_dir}/alacritty.nix"
 
     "${common_programs_dir}/git.nix"
+
+    "${common_programs_dir}/var.nix"
 
   ];
 
