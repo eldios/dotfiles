@@ -11,6 +11,8 @@ in
   imports = [
 
     "${common_programs_dir}/neovim.nix"
+    "${common_programs_dir}/lunarvim.nix"
+
     "${common_programs_dir}/zellij.nix"
     "${common_programs_dir}/zsh.nix"
 

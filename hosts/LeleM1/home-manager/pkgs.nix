@@ -15,6 +15,17 @@
       yt-dlp
       yazi
 
+      # deps
+      libiconv
+
+      # Kubernetes stuff
+      kdash
+      k9s
+      kubectl
+      kubectx
+      ktop
+      k8sgpt
+
       # fonts
       anonymousPro
       corefonts
