@@ -3,7 +3,7 @@
 
   home = {
     packages = with pkgs; [
-      neofetch
+      fastfetch
       carapace
       thefuck
       zoxide
@@ -112,7 +112,7 @@
         eval "$(${pkgs.thefuck}/bin/thefuck --alias)"
         eval "$(${pkgs.zoxide}/bin/zoxide init zsh)"
 
-        ${pkgs.neofetch}/bin/neofetch
+        ${pkgs.fastfetch}/bin/fastfetch -s 'Title:Separator:OS:Host:Uptime:Separator:Packages:Kernel:Shell:WM:Terminal:TerminalFont:Separator:CPU:GPU:Memory:Swap:Disk:LocalIp'
       '';
     }; # EOM zsh
 
