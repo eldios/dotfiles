@@ -29,7 +29,6 @@
       lolcat
       mtr
       ncdu
-      neofetch
       networkmanager
       nyancat
       parallel
