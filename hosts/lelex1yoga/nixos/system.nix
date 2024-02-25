@@ -152,7 +152,7 @@
     just
     lshw
     manix
-    neofetch
+    fastfetch
     rclone
     yt-dlp
 
