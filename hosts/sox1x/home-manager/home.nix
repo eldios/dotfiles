@@ -1,11 +1,18 @@
-{ config, pkgs, ... }:
+{ ... }:
 {
   nixpkgs.config.allowUnfree = true;
+
+  programs = {
+    home-manager = { # set home-manager to handle itself
+      enable = true;
+    };
+  }; # EOM programs
 
   home = {
     stateVersion = "23.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
 
     username = "eldios";
+    homeDirectory = "/home/eldios";
 
     file = { };
 
@@ -15,10 +22,12 @@
   }; # EOM home
 
   imports = [
-    ./pkgs.nix
-    ./display.nix
     ./services.nix
-    ./programs.nix
+
+    ./pkgs.nix
+
+    ./common_programs.nix
+    ./programs/git.nix
   ];
 
 } # EOF
