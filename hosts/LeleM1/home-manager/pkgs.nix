@@ -6,7 +6,6 @@
       ffmpeg
       gnupg
       imagemagick
-      neofetch
       rclone
       ripgrep-all
       sipcalc
