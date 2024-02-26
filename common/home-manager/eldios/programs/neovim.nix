@@ -13,6 +13,7 @@
       ghc
       # vars
       ripgrep     # used by space-f-g
+      zig
     ];
 
   };
