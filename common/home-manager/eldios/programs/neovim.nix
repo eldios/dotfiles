@@ -29,25 +29,13 @@
     require("lazy").setup({
       spec = {
         { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-        { import = "lazyvim.plugins.extras.ui.mini-animate" },
-        -- Lele LazyVim settings
-        { import = "lazyvim.plugins.extras.lang.docker" },
-        { import = "lazyvim.plugins.extras.lang.terraform" },
-        { import = "lazyvim.plugins.extras.lang.markdown" },
-        { import = "lazyvim.plugins.extras.lang.yaml" },
-        { import = "lazyvim.plugins.extras.lang.typescript" },
-        { import = "lazyvim.plugins.extras.lang.json" },
-        { import = "lazyvim.plugins.extras.lang.go" },
-        { import = "lazyvim.plugins.extras.lang.rust" },
-        { import = "lazyvim.plugins.extras.lang.python" },
-        { import = "lazyvim.plugins.extras.coding.codeium" },
         -- override via plugins
         { import = "plugins" },
       },
       defaults = {
         lazy = false,
-        -- version = false, -- always use the latest git commit
-        version = "*", -- try installing the latest stable version for plugins that support semver
+        version = false, -- always use the latest git commit
+        -- version = "*", -- try installing the latest stable version for plugins that support semver
       },
       install = { colorscheme = { "tokyonight", "habamax" } },
       checker = { enabled = true },
@@ -67,6 +55,40 @@
         },
       },
     })
+  '';
+  xdg.configFile."nvim/config/lazy.lua".text = ''
+    return {
+      -- Lele UI settings
+      { import = "lazyvim.plugins.extras.ui.mini-animate" },
+      -- Lele Lang settings
+      { import = "lazyvim.plugins.extras.lang.docker" },
+      { import = "lazyvim.plugins.extras.lang.go" },
+      { import = "lazyvim.plugins.extras.lang.json" },
+      { import = "lazyvim.plugins.extras.lang.markdown" },
+      { import = "lazyvim.plugins.extras.lang.python" },
+      { import = "lazyvim.plugins.extras.lang.rust" },
+      { import = "lazyvim.plugins.extras.lang.terraform" },
+      { import = "lazyvim.plugins.extras.lang.typescript" },
+      { import = "lazyvim.plugins.extras.lang.yaml" },
+    },
+  '';
+  xdg.configFile."nvim/config/options.lua".text = ''
+    return {
+      "folke/tokyonight.nvim",
+      opts = {
+        transparent = true,
+        styles = {
+          sidebars = "transparent",
+          floats = "transparent",
+        }
+      }
+    },
+  '';
+  xdg.configFile."nvim/plugins/disabled.lua".text = ''
+    return {
+      -- disable plugins
+      -- { "myplugin", enabled = false }
+    },
   '';
 
   programs = {
