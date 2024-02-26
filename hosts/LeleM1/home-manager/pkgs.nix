@@ -17,13 +17,18 @@
       # deps
       libiconv
 
+      # DevOps stuff
+      docker
+      terraform
+
       # Kubernetes stuff
-      kdash
+      k8sgpt
       k9s
+      kdash
+      kind
+      ktop
       kubectl
       kubectx
-      ktop
-      k8sgpt
 
       # fonts
       anonymousPro
