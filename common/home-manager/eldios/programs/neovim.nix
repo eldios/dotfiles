@@ -57,7 +57,7 @@
       },
     })
   '';
-  xdg.configFile."nvim/config/lazy.lua".text = ''
+  xdg.configFile."nvim/lua/config/lazy.lua".text = ''
     return {
       -- Lele UI settings
       { import = "lazyvim.plugins.extras.ui.mini-animate" },
@@ -71,25 +71,26 @@
       { import = "lazyvim.plugins.extras.lang.terraform" },
       { import = "lazyvim.plugins.extras.lang.typescript" },
       { import = "lazyvim.plugins.extras.lang.yaml" },
-    },
+    }
   '';
-  xdg.configFile."nvim/config/options.lua".text = ''
-    return {
-      "folke/tokyonight.nvim",
-      opts = {
-        transparent = true,
-        styles = {
-          sidebars = "transparent",
-          floats = "transparent",
-        }
-      }
-    },
+  xdg.configFile."nvim/lua/config/options.lua".text = ''
+    -- default Lele's options
+    vim.opt.relativenumber = false
+    vim.opt.tabstop = 2
+    vim.opt.shiftwidth = 2
+    vim.opt.softtabstop = 2
+    vim.opt.expandtab = true
+    vim.opt.colorcolumn = { 80 }
   '';
-  xdg.configFile."nvim/plugins/disabled.lua".text = ''
+  xdg.configFile."nvim/lua/config/keymaps.lua".text = ''
+  '';
+  xdg.configFile."nvim/lua/config/autocmds.lua".text = ''
+  '';
+  xdg.configFile."nvim/lua/plugins/disabled.lua".text = ''
     return {
       -- disable plugins
       -- { "myplugin", enabled = false }
-    },
+    }
   '';
 
   programs = {
