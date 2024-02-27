@@ -20,10 +20,13 @@
       # DevOps stuff
       docker
       terraform
+      opentofu
 
       # Kubernetes stuff
+      datree
       k8sgpt
       k9s
+      kubernetes-helm
       kdash
       kind
       ktop
