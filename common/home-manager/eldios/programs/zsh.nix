@@ -3,6 +3,7 @@
 
   home = {
     packages = with pkgs; [
+      colorls # like `ls --color=auto -F` but cooler
       fastfetch
       carapace
       thefuck

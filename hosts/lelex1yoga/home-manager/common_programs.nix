@@ -26,6 +26,12 @@ in rec
 
     "${common_programs_dir}/var.nix"
 
+    "${common_programs_dir}/pkgs_cli.nix" # common packages needed everywhere - CLI version
+    "${common_programs_dir}/pkgs_gui.nix" # common packages needed everywhere - GUI version
+
+    "${common_programs_dir}/pkgs_linux_cli.nix" # common packages needed on Linux - CLI version
+    "${common_programs_dir}/pkgs_linux_gui.nix" # common packages needed on Linux - GUI version
+
   ];
 
 } # EOF

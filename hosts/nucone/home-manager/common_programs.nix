@@ -18,6 +18,11 @@ in rec
     "${common_programs_dir}/git.nix"
 
     "${common_programs_dir}/var.nix"
+
+    "${common_programs_dir}/pkgs_cli.nix" # common packages needed everywhere - CLI version
+
+    "${common_programs_dir}/pkgs_linux_cli.nix" # common packages needed on Linux - CLI version
+
   ];
 
 } # EOF

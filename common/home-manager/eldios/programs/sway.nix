@@ -19,6 +19,68 @@ in
   # BEGIN Sway confguration
   home = {
     packages = with pkgs; [
+      # BEGIN Sway confguration
+      adwaita-qt
+      adwaita-qt6
+      bemenu # wayland clone of dmenu
+      clipman
+      dconf
+      dracula-theme # gtk theme
+      eww-wayland # wayland widgets - https://github.com/elkowar/eww
+      fuseiso
+      fuzzel # wayland clone of dmenu
+      gammastep
+      geoclue2
+      glpaper
+      gnome.adwaita-icon-theme
+      gnome.gnome-themes-extra
+      gnome3.adwaita-icon-theme  # default gnome cursors
+      grim # screenshot functionality
+      grimblast # screenshot functionality
+      gsettings-desktop-schemas
+      hyprland-protocols
+      hyprpaper
+      hyprpicker
+      kitty
+      lavalauncher # simple launcher panel for Wayland desktops
+      libva-utils
+      mako # notification system developed by swaywm maintainer
+      pinentry-bemenu
+      polkit_gnome
+      qt5.qtwayland
+      qt6.qmake
+      qt6.qtwayland
+      rofi-wayland-unwrapped
+      shotman
+      slurp # screenshot functionality
+      swaybg
+      swayidle
+      swaylock-effects
+      swaynotificationcenter
+      swayr
+      swayrbar
+      swww
+      tofi
+      udiskie
+      waybar
+      wayland
+      wbg
+      wdisplays # tool to configure displays
+      wev
+      wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
+      wl-gammactl
+      wl-screenrec
+      wlogout
+      wlr-randr
+      wlroots
+      wlsunset
+      wofi
+      wshowkeys
+      wtype
+      xdg-desktop-portal
+      xdg-desktop-portal-gtk
+      xdg-utils # for opening default programs when clicking links
+      ydotool
       (pkgs.writeShellScriptBin "fix-wm" ''
         pkill waybar && sway reload
       '') # EOF fix-wm script

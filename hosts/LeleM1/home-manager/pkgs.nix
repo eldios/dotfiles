@@ -2,20 +2,9 @@
 {
   home = {
     packages = with pkgs; [
-      colorls # like `ls --color=auto -F` but cooler
-      ffmpeg
-      gnupg
-      imagemagick
-      rclone
-      ripgrep-all
-      sipcalc
-      sshfs
-      util-linux
-      yt-dlp
-      yazi
-
       # deps
       libiconv
+<<<<<<< Updated upstream
 
       # DevOps stuff
       docker
@@ -40,6 +29,8 @@
       font-awesome
       meslo-lgs-nf
       nerdfonts
+=======
+>>>>>>> Stashed changes
     ]; # EOM pkgs
   }; # EOM home
 }
