@@ -55,6 +55,7 @@
       "iina"
       "inkscape"
       "istat-menus"
+      "leapp"
       "keybase"
       "obs"
       "obs-virtualcam"
