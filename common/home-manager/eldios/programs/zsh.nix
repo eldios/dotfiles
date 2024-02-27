@@ -3,12 +3,13 @@
 
   home = {
     packages = with pkgs; [
+      carapace
       colorls # like `ls --color=auto -F` but cooler
       fastfetch
-      carapace
+      fzf
+      nnn
       thefuck
       zoxide
-      fzf
     ];
   }; # EOM ZSH deps
 
@@ -55,12 +56,14 @@
 
         g   = "git";
         lg  = "lazygit";
+        n   = "nnn";
 
         # Kubectl
         k = "kubectl";
         j = "just";
 
-        tf  = "terraform";
+        TF  = "terraform";
+        tf  = "tofu";
         tfp = "tf plan";
         tfa = "tf apply -auto-approve";
         tfd = "tf destroy -auto-approve";
