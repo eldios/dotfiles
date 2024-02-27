@@ -62,7 +62,6 @@ in
       swww
       tofi
       udiskie
-      waybar
       wayland
       wbg
       wdisplays # tool to configure displays
