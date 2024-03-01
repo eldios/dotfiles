@@ -33,6 +33,7 @@ in
       geoclue2
       kitty
       light # brightness control
+      openlens
       paperview
       pavucontrol
       redshift
