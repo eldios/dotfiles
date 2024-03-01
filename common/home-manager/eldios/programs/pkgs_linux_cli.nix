@@ -3,6 +3,7 @@
   # Neovim configuration deps
   home = {
     packages = with pkgs; [
+      cloudflare-warp
       gcal
       graph-easy
       iotop
