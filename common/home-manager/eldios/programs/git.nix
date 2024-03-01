@@ -12,7 +12,7 @@
       enable = true;
       settings = {
         git = {
-          overrideGpg = false;
+          overrideGpg = true;
         };
       };
     }; # EOM lazygit
