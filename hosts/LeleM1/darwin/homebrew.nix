@@ -77,6 +77,7 @@
       "telegram-desktop"
       "utm" # QEMU GUI
       "vivaldi" # browser
+      "zirixcz/vesktop/vesktop"
       "vlc"
       "vlc-webplugin"
       "warp" # https://warp.dev - fancy terminal
