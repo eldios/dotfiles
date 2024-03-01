@@ -42,6 +42,7 @@
       "bitwarden"
       "brave-browser"
       "canva"
+      "cloudflare-warp"
       "coconutbattery"
       "cryptomator"
       "dbeaver-community"
@@ -61,6 +62,7 @@
       "obs-virtualcam"
       "obsbot-center"
       "obsidian" # notetaking 2nd brain
+      "openlens" # nice Kubernetes IDE
       "orbstack" # https://github.com/OrbStack/orbstack - docker on steroid
       "pock" # macOS dock app (made by an italian)
       "qflipper"

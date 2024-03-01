@@ -40,6 +40,7 @@
       tfswitch
 
       # Kubernetes stuff
+      argocd
       devpod
       devspace
       eksctl
