@@ -93,6 +93,8 @@
 
     tailscale.enable = true;
 
+    cloudflared.enable = true;
+
     xserver = {
       enable = true;
       autorun = true;
@@ -201,12 +203,12 @@
 
   xdg.portal = {
     enable = true;
-    #wlr.enable = true;
-    # gtk portal needed to make gtk apps happy
+    wlr.enable = true;
     config.common.default = "*" ;
+    # gtk portal needed to make gtk apps happy
     extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-wlr
+      #pkgs.xdg-desktop-portal-gtk
+      #pkgs.xdg-desktop-portal-wlr
       pkgs.xdg-desktop-portal-hyprland
     ];
   };
