@@ -196,7 +196,6 @@ in
         (f "org.gnome.design.Palette")
         (f "Color Picker")
         (f "xdg-desktop-portal")
-        (f "xdg-desktop-portal-gnome")
         (f "xdg-desktop-portal-hyprland")
       ];
 
