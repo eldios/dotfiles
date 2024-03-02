@@ -110,6 +110,9 @@
       };
 
       initExtra = ''
+        bindkey '^P' history-beginning-search-backward
+        bindkey '^N' history-beginning-search-forward
+
         zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
         source <(${pkgs.carapace}/bin/carapace _carapace zsh)
 
