@@ -35,7 +35,6 @@
     # Casks
     casks = [
       "alfred"
-      "amethyst"
       "balenaetcher"
       "bartender"
       "beeper"
@@ -56,8 +55,10 @@
       "iina"
       "inkscape"
       "istat-menus"
-      "leapp"
       "keybase"
+      "koekeishiya/formulae/skhd"
+      "koekeishiya/formulae/yabai"
+      "leapp"
       "obs"
       "obs-virtualcam"
       "obsbot-center"
@@ -77,11 +78,11 @@
       "telegram-desktop"
       "utm" # QEMU GUI
       "vivaldi" # browser
-      "zirixcz/vesktop/vesktop"
       "vlc"
       "vlc-webplugin"
       "warp" # https://warp.dev - fancy terminal
       "whatsapp"
+      "zirixcz/vesktop/vesktop"
       "zoom"
     ];
   };
