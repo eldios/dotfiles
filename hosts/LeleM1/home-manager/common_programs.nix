@@ -20,6 +20,8 @@ in
 
     "${common_programs_dir}/git.nix"
 
+    "${common_programs_dir}/yabai.nix"
+
     "${common_programs_dir}/var.nix" # various home manager programs with specific configuration
 
     "${common_programs_dir}/pkgs_cli.nix" # common packages needed everywhere - CLI version
