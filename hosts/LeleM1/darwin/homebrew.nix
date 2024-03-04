@@ -26,7 +26,10 @@
 
     # Brews
     brews = [
+      "cask"
       "colima" # based on lima - Docker in Lima VM
+      "koekeishiya/formulae/skhd"
+      "koekeishiya/formulae/yabai"
       "libiconv"
       "lima" # QEMU GUI tool
       "teensy_loader_cli" # needed for some ESP32 or ESP8266
@@ -35,6 +38,7 @@
     # Casks
     casks = [
       "alfred"
+      "amethyst"
       "balenaetcher"
       "bartender"
       "beeper"
@@ -56,8 +60,6 @@
       "inkscape"
       "istat-menus"
       "keybase"
-      "koekeishiya/formulae/skhd"
-      "koekeishiya/formulae/yabai"
       "leapp"
       "obs"
       "obs-virtualcam"
