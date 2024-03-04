@@ -17,6 +17,8 @@
     taps = [
       "osx-cross/avr"
       "osx-cross/arm"
+      "koekeishiya/formulae"
+      "homebrew/cask"
     ];
 
     # Apps from the Apple Store
