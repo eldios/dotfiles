@@ -19,6 +19,8 @@
       "osx-cross/arm"
       "koekeishiya/formulae"
       "homebrew/cask"
+      "homebrew/services"
+      "zirixcz/vesktop"
     ];
 
     # Apps from the Apple Store

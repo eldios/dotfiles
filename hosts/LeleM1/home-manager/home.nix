@@ -25,6 +25,7 @@
     ./pkgs.nix
 
     ./common_programs.nix
+
     ./programs/git.nix
   ];
 
