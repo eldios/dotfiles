@@ -46,13 +46,19 @@ in
       syncthing-tray
       telegram-desktop
       variety
-      vesktop # discord + some fixes
       vscode
       whatsapp-for-linux
       widevine-cdm
       zoom-us
+
+      # 3D printing
+      super-slicer
+      prusa-slicer
+      cura
+
     ]) # EOM pkgs
     ++ ( with unstablePkgs; [
+      vesktop # discord + some fixes
       mailspring
     ]); # EOM unstablePkgs
   }; # EOM home
