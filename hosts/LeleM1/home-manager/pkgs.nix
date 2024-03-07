@@ -4,6 +4,7 @@
     packages = with pkgs; [
       # deps
       libiconv
+      virt-manager
     ]; # EOM pkgs
   }; # EOM home
 }

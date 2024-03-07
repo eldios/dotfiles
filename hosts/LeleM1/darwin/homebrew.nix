@@ -18,7 +18,6 @@
       "osx-cross/avr"
       "osx-cross/arm"
       "koekeishiya/formulae"
-      "homebrew/cask"
       "homebrew/services"
       "zirixcz/vesktop"
     ];
@@ -82,6 +81,7 @@
       "syncthing"
       "tailscale"
       "telegram-desktop"
+      "tidal"
       "utm" # QEMU GUI
       "vivaldi" # browser
       "vlc"
