@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixos-hardware, home-manager, inputs, ... }:
+{ nixos-hardware, home-manager, inputs, nixpkgs, nixpkgs-unstable, ... }:
 
 {
   imports = [
@@ -27,6 +27,10 @@
       # arguments to home.nix
       home-manager.extraSpecialArgs = { inherit
         inputs
+        nixpkgs
+        nixpkgs-unstable
+        home-manager
+        nixos-hardware
         ;
       };
     }
