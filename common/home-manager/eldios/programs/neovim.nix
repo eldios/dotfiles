@@ -5,7 +5,6 @@
     packages = with pkgs; [
       # LSPs
       nil # Nix LSP
-      rnix-lsp
       # Golang
       nil
       # Golang

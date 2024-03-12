@@ -1,7 +1,7 @@
 # vim: set ts=2 sw=2 et ai list nu
-{ lib, pkgs, ... }:
+{ lib, pkgs, nixpkgs-unstable, ... }:
 let
-  unstablePkgs = import <nixpkgs-unstable> { config.allowUnfree = true; } ;
+  unstablePkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
 
   # obsidian - 2nd brain - patch taken from https://github.com/NixOS/nixpkgs/issues/273611
   obsidian = lib.throwIf (lib.versionOlder "1.4.16" pkgs.obsidian.version) "Obsidian no longer requires EOL Electron" (

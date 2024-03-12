@@ -23,6 +23,7 @@
 
   outputs = {
     nixpkgs,
+    nixpkgs-unstable,
     nixpkgs-darwin,
     home-manager,
     disko,
@@ -43,6 +44,7 @@
     commonSpecialArgs = { inherit
       inputs
       nixpkgs
+      nixpkgs-unstable
       nixpkgs-darwin
       disko
       home-manager

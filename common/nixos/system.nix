@@ -100,6 +100,7 @@
     zfs
     btrfs-progs
     smartmontools
+    nix-tree
 
     # utils
     btop

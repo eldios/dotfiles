@@ -45,14 +45,13 @@
       devspace
       eksctl
       helmfile
+      k3s
       k8sgpt
       k9s
-      k9s
+      k0sctl
       kdash
       kind
-      kind
       ktop
-      kubectl
       kubectx
       kubelogin
       kubelogin-oidc
@@ -82,6 +81,7 @@
       just
       lolcat
       mtr
+      nix-tree
       nnn
       nyancat
       parallel
