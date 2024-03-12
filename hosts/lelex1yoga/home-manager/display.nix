@@ -1,17 +1,10 @@
-{ config, pkgs, ...}:
-let
-  #repo_dir            = "${config.home.homeDirectory}/.dotfiles";
-  repo_dir            = "/home/eldios/.dotfiles";
-  common_mods_dir     = "${repo_dir}/common";
-  common_hm_dir       = "${common_mods_dir}/home-manager/eldios";
-  common_programs_dir = "${common_hm_dir}/programs";
-in
+{ pkgs, ...}:
 {
   imports = [
-    "${common_programs_dir}/mako.nix"
-    "${common_programs_dir}/sway.nix"
-    "${common_programs_dir}/hyprland.nix"
-    "${common_programs_dir}/waybar.nix"
+    ../../../common/home-manager/eldios/programs/mako.nix
+    ../../../common/home-manager/eldios/programs/sway.nix
+    ../../../common/home-manager/eldios/programs/hyprland.nix
+    ../../../common/home-manager/eldios/programs/waybar.nix
   ];
 
   dconf.settings = {
