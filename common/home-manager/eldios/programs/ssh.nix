@@ -1,20 +1,13 @@
 { config, pkgs, ... }:
 {
 
-  programs = {
+  home.file.".ssh/authorized_keys".source = ../../../files/authorized_keys;
 
-    ssh = {
-      enable      = true;
-      compression = true;
-      controlMaster = "yes";
-      serverAliveInterval = 14;
+  home.file.".ssh/config".text = ''
+    Include ~/.ssh/hosts.conf
 
-      includes = [
-        "~/.ssh/*.conf"
-      ];
-    }; # EOM ssh
-
-  }; # EOM programs
+    Include ~/.ssh/defaults.conf
+  '';
 
   home.file.".ssh/defaults.conf".text = ''
     Host github.com
@@ -29,12 +22,22 @@
       AddKeysToAgent yes
       ForwardAgent yes
 
-    Host *
+    Match canonical all
       User root
       PasswordAuthentication yes
       ForwardAgent no
       ForwardX11 no
       ForwardX11Trusted no
+      IdentitiesOnly yes
+      PreferredAuthentications publickey,password
+      Compression yes
+      ServerAliveInterval 14
+      ServerAliveCountMax 3
+      HashKnownHosts yes
+      UserKnownHostsFile ~/.ssh/known_hosts
+      ControlMaster auto
+      ControlPath ~/.ssh/master-%r@%n:%p
+      ControlPersist 30m
   '';
 
 } # EOF
