@@ -2,6 +2,7 @@
   description = "Lele's nix conf - for macOS and nixOS";
 
   inputs = {
+    # usual inputs
     nixpkgs.url          = "github:nixos/nixpkgs/nixos-23.11";
     home-manager.url     = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -14,11 +15,9 @@
     # base imports
     utils.url = "github:numtide/flake-utils";
 
-    nixvim.url           = "github:nix-community/nixvim";
-    nix-colors.url       = "github:misterio77/nix-colors";
+    # additional utils
+    disko.url = "github:nix-community/disko";
     nixos-hardware.url   = "github:nixos/nixos-hardware";
-
-    # additinoal utils
     xremap.url = "github:xremap/nix-flake";
   };
 
@@ -26,17 +25,13 @@
     nixpkgs,
     nixpkgs-darwin,
     home-manager,
+    disko,
     darwin,
     nixos-hardware,
-    nixvim,
     flake-parts,
     xremap,
     ...
   } @ inputs: let
-    inherit (
-      nixpkgs
-      home-manager-darwin
-    );
 
     forAllSystems = nixpkgs.lib.genAttrs [
       "aarch64-darwin"
@@ -49,9 +44,9 @@
       inputs
       nixpkgs
       nixpkgs-darwin
+      disko
       home-manager
       nixos-hardware
-      nixvim
       flake-parts
       xremap
       ;
@@ -88,6 +83,17 @@
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = commonSpecialArgs;
       modules = [ ./hosts/nucone/home-manager/home.nix ];
+    };
+
+    # MiniPC NUC
+    nixosConfigurations.kube-casa1 = nixpkgs.lib.nixosSystem {
+      specialArgs = commonSpecialArgs;
+      modules = [ ./hosts/kube-casa1/nixos/configuration.nix ];
+    };
+    homeConfigurations."eldios@kube-casa1" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      extraSpecialArgs = commonSpecialArgs;
+      modules = [ ./hosts/kube-casa1/home-manager/home.nix ];
     };
 
     # LeleM1 (macOS)
