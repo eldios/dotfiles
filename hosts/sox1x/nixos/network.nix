@@ -8,7 +8,7 @@
     interfaces = { };
 
     hostName = "sox1x";
-    hostId   = "d34db14f"; # random chars
+    hostId   = "d34d0004"; # random chars
 
     firewall.enable = true;
   };

@@ -8,7 +8,7 @@
     interfaces = { };
 
     hostName = "lelex1yoga";
-    hostId   = "d34db00f"; # random chars
+    hostId   = "d34d0001"; # random chars
 
     firewall.enable = true;
   };
