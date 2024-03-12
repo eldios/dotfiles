@@ -5,6 +5,11 @@
     inputs.xremap.homeManagerModules.default
   ];
 
+  users.users.eldios.extraGroups = [
+    "input" # needed by xRemap
+    "uinput" # needed by xRemap
+  ];
+
   services.xremap = {
     withWlroots = true;
 

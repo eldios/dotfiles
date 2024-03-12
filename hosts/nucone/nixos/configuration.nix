@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixos-hardware, home-manager, ... }:
+{ nixos-hardware, home-manager, ... }:
 
 {
   imports =
@@ -8,21 +8,24 @@
       nixos-hardware.nixosModules.common-cpu-intel
       nixos-hardware.nixosModules.common-gpu-intel
 
+      ../../../common/nixos/locale.nix
+      ../../../common/nixos/users.nix
+      ../../../common/nixos/system.nix
+
+      ../../../common/nixos/virtualisation.nix
+
       ./hardware-configuration.nix
-      ./system.nix
+
       ./boot.nix
+      ./system.nix
       ./network.nix
-      ./users.nix
-      ./locale.nix
 
       home-manager.nixosModules.home-manager
       {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
         home-manager.users.eldios = import ../home-manager/home.nix;
 
-        # Optionally, use home-manager.extraSpecialArgs to pass
-        # arguments to home.nix
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
       }
     ];
 }

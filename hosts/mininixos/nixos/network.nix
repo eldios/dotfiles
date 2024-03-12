@@ -1,4 +1,3 @@
-{ ... }:
 {
   networking = {
     dhcpcd.enable = true;
