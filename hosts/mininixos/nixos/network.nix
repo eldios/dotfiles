@@ -17,7 +17,7 @@
     #nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
     hostName = "mininixos";
-    hostId   = "d34db33f"; # random chars
+    hostId   = "d34d0003"; # random chars
 
     firewall = {
       enable = false;

@@ -8,7 +8,7 @@
     interfaces = { };
 
     hostName = "nucone";
-    hostId   = "d34dbaaf"; # random chars
+    hostId   = "d34d0002"; # random chars
 
     firewall.enable = true;
   };
