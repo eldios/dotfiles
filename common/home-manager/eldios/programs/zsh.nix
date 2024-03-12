@@ -76,6 +76,7 @@
         cgt = "cg test";
 
         ipcalc     = "sipcalc";
+        ff         = "${pkgs.fastfetch}/bin/fastfetch -s 'Title:Separator:OS:Host:Uptime:Separator:Packages:Kernel:Shell:WM:Terminal:TerminalFont:Separator:CPU:GPU:Memory:Swap:Disk:LocalIp'";
 
         nixs       = "nix search nixpkgs";
         nixe       = "$EDITOR $HOME/.dotfiles/hosts/$(hostname)";
