@@ -13,7 +13,7 @@
       lunarvim
 
       # Language Servers
-      rnix-lsp
+      nil
       haskell-language-server
       rust-analyzer
 
