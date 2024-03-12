@@ -66,13 +66,15 @@
 
     loader = {
       efi = {
-        canTouchEfiVariables = true;
+        canTouchEfiVariables = false;
         efiSysMountPoint = "/boot";
       };
       grub = {
         enable           = true;
         device           = "nodev";
         efiSupport       = true;
+        efiInstallAsRemovable = true;
+        zfsSupport       = true;
         enableCryptodisk = true;
       };
     };
