@@ -2,13 +2,7 @@
 {
   zramSwap.enable = true;
   systemd.services.zfs-mount.enable = false;
-
-  # workaround as shown here https://github.com/NixOS/nixpkgs/issues/180175#issuecomment-1658731959
-  systemd.services.NetworkManager-wait-online = {
-    serviceConfig = {
-      ExecStart = [ "" "${pkgs.networkmanager}/bin/nm-online -q" ];
-    };
-  };
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   environment.variables.EDITOR = "nvim";
   programs = {
@@ -57,15 +51,23 @@
     # This will additionally add your inputs to the system's legacy channels
     # Making legacy nix commands consistent as well, awesome!
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-    settings = { # Nix Settings
-      auto-optimise-store = true; # Auto Optimize nix store.
-      experimental-features = [ "nix-command" "flakes" ]; # Enable experimental features.
-    };
     gc = {
       automatic = true;
       persistent = true;
       dates = "weekly";
       options = "--delete-older-than 7d";
+    };
+    settings = { # Nix Settings
+      auto-optimise-store = true; # Auto Optimize nix store.
+      experimental-features = [ "nix-command" "flakes" ]; # Enable experimental features.
+      substituters = [
+        "https://cache.nixos.org"
+        "https://nix-community.cachix.org"
+      ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
     };
   };
 
