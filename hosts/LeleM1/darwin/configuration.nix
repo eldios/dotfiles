@@ -1,5 +1,4 @@
 { pkgs, home-manager, ... }:
-
 {
   nixpkgs = {
     config.allowUnfree = true;
@@ -46,15 +45,14 @@
 
   imports =
     [
-      # select hardware from https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
-
       ./homebrew.nix
 
       home-manager.darwinModules.home-manager
       {
+        home-manager.users.eldios = import ../home-manager/home.nix;
+
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.users.eldios = import ../home-manager/home.nix;
       }
     ];
 }

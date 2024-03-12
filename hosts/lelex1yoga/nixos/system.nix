@@ -1,82 +1,8 @@
-{ inputs , pkgs , config , lib , ... }:
+{ pkgs, config, ... }:
 {
-  zramSwap.enable = true;
-  systemd.services.zfs-mount.enable = false;
-  systemd.services.NetworkManager-wait-online.enable = false;
-
   system = {
     stateVersion = "23.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = true;
-  };
-
-  programs = {
-    zsh.enable = true;
-
-    neovim = {
-      enable = true;
-      defaultEditor = true;
-
-      viAlias = true;
-      vimAlias = true;
-
-      configure = {
-        customRC = ''
-          set modeline
-          colorscheme gruvbox
-          set nu list sw=2 ts=2 expandtab
-        '';
-        package.myVimPackage = with pkgs.vimPlugins; {
-          start = [
-            vim-nix
-            gruvbox
-          ];
-        };
-      };
-    };
-
-    gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-      pinentryFlavor = "curses";
-    };
-  };
-
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-    };
-    hostPlatform = "x86_64-linux";
-  };
-
-  # nix
-  nix = {
-    # This will add each flake input as a registry
-    # To make nix3 commands consistent with your flake
-    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
-    # This will additionally add your inputs to the system's legacy channels
-    # Making legacy nix commands consistent as well, awesome!
-    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-    settings = { # Nix Settings
-    };
-    gc = {
-      automatic = true;
-      persistent = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
-    package = pkgs.nix;
-    settings = {
-      auto-optimise-store = true; # Auto Optimize nix store.
-      experimental-features = [ "nix-command" "flakes" ]; # Enable experimental features.
-      substituters = [
-        "https://cache.nixos.org"
-        "https://nix-community.cachix.org"
-      ];
-      trusted-public-keys = [
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      ];
-    };
   };
 
   services = {
@@ -84,14 +10,6 @@
       autoScrub.enable = true;
       trim.enable = true;
     };
-
-    openssh = {
-      enable = true;
-    };
-
-    pcscd.enable = true;
-
-    tailscale.enable = true;
 
     cloudflared.enable = true;
 
@@ -112,60 +30,6 @@
       };
     };
   };
-
-  environment.variables.EDITOR = "nvim";
-
-  environment.systemPackages = with pkgs; [
-    # hard reqs
-    util-linux
-    file
-    binutils
-    git
-    python3
-    screen
-    tmux
-    libgcc
-    pinentry-curses # required by GPG
-    wget
-    ripgrep
-    nix
-    home-manager
-
-    # Docker
-    devspace
-    docker
-    docker-buildx
-    kubernetes-helm
-    k9s
-    kind
-    kubectl
-    nerdctl
-
-    # utils
-    btop
-    byobu
-    codeium
-    colorls # like `ls --color=auto -F` but cooler
-    cryptomator
-    ffmpeg
-    gnumake
-    htop
-    imagemagick
-    just
-    lshw
-    manix
-    fastfetch
-    rclone
-    yt-dlp
-
-    # Virtualisation
-    virt-manager
-    virtiofsd
-
-    # WAYLAND + SWAY
-    dbus   # make dbus-update-activation-environment available in the path
-    glib # gsettings
-  ];
 
   powerManagement = {
     enable = false;
@@ -234,42 +98,8 @@
   # printing and others.
   services.dbus.enable = true;
 
-  # Add any users in the 'wheel' group to the 'libvirt' group.
-  users.groups.libvirt.members = builtins.filter (x: builtins.elem "wheel" config.users.users."${x}".extraGroups) (builtins.attrNames config.users.users);
-  virtualisation = {
-
-    containerd.enable = true;
-    docker = {
-      enable = true;
-      storageDriver = "zfs";
-      autoPrune = {
-        enable = true;
-        dates = "weekly";
-      };
-    };
-
-    libvirtd = {
-      enable = true;
-
-      qemu = {
-        ovmf.enable = true;
-        runAsRoot = false;
-      };
-
-      onBoot = "ignore";
-      onShutdown = "shutdown";
-    };
-  };
-
   security = {
     pam.services.swaylock = {};
-
-    polkit.enable = true;
-
-    sudo = {
-      enable = true;
-      wheelNeedsPassword = false;
-    };
   };
 
 }
