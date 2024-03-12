@@ -19,6 +19,8 @@
     ../../../common/home-manager/eldios/programs/pkgs_cli.nix # common packages needed everywhere - CLI version
     ../../../common/home-manager/eldios/programs/pkgs_gui.nix # common packages needed everywhere - GUI version
 
+    ../../../common/home-manager/eldios/programs/pkgs_darwin_cli.nix # common packages needed everywhere - MacOS CLI version
+    ../../../common/home-manager/eldios/programs/pkgs_darwin_gui.nix # common packages needed everywhere - MacOS GUI version
   ];
 
 } # EOF
