@@ -9,6 +9,7 @@
       "docker"
       "video"
     ];
+    openssh.authorizedKeys.keys = (lib.splitString "\n" (builtins.readFile ../files/authorized_keys)) ;
   };
 
   users.users.root = {
@@ -16,5 +17,3 @@
     openssh.authorizedKeys.keys = (lib.splitString "\n" (builtins.readFile ../files/authorized_keys)) ;
   };
 }
-
-# vim: set ts=2 sw=2 et ai list nu */
