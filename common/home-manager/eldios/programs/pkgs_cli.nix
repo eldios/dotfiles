@@ -45,7 +45,6 @@
       devspace
       eksctl
       helmfile
-      k3s
       k8sgpt
       k9s
       k0sctl
