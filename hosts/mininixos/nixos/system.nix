@@ -12,11 +12,6 @@
       };
       trim.enable = true;
     };
-
-    cockpit = {
-      enable = false;
-      openFirewall = true;
-    };
   };
 }
 
