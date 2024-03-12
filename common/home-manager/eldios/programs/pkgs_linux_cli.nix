@@ -11,6 +11,7 @@
       networkmanager
       powertop
       yubikey-personalization
+      k3s
     ];
   };
 } # EOF

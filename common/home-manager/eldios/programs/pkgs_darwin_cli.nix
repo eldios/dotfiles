@@ -1,12 +1,13 @@
 { pkgs, ... }:
 {
+  # Neovim configuration deps
   home = {
     packages = with pkgs; [
+      kubectl
+
       # deps
       libiconv
-      virt-manager
-    ]; # EOM pkgs
-  }; # EOM home
-}
-
+    ];
+  };
+} # EOF
 # vim: set ts=2 sw=2 et ai list nu
