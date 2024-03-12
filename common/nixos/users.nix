@@ -13,7 +13,9 @@
 
   users.users.root = {
     shell = pkgs.bash;
-    openssh.authorizedKeys.text = (builtins.readFile ../files/authorized_keys) ;
+    openssh.authorizedKeys = [
+      (builtins.readFile ../files/authorized_keys)
+    ];
   };
 }
 
