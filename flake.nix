@@ -16,7 +16,6 @@
     utils.url = "github:numtide/flake-utils";
 
     # additional utils
-    disko.url = "github:nix-community/disko";
     nixos-hardware.url   = "github:nixos/nixos-hardware";
     xremap.url = "github:xremap/nix-flake";
   };
@@ -26,10 +25,8 @@
     nixpkgs-unstable,
     nixpkgs-darwin,
     home-manager,
-    disko,
     darwin,
     nixos-hardware,
-    flake-parts,
     xremap,
     ...
   } @ inputs: let
@@ -46,10 +43,8 @@
       nixpkgs
       nixpkgs-unstable
       nixpkgs-darwin
-      disko
       home-manager
       nixos-hardware
-      flake-parts
       xremap
       ;
     };
