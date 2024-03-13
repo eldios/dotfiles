@@ -2,14 +2,21 @@
 {
   environment.systemPackages = with pkgs; [
     # Docker
-    devspace
     docker
     docker-buildx
-    kubernetes-helm
+    k0sctl
+    k3s
     k9s
     kind
-    kubectl
+    kind
+    kubectx
+    kubelogin
+    kubelogin-oidc
+    kubernetes-helm
+    kubernetes-helm
     nerdctl
+    yamlfmt
+    yamllint
 
     # Virtualisation
     virt-manager
