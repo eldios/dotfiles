@@ -109,11 +109,13 @@
     nix-tree
 
     # utils
+    age
     btop
     byobu
     codeium
     colorls # like `ls --color=auto -F` but cooler
     cryptomator
+    fastfetch
     ffmpeg
     gnumake
     htop
@@ -121,8 +123,8 @@
     just
     lshw
     manix
-    fastfetch
     rclone
+    sops
     yt-dlp
 
     # WAYLAND + SWAY

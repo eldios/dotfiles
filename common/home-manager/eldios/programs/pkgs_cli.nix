@@ -23,8 +23,11 @@
       python3
 
       # DevOps stuff
+      act # run GitHub Actions Locally
       awscli2
       docker
+      gitleaks
+      infisical
       opentofu
       terracognita
       terraform
