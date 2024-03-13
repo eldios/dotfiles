@@ -18,6 +18,9 @@
     # additional utils
     nixos-hardware.url   = "github:nixos/nixos-hardware";
     xremap.url = "github:xremap/nix-flake";
+
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
@@ -28,6 +31,7 @@
     darwin,
     nixos-hardware,
     xremap,
+    sops-nix,
     ...
   } @ inputs: let
 
@@ -45,6 +49,7 @@
       nixpkgs-darwin
       home-manager
       nixos-hardware
+      sops-nix
       xremap
       ;
     };
@@ -52,45 +57,61 @@
     # Lele's X1 Yoga
     nixosConfigurations.lelex1yoga = nixpkgs.lib.nixosSystem {
       specialArgs = commonSpecialArgs;
-      modules = [ ./hosts/lelex1yoga/nixos/configuration.nix ];
+      modules = [
+        ./hosts/lelex1yoga/nixos/configuration.nix
+      ];
     };
     homeConfigurations."eldios@lelex1yoga" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = commonSpecialArgs;
-      modules = [ ./hosts/lelex1yoga/home-manager/home.nix ];
+      modules = [
+        ./hosts/lelex1yoga/home-manager/home.nix
+      ];
     };
 
     # Minis NUC
     nixosConfigurations.mininixos = nixpkgs.lib.nixosSystem {
       specialArgs = commonSpecialArgs;
-      modules = [ ./hosts/mininixos/nixos/configuration.nix ];
+      modules = [
+        ./hosts/mininixos/nixos/configuration.nix
+      ];
     };
     homeConfigurations."eldios@mininixos" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = commonSpecialArgs;
-      modules = [ ./hosts/mininixos/home-manager/home.nix ];
+      modules = [
+        ./hosts/mininixos/home-manager/home.nix
+      ];
     };
 
     # intel NUC
     nixosConfigurations.nucone = nixpkgs.lib.nixosSystem {
       specialArgs = commonSpecialArgs;
-      modules = [ ./hosts/nucone/nixos/configuration.nix ];
+      modules = [
+        ./hosts/nucone/nixos/configuration.nix
+      ];
     };
     homeConfigurations."eldios@nucone" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = commonSpecialArgs;
-      modules = [ ./hosts/nucone/home-manager/home.nix ];
+      modules = [
+        ./hosts/nucone/home-manager/home.nix
+      ];
     };
 
     # MiniPC NUC
     nixosConfigurations.kube-casa1 = nixpkgs.lib.nixosSystem {
       specialArgs = commonSpecialArgs;
-      modules = [ ./hosts/kube-casa1/nixos/configuration.nix ];
+      modules = [
+        ./hosts/kube-casa1/nixos/configuration.nix
+      ];
     };
     homeConfigurations."eldios@kube-casa1" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = commonSpecialArgs;
-      modules = [ ./hosts/kube-casa1/home-manager/home.nix ];
+      modules = [
+        ./hosts/kube-casa1/home-manager/home.nix
+      ];
     };
 
     # LeleM1 (macOS)
@@ -112,12 +133,16 @@
     # SOX1 Xtreme Gen2
     nixosConfigurations.sox1x = nixpkgs.lib.nixosSystem {
       specialArgs = commonSpecialArgs;
-      modules = [ ./hosts/sox1x/nixos/configuration.nix ];
+      modules = [
+        ./hosts/sox1x/nixos/configuration.nix
+      ];
     };
     homeConfigurations."eldios@sox1x" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = commonSpecialArgs;
-      modules = [ ./hosts/sox1x/home-manager/home.nix ];
+      modules = [
+        ./hosts/sox1x/home-manager/home.nix
+      ];
     };
 
   in {
