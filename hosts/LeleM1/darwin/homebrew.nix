@@ -66,6 +66,7 @@
       "istat-menus"
       "keybase"
       "leapp"
+      "logi-options-plus"
       "obs"
       "obs-virtualcam"
       "obsbot-center"
