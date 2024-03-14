@@ -12,9 +12,11 @@
   home.file.".ssh/defaults.conf".text = ''
     Host github.com
       User git
+      IdentityFile ~/.ssh/id_ed25519
 
     Host aur.archlinux.org
       User aur
+      IdentityFile ~/.ssh/aur_id_ed25519
 
     Host *.lan *.caracal-great.ts.net
       User eldios
