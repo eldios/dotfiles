@@ -1,4 +1,4 @@
-{ nixos-hardware, home-manager, ... }:
+{ inputs, nixpkgs, nixpkgs-unstable, nixos-hardware, home-manager, ... }:
 
 {
   imports = [
