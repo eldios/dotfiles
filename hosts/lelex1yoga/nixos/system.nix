@@ -77,6 +77,10 @@
     ];
   };
 
+  users.users.eldios.extraGroups = [
+    "input" # needed by xRemap
+    "uinput" # needed by xRemap
+  ];
 
   # audio
   sound.enable = true ;
@@ -88,7 +92,6 @@
   services.blueman = {
     enable = true;
   };
-
 
   # xdg-desktop-portal works by exposing a series of D-Bus interfaces
   # known as portals under a well-known name
