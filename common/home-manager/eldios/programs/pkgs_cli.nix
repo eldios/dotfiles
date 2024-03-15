@@ -25,9 +25,15 @@
       # DevOps stuff
       act # run GitHub Actions Locally
       awscli2
+      azure-cli
       docker
+      doctl # Digital Ocean CLI tool
       gitleaks
+      google-cloud-sdk
       infisical
+      jira-cli-go
+      linode-cli
+      metal-cli # official Equinix Metal CLI
       opentofu
       terracognita
       terraform
@@ -101,6 +107,9 @@
       tmux
       toilet
       util-linux
+      unzip
+      wget
+      zip
 
       # nix stuff
       cachix # adding/managing alternative binary caches hosted by Cachix
