@@ -85,7 +85,14 @@
       enable = true;
       autorun = true;
 
-      libinput.enable = true;
+      libinput = {
+        enable = true;
+        touchpad = {
+          clickMethod = "buttonareas";
+          #clickMethod = "clickfinger";
+          disableWhileTyping = true;
+        };
+      };
 
       videoDrivers = [
         "nvidia"
