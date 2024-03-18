@@ -29,10 +29,19 @@
         ];
       };
     };
+
+    # CUPS
+    printing.enable = true;
+    # needed by CUPS for auto-discovery
+    avahi = {
+      enable       = true;
+      nssmdns      = true;
+      openFirewall = true;
+    };
   };
 
   powerManagement = {
-    enable = false;
+    enable = true;
     cpuFreqGovernor = "powersave";
     powertop.enable = true;
   };
