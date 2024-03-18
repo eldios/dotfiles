@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixos-hardware, home-manager, ... }:
+{ inputs, nixpkgs, nixpkgs-unstable, nixos-hardware, home-manager, ... }:
 
 {
   imports =
@@ -9,21 +9,35 @@
       nixos-hardware.nixosModules.common-gpu-nvidia
       nixos-hardware.nixosModules.common-pc-laptop-ssd
 
+      ../../../common/nixos/locale.nix
+      ../../../common/nixos/locale_gui.nix
+
+      ../../../common/nixos/users.nix
+      ../../../common/nixos/system.nix
+
+      ../../../common/nixos/virtualisation.nix
+
       ./hardware-configuration.nix
-      ./system.nix
+
       ./boot.nix
+      ./system.nix
       ./network.nix
       ./users.nix
-      ./locale.nix
 
       home-manager.nixosModules.home-manager
       {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
         home-manager.users.eldios = import ../home-manager/home.nix;
 
-        # Optionally, use home-manager.extraSpecialArgs to pass
-        # arguments to home.nix
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.extraSpecialArgs = { inherit
+          inputs
+          nixpkgs
+          nixpkgs-unstable
+          home-manager
+          nixos-hardware
+          ;
+        };
       }
     ];
 }
