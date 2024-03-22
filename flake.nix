@@ -19,6 +19,9 @@
     nixos-hardware.url   = "github:nixos/nixos-hardware";
     xremap.url = "github:xremap/nix-flake";
 
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -30,8 +33,9 @@
     home-manager,
     darwin,
     nixos-hardware,
-    xremap,
+    disko,
     sops-nix,
+    xremap,
     ...
   } @ inputs: let
 
@@ -49,6 +53,7 @@
       nixpkgs-darwin
       home-manager
       nixos-hardware
+      disko
       sops-nix
       xremap
       ;
@@ -111,6 +116,23 @@
       extraSpecialArgs = commonSpecialArgs;
       modules = [
         ./hosts/kube-casa1/home-manager/home.nix
+      ];
+    };
+
+    # Hetzner FSN-W1
+    nixosConfigurations.fsn-w1 = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = commonSpecialArgs;
+      modules = [
+        ./hosts/fsn-w1/nixos/configuration.nix
+        disko.nixosModules.disko
+      ];
+    };
+    homeConfigurations."eldios@fsn-w1" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      extraSpecialArgs = commonSpecialArgs;
+      modules = [
+        ./hosts/fsn-w1/home-manager/home.nix
       ];
     };
 
