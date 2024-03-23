@@ -10,10 +10,12 @@
       "video"
     ];
     openssh.authorizedKeys.keys = (lib.splitString "\n" (builtins.readFile ../files/authorized_keys)) ;
+    hashedPassword = "REDACTED";
   };
 
   users.users.root = {
     shell = pkgs.bash;
     openssh.authorizedKeys.keys = (lib.splitString "\n" (builtins.readFile ../files/authorized_keys)) ;
+    hashedPassword = "REDACTED";
   };
 }
