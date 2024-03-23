@@ -119,20 +119,38 @@
       ];
     };
 
-    # Hetzner FSN-W1
+    # Hetzner Kubernetes
+    nixosConfigurations.fsn-c1 = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = commonSpecialArgs;
+      modules = [
+        ./hosts/fsn-c1/nixos/configuration.nix
+        disko.nixosModules.disko
+      ];
+    };
+    nixosConfigurations.fsn-c2 = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = commonSpecialArgs;
+      modules = [
+        ./hosts/fsn-c2/nixos/configuration.nix
+        disko.nixosModules.disko
+      ];
+    };
+    nixosConfigurations.fsn-c3 = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = commonSpecialArgs;
+      modules = [
+        ./hosts/fsn-c3/nixos/configuration.nix
+        disko.nixosModules.disko
+      ];
+    };
+
     nixosConfigurations.fsn-w1 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = commonSpecialArgs;
       modules = [
         ./hosts/fsn-w1/nixos/configuration.nix
         disko.nixosModules.disko
-      ];
-    };
-    homeConfigurations."eldios@fsn-w1" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      extraSpecialArgs = commonSpecialArgs;
-      modules = [
-        ./hosts/fsn-w1/home-manager/home.nix
       ];
     };
 
