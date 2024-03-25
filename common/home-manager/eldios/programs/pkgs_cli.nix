@@ -47,6 +47,7 @@
       tflint
       tflint-plugins.tflint-ruleset-aws
       tfswitch
+      vultr-cli
 
       # Kubernetes stuff
       argocd
