@@ -7,11 +7,12 @@
       gcal
       graph-easy
       iotop
+      k3s
       ncdu
       networkmanager
+      ntfs3g
       powertop
       yubikey-personalization
-      k3s
     ];
   };
 } # EOF

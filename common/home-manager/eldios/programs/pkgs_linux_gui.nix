@@ -21,6 +21,7 @@ in
       cavalier
       graphviz
       playerctl
+      yazi
 
       # GUI stuff
       alacritty # gpu accelerated terminal
