@@ -86,6 +86,11 @@
       autodetect = true;
     };
 
+    fstrim = {
+      enable = true;
+      interval = "daily";
+    };
+
     pcscd.enable = true;
 
     tailscale.enable = true;
