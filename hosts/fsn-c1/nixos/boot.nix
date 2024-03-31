@@ -11,6 +11,7 @@
     kernelPackages = pkgs.linuxPackages_6_7;
     kernelParams =
     [
+      "net.ifnames=0"
       "nohibernate"
       "zfs.zfs_arc_max=6442856000"
     ];
@@ -26,9 +27,10 @@
       };
       grub = {
         enable           = true;
+        forceInstall     = true;
+        zfsSupport       = true;
         efiSupport       = true;
         efiInstallAsRemovable = true;
-        zfsSupport       = true;
       };
     };
   };

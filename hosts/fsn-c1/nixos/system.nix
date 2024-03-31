@@ -1,3 +1,4 @@
+{lib, ...}:
 {
   system = {
     stateVersion = "23.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
@@ -12,6 +13,8 @@
       };
       trim.enable = true;
     };
+
+    smartd.enable = lib.mkForce false;
   };
 
 }

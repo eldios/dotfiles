@@ -4,7 +4,9 @@
 
     dhcpcd.enable = true;
 
-    interfaces = { };
+    interfaces = {
+      eth0.useDHCP = true;
+    };
 
     hostName = "fsn-c1";
     hostId   = "d34d0101"; # random chars
