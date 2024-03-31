@@ -122,25 +122,25 @@
     # Hetzner Kubernetes
     nixosConfigurations.fsn-c1 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = commonSpecialArgs;
+      specialArgs = { index = 1; } // commonSpecialArgs;
       modules = [
-        ./hosts/fsn-c1/nixos/configuration.nix
+        ./hosts/fsn-cN/nixos/configuration.nix
         disko.nixosModules.disko
       ];
     };
     nixosConfigurations.fsn-c2 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = commonSpecialArgs;
+      specialArgs = { index = 2; } // commonSpecialArgs;
       modules = [
-        ./hosts/fsn-c2/nixos/configuration.nix
+        ./hosts/fsn-cN/nixos/configuration.nix
         disko.nixosModules.disko
       ];
     };
     nixosConfigurations.fsn-c3 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = commonSpecialArgs;
+      specialArgs = { index = 3; } // commonSpecialArgs;
       modules = [
-        ./hosts/fsn-c3/nixos/configuration.nix
+        ./hosts/fsn-cN/nixos/configuration.nix
         disko.nixosModules.disko
       ];
     };
