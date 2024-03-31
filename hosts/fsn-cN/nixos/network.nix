@@ -6,13 +6,33 @@
     interfaces = {
       eth0.useDHCP = true;
 
-
-      eth1.ipv4.addresses = [
-          {
-            address = "10.1.0.${builtins.toString (builtins.add index 1)}";
-            prefixLength = 16;
-          }
-      ]; 
+      eth1 = {
+        ipv4 = {
+          routes = [
+            {
+              address = "10.1.0.1";
+              prefixLength = 32;
+              options = {
+                src = "10.1.0.${builtins.toString (builtins.add index 1)}";
+              };
+            }
+            {
+              address = "10.1.0.0";
+              prefixLength = 16;
+              via = "10.1.0.1";
+              options = {
+                src = "10.1.0.${builtins.toString (builtins.add index 1)}";
+              };
+            }
+          ];
+          addresses = [
+            {
+              address = "10.1.0.${builtins.toString (builtins.add index 1)}";
+              prefixLength = 32;
+            }
+          ];
+        };
+      };
     };
 
     hostName = "fsn-c${builtins.toString index}";
@@ -27,7 +47,7 @@
         6643
       ];
       extraInputRules = [
-        "ip4 saddr { 10.1.0.0/16  } accept" # private network
+        "ip4 saddr { 10.1.0.0/24  } accept" # private network
         "ip4 saddr { 10.42.0.0/16 } accept" # pods
         "ip4 saddr { 10.43.0.0/16 } accept" # services
 
