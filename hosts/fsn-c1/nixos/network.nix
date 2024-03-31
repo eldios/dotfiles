@@ -11,7 +11,15 @@
     hostName = "fsn-c1";
     hostId   = "d34d0101"; # random chars
 
-    firewall.enable = true;
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [
+        22
+        80
+        443
+        6643
+      ];
+    };
   };
 }
 
