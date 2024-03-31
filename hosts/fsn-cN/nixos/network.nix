@@ -27,6 +27,7 @@
         6643
       ];
       extraInputRules = [
+        "ip4 saddr { 10.1.0.0/16  } accept" # private network
         "ip4 saddr { 10.42.0.0/16 } accept" # pods
         "ip4 saddr { 10.43.0.0/16 } accept" # services
 
