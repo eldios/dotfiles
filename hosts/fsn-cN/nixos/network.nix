@@ -14,6 +14,8 @@
               prefixLength = 32;
               options = {
                 src = "10.1.0.${builtins.toString (builtins.add index 1)}";
+                mtu = "1450";
+                metric = "1010";
               };
             }
             {
@@ -22,6 +24,8 @@
               via = "10.1.0.1";
               options = {
                 src = "10.1.0.${builtins.toString (builtins.add index 1)}";
+                mtu = "1450";
+                metric = "1010";
               };
             }
           ];
