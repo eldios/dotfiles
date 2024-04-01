@@ -3,6 +3,8 @@
     "rancher/k3s/config.yaml.d/fsn-c2.yaml" = {
       text = ''
         advertise-address: 10.1.0.3
+        node-ip:10.1.0.3
+        node-external-ip:159.69.248.126
       '';
       mode = "0440";
     };
