@@ -4,7 +4,7 @@
 
     role = "server"; # or agent
 
-    serverAddr = "10.1.0.2";
+    serverAddr = "https://10.1.0.2:6443";
     tokenFile = "/tmp/k3s_token";
 
     #disableAgent = true; # Only run the server
