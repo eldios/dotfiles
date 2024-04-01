@@ -1,17 +1,20 @@
 {
+  environment.etc = {
+    "rancher/k3s/config.yaml.d/fsn-c2.yaml" = {
+      text = ''
+        advertise-address: 10.1.0.3
+      '';
+      mode = "0440";
+    };
+  };
+
   services.k3s = {
     enable = true;
 
     role = "server"; # or agent
+    #disableAgent = true; # Only run the server
 
     serverAddr = "https://10.1.0.2:6443";
     tokenFile = "/tmp/k3s_token";
-
-    #disableAgent = true; # Only run the server
-
-    configPath = "/etc/rancher/k3s/config.yaml";
-    #environmentFile = "/etc/rancher/k3s/env";
-
-    extraFlags = "";
   };
 }

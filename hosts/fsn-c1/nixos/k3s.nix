@@ -1,4 +1,14 @@
 {
+  environment.etc = {
+    "rancher/k3s/config.yaml.d/fsn-c1.yaml" = {
+      text = ''
+        cluter-init: true
+        advertise-address: 10.1.0.2
+      '';
+      mode = "0440";
+    };
+  };
+
   services.k3s = {
     enable = true;
 
@@ -7,10 +17,5 @@
     role = "server"; # or agent
 
     #disableAgent = true; # Only run the server
-
-    configPath = "/etc/rancher/k3s/config.yaml";
-    #environmentFile = "/etc/rancher/k3s/env";
-
-    extraFlags = "--disable traefik,servicelb";
   };
 }

@@ -2,6 +2,11 @@
   environment.etc = {
     "rancher/k3s/config.yaml" = {
       text = ''
+        secrets-encryption: true
+        disable:
+          - traefik
+          - servicelb
+
         tls-san:
           - fsn-kube.lele.rip
           # fsn-c1
