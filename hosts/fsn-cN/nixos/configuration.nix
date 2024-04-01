@@ -21,6 +21,8 @@
       ./system.nix
       ./network.nix
 
+      ./k3s.nix
+
       home-manager.nixosModules.home-manager
       {
         home-manager.users.eldios = import ../home-manager/home.nix;

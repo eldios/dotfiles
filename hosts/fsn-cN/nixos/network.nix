@@ -44,23 +44,33 @@
 
     firewall = {
       enable = true;
+      trustedInterfaces = [
+        "eth1"
+        "tailscale0"
+      ];
       allowedTCPPorts = [
         22
         80
         443
-        6643
+        6443
       ];
-      extraInputRules = [
-        "ip4 saddr { 10.1.0.0/24  } accept" # private network
-        "ip4 saddr { 10.42.0.0/16 } accept" # pods
-        "ip4 saddr { 10.43.0.0/16 } accept" # services
+      extraInputRules = ""                      +
+        "tcp dport 22 accept\n"                 +
+        "tcp dport 80 accept\n"                 +
+        "tcp dport 443 accept\n"                +
+        "tcp dport 6443 accept\n"               +
 
-        "ip4 saddr { 116.202.108.212 } accept" # fsn-c1
-        "ip4 saddr { 159.69.248.126  } accept" # fsn-c2
-        "ip4 saddr { 138.201.190.214 } accept" # fsn-c3
+        "ip saddr { 10.1.0.0/24  } accept\n"    + # private network
+        "ip saddr { 10.42.0.0/16 } accept\n"    + # pods
+        "ip saddr { 10.43.0.0/16 } accept\n"    + # services
 
-        "ip4 iifname tailscale0 accept" # allows Tailscale interface
-      ];
+        "ip saddr { 116.202.108.212 } accept\n" + # fsn-c1
+        "ip saddr { 159.69.248.126  } accept\n" + # fsn-c2
+        "ip saddr { 138.201.190.214 } accept\n" + # fsn-c3
+
+        "ip iifname eth1 accept\n"              + # allows private network interface
+        "ip iifname tailscale0 accept\n"        + # allows Tailscale interface
+        "";
     };
   };
 }
