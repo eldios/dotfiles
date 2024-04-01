@@ -4,8 +4,8 @@
       text = ''
         cluter-init: true
         advertise-address: 10.1.0.2
-        node-ip:10.1.0.2
-        node-external-ip:116.202.108.212
+        node-ip: 10.1.0.2
+        node-external-ip: 116.202.108.212
       '';
       mode = "0440";
     };
