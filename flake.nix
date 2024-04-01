@@ -124,6 +124,7 @@
       system = "x86_64-linux";
       specialArgs = { index = 1; } // commonSpecialArgs;
       modules = [
+        ./hosts/fsn-c1/nixos/k3s.nix
         ./hosts/fsn-cN/nixos/configuration.nix
         disko.nixosModules.disko
       ];
@@ -132,6 +133,7 @@
       system = "x86_64-linux";
       specialArgs = { index = 2; } // commonSpecialArgs;
       modules = [
+        ./hosts/fsn-c2/nixos/k3s.nix
         ./hosts/fsn-cN/nixos/configuration.nix
         disko.nixosModules.disko
       ];
@@ -140,6 +142,7 @@
       system = "x86_64-linux";
       specialArgs = { index = 3; } // commonSpecialArgs;
       modules = [
+        ./hosts/fsn-c3/nixos/k3s.nix
         ./hosts/fsn-cN/nixos/configuration.nix
         disko.nixosModules.disko
       ];
