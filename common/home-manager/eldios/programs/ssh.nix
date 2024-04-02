@@ -4,6 +4,8 @@
   home.file.".ssh/authorized_keys".source = ../../../files/authorized_keys;
 
   home.file.".ssh/config".text = ''
+    Include ~/.ssh/*.conf
+
     Include ~/.ssh/hosts.conf
 
     Include ~/.ssh/defaults.conf
