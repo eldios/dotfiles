@@ -86,6 +86,7 @@
       "telegram-desktop"
       "tidal"
       "utm" # QEMU GUI
+      "via"
       "vivaldi" # browser
       "vlc"
       "vlc-webplugin"
