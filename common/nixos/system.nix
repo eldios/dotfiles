@@ -77,7 +77,6 @@
       enable = true;
       openFirewall = true;
       settings = {
-        UsePAM = false;
         PermitRootLogin = "no";
         PasswordAuthentication = false;
         KbdInteractiveAuthentication = false;
