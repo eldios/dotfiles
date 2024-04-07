@@ -1,4 +1,16 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
+let
+  eldios_lazygit = pkgs.lazygit.overrideAttrs (oa: {
+        version = "0.41.0";
+
+        src = pkgs.fetchFromGitHub {
+          owner = "eldios";
+          repo = "lazygit";
+          rev = "0123ad155b5f2d4e467d65b630400427b92a6c42FFF";
+          hash = "sha256-Ok6QnXw3oDeSzBekft8cDXM/YsADgF1NZznfNoGNvck=";
+        };
+      });
+in
 {
   home = {
     packages = with pkgs; [
@@ -10,11 +22,7 @@
 
     lazygit = {
       enable = true;
-      settings = {
-        git = {
-          overrideGpg = true;
-        };
-      };
+      package = eldios_lazygit;
     }; # EOM lazygit
 
     git = {
@@ -24,8 +32,8 @@
         co   = "checkout" ;
         rc   = "repo clone" ;
         ppt  = "pull --prune --tags" ;
-        lol  = "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green    )(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all" ;
-        loll = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C    (bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all" ;
+        lol  = "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all" ;
+        loll = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all" ;
         prettylog = "...";
       };
       extraConfig = {
