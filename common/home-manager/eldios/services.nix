@@ -11,7 +11,6 @@
 
     gpg-agent = {
       enable = true;
-      pinentryFlavor = "curses";
 
       enableSshSupport = true;
       enableZshIntegration = true;
@@ -23,6 +22,8 @@
 
         # I don't use smart cards
         disable-scdaemon
+
+        pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
       '';
     };
   }; # EOM services

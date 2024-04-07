@@ -2,6 +2,8 @@
 
   imports = [
 
+    ../../../common/home-manager/eldios/services.nix
+
     ../../../common/home-manager/eldios/programs/neovim.nix
     ../../../common/home-manager/eldios/programs/zellij.nix
 
