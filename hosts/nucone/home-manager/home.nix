@@ -22,8 +22,6 @@
   }; # EOM home
 
   imports = [
-    ./services.nix
-
     ./pkgs.nix
 
     ./common_programs.nix
