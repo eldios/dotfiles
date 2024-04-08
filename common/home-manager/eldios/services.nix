@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
@@ -9,23 +9,6 @@
       enable = true;
     };
 
-    gpg-agent = {
-      enable = true;
-
-      enableSshSupport = true;
-      enableZshIntegration = true;
-
-      extraConfig = ''
-        #debug-pinentry
-        #debug ipc
-        #debug-level 1024
-
-        # I don't use smart cards
-        disable-scdaemon
-
-        pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
-      '';
-    };
   }; # EOM services
 
 } # EOF
