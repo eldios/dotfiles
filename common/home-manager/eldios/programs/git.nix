@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 let
   eldios_lazygit = pkgs.lazygit.overrideAttrs (oa: {
         version = "0.41.0";
@@ -6,7 +6,7 @@ let
         src = pkgs.fetchFromGitHub {
           owner = "eldios";
           repo = "lazygit";
-          rev = "0123ad155b5f2d4e467d65b630400427b92a6c42FFF";
+          rev = "f74e82ff04047a817827cfcc0ef96046dea3835b";
           hash = "sha256-Ok6QnXw3oDeSzBekft8cDXM/YsADgF1NZznfNoGNvck=";
         };
       });
