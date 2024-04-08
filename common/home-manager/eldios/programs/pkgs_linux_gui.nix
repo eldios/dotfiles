@@ -14,6 +14,27 @@ let
   );
 in
 {
+  services = {
+
+    gpg-agent = {
+      enable = true;
+
+      enableSshSupport = true;
+      enableZshIntegration = true;
+
+      extraConfig = ''
+        #debug-pinentry
+        #debug ipc
+        #debug-level 1024
+
+        # I don't use smart cards
+        disable-scdaemon
+
+        pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
+      '';
+    };
+  }; # EOM services
+
   home = {
     packages = ([ obsidian ]) ++ (with pkgs; [
       # utils
