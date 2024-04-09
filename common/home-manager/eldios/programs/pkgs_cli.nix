@@ -79,6 +79,7 @@
       cbonsai
       cmatrix
       cowsay
+      entr
       fd # A simple, fast and user-friendly alternative to find
       figlet
       fortune
