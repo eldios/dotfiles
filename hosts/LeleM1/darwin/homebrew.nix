@@ -53,6 +53,7 @@
       "cloudflare-warp"
       "coconutbattery"
       "cryptomator"
+      "cursor"
       "dbeaver-community"
       "discord"
       "displaylink"
