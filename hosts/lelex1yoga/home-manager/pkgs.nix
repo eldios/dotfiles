@@ -6,6 +6,8 @@
       obs-studio
       quickemu
       quickgui
+      spice
+      remmina
       uvcdynctrl
       vlc
     ];
