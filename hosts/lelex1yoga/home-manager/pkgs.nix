@@ -2,9 +2,11 @@
 {
   home = {
     packages = with pkgs; [
-      obs-studio
-      uvcdynctrl
       guvcview
+      obs-studio
+      quickemu
+      quickgui
+      uvcdynctrl
       vlc
     ];
   };
