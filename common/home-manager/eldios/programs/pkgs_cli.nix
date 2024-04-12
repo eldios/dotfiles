@@ -103,6 +103,7 @@
       ripgrep
       ripgrep-all
       sipcalc
+      sl
       socat
       sshfs
       tldr
