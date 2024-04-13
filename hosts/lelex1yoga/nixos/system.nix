@@ -40,6 +40,9 @@
     };
   };
 
+  # run Android apps on linux
+  virtualisation.waydroid.enable = true;
+
   powerManagement = {
     enable = true;
     cpuFreqGovernor = "powersave";
