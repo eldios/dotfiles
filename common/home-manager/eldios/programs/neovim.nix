@@ -143,8 +143,8 @@
       withRuby = true;
       withPython3 = true;
 
-      extraPackages = with pkgs; [
-      ];
+      #extraPackages = with pkgs; [
+      #];
 
       plugins = with pkgs.vimPlugins; [
         codeium-vim
