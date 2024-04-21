@@ -1,4 +1,3 @@
-{ config, pkgs, ... }:
 {
 
   home.file.".ssh/authorized_keys".source = ../../../files/authorized_keys;

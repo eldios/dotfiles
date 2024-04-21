@@ -1,12 +1,10 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 let
     # Dependencies
     cat = "${pkgs.coreutils}/bin/cat";
     cut = "${pkgs.coreutils}/bin/cut";
-    find = "${pkgs.findutils}/bin/find";
     grep = "${pkgs.gnugrep}/bin/grep";
-    pgrep = "${pkgs.procps}/bin/pgrep";
     tail = "${pkgs.coreutils}/bin/tail";
     wc = "${pkgs.coreutils}/bin/wc";
     xargs = "${pkgs.findutils}/bin/xargs";
