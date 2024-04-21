@@ -29,12 +29,6 @@
         };
       };
     };
-
-    gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-      pinentryFlavor = "curses";
-    };
   };
 
   nixpkgs = {
@@ -103,37 +97,35 @@
   environment.systemPackages = with pkgs; [
     # hard reqs
     binutils
-    git
-    python3
-    screen
-    tmux
-    libgcc
-    pinentry-curses # required by GPG
-    wget
-    ripgrep
-    zfs
     btrfs-progs
-    smartmontools
+    git
+    libgcc
     nix-tree
+    pinentry-curses # required by GPG
+    python3
+    ripgrep
+    screen
+    smartmontools
+    tmux
+    wget
+    zfs
 
     # utils
     age
     btop
     byobu
-    codeium
     colorls # like `ls --color=auto -F` but cooler
     cryptomator
     fastfetch
     ffmpeg
     gnumake
     htop
-    imagemagick
     just
     lshw
     manix
     rclone
     sops
-    yt-dlp
+    yubikey-personalization
 
     # WAYLAND + SWAY
     dbus   # make dbus-update-activation-environment available in the path
