@@ -1,7 +1,5 @@
-{ config, pkgs, inputs, ...}:
+{ pkgs, ...}:
 let
-  inherit (config.colorScheme) colors;
-
   terminal = "alacritty";
 
   quick_menu = "rofi -show run -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
@@ -9,26 +7,6 @@ let
   file_menu = "rofi -show filebrowser -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
 
   powermenu = "wlogout";
-
-  swaylock = pkgs.writeShellScriptBin "swaylock-script" ''
-    swaylock-effects \
-    --screenshots \
-    --clock \
-    --indicator \
-    --indicator-radius 100 \
-    --indicator-thickness 7 \
-    --effect-blur 7x5 \
-    --effect-vignette 0.5:0.5 \
-    --ring-color bb00cc \
-    --key-hl-color 880033 \
-    --line-color 00000000 \
-    --inside-color 00000088 \
-    --separator-color 00000000 \
-    --grace 0 \
-    --fade-in 0.2 \
-    --font 'Noto Sans CJK' \
-    -f
-  '';
 
   swayidle = pkgs.writeShellScriptBin "swayidle-script" ''
     swayidle -w \
