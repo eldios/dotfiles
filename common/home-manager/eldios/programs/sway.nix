@@ -210,9 +210,10 @@ in
         "XF86AudioMicMute"      = "exec pactl set-source-mute @DEFAULT_SOURCE@ toggle";
         "XF86MonBrightnessDown" = "exec sudo light -U 5%";
         "XF86MonBrightnessUp"   = "exec sudo light -A 5%";
-        "XF86AudioPlay"         = "exec playerctl play-pause";
-        "XF86AudioNext"         = "exec playerctl next";
-        "XF86AudioPrev"         = "exec playerctl previous";
+        "Shift+XF86AudioPlay"   = "exec playerctl play-pause";
+        "XF86AudioPlay"         = "exec playerctl -p spotify play-pause";
+        "XF86AudioNext"         = "exec playerctl -p spotify next";
+        "XF86AudioPrev"         = "exec playerctl -p spotify previous";
       }; # EOM keybindings
 
     }; # EOM config
