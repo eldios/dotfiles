@@ -19,6 +19,7 @@
     ../../../common/home-manager/eldios/programs/firefox.nix
 
     ../../../common/home-manager/eldios/programs/git.nix
+    ../../../common/home-manager/eldios/programs/keybase.nix
 
     ../../../common/home-manager/eldios/programs/var.nix
 
