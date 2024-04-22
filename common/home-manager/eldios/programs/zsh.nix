@@ -1,4 +1,13 @@
 { pkgs, ... }:
+let
+  eldios-ssh-agents = pkgs.ssh-agents.overrideAttrs (oa: {
+        src = pkgs.fetchgit {
+          url = "https://github.com/eldios/ssh-agents";
+          rev = "fbe5ce9a36830e53e9f20f5145425ce2dc2c215c";
+          hash = "sha256-/aruWXzC2ZbW+1v8S97MED6UOKPeDGcJzdNKX+wUfsw=";
+        };
+      });
+in
 {
 
   home = {
@@ -8,6 +17,7 @@
       fastfetch
       fzf
       nnn
+      eldios-ssh-agents
       thefuck
       zoxide
     ];
@@ -119,6 +129,8 @@
 
         eval "$(${pkgs.thefuck}/bin/thefuck --alias)"
         eval "$(${pkgs.zoxide}/bin/zoxide init zsh)"
+
+        eval "$(ssh-agents -A -c)"
 
         ${pkgs.fastfetch}/bin/fastfetch -s 'Title:Separator:OS:Host:Uptime:Separator:Packages:Kernel:Shell:WM:Terminal:TerminalFont:Separator:CPU:GPU:Memory:Swap:Disk:LocalIp'
       '';
