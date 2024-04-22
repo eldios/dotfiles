@@ -115,8 +115,8 @@ in
       up = "k";
       right = "l";
 
-      # Use alacritty as default terminal
-      terminal = "alacritty"; 
+      # Set default terminal
+      terminal = "wezterm"; 
       menu = "rofi";
 
       startup = [
