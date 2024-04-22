@@ -1,4 +1,3 @@
-# vim: set ts=2 sw=2 et ai list nu
 { lib, pkgs, nixpkgs-unstable, ... }:
 let
   unstablePkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
@@ -19,7 +18,7 @@ in
     gpg-agent = {
       enable = true;
 
-      enableSshSupport = true;
+      enableSshSupport = false;
       enableZshIntegration = true;
 
       extraConfig = ''
@@ -32,6 +31,15 @@ in
 
         pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
       '';
+    };
+
+    gnome-keyring = {
+      enable = true;
+      components = [
+        "pkcs11"
+        "secrets"
+        "ssh"
+      ];
     };
   }; # EOM services
 
@@ -78,6 +86,8 @@ in
       prusa-slicer
       cura
 
+      # needed by waydroid
+      lzip
     ]) # EOM pkgs
     ++ ( with unstablePkgs; [
       vesktop # discord + some fixes
