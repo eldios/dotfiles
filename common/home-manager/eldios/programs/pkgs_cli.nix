@@ -71,6 +71,23 @@
       yamlfmt
       yamllint
 
+      # nix stuff
+      cachix # adding/managing alternative binary caches hosted by Cachix
+      comma # run software from without installing it
+      niv # easy dependency management for nix projects
+      nix-prefetch-git
+      nix-prefetch-github
+      nixfmt
+      nodePackages.node2nix
+      prefetch-npm-deps
+
+      # charm.sh CLI utils
+      glow
+      gum
+      mods
+      vhs
+      zfxtop
+
       # utils
       asciiquarium
       bombadillo
@@ -90,6 +107,7 @@
       inetutils
       just
       lolcat
+      lzip
       mtr
       nix-tree
       nnn
@@ -109,27 +127,10 @@
       tldr
       tmux
       toilet
-      util-linux
       unzip
+      util-linux
       wget
       zip
-
-      # nix stuff
-      cachix # adding/managing alternative binary caches hosted by Cachix
-      comma # run software from without installing it
-      niv # easy dependency management for nix projects
-      nix-prefetch-git
-      nix-prefetch-github
-      nixfmt
-      nodePackages.node2nix
-      prefetch-npm-deps
-
-      # charm.sh CLI utils
-      glow
-      gum
-      mods
-      vhs
-      zfxtop
     ];
   };
 } # EOF
