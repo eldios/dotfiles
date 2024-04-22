@@ -4,15 +4,17 @@
   home = {
     packages = with pkgs; [
       cloudflare-warp
+      codeium
       gcal
       graph-easy
+      imagemagick
       iotop
       k3s
       ncdu
       networkmanager
       ntfs3g
       powertop
-      yubikey-personalization
+      yt-dlp
     ];
   };
 } # EOF
