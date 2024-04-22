@@ -62,7 +62,6 @@ in
       discord
       geoclue2
       kitty
-      light # brightness control
       openlens
       paperview
       pavucontrol
@@ -85,9 +84,6 @@ in
       super-slicer
       prusa-slicer
       cura
-
-      # needed by waydroid
-      lzip
     ]) # EOM pkgs
     ++ ( with unstablePkgs; [
       vesktop # discord + some fixes

@@ -30,6 +30,9 @@
       };
     };
 
+    # save and manage secrets and passwords
+    gnome.gnome-keyring.enable = true;
+
     # CUPS
     printing.enable = true;
     # needed by CUPS for auto-discovery
@@ -41,7 +44,7 @@
   };
 
   # run Android apps on linux
-  virtualisation.waydroid.enable = true;
+  virtualisation.waydroid.enable = false;
 
   powerManagement = {
     enable = true;
