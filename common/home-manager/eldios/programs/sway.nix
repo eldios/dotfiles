@@ -1,8 +1,6 @@
-{ config, pkgs, inputs, ...}:
+{ pkgs, ...}:
 
 let
-  inherit (config.colorScheme) colors;
-
   quick_menu = "rofi -show run -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail";
   full_menu = "rofi -show drun -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail";
 
@@ -204,6 +202,16 @@ in
         "${modifier}+Shift+8"         = "move container to workspace number 8";
         "${modifier}+Shift+9"         = "move container to workspace number 9";
         "${modifier}+Shift+0"         = "move container to workspace number 10";
+
+        "XF86AudioRaiseVolume"  = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%";
+        "XF86AudioLowerVolume"  = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%";
+        "XF86AudioMute"         = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle";
+        "XF86AudioMicMute"      = "exec pactl set-source-mute @DEFAULT_SOURCE@ toggle";
+        "XF86MonBrightnessDown" = "exec sudo light -U 5%";
+        "XF86MonBrightnessUp"   = "exec sudo light -A 5%";
+        "XF86AudioPlay"         = "exec playerctl play-pause";
+        "XF86AudioNext"         = "exec playerctl next";
+        "XF86AudioPrev"         = "exec playerctl previous";
       }; # EOM keybindings
 
     }; # EOM config
