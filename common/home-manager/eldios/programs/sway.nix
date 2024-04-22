@@ -13,7 +13,6 @@ let
 
 in
 {
-
   # BEGIN Sway confguration
   home = {
     packages = with pkgs; [
@@ -42,6 +41,7 @@ in
       kitty
       lavalauncher # simple launcher panel for Wayland desktops
       libva-utils
+      light # set brightness
       mako # notification system developed by swaywm maintainer
       pinentry-bemenu
       polkit_gnome
@@ -88,6 +88,7 @@ in
 
     enable = true;
     systemd.enable = true;
+    wrapperFeatures.gtk = true;
 
     package = pkgs.swayfx;
 
