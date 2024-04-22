@@ -11,6 +11,7 @@
     ../../../common/home-manager/eldios/programs/zsh.nix
 
     ../../../common/home-manager/eldios/programs/ssh.nix
+    ../../../common/home-manager/eldios/programs/ssh-agents.nix
 
     ../../../common/home-manager/eldios/programs/alacritty.nix
     ../../../common/home-manager/eldios/programs/kitty.nix
