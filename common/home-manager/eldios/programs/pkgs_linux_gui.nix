@@ -61,11 +61,15 @@ in
       cryptomator
       discord
       geoclue2
+      gimp
+      inkscape
       kitty
+      obs-studio
       openlens
       paperview
       pavucontrol
       redshift
+      scribus
       signal-desktop
       slack
       spotify-unwrapped
