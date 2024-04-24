@@ -26,6 +26,7 @@
       act # run GitHub Actions Locally
       awscli2
       azure-cli
+      dnsutils
       docker
       doctl # Digital Ocean CLI tool
       gitleaks
