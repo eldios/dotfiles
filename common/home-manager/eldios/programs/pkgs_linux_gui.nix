@@ -68,6 +68,7 @@ in
       openlens
       paperview
       pavucontrol
+      pcmanfm
       redshift
       scribus
       signal-desktop
