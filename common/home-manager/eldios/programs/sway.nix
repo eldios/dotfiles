@@ -75,7 +75,7 @@ in
       wshowkeys
       wtype
       xdg-desktop-portal
-      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-gtk
       xdg-utils # for opening default programs when clicking links
       ydotool
       (pkgs.writeShellScriptBin "fix-wm" ''
