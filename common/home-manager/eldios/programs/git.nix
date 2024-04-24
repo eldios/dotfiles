@@ -28,6 +28,13 @@ in
     git = {
       enable = true;
       aliases = {
+        w    = "worktree" ;
+        wa    = "worktree add" ;
+        wl    = "worktree list" ;
+        wk    = "worktree lock" ;
+        wK    = "worktree unlock" ;
+        wm    = "worktree move" ;
+        wr    = "worktree remove" ;
         st   = "status" ;
         co   = "checkout" ;
         rc   = "repo clone" ;
