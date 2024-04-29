@@ -61,6 +61,7 @@
 
     # Lele's X1 Yoga
     nixosConfigurations.lelex1yoga = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
       specialArgs = commonSpecialArgs;
       modules = [
         ./hosts/lelex1yoga/nixos/configuration.nix
@@ -69,14 +70,17 @@
 
     # Lele's Yoga9i
     nixosConfigurations.lele9iyoga = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
       specialArgs = commonSpecialArgs;
       modules = [
         ./hosts/lele9iyoga/nixos/configuration.nix
+        disko.nixosModules.disko
       ];
     };
 
     # Minis NUC
     nixosConfigurations.mininixos = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
       specialArgs = commonSpecialArgs;
       modules = [
         ./hosts/mininixos/nixos/configuration.nix
@@ -85,6 +89,7 @@
 
     # intel NUC
     nixosConfigurations.nucone = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
       specialArgs = commonSpecialArgs;
       modules = [
         ./hosts/nucone/nixos/configuration.nix
@@ -93,6 +98,7 @@
 
     # MiniPC NUC
     nixosConfigurations.kube-casa1 = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
       specialArgs = commonSpecialArgs;
       modules = [
         ./hosts/kube-casa1/nixos/configuration.nix
