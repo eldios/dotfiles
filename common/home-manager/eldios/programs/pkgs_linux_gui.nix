@@ -1,6 +1,9 @@
 { lib, pkgs, nixpkgs-unstable, ... }:
 let
-  unstablePkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
+  unstablePkgs = import nixpkgs-unstable {
+    system = "x86_64-linux";
+    config.allowUnfree = true;
+  };
 
   # obsidian - 2nd brain - patch taken from https://github.com/NixOS/nixpkgs/issues/273611
   obsidian = lib.throwIf (lib.versionOlder "1.4.16" pkgs.obsidian.version) "Obsidian no longer requires EOL Electron" (
@@ -31,15 +34,6 @@ in
 
         pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
       '';
-    };
-
-    gnome-keyring = {
-      enable = true;
-      components = [
-        "pkcs11"
-        "secrets"
-        "ssh"
-      ];
     };
   }; # EOM services
 
@@ -91,8 +85,8 @@ in
       cura
     ]) # EOM pkgs
     ++ ( with unstablePkgs; [
+      bluemail
       vesktop # discord + some fixes
-      mailspring
     ]); # EOM unstablePkgs
   }; # EOM home
 }
