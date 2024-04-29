@@ -67,7 +67,6 @@ in
       swaybg
       swayidle
       swaylock-effects
-      swaynotificationcenter
       swayr
       swayrbar
       swww
