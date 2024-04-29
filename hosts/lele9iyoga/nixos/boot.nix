@@ -4,6 +4,7 @@
     kernel.sysctl = {
       "vm.swappiness" = 5;
     };
+    kernelModules = [ "kvm-intel" ];
 
     supportedFilesystems = [ "btrfs" ];
 
@@ -19,7 +20,21 @@
 
     initrd = {
       supportedFilesystems = [ "btrfs" ];
-      kernelModules = [ "uas" "usbcore" "usb_storage" "usbhid" "vfat" "nls_cp437" "nls_iso8859_1" ];
+      kernelModules = [ ];
+      availableKernelModules = [
+        "nls_cp437"
+        "nls_iso8859_1"
+        "nvme"
+        "sd_mod"
+        "sr_mod"
+        "thunderbolt"
+        "uas"
+        "usb_storage"
+        "usbcore"
+        "usbhid"
+        "vfat"
+        "xhci_pci"
+      ];
     };
 
     loader = {
