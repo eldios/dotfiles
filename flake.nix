@@ -69,8 +69,12 @@
     homeConfigurations."eldios@lelex1yoga" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = commonSpecialArgs;
+
+    # Lele's Yoga9i
+    nixosConfigurations.lele9iyoga = nixpkgs.lib.nixosSystem {
+      specialArgs = commonSpecialArgs;
       modules = [
-        ./hosts/lelex1yoga/home-manager/home.nix
+        ./hosts/lele9iyoga/nixos/configuration.nix
       ];
     };
 
