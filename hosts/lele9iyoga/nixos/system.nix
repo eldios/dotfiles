@@ -11,7 +11,6 @@
         enable = true;
         interval = "weekly";
       };
-      trim.enable = true;
     };
 
     cloudflared.enable = true;

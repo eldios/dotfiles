@@ -20,14 +20,6 @@
     initrd = {
       supportedFilesystems = [ "btrfs" ];
       kernelModules = [ "uas" "usbcore" "usb_storage" "usbhid" "vfat" "nls_cp437" "nls_iso8859_1" ];
-
-      luks = {
-        devices = {
-          "K" = {
-            device = "/dev/nvme0n1p2"; # << LUKS partition
-          };
-        };
-      };
     };
 
     loader = {
