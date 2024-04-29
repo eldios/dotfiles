@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   system = {
     stateVersion = "23.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
@@ -47,6 +47,7 @@
 
   # run Android apps on linux
   virtualisation.waydroid.enable = false;
+  virtualisation.docker.storageDriver = "btrfs";
 
   powerManagement = {
     enable = true;
@@ -55,6 +56,8 @@
   };
 
   hardware = {
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
     enableAllFirmware = true;
 
     uinput.enable = true; # needed by xRemap

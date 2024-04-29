@@ -3,7 +3,6 @@
 {
   imports = [
     # select hardware from https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
-    nixos-hardware.nixosModules.lenovo-thinkpad-x1-yoga-7th-gen
     nixos-hardware.nixosModules.common-cpu-intel
     nixos-hardware.nixosModules.common-gpu-intel
     nixos-hardware.nixosModules.common-hidpi
