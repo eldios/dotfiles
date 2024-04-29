@@ -66,9 +66,6 @@
         ./hosts/lelex1yoga/nixos/configuration.nix
       ];
     };
-    homeConfigurations."eldios@lelex1yoga" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      extraSpecialArgs = commonSpecialArgs;
 
     # Lele's Yoga9i
     nixosConfigurations.lele9iyoga = nixpkgs.lib.nixosSystem {
@@ -85,13 +82,6 @@
         ./hosts/mininixos/nixos/configuration.nix
       ];
     };
-    homeConfigurations."eldios@mininixos" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      extraSpecialArgs = commonSpecialArgs;
-      modules = [
-        ./hosts/mininixos/home-manager/home.nix
-      ];
-    };
 
     # intel NUC
     nixosConfigurations.nucone = nixpkgs.lib.nixosSystem {
@@ -100,26 +90,12 @@
         ./hosts/nucone/nixos/configuration.nix
       ];
     };
-    homeConfigurations."eldios@nucone" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      extraSpecialArgs = commonSpecialArgs;
-      modules = [
-        ./hosts/nucone/home-manager/home.nix
-      ];
-    };
 
     # MiniPC NUC
     nixosConfigurations.kube-casa1 = nixpkgs.lib.nixosSystem {
       specialArgs = commonSpecialArgs;
       modules = [
         ./hosts/kube-casa1/nixos/configuration.nix
-      ];
-    };
-    homeConfigurations."eldios@kube-casa1" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      extraSpecialArgs = commonSpecialArgs;
-      modules = [
-        ./hosts/kube-casa1/home-manager/home.nix
       ];
     };
 
@@ -167,13 +143,6 @@
       system = "aarch64-darwin";
       modules = [
         ./hosts/LeleM1/darwin/configuration.nix
-      ];
-    };
-    homeConfigurations."eldios@LeleM1" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs-darwin.legacyPackages.aarch64-darwin;
-      extraSpecialArgs = commonSpecialArgs ;
-      modules = [
-        ./hosts/LeleM1/home-manager/home.nix
       ];
     };
 
