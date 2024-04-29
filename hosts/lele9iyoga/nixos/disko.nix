@@ -4,22 +4,23 @@
     disk = {
       sda = {
         type = "disk";
-        device = lib.mkDefault "/dev/nvme0n1p1";
+        device = lib.mkDefault "/dev/disk/by-id/nvme-SAMSUNG_MZAL81T0HDLB-00BL2_S77LNF2WC20908";
         content = {
           type = "gpt";
           partitions = {
+            boot = {
+              name = "boot";
+              size = "1M";
+              type = "EF02";
+            };
             esp = {
               name = "ESP";
               size = "1G";
               type = "EF00";
-              bootable = true;
               content = {
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
-                option = [
-                  "defaults"
-                ];
               };
             };
             data = {
@@ -43,11 +44,11 @@
                       mountOptions = [ "compress=zstd" "noatime" ];
                     };
                     "/data" = {
-                      mountpoint = "/nix";
+                      mountpoint = "/data";
                       mountOptions = [ "compress=zstd" "noatime" ];
                     };
                     "/var" = {
-                      mountpoint = "/nix";
+                      mountpoint = "/var";
                       mountOptions = [ "compress=zstd" "noatime" ];
                     };
                     "/nix" = {

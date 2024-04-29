@@ -1,7 +1,9 @@
+{ lib, ...}:
 {
   networking = {
     networkmanager.enable = true;
 
+    useDHCP = lib.mkDefault true;
     dhcpcd.enable = true;
 
     interfaces = { };
