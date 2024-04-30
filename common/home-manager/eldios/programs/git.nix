@@ -53,7 +53,7 @@ in
         user = {
           username = "eldios";
           name = "Emanuele \"Lele\" Calo";
-          email = "emanuele.lele.calo@gmail.com ";
+          email = "emanuele.lele.calo@gmail.com";
         };
         gpg = {
           program = "${pkgs.gnupg}/bin/gpg";
