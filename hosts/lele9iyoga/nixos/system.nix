@@ -6,6 +6,22 @@
   };
 
   services = {
+    # BEGIN - laptop related stuff
+    thermald.enable = true;
+    auto-cpufreq = {
+      enable = true;
+      settings = {
+        battery = {
+          governor = "powersave";
+          turbo = "never";
+        };
+        charger = {
+          governor = "performance";
+          turbo = "auto";
+        };
+      };
+    };
+    # END - laptop related stuff
     btrfs = {
       autoScrub = {
         enable = true;
@@ -75,7 +91,8 @@
 
     opengl = {
       enable = true;
-      driSupport32Bit = true;
+      driSupport = true;
+      #driSupport32Bit = true;
       extraPackages = with pkgs; [
         intel-media-driver # LIBVA_DRIVER_NAME=iHD
         #vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
