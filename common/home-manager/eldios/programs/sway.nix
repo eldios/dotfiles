@@ -229,9 +229,13 @@ in
         "${modifier}+Space"           = "focus mode_toggle";
         "${modifier}+u"               = "focus parent";
 
-        "${modifier}+w"               = "layout toggle split";
-        "${modifier}+s"               = "layout tabbed";
+        "${modifier}+s"               = "layout stacking";
+        "${modifier}+w"               = "layout tabbed";
         "${modifier}+e"               = "layout default";
+
+        "${modifier}+v"               = "layout toggle split";
+        "${modifier}+Shift+v"         = "splith";
+        "${modifier}+Ctrl+v"          = "splitv";
 
         "${modifier}+${left}"         = "focus left";
         "${modifier}+${down}"         = "focus down";
@@ -245,6 +249,9 @@ in
 
         "${modifier}+Ctrl+${left}"    = "workspace prev";
         "${modifier}+Ctrl+${right}"   = "workspace next";
+
+        "${modifier}+minus"           = "scratchpad show";
+        "${modifier}+Shift+minus"     = "move scratchpad";
 
         "${modifier}+Alt+${left}"     = "move workspace to output left";
         "${modifier}+Alt+${down}"     = "move workspace to output down";
