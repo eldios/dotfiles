@@ -3,6 +3,7 @@
   # Neovim configuration deps
   home = {
     packages = with pkgs; [
+      atop
       cloudflare-warp
       codeium
       gcal
