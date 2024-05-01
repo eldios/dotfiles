@@ -68,7 +68,6 @@ in
       signal-desktop
       slack
       spotify-unwrapped
-      steam
       syncthing
       syncthing-cli
       syncthing-tray
