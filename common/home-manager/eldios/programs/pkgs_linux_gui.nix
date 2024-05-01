@@ -76,6 +76,7 @@ in
       vscode
       whatsapp-for-linux
       widevine-cdm
+      xdotool
       zoom-us
 
       # 3D printing
@@ -83,7 +84,7 @@ in
       prusa-slicer
       cura
     ]) # EOM pkgs
-    ++ ( with unstablePkgs; [
+      ++ (with unstablePkgs; [
       bluemail
       vesktop # discord + some fixes
     ]); # EOM unstablePkgs
