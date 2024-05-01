@@ -16,7 +16,6 @@
 
     ../../../common/nixos/virtualisation.nix
 
-    #./hardware-configuration.nix
     ./disko.nix
 
     ./boot.nix

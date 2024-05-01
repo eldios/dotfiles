@@ -65,6 +65,8 @@
   virtualisation.waydroid.enable = false;
   virtualisation.docker.storageDriver = "btrfs";
 
+  programs.steam.enable = true;
+
   powerManagement = {
     enable = true;
     cpuFreqGovernor = "powersave";
