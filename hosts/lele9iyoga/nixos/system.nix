@@ -41,7 +41,7 @@
         gdm.enable = true;
         gdm.wayland = true;
 
-        sessionPackages = with pkgs; [ 
+        sessionPackages = with pkgs; [
           sway
           hyprland
         ];
@@ -55,8 +55,8 @@
     printing.enable = true;
     # needed by CUPS for auto-discovery
     avahi = {
-      enable       = true;
-      nssmdns      = true;
+      enable = true;
+      nssmdns = true;
       openFirewall = true;
     };
   };
@@ -65,7 +65,13 @@
   virtualisation.waydroid.enable = false;
   virtualisation.docker.storageDriver = "btrfs";
 
-  programs.steam.enable = true;
+  programs = {
+    steam.enable = true;
+    streamdeck-ui = {
+      enable = true;
+      autoStart = true;
+    };
+  };
 
   powerManagement = {
     enable = true;
@@ -82,7 +88,7 @@
 
     bluetooth = {
       enable = true;
-      powerOnBoot = true ;
+      powerOnBoot = true;
       settings = {
         General = {
           Enable = "Source,Sink,Media,Socket";
@@ -107,7 +113,7 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    config.common.default = "*" ;
+    config.common.default = "*";
     # gtk portal needed to make gtk apps happy
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
@@ -122,7 +128,7 @@
   ];
 
   # audio
-  sound.enable = true ;
+  sound.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -141,7 +147,7 @@
   services.dbus.enable = true;
 
   security = {
-    pam.services.swaylock = {};
+    pam.services.swaylock = { };
   };
 
 }
