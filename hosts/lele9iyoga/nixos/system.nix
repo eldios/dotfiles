@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, nixpkgs-unstable, ... }:
+let
+  unstablePkgs = import nixpkgs-unstable {
+    system = "x86_64-linux";
+    config.allowUnfree = true;
+  };
+in
 {
   system = {
     stateVersion = "23.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
@@ -70,6 +76,7 @@
     streamdeck-ui = {
       enable = true;
       autoStart = true;
+      package = unstablePkgs.streamdeck-ui;
     };
   };
 
