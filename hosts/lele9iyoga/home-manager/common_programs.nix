@@ -16,6 +16,7 @@
     ../../../common/home-manager/eldios/programs/alacritty.nix
     ../../../common/home-manager/eldios/programs/kitty.nix
     ../../../common/home-manager/eldios/programs/wezterm.nix
+    ../../../common/home-manager/eldios/programs/tmux.nix
 
     ../../../common/home-manager/eldios/programs/firefox.nix
 
