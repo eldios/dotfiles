@@ -4,7 +4,6 @@
   imports = [
     # select hardware from https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
     nixos-hardware.nixosModules.common-cpu-intel
-    nixos-hardware.nixosModules.common-gpu-intel
     nixos-hardware.nixosModules.common-hidpi
     nixos-hardware.nixosModules.common-pc-laptop-ssd
 
@@ -28,13 +27,14 @@
 
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      home-manager.extraSpecialArgs = { inherit
-        inputs
-        nixpkgs
-        nixpkgs-unstable
-        home-manager
-        nixos-hardware
-        ;
+      home-manager.extraSpecialArgs = {
+        inherit
+          inputs
+          nixpkgs
+          nixpkgs-unstable
+          home-manager
+          nixos-hardware
+          ;
       };
     }
   ];
