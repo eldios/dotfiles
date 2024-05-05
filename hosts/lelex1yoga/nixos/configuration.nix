@@ -5,18 +5,17 @@
     # select hardware from https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
     nixos-hardware.nixosModules.lenovo-thinkpad-x1-yoga-7th-gen
     nixos-hardware.nixosModules.common-cpu-intel
-    nixos-hardware.nixosModules.common-gpu-intel
     nixos-hardware.nixosModules.common-hidpi
     nixos-hardware.nixosModules.common-pc-laptop
     nixos-hardware.nixosModules.common-pc-laptop-ssd
 
-      ../../../common/nixos/locale.nix
-      ../../../common/nixos/locale_gui.nix
+    ../../../common/nixos/locale.nix
+    ../../../common/nixos/locale_gui.nix
 
-      ../../../common/nixos/users.nix
-      ../../../common/nixos/system.nix
+    ../../../common/nixos/users.nix
+    ../../../common/nixos/system.nix
 
-      ../../../common/nixos/virtualisation.nix
+    ../../../common/nixos/virtualisation.nix
 
     ./hardware-configuration.nix
 
@@ -30,13 +29,14 @@
 
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      home-manager.extraSpecialArgs = { inherit
-        inputs
-        nixpkgs
-        nixpkgs-unstable
-        home-manager
-        nixos-hardware
-        ;
+      home-manager.extraSpecialArgs = {
+        inherit
+          inputs
+          nixpkgs
+          nixpkgs-unstable
+          home-manager
+          nixos-hardware
+          ;
       };
     }
   ];

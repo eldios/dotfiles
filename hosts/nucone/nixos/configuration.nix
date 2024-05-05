@@ -6,7 +6,6 @@
       # select hardware from https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
       nixos-hardware.nixosModules.intel-nuc-8i7beh
       nixos-hardware.nixosModules.common-cpu-intel
-      nixos-hardware.nixosModules.common-gpu-intel
 
       ../../../common/nixos/locale.nix
       ../../../common/nixos/users.nix
