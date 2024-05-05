@@ -85,7 +85,7 @@ in
       cura
     ]) # EOM pkgs
       ++ (with unstablePkgs; [
-      bluemail
+      mailspring
       vesktop # discord + some fixes
     ]); # EOM unstablePkgs
   }; # EOM home
