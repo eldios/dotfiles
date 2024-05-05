@@ -71,6 +71,10 @@ in
   virtualisation.waydroid.enable = false;
   virtualisation.docker.storageDriver = "btrfs";
 
+  environment.systemPackages = with pkgs; [
+    sof-firmware
+  ];
+
   programs = {
     steam.enable = true;
     streamdeck-ui = {
