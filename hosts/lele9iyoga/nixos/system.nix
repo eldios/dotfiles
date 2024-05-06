@@ -117,6 +117,11 @@ in
         #vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
         vaapiVdpau
         libvdpau-va-gl
+        intel-compute-runtime
+        intel-graphics-compiler
+        intel-ocl
+        opencl-info
+        opencl-headers
       ];
     };
   };
