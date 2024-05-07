@@ -167,9 +167,18 @@ in
       export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
       export _JAVA_AWT_WM_NONREPARENTING=1
       export MOZ_ENABLE_WAYLAND=1
+      export NIXOS_OZONE_WL=1
     '';
 
     extraConfig = ''
+      input type:touchpad {
+          left_handed disabled
+          natural_scroll disabled
+          tap enabled
+          dwt enabled
+          accel_profile "flat" # disable mouse acceleration (enabled by default; to set it manually, use "adaptive" instead of "flat")
+          pointer_accel 0.5 # set mouse sensitivity (between -1 and 1)
+      }
     ''; # EOM extraConfig
 
     config = rec {
