@@ -11,6 +11,8 @@ in
     autoUpgrade.enable = true;
   };
 
+  time.timeZone = lib.mkForce "Europe/Istanbul";
+
   services = {
     # BEGIN - laptop related stuff
     thermald.enable = true;
