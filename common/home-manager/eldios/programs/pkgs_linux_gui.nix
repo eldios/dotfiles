@@ -54,6 +54,7 @@ in
       brave
       cryptomator
       discord
+      easyeffects
       geoclue2
       gimp
       inkscape
