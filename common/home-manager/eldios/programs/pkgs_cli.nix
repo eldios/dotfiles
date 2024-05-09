@@ -106,6 +106,7 @@
       glances
       gnupg
       inetutils
+      inxi
       just
       lolcat
       lzip
