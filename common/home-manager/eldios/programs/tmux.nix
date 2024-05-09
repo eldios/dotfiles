@@ -5,7 +5,7 @@
     clock24 = true;
 
     extraConfig = ''
-      set escpate-time 1
+      set escape-time 1
     '';
   };
 }
