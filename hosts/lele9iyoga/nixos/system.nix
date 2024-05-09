@@ -49,7 +49,7 @@ in
         gdm.enable = true;
         gdm.wayland = true;
 
-        sessionPackages = with pkgs; [
+        sessionPackages = with unstablePkgs; [
           sway
           hyprland
         ];
@@ -149,8 +149,13 @@ in
   sound.enable = true;
   services.pipewire = {
     enable = true;
-    alsa.enable = true;
+    audio.enable = true;
     pulse.enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
+    jack.enable = false;
   };
   services.blueman = {
     enable = true;

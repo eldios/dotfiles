@@ -14,9 +14,10 @@
     #kernelPackages = pkgs.linuxPackages_6_6;
 
     kernelParams =
-    [
-      "nohibernate"
-    ];
+      [
+        "nohibernate"
+        "snd_intel_dspcfg.dsp_driver=1" # if 3 and 1 don't work move to Pulseaudio
+      ];
 
     initrd = {
       supportedFilesystems = [ "btrfs" ];
@@ -43,11 +44,11 @@
         efiSysMountPoint = "/boot";
       };
       grub = {
-        enable             = true;
-        device             = "nodev";
-        efiSupport         = true;
-        zfsSupport         = true;
-        enableCryptodisk   = true;
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
+        zfsSupport = true;
+        enableCryptodisk = true;
         configurationLimit = 14;
       };
     };

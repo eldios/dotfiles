@@ -1,4 +1,4 @@
-{ inputs , pkgs , config , lib , ... }:
+{ inputs, pkgs, config, lib, ... }:
 {
   zramSwap.enable = true;
   systemd.services.zfs-mount.enable = false;
@@ -51,7 +51,8 @@
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
-    settings = { # Nix Settings
+    settings = {
+      # Nix Settings
       auto-optimise-store = true; # Auto Optimize nix store.
       experimental-features = [ "nix-command" "flakes" ]; # Enable experimental features.
       substituters = [
@@ -66,6 +67,7 @@
   };
 
   services = {
+    fwupd.enable = true;
 
     openssh = {
       enable = true;
@@ -128,7 +130,7 @@
     yubikey-personalization
 
     # WAYLAND + SWAY
-    dbus   # make dbus-update-activation-environment available in the path
+    dbus # make dbus-update-activation-environment available in the path
     glib # gsettings
   ];
 
