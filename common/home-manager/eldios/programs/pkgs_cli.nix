@@ -30,7 +30,7 @@
       docker
       doctl # Digital Ocean CLI tool
       gitleaks
-      (google-cloud-sdk.withExtraComponents [google-cloud-sdk.components.gke-gcloud-auth-plugin])
+      (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
       infisical
       jira-cli-go
       linode-cli
@@ -129,6 +129,7 @@
       tmux
       toilet
       unzip
+      usbutils
       util-linux
       wget
       zip
