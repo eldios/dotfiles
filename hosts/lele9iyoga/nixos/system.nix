@@ -11,7 +11,7 @@ in
     autoUpgrade.enable = true;
   };
 
-  time.timeZone = lib.mkForce "Europe/Istanbul";
+  time.timeZone = lib.mkForce "Europe/Rome";
 
   services = {
     # BEGIN - laptop related stuff
