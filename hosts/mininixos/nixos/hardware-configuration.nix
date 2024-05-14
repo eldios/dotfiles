@@ -28,11 +28,6 @@
       fsType = "zfs";
     };
 
-  fileSystems."/data" =
-    { device = "zNix/persist/data";
-      fsType = "zfs";
-    };
-
   fileSystems."/etc/nixos" =
     { device = "zNix/persist/nixos";
       fsType = "zfs";

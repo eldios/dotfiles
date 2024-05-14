@@ -117,6 +117,7 @@
       parallel
       pciutils
       pls
+      psmisc
       pv
       pwgen
       rclone
