@@ -3,8 +3,8 @@ let
   eldios-ssh-agents = pkgs.ssh-agents.overrideAttrs (oa: {
     src = pkgs.fetchgit {
       url = "https://github.com/eldios/ssh-agents";
-      rev = "fbe5ce9a36830e53e9f20f5145425ce2dc2c215c";
-      hash = "sha256-/aruWXzC2ZbW+1v8S97MED6UOKPeDGcJzdNKX+wUfsw=";
+      rev = "a34bd5f495ee6bb34c24f02904db520a6c84ae0b";
+      hash = "sha256-chkTgr9kzOdAS9zvKuZ5XKvbk9nrk8dkugRQxEiZqBI=";
     };
   });
 in
@@ -16,7 +16,7 @@ in
   }; # EOM ZSH deps
 
   programs.zsh.profileExtra = ''
-    eval "$(ssh-agents -A -c)"
+    eval "$(ssh-agents -c -a ~/.ssh/id_ed25519)"
   '';
 
 } # EOF
