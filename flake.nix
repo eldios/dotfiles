@@ -135,6 +135,9 @@
         ];
       };
 
+      darwinConfigurations = { };
+      homeConfigurations = { };
+
     in
     {
       # Return all the configurations
