@@ -75,6 +75,10 @@ in
 
   environment.systemPackages = with pkgs; [
     sof-firmware
+    qmk
+    qmk-udev-rules
+    qmk_hid
+    vial
   ];
 
   programs = {
@@ -126,6 +130,8 @@ in
         opencl-headers
       ];
     };
+
+    keyboard.qmk.enable = true;
   };
 
   xdg.portal = {
@@ -168,6 +174,8 @@ in
   # The portal interfaces include APIs for file access, opening URIs,
   # printing and others.
   services.dbus.enable = true;
+
+  services.udev.packages = [ pkgs.via ];
 
   security = {
     pam.services.swaylock = { };
