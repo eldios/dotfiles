@@ -194,7 +194,7 @@ in
       right = "l";
 
       # Set default terminal
-      terminal = "wezterm";
+      terminal = "KITTY_ENABLE_WAYLAND=1 kitty";
       menu = "rofi";
 
       startup = [
