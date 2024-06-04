@@ -11,6 +11,7 @@ in
 {
   home = {
     packages = with pkgs; [
+      dbeaver
       davinci-resolve
       guvcview
       quickemu
