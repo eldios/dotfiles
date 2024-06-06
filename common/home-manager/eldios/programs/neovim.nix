@@ -16,7 +16,7 @@
       # Haskell
       ghc
       # vars
-      ripgrep     # used by space-f-g
+      ripgrep # used by space-f-g
       ripgrep-all # used by space-f-g
       codeium
     ];
@@ -94,6 +94,23 @@
   xdg.configFile."nvim/lua/config/keymaps.lua".text = ''
   '';
   xdg.configFile."nvim/lua/config/autocmds.lua".text = ''
+  '';
+  xdg.configFile."nvim/lua/plugins/codeium.lua".text = ''
+    return {
+      "Exafunction/codeium.nvim",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "hrsh7th/nvim-cmp",
+      },
+      config = function()
+        require("codeium").setup({
+          enable_chat = "true",
+          tools = {
+            language_server = "${pkgs.codeium}/bin/codeium_language_server"
+          }
+        })
+      end
+    }
   '';
   xdg.configFile."nvim/lua/plugins/obsidian.lua".text = ''
     return {
