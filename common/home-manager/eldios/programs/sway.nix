@@ -168,6 +168,9 @@ in
       export _JAVA_AWT_WM_NONREPARENTING=1
       export MOZ_ENABLE_WAYLAND=1
       export NIXOS_OZONE_WL=1
+      export XDG_CURRENT_DESKTOP=sway
+      export XDG_SESSION_DESKTOP=sway
+      export GDK_BACKEND="wayland,x11"
     '';
 
     extraConfig = ''
@@ -179,6 +182,8 @@ in
           accel_profile "flat" # disable mouse acceleration (enabled by default; to set it manually, use "adaptive" instead of "flat")
           pointer_accel 0.5 # set mouse sensitivity (between -1 and 1)
       }
+
+      for_window [app_id="flameshot"] floating enable, fullscreen disable, move absolute position 0 0, border pixel 0
     ''; # EOM extraConfig
 
     config = rec {
