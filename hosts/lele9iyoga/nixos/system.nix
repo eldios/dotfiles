@@ -54,6 +54,18 @@ in
           hyprland
         ];
       };
+
+      windowManager = {
+        i3 = {
+          enable = true;
+          extraPackages = with pkgs; [
+            dmenu
+            i3status
+            i3lock
+            i3blocks
+          ];
+        };
+      };
     };
 
     # save and manage secrets and passwords
@@ -97,9 +109,10 @@ in
   };
 
   hardware = {
-    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
     enableAllFirmware = true;
+    enableRedistributableFirmware = true;
+
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
     uinput.enable = true; # needed by xRemap
 
@@ -139,7 +152,7 @@ in
     wlr.enable = true;
     config.common.default = "*";
     extraPortals = [
-      #pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-wlr
       #pkgs.xdg-desktop-portal-hyprland
     ];
