@@ -1,20 +1,21 @@
 { pkgs, ... }:
 let
   eldios_lazygit = pkgs.lazygit.overrideAttrs (oa: {
-        version = "0.41.0";
+    version = "0.41.0";
 
-        src = pkgs.fetchFromGitHub {
-          owner = "jesseduffield";
-          repo = "lazygit";
-          rev = "4ba85608c8f3f25051994d3a7dd45647f58b119c";
-          hash = "sha256-Ok6QnXw3oDeSzBekft8cDXM/YsADgF1NZznfNoGNvck=";
-        };
-      });
+    src = pkgs.fetchFromGitHub {
+      owner = "jesseduffield";
+      repo = "lazygit";
+      rev = "4ba85608c8f3f25051994d3a7dd45647f58b119c";
+      hash = "sha256-Ok6QnXw3oDeSzBekft8cDXM/YsADgF1NZznfNoGNvck=";
+    };
+  });
 in
 {
   home = {
     packages = with pkgs; [
       github-cli
+      git-lfs
     ];
   };
 
@@ -28,24 +29,24 @@ in
     git = {
       enable = true;
       aliases = {
-        w    = "worktree" ;
-        wa    = "worktree add" ;
-        wl    = "worktree list" ;
-        wk    = "worktree lock" ;
-        wK    = "worktree unlock" ;
-        wm    = "worktree move" ;
-        wr    = "worktree remove" ;
-        st   = "status" ;
-        co   = "checkout" ;
-        rc   = "repo clone" ;
-        ppt  = "pull --prune --tags" ;
-        lol  = "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all" ;
-        loll = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all" ;
+        w = "worktree";
+        wa = "worktree add";
+        wl = "worktree list";
+        wk = "worktree lock";
+        wK = "worktree unlock";
+        wm = "worktree move";
+        wr = "worktree remove";
+        st = "status";
+        co = "checkout";
+        rc = "repo clone";
+        ppt = "pull --prune --tags";
+        lol = "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all";
+        loll = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all";
         prettylog = "...";
       };
       extraConfig = {
         advice = {
-          skippedCherryPicks = false ;
+          skippedCherryPicks = false;
         };
         commit = {
           gpgsign = true;
