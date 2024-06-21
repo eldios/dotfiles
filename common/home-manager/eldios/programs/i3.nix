@@ -35,7 +35,7 @@ in
 
     fade = true;
     fadeDelta = 3;
-    activeOpacity = 0.99;
+    activeOpacity = 1.00;
     inactiveOpacity = 0.98;
 
     opacityRules = [ "100:class_g *?= 'Rofi'" ];
