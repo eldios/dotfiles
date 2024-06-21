@@ -49,6 +49,7 @@ in
       # GUI stuff
       alacritty # gpu accelerated terminal
       alacritty-theme # alacritty themes
+      arandr
       beeper
       bitwarden
       brave
