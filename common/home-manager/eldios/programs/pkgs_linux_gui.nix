@@ -73,7 +73,6 @@ in
       syncthing-cli
       syncthing-tray
       telegram-desktop
-      variety
       vscode
       whatsapp-for-linux
       widevine-cdm
@@ -88,6 +87,7 @@ in
       ++ (with unstablePkgs; [
       mailspring
       vesktop # discord + some fixes
+      variety
     ]); # EOM unstablePkgs
   }; # EOM home
 }
