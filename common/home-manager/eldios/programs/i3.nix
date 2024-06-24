@@ -38,7 +38,10 @@ in
     activeOpacity = 1.00;
     inactiveOpacity = 0.98;
 
-    opacityRules = [ "100:class_g *?= 'Rofi'" ];
+    opacityRules = [
+      "100:class_g *?= 'Rofi'"
+      "100:class_g *?= 'i3lock'"
+    ];
   };
 
   services.flameshot = {
