@@ -44,7 +44,6 @@ in
       cavalier
       graphviz
       playerctl
-      yazi
 
       # GUI stuff
       alacritty # gpu accelerated terminal
@@ -78,6 +77,7 @@ in
       whatsapp-for-linux
       widevine-cdm
       xdotool
+      zathura
       zoom-us
 
       # 3D printing
