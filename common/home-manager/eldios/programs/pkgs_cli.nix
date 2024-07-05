@@ -134,6 +134,7 @@
       usbutils
       util-linux
       wget
+      yazi
       zip
     ];
   };
