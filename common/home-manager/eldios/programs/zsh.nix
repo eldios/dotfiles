@@ -1,4 +1,7 @@
 { pkgs, ... }:
+let
+  myFastFetchOpt = "-s 'Title:Separator:OS:Host:Uptime:Separator:Packages:Kernel:Shell:WM:Terminal:TerminalFont:Separator:CPU:GPU:Memory:Swap:Disk:LocalIp'";
+in
 {
 
   home = {
@@ -21,16 +24,16 @@
     };
 
     zsh = {
-      enable                   = true;
-      enableAutosuggestions    = true;
-      enableCompletion         = true;
+      enable = true;
+      enableAutosuggestions = true;
+      enableCompletion = true;
 
       syntaxHighlighting = {
         enable = true;
       };
 
       localVariables = {
-        TERM   = "xterm-256color";
+        TERM = "xterm-256color";
         EDITOR = "${pkgs.neovim}/bin/nvim";
         VISUAL = "${pkgs.neovim}/bin/nvim";
 
@@ -50,53 +53,57 @@
       };
 
       shellAliases = {
-        ls  = "colorls";
-        ll  = "ls -lh";
-        l   = "ls -lhtra";
+        ls = "colorls";
+        ll = "ls -lh";
+        l = "ls -lhtra";
 
-        g   = "git";
-        lg  = "lazygit";
-        n   = "nnn";
+        g = "git";
+        lg = "lazygit";
+        n = "nnn";
 
         # Kubectl
         k = "kubectl";
         j = "just";
 
-        TF  = "terraform";
-        tf  = "tofu";
+        ji = "jira issue";
+        jil = "jira issue list";
+        jim = "jira issue list -a lele@switchboard.xyz --order-by STATUS";
+
+        TF = "terraform";
+        tf = "tofu";
         tfp = "tf plan";
         tfa = "tf apply -auto-approve";
         tfd = "tf destroy -auto-approve";
 
-        cg  = "cargo";
+        cg = "cargo";
         cgb = "cg build";
         cgc = "cg check";
         cgn = "cg new";
         cgr = "cg run";
         cgt = "cg test";
 
-        ipcalc     = "sipcalc";
-        ff         = "${pkgs.fastfetch}/bin/fastfetch -s 'Title:Separator:OS:Host:Uptime:Separator:Packages:Kernel:Shell:WM:Terminal:TerminalFont:Separator:CPU:GPU:Memory:Swap:Disk:LocalIp'";
+        ipcalc = "sipcalc";
+        ff = "${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}";
 
-        nixs       = "nix search nixpkgs";
-        nixe       = "$EDITOR $HOME/.dotfiles/hosts/$(hostname)";
+        nixs = "nix search nixpkgs";
+        nixe = "$EDITOR $HOME/.dotfiles/hosts/$(hostname)";
 
-        nixu       = "sudo nixos-rebuild switch --impure --flake $HOME/.dotfiles";
-        nixU       = "sudo nix flake update $HOME/.dotfiles && nixu";
+        nixu = "sudo nixos-rebuild switch --impure --flake $HOME/.dotfiles";
+        nixU = "sudo nix flake update $HOME/.dotfiles && nixu";
 
-        nixa       = "nixe && nixu";
-        nixA       = "nixe && nixU";
+        nixa = "nixe && nixu";
+        nixA = "nixe && nixU";
 
-        hm         = "home-manager";
-        hmc        = "hm-cleanup";
-        hme        = "hm-edit";
-        hmu        = "hm-update";
-        hmU        = "nixu && hm-update";
-        hma        = "hme && hmu";
-        hmA        = "hme && hmU";
+        hm = "home-manager";
+        hmc = "hm-cleanup";
+        hme = "hm-edit";
+        hmu = "hm-update";
+        hmU = "nixu && hm-update";
+        hma = "hme && hmu";
+        hmA = "hme && hmU";
         hm-cleanup = "home-manager expire-generations '-7 days' && nix-store --gc";
-        hm-edit    = "home-manager edit";
-        hm-update  = "home-manager switch -b backup --flake $HOME/.dotfiles'";
+        hm-edit = "home-manager edit";
+        hm-update = "home-manager switch -b backup --flake $HOME/.dotfiles'";
 
         SHX = "exec \$SHELL -l";
       };
@@ -121,7 +128,7 @@
         eval "$(${pkgs.thefuck}/bin/thefuck --alias)"
         eval "$(${pkgs.zoxide}/bin/zoxide init zsh)"
 
-        ${pkgs.fastfetch}/bin/fastfetch -s 'Title:Separator:OS:Host:Uptime:Separator:Packages:Kernel:Shell:WM:Terminal:TerminalFont:Separator:CPU:GPU:Memory:Swap:Disk:LocalIp'
+        ${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}
       '';
     }; # EOM zsh
 
