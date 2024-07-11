@@ -91,6 +91,8 @@
         specialArgs = commonSpecialArgs;
         modules = [
           ./hosts/mininixos/nixos/configuration.nix
+          disko.nixosModules.disko
+          sops-nix.nixosModules.sops
         ];
       };
 
@@ -100,6 +102,8 @@
         specialArgs = commonSpecialArgs;
         modules = [
           ./hosts/nucone/nixos/configuration.nix
+          disko.nixosModules.disko
+          sops-nix.nixosModules.sops
         ];
       };
 
@@ -109,6 +113,8 @@
         specialArgs = commonSpecialArgs;
         modules = [
           ./hosts/kube-casa1/nixos/configuration.nix
+          disko.nixosModules.disko
+          sops-nix.nixosModules.sops
         ];
       };
 
@@ -120,6 +126,7 @@
           ./hosts/fsn-c1/nixos/k3s.nix
           ./hosts/fsn-cN/nixos/configuration.nix
           disko.nixosModules.disko
+          sops-nix.nixosModules.sops
         ];
       };
       nixosConfigurations.fsn-c2 = nixpkgs.lib.nixosSystem {
@@ -129,6 +136,7 @@
           ./hosts/fsn-c2/nixos/k3s.nix
           ./hosts/fsn-cN/nixos/configuration.nix
           disko.nixosModules.disko
+          sops-nix.nixosModules.sops
         ];
       };
       nixosConfigurations.fsn-c3 = nixpkgs.lib.nixosSystem {
@@ -138,6 +146,7 @@
           ./hosts/fsn-c3/nixos/k3s.nix
           ./hosts/fsn-cN/nixos/configuration.nix
           disko.nixosModules.disko
+          sops-nix.nixosModules.sops
         ];
       };
 
@@ -146,6 +155,8 @@
         specialArgs = commonSpecialArgs;
         modules = [
           ./hosts/sox1x/nixos/configuration.nix
+          disko.nixosModules.disko
+          sops-nix.nixosModules.sops
         ];
       };
 
