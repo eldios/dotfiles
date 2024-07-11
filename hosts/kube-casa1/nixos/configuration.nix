@@ -1,10 +1,11 @@
-{ config, lib, pkgs, nixos-hardware, home-manager, ... }:
-
+{ nixos-hardware, home-manager, ... }:
 {
   imports =
     [
       # select hardware from https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
       nixos-hardware.nixosModules.common-cpu-intel
+
+      ../../../common/nixos/sops.nix
 
       ../../../common/nixos/locale.nix
       ../../../common/nixos/users.nix
@@ -17,6 +18,8 @@
       ./boot.nix
       ./system.nix
       ./network.nix
+
+      ./kube.nix
 
       home-manager.nixosModules.home-manager
       {
