@@ -20,6 +20,6 @@
       # "--kubelet-arg=v=4" # Optionally add additional args to k3s
     ];
     clusterInit = true;
-    tokenFile = config.sops."tokens/kubernetes/casa".path;
+    tokenFile = config.sops.secrets."tokens/kubernetes/casa".path;
   };
 }
