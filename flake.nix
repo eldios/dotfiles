@@ -2,15 +2,19 @@
   description = "Lele's nix conf - for macOS and nixOS";
 
   inputs = {
-    # usual inputs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
-    home-manager.url = "github:nix-community/home-manager/release-23.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-23.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
-    darwin.url = "github:lnl7/nix-darwin";
-    darwin.inputs.nixpkgs.follows = "nixpkgs-darwin";
+
+    darwin = {
+      url = "github:lnl7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
+    };
 
     # base imports
     utils.url = "github:numtide/flake-utils";
@@ -19,11 +23,20 @@
     nixos-hardware.url = "github:nixos/nixos-hardware";
     xremap.url = "github:xremap/nix-flake";
 
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    sops-nix.url = "github:Mic92/sops-nix";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    secrets = {
+      url = "git+ssh://git@github.com/eldios/secrets.git?ref=main&shallow=1";
+      flake = false;
+    };
   };
 
   outputs =
@@ -68,6 +81,7 @@
         modules = [
           ./hosts/lele9iyoga/nixos/configuration.nix
           disko.nixosModules.disko
+          sops-nix.nixosModules.sops
         ];
       };
 

@@ -76,6 +76,7 @@ in
       vscode
       whatsapp-for-linux
       widevine-cdm
+      xclip
       xdotool
       zathura
       zoom-us

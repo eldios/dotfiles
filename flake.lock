@@ -473,9 +473,28 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-darwin": "nixpkgs-darwin",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "secrets": "secrets",
         "sops-nix": "sops-nix",
         "utils": "utils",
         "xremap": "xremap"
+      }
+    },
+    "secrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1720665440,
+        "narHash": "sha256-FfMJ91eLTR741g+jKahApu7kvholvrXlEDkxyKzx+R0=",
+        "ref": "main",
+        "rev": "6d4d64cee3d47aba87b140b4425bc52505222b43",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/eldios/secrets.git"
+      },
+      "original": {
+        "ref": "main",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/eldios/secrets.git"
       }
     },
     "sops-nix": {

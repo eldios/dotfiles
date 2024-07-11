@@ -7,6 +7,8 @@
     nixos-hardware.nixosModules.common-hidpi
     nixos-hardware.nixosModules.common-pc-laptop-ssd
 
+    ../../../common/nixos/sops.nix
+
     ../../../common/nixos/locale.nix
     ../../../common/nixos/locale_gui.nix
 
