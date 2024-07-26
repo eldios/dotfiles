@@ -51,7 +51,6 @@ in
       arandr
       beeper
       bitwarden
-      brave
       cryptomator
       discord
       easyeffects
@@ -87,6 +86,7 @@ in
       cura
     ]) # EOM pkgs
       ++ (with unstablePkgs; [
+      brave
       mailspring
       vesktop # discord + some fixes
       variety
