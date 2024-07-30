@@ -58,6 +58,7 @@ in
       gimp
       inkscape
       kitty
+      mpv
       obs-studio
       openlens
       paperview
@@ -72,6 +73,7 @@ in
       syncthing-cli
       syncthing-tray
       telegram-desktop
+      vlc
       vscode
       whatsapp-for-linux
       widevine-cdm
