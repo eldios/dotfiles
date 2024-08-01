@@ -7,6 +7,8 @@
       nixos-hardware.nixosModules.intel-nuc-8i7beh
       nixos-hardware.nixosModules.common-cpu-intel
 
+      ../../../common/nixos/sops.nix
+
       ../../../common/nixos/locale.nix
       ../../../common/nixos/users.nix
       ../../../common/nixos/system.nix

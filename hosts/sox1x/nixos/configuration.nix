@@ -9,6 +9,8 @@
       nixos-hardware.nixosModules.common-gpu-nvidia
       nixos-hardware.nixosModules.common-pc-laptop-ssd
 
+      ../../../common/nixos/sops.nix
+
       ../../../common/nixos/locale.nix
       ../../../common/nixos/locale_gui.nix
 
@@ -30,13 +32,14 @@
 
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.extraSpecialArgs = { inherit
-          inputs
-          nixpkgs
-          nixpkgs-unstable
-          home-manager
-          nixos-hardware
-          ;
+        home-manager.extraSpecialArgs = {
+          inherit
+            inputs
+            nixpkgs
+            nixpkgs-unstable
+            home-manager
+            nixos-hardware
+            ;
         };
       }
     ];
