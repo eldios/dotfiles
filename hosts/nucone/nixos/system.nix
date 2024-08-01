@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   system = {
     stateVersion = "23.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
@@ -13,6 +14,10 @@
       trim.enable = true;
     };
   };
+
+  hardware.cpu.intel.sgx.provision.enable = true;
+
+  environment.systemPackages = with pkgs; [ ];
 }
 
 # vim: set ts=2 sw=2 et ai list nu
