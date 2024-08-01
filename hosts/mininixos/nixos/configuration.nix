@@ -8,6 +8,8 @@
       nixos-hardware.nixosModules.common-gpu-amd
       nixos-hardware.nixosModules.common-pc-ssd
 
+      ../../../common/nixos/sops.nix
+
       ../../../common/nixos/locale.nix
 
       ../../../common/nixos/users.nix
