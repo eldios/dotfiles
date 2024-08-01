@@ -125,6 +125,7 @@
     just
     lshw
     manix
+    mdadm
     rclone
     sops
     yubikey-personalization
