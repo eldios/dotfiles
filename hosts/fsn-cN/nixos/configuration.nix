@@ -8,6 +8,8 @@
       (modulesPath + "/installer/scan/not-detected.nix")
       (modulesPath + "/profiles/qemu-guest.nix")
 
+      ../../../common/nixos/sops.nix
+
       ../../../common/nixos/locale.nix
       ../../../common/nixos/users.nix
       ../../../common/nixos/system.nix
