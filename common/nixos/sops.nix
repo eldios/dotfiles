@@ -20,10 +20,8 @@ in
     secrets = {
       "tokens/kubernetes/casa" = { };
 
+      "passwords/root" = { };
       "passwords/lele9iyoga/eldios" = {
-        sopsFile = "${secretspath}/lele9iyoga.yaml";
-      };
-      "passwords/lele9iyoga/root" = {
         sopsFile = "${secretspath}/lele9iyoga.yaml";
       };
 
