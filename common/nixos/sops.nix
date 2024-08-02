@@ -18,13 +18,21 @@ in
     };
 
     secrets = {
-      "passwords/lele9iyoga/eldios" = { };
-      "passwords/lele9iyoga/root" = { };
-
-      "keys/ssh/eldios/lele9iyoga/public" = { };
-      "keys/ssh/eldios/lele9iyoga/private" = { };
-
       "tokens/kubernetes/casa" = { };
+
+      "passwords/lele9iyoga/eldios" = {
+        sopsFile = "${secretspath}/lele9iyoga.yaml";
+      };
+      "passwords/lele9iyoga/root" = {
+        sopsFile = "${secretspath}/lele9iyoga.yaml";
+      };
+
+      "keys/ssh/eldios/lele9iyoga/public" = {
+        sopsFile = "${secretspath}/lele9iyoga.yaml";
+      };
+      "keys/ssh/eldios/lele9iyoga/private" = {
+        sopsFile = "${secretspath}/lele9iyoga.yaml";
+      };
     };
   };
 }
