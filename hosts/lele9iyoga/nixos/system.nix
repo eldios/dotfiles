@@ -158,10 +158,14 @@ in
     ];
   };
 
-  users.users.eldios.extraGroups = [
-    "input" # needed by xRemap
-    "uinput" # needed by xRemap
-  ];
+  users.users.eldios.extraGroups = {
+    hashedPasswordFile = config.sops.secrets."passwords/lele9iyoga/eldios".path;
+
+    extraGroups = [
+      "input" # needed by xRemap
+      "uinput" # needed by xRemap
+    ];
+  };
 
   # audio
   sound.enable = true;
