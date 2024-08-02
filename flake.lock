@@ -515,10 +515,10 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1722641506,
-        "narHash": "sha256-S5O205MsUoA0DLgrNY5wAQc6cFlXCm0rDOTesE0UZX4=",
+        "lastModified": 1722642210,
+        "narHash": "sha256-0QJyCk7A9sYuU5nOhdPG84Lqm+N/yM4Vqpya4hfWmEY=",
         "ref": "main",
-        "rev": "3b04d2579876a3011c915ac9d799d65e94469841",
+        "rev": "04ef39b0dd6c146ca00c0e323266e8a101c9ca2c",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/eldios/secrets.git"
