@@ -16,12 +16,11 @@
       "wheel"
     ];
     openssh.authorizedKeys.keys = (lib.splitString "\n" (builtins.readFile ../files/authorized_keys));
-    hashedPasswordFile = config.sops.secrets."passwords/lele9iyoga/eldios".path;
   };
 
   users.users.root = {
     shell = pkgs.bash;
     openssh.authorizedKeys.keys = (lib.splitString "\n" (builtins.readFile ../files/authorized_keys));
-    hashedPasswordFile = config.sops.secrets."passwords/lele9iyoga/root".path;
+    hashedPasswordFile = config.sops.secrets."passwords/root".path;
   };
 }
