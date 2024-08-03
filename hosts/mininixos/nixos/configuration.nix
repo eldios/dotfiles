@@ -5,7 +5,6 @@
     [
       # select hardware from https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
       nixos-hardware.nixosModules.common-cpu-amd
-      nixos-hardware.nixosModules.common-gpu-amd
       nixos-hardware.nixosModules.common-pc-ssd
 
       ../../../common/nixos/sops.nix
