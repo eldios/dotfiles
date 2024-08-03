@@ -18,6 +18,7 @@ in
   sops.secrets = {
     "passwords/lele9iyoga/eldios" = {
       sopsFile = "${secretspath}/lele9iyoga.yaml";
+      neededForUsers = true;
     };
 
     "keys/ssh/eldios/lele9iyoga/public" = {
