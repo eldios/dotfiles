@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs-unstable, ... }:
+{ inputs, config, lib, pkgs, nixpkgs-unstable, ... }:
 let
   unstablePkgs = import nixpkgs-unstable {
     system = "x86_64-linux";
@@ -174,7 +174,7 @@ in
     ];
   };
 
-  users.users.eldios.extraGroups = {
+  users.users.eldios = {
     hashedPasswordFile = config.sops.secrets."passwords/lele9iyoga/eldios".path;
 
     extraGroups = [
