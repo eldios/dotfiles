@@ -19,6 +19,6 @@
   users.users.root = {
     shell = pkgs.bash;
     openssh.authorizedKeys.keys = (lib.splitString "\n" (builtins.readFile ../files/authorized_keys));
-    hashedPassword = config.sops.secrets."passwords/root".path;
+    passwordFile = config.sops.secrets."passwords/root".path;
   };
 }

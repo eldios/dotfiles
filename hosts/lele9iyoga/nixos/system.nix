@@ -175,7 +175,7 @@ in
   };
 
   users.users.eldios = {
-    hashedPassword = config.sops.secrets."passwords/lele9iyoga/eldios".path;
+    passwordFile = config.sops.secrets."passwords/lele9iyoga/eldios".path;
 
     extraGroups = [
       "input" # needed by xRemap
