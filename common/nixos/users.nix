@@ -1,7 +1,5 @@
 { lib, pkgs, config, ... }:
 {
-  sops.secrets."passwords/lele9iyoga/eldios".neededForUsers = true;
-
   users.mutableUsers = false;
 
   users.users.eldios = {
