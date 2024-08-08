@@ -5,8 +5,7 @@
     packages = with pkgs; [
       # LSPs
       nil # Nix LSP
-      # Golang
-      nil
+      deno
       # Golang
       go
       # Rust
