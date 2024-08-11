@@ -174,15 +174,6 @@ in
     ];
   };
 
-  users.users.eldios = {
-    hashedPasswordFile = config.sops.secrets."passwords/lele9iyoga/eldios".path;
-
-    extraGroups = [
-      "input" # needed by xRemap
-      "uinput" # needed by xRemap
-    ];
-  };
-
   # audio
   sound.enable = true;
   services.pipewire = {

@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   users.users.eldios = {
     hashedPasswordFile = config.sops.secrets."passwords/lele9iyoga/eldios".path;
