@@ -1,4 +1,4 @@
-{ config, ... }:
+{ inputs, config, ... }:
 let
   secretspath = builtins.toString inputs.secrets;
 in
