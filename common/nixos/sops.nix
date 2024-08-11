@@ -20,7 +20,9 @@ in
     secrets = {
       "tokens/kubernetes/casa" = { };
 
-      "passwords/root" = { };
+      "passwords/root" = {
+        neededForUsers = true;
+      };
     };
   };
 }
