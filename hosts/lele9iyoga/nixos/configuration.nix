@@ -22,6 +22,7 @@
     ./boot.nix
     ./system.nix
     ./network.nix
+    ./users.nix
 
     home-manager.nixosModules.home-manager
     {
