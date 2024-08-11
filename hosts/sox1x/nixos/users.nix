@@ -1,4 +1,7 @@
 { config, lib, pkgs, ... }:
+let
+  secretspath = builtins.toString inputs.secrets;
+in
 {
   sops.secrets = {
     "passwords/sox1x/eldios" = {
