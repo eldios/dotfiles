@@ -1,5 +1,16 @@
 { config, lib, pkgs, ... }:
 {
+  sops.secrets = {
+    "passwords/sox1x/eldios" = {
+      sopsFile = "${secretspath}/sox1x.yaml";
+      neededForUsers = true;
+    };
+
+    "passwords/sox1x/nimbina" = {
+      sopsFile = "${secretspath}/sox1x.yaml";
+      neededForUsers = true;
+    };
+  };
 
   users.users.nimbina = {
     shell = pkgs.bash;

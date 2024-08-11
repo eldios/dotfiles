@@ -1,5 +1,12 @@
 { config, ... }:
 {
+  sops.secrets = {
+    "passwords/lele9iyoga/eldios" = {
+      sopsFile = "${secretspath}/lele9iyoga.yaml";
+      neededForUsers = true;
+    };
+  };
+
   users.users.eldios = {
     hashedPasswordFile = config.sops.secrets."passwords/lele9iyoga/eldios".path;
 
