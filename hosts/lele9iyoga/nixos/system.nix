@@ -15,20 +15,6 @@ in
 
   time.timeZone = lib.mkForce "Europe/Rome";
 
-  sops.secrets = {
-    "passwords/lele9iyoga/eldios" = {
-      sopsFile = "${secretspath}/lele9iyoga.yaml";
-      neededForUsers = true;
-    };
-
-    "keys/ssh/eldios/lele9iyoga/public" = {
-      sopsFile = "${secretspath}/lele9iyoga.yaml";
-    };
-    "keys/ssh/eldios/lele9iyoga/private" = {
-      sopsFile = "${secretspath}/lele9iyoga.yaml";
-    };
-  };
-
   services = {
     # BEGIN - laptop related stuff
     thermald.enable = true;
