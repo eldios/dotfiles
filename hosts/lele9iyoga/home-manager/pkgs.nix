@@ -22,6 +22,7 @@ in
 {
   home = {
     packages = with pkgs; [
+      barrier
       davinci-resolve
       dbeaver
       guvcview
@@ -32,6 +33,7 @@ in
       uqm
       uvcdynctrl
       vlc
+      wine
     ] ++ [
       davinci-resolve-studio
       pcloud
