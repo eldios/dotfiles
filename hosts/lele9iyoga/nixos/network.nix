@@ -11,7 +11,14 @@
     hostName = "lele9iyoga";
     hostId   = "d34d0007"; # random chars
 
-    firewall.enable = true;
+    firewall = {
+      enable = true;
+
+      allowedTCPPorts = [
+        24800 # default Barrier KVM software port
+      ];
+    };
+
   };
 }
 
