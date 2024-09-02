@@ -73,6 +73,8 @@ in
     # save and manage secrets and passwords
     gnome.gnome-keyring.enable = true;
 
+    gvfs.enable = true;
+
     # CUPS
     printing.enable = true;
     # needed by CUPS for auto-discovery
@@ -93,6 +95,8 @@ in
     qmk-udev-rules
     qmk_hid
     vial
+    gvfs
+    jmtpfs
   ];
 
   programs = {
@@ -100,7 +104,6 @@ in
     streamdeck-ui = {
       enable = true;
       autoStart = true;
-      package = unstablePkgs.streamdeck-ui;
     };
   };
 
