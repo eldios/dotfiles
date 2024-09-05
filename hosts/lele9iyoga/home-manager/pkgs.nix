@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 let
   davinci-resolve-studio = pkgs.davinci-resolve-studio.override (old: {
     buildFHSEnv = a: (old.buildFHSEnv (a // {
@@ -37,6 +37,7 @@ in
     ] ++ [
       davinci-resolve-studio
       pcloud
+      inputs.zen-browser.packages."${system}".specific
     ];
   };
 } # EOF
