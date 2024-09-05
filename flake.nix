@@ -33,6 +33,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    zen-browser.url = "github:MarceColl/zen-browser-flake";
+
     secrets = {
       url = "git+ssh://git@github.com/eldios/secrets.git?ref=main&shallow=1";
       flake = false;
