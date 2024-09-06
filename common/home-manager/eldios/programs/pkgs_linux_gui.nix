@@ -73,6 +73,7 @@ in
       syncthing-cli
       syncthing-tray
       telegram-desktop
+      unclutter # unclutter -idle 1 -root -grab -visible
       vlc
       vscode
       whatsapp-for-linux
