@@ -40,7 +40,10 @@
     pointerCursor = {
       gtk.enable = true;
       # cursor theme
-      package = pkgs.bibata-cursors;
+      #package = pkgs.bibata-cursors;
+      #package = pkgs.whitesur-cursors;
+      package = pkgs.capitaine-cursors;
+      #package = pkgs.phinger-cursors;
       name = "Bibata-Modern-Ice";
       size = 22;
     };

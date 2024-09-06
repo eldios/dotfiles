@@ -1,11 +1,18 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, nixpkgs-unstable, ... }:
 let
+  unstablePkgs = import nixpkgs-unstable {
+    system = "x86_64-linux";
+    config.allowUnfree = true;
+  };
   davinci-resolve-studio = pkgs.davinci-resolve-studio.override (old: {
     buildFHSEnv = a: (old.buildFHSEnv (a // {
       extraBwrapArgs = a.extraBwrapArgs ++ [
         "--bind /run/opengl-driver/etc/OpenCL /etc/OpenCL"
       ];
     }));
+  });
+  appflowy = unstablePkgs.appflowy.overrideAttrs (_finalAttrs: _previousAttrs: {
+    version = "v0.6.8";
   });
   patchelfFixes = pkgs.patchelfUnstable.overrideAttrs (_finalAttrs: _previousAttrs: {
     src = pkgs.fetchFromGitHub {
@@ -35,6 +42,7 @@ in
       vlc
       wine
     ] ++ [
+      appflowy
       davinci-resolve-studio
       pcloud
       inputs.zen-browser.packages."${system}".specific
