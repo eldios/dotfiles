@@ -48,6 +48,7 @@ in
       # GUI stuff
       alacritty # gpu accelerated terminal
       alacritty-theme # alacritty themes
+      appimage-run
       arandr
       beeper
       bitwarden
@@ -57,6 +58,7 @@ in
       geoclue2
       gimp
       inkscape
+      logseq
       kitty
       mpv
       obs-studio
