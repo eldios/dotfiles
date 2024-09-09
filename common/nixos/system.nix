@@ -119,6 +119,7 @@
     colorls # like `ls --color=auto -F` but cooler
     cryptomator
     fastfetch
+    file
     ffmpeg
     gnumake
     htop
@@ -126,6 +127,7 @@
     lshw
     manix
     mdadm
+    openssl
     rclone
     sops
     yubikey-personalization
