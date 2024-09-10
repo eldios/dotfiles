@@ -61,7 +61,9 @@ in
 
         g = "git";
         lg = "lazygit";
+
         n = "nnn";
+        y = "yazi";
 
         # Kubectl
         k = "kubectl";
