@@ -17,11 +17,6 @@
       haskell-language-server
       rust-analyzer
 
-      # Plugins
-      codeium # Codeium.com
-      #vimPlugins.codeium-vim # Codeium.com
-      vimPlugins.nvim-treesitter.withAllGrammars # TreeSitter grammars
-
       # development deps
       # Golang
       go
