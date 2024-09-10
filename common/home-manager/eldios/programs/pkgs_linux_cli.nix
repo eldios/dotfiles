@@ -5,7 +5,6 @@
     packages = with pkgs; [
       atop
       cloudflare-warp
-      codeium
       gcal
       graph-easy
       imagemagick

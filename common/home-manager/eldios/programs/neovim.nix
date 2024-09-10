@@ -1,4 +1,19 @@
-{ pkgs, ... }:
+{ pkgs, nixpkgs-unstable, ... }:
+let
+  unstablePkgs = import nixpkgs-unstable {
+    system = "x86_64-linux";
+    config.allowUnfree = true;
+  };
+
+  codeium = unstablePkgs.codeium.overrideAttrs (_finalAttrs: _previousAttrs: {
+    version = "1.8.80";
+    src = unstablePkgs.fetchurl {
+      name = "${_finalAttrs.pname}-${_finalAttrs.version}.gz";
+      url = "https://github.com/Exafunction/codeium/releases/download/language-server-v${_finalAttrs.version}/language_server_linux_x64.gz";
+      hash = "sha256-ULHO7NrbW0DDlOYiSHGXwJ+NOa68Ma+HMHgq2WyAKBA=";
+    };
+  });
+in
 {
   # Neovim configuration deps
   home = {
@@ -17,8 +32,9 @@
       # vars
       ripgrep # used by space-f-g
       ripgrep-all # used by space-f-g
+    ] ++ (with unstablePkgs; [ ] ++ [
       codeium
-    ];
+    ]);
 
   };
 
@@ -105,7 +121,7 @@
         require("codeium").setup({
           enable_chat = "true",
           tools = {
-            language_server = "${pkgs.codeium}/bin/codeium_language_server"
+            language_server = "${codeium}/bin/codeium_language_server"
           }
         })
       end
@@ -163,7 +179,6 @@
       #];
 
       plugins = with pkgs.vimPlugins; [
-        codeium-vim
         nvim-cmp
       ];
 
