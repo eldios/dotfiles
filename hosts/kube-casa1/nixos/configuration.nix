@@ -1,4 +1,4 @@
-{ nixos-hardware, home-manager, ... }:
+{ inputs, nixpkgs, nixpkgs-unstable, nixos-hardware, home-manager, ... }:
 {
   imports =
     [
@@ -27,6 +27,15 @@
 
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
+        home-manager.extraSpecialArgs = {
+          inherit
+            inputs
+            nixpkgs
+            nixpkgs-unstable
+            home-manager
+            nixos-hardware
+            ;
+        };
       }
     ];
 }
