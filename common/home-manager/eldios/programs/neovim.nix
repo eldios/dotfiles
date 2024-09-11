@@ -38,28 +38,45 @@ in
 
   };
 
+  # this file is used to setup LazyVim
   xdg.configFile."nvim/init.lua".text = ''
     local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-    if not vim.loop.fs_stat(lazypath) then
-      -- bootstrap lazy.nvim
-      -- stylua: ignore
-      vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath })
+    if not (vim.uv or vim.loop).fs_stat(lazypath) then
+      local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+      local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+      if vim.v.shell_error ~= 0 then
+        vim.api.nvim_echo({
+          { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+          { out, "WarningMsg" },
+          { "\nPress any key to exit..." },
+        }, true, {})
+        vim.fn.getchar()
+        os.exit(1)
+      end
     end
     vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
     require("lazy").setup({
       spec = {
+        -- add LazyVim and import its plugins
         { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-        -- override via plugins
+        -- import/override with your plugins
         { import = "plugins" },
       },
       defaults = {
+        -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
+        -- If you know what you're doing, you can set this to `true` to have all your custom plugins lazy-loaded by default.
         lazy = false,
+        -- It's recommended to leave version=false for now, since a lot the plugin that support versioning,
+        -- have outdated releases, which may break your Neovim install.
         version = false, -- always use the latest git commit
         -- version = "*", -- try installing the latest stable version for plugins that support semver
       },
       install = { colorscheme = { "tokyonight", "habamax" } },
-      checker = { enabled = true },
+      checker = {
+        enabled = true, -- check for plugin updates periodically
+        notify = false, -- notify on update
+      }, -- automatically check for plugin updates
       performance = {
         rtp = {
           -- disable some rtp plugins
@@ -77,6 +94,7 @@ in
       },
     })
   '';
+  # this file is automatically loaded by LazyVim
   xdg.configFile."nvim/lua/config/lazy.lua".text = ''
     return {
       -- Lele UI settings
@@ -95,8 +113,11 @@ in
       { import = "lazyvim.plugins.extras.lang.terraform" },
       { import = "lazyvim.plugins.extras.lang.typescript" },
       { import = "lazyvim.plugins.extras.lang.yaml" },
+      -- Lele plugins
+      { import = "lazyvim.plugins.extras.coding.codeium" },
     }
   '';
+  # this file is automatically loaded by LazyVim
   xdg.configFile."nvim/lua/config/options.lua".text = ''
     -- default Lele's options
     vim.opt.relativenumber = false
@@ -106,53 +127,74 @@ in
     vim.opt.expandtab = true
     vim.opt.colorcolumn = { 80 }
   '';
+  # this file is automatically loaded by LazyVim
   xdg.configFile."nvim/lua/config/keymaps.lua".text = ''
   '';
+  # this file is automatically loaded by LazyVim
   xdg.configFile."nvim/lua/config/autocmds.lua".text = ''
+  '';
+
+  xdg.configFile."nvim/lua/plugins/cmp.lua".text = ''
+    return {
+      {
+        "hrsh7th/nvim-cmp",
+        dependencies = { "hrsh7th/cmp-emoji" },
+        ---@param opts cmp.ConfigSchema
+        opts = function(_, opts)
+          table.insert(opts.sources, { name = "emoji" })
+          table.insert(opts.sources, { name = "codeium" })
+        end,
+      },
+    }
   '';
   xdg.configFile."nvim/lua/plugins/codeium.lua".text = ''
     return {
-      "Exafunction/codeium.nvim",
-      event = 'BufEnter',
-      dependencies = {
-        "nvim-lua/plenary.nvim",
-        "hrsh7th/nvim-cmp",
-      },
-      config = function()
-        require("codeium").setup({
-          enable_chat = "true",
-          tools = {
-            language_server = "${codeium}/bin/codeium_language_server"
-          }
-        })
-      end
+      {
+        "Exafunction/codeium.nvim",
+        dependencies = {
+          "nvim-lua/plenary.nvim",
+          "hrsh7th/nvim-cmp",
+        },
+        config = function()
+          require("codeium").setup({
+            enable_chat = "true",
+            tools = {
+              language_server = "${codeium}/bin/codeium_language_server"
+            }
+          })
+        end
+      }
     }
   '';
   xdg.configFile."nvim/lua/plugins/obsidian.lua".text = ''
     return {
-      "epwalsh/obsidian.nvim",
-      version = "*",  -- recommended, use latest release instead of latest commit
-      lazy = true,
-      ft = "markdown",
-      -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-      -- event = {
-      --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-      --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-      --   "BufReadPre path/to/my-vault/**.md",
-      --   "BufNewFile path/to/my-vault/**.md",
-      -- },
-      dependencies = {
-        -- Required.
-        "nvim-lua/plenary.nvim",
-      },
-      opts = {
-        workspaces = {
-          {
-            name = "2nd Brain",
-            path = "~/2nd Brain",
+      {
+        "epwalsh/obsidian.nvim",
+        version = "*",  -- recommended, use latest release instead of latest commit
+        lazy = true,
+        -- ft = "markdown",
+        -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+        event = {
+          -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+          -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+          -- "BufReadPre path/to/my-vault/**.md",
+          -- "BufNewFile path/to/my-vault/**.md",
+          "BufReadPre " .. vim.fn.expand "~" .. "/2nd Brain/**.md",
+          "BufNewFile " .. vim.fn.expand "~" .. "/2nd Brain/**.md",
+        },
+        dependencies = {
+          -- Required.
+          "nvim-lua/plenary.nvim",
+        },
+        opts = {
+          workspaces = {
+            {
+              name = "2nd Brain",
+              path = "~/2nd Brain",
+            },
           },
         },
-      },
+      }
     }
   '';
   xdg.configFile."nvim/lua/plugins/disabled.lua".text = ''
