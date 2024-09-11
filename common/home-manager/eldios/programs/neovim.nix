@@ -113,6 +113,7 @@ in
   xdg.configFile."nvim/lua/plugins/codeium.lua".text = ''
     return {
       "Exafunction/codeium.nvim",
+      event = 'BufEnter',
       dependencies = {
         "nvim-lua/plenary.nvim",
         "hrsh7th/nvim-cmp",
