@@ -1,15 +1,15 @@
-{ inputs, config, lib, pkgs, nixpkgs-unstable, ... }:
+{ config, lib, pkgs, nixpkgs-unstable, ... }:
 let
   unstablePkgs = import nixpkgs-unstable {
     system = "x86_64-linux";
     config.allowUnfree = true;
   };
 
-  secretspath = builtins.toString inputs.secrets;
+  #secretspath = builtins.toString inputs.secrets;
 in
 {
   system = {
-    stateVersion = "23.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+    stateVersion = "24.05"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = true;
   };
 
@@ -41,20 +41,22 @@ in
 
     cloudflared.enable = true;
 
+    displayManager = {
+      sddm.enable = false;
+
+      sessionPackages = with unstablePkgs; [
+        sway
+        hyprland
+      ];
+    };
+
     xserver = {
       enable = true;
       autorun = true;
 
       displayManager = {
-        sddm.enable = false;
-
         gdm.enable = true;
         gdm.wayland = true;
-
-        sessionPackages = with unstablePkgs; [
-          sway
-          hyprland
-        ];
       };
 
       windowManager = {
@@ -80,7 +82,7 @@ in
     # needed by CUPS for auto-discovery
     avahi = {
       enable = true;
-      nssmdns = true;
+      nssmdns4 = true;
       openFirewall = true;
     };
   };

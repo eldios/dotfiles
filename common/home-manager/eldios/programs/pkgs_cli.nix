@@ -24,7 +24,7 @@
 
       # DevOps stuff
       act # run GitHub Actions Locally
-      awscli2
+      #awscli2 # FIXME: broken
       azure-cli
       dnsutils
       docker
@@ -78,7 +78,7 @@
       niv # easy dependency management for nix projects
       nix-prefetch-git
       nix-prefetch-github
-      nixfmt
+      nixfmt-rfc-style # in future this will be -> nixfmt
       nodePackages.node2nix
       prefetch-npm-deps
 

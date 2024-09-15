@@ -53,7 +53,7 @@
     # needed by CUPS for auto-discovery
     avahi = {
       enable       = true;
-      nssmdns      = true;
+      nssmdns4     = true;
       openFirewall = true;
     };
   };
@@ -87,7 +87,7 @@
       driSupport      = true;
       driSupport32Bit = true;
 
-      extraPackages = with pkgs; [ ];
+      #extraPackages = with pkgs; [ ];
     };
 
     nvidia = {

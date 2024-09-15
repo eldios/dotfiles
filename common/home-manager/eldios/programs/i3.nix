@@ -136,7 +136,6 @@ in
         "${modifier}+Shift+8" = "move container to workspace number 8";
         "${modifier}+Shift+9" = "move container to workspace number 9";
 
-
         "${modifier}+Shift+space" = "floating toggle";
         "${modifier}+space" = " focus mode_toggle";
         "${modifier}+f" = " fullscreen toggle";

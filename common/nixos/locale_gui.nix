@@ -1,8 +1,10 @@
 {
   console.useXkbConfig = true;
   services.xserver = {
-    layout = "us"; #"it"
-    xkbVariant = "";
+    xkb = {
+      layout = "us"; #"it"
+      variant = "";
+    };
   };
 }
 

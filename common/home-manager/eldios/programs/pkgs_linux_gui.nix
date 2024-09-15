@@ -1,19 +1,33 @@
-{ lib, pkgs, nixpkgs-unstable, ... }:
+{ pkgs, nixpkgs-unstable, ... }:
 let
   unstablePkgs = import nixpkgs-unstable {
     system = "x86_64-linux";
     config.allowUnfree = true;
   };
+  appflowy = unstablePkgs.appflowy.overrideAttrs (_finalAttrs: _previousAttrs: {
+    version = "v0.6.8";
+  });
+  patchelfFixes = pkgs.patchelfUnstable.overrideAttrs (_finalAttrs: _previousAttrs: {
+    src = pkgs.fetchFromGitHub {
+      owner = "Patryk27";
+      repo = "patchelf";
+      rev = "527926dd9d7f1468aa12f56afe6dcc976941fedb";
+      sha256 = "sha256-3I089F2kgGMidR4hntxz5CKzZh5xoiUwUsUwLFUEXqE=";
+    };
+  });
+  pcloud = pkgs.pcloud.overrideAttrs (_finalAttrs:previousAttrs: {
+    nativeBuildInputs = previousAttrs.nativeBuildInputs ++ [ patchelfFixes ];
+  });
 
   # obsidian - 2nd brain - patch taken from https://github.com/NixOS/nixpkgs/issues/273611
-  obsidian = lib.throwIf (lib.versionOlder "1.4.16" pkgs.obsidian.version) "Obsidian no longer requires EOL Electron" (
-    pkgs.obsidian.override {
-      electron = pkgs.electron_25.overrideAttrs (_: {
-        preFixup = "patchelf --add-needed ${pkgs.libglvnd}/lib/libEGL.so.1 $out/bin/electron"; # NixOS/nixpkgs#272912
-        meta.knownVulnerabilities = [ ]; # NixOS/nixpkgs#273611
-      });
-    }
-  );
+  #obsidian = lib.throwIf (lib.versionOlder "1.4.16" pkgs.obsidian.version) "Obsidian no longer requires EOL Electron" (
+  #  pkgs.obsidian.override {
+  #    electron = pkgs.electron_25.overrideAttrs (_: {
+  #      preFixup = "patchelf --add-needed ${pkgs.libglvnd}/lib/libEGL.so.1 $out/bin/electron"; # NixOS/nixpkgs#272912
+  #      meta.knownVulnerabilities = [ ]; # NixOS/nixpkgs#273611
+  #    });
+  #  }
+  #);
 in
 {
   services = {
@@ -38,7 +52,7 @@ in
   }; # EOM services
 
   home = {
-    packages = ([ obsidian ]) ++ (with pkgs; [
+    packages = (with pkgs; [
       # utils
       cava
       cavalier
@@ -51,14 +65,12 @@ in
       appimage-run
       arandr
       beeper
-      bitwarden
       cryptomator
       discord
       easyeffects
       geoclue2
       gimp
       inkscape
-      logseq
       kitty
       mpv
       obs-studio
@@ -86,16 +98,24 @@ in
       zoom-us
 
       # 3D printing
-      super-slicer
+      #super-slicer # FIXME: broken
       prusa-slicer
       cura
     ]) # EOM pkgs
       ++ (with unstablePkgs; [
+      bitwarden
       brave
+      logseq
       mailspring
-      vesktop # discord + some fixes
+      obsidian
+      #pdfposter
       variety
-    ]); # EOM unstablePkgs
+      vesktop # discord + some fixes
+    ]) # EOM unstablePkgs
+    ++ [
+      appflowy
+      pcloud
+    ];
   }; # EOM home
 }
 
