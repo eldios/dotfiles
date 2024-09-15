@@ -92,7 +92,7 @@ in
       clipman
       dconf
       dracula-theme # gtk theme
-      eww-wayland # wayland widgets - https://github.com/elkowar/eww
+      eww
       fuseiso
       fuzzel # wayland clone of dmenu
       gammastep
@@ -160,6 +160,8 @@ in
     wrapperFeatures.gtk = true;
 
     package = pkgs.swayfx;
+
+    checkConfig = false;
 
     extraSessionCommands = ''
       export SDL_VIDEODRIVER=wayland

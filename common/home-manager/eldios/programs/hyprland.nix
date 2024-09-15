@@ -37,7 +37,7 @@ in
       clipman
       dconf
       dracula-theme # gtk theme
-      eww-wayland # wayland widgets - https://github.com/elkowar/eww
+      eww
       fuseiso
       fuzzel # wayland clone of dmenu
       gammastep
