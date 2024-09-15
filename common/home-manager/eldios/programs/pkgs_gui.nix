@@ -10,7 +10,6 @@
       ffmpeg
       flameshot
       imagemagick
-      pdfposter
       wmctrl
       yt-dlp
 
