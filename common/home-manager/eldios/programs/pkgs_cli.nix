@@ -1,6 +1,5 @@
 { pkgs, ... }:
 {
-  # Neovim configuration deps
   home = {
     packages = with pkgs; [
       # Golang
@@ -67,6 +66,7 @@
       kubelogin-oidc
       kubernetes-helm
       skaffold
+      teleport
       tfk8s
       vcluster
       yamlfmt
