@@ -3,16 +3,15 @@
 {
   imports =
     [
-      # select hardware from https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
-      # nixos-hardware.nixosModules.common-cpu-intel
-      (modulesPath + "/installer/scan/not-detected.nix")
-      (modulesPath + "/profiles/qemu-guest.nix")
-
       ../../../common/nixos/sops.nix
 
       ../../../common/nixos/locale.nix
+
       ../../../common/nixos/users.nix
       ../../../common/nixos/system.nix
+
+      ../../../common/nixos/programs/neovim.nix
+      ../../../common/nixos/programs/zsh.nix
 
       ../../../common/nixos/virtualisation.nix
 

@@ -1,6 +1,5 @@
 { pkgs, ... }:
 {
-  # Neovim configuration deps
   home = {
     packages = with pkgs; [
       virt-manager
