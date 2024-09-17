@@ -15,7 +15,6 @@ let
   });
 in
 {
-  # Neovim configuration deps
   home = {
     packages = with pkgs; [
       # LSPs

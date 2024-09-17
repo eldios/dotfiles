@@ -10,8 +10,12 @@
       ../../../common/nixos/sops.nix
 
       ../../../common/nixos/locale.nix
+
       ../../../common/nixos/users.nix
       ../../../common/nixos/system.nix
+
+      ../../../common/nixos/programs/neovim.nix
+      ../../../common/nixos/programs/zsh.nix
 
       ../../../common/nixos/virtualisation.nix
 

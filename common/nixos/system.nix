@@ -4,33 +4,6 @@
   systemd.services.zfs-mount.enable = false;
   systemd.services.NetworkManager-wait-online.enable = false;
 
-  environment.variables.EDITOR = "nvim";
-  programs = {
-    zsh.enable = true;
-
-    neovim = {
-      enable = true;
-      defaultEditor = true;
-
-      viAlias = true;
-      vimAlias = true;
-
-      configure = {
-        customRC = ''
-          set modeline
-          colorscheme gruvbox
-          set nu list sw=2 ts=2 expandtab
-        '';
-        package.myVimPackage = with pkgs.vimPlugins; {
-          start = [
-            vim-nix
-            gruvbox
-          ];
-        };
-      };
-    };
-  };
-
   nixpkgs = {
     config = {
       allowUnfree = true;
@@ -110,7 +83,6 @@
     smartmontools
     tmux
     wget
-    zfs
 
     # utils
     age
