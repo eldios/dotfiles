@@ -1,5 +1,7 @@
 { pkgs , ... }:
 {
+  environment.variables.EDITOR = "${pkgs.neovim}/bin/nvim";
+
   programs = {
 
     neovim = {
@@ -25,8 +27,6 @@
     };
 
   };
-
-  environment.variables.EDITOR = "nvim";
 }
 
 # vim: set ts=2 sw=2 et ai list nu
