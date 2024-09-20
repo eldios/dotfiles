@@ -101,18 +101,18 @@ in
       #super-slicer # FIXME: broken
       prusa-slicer
       cura
-    ]) # EOM pkgs
-      ++ (with unstablePkgs; [
+    ]) ++ (with unstablePkgs; [
       bitwarden
       brave
-      logseq
       mailspring
-      obsidian
       #pdfposter
       variety
       vesktop # discord + some fixes
-    ]) # EOM unstablePkgs
-    ++ [
+    ]) ++ (with unstablePkgs; [
+      # 2nd Brain stuff
+      obsidian
+      rnote
+    ]) ++ [
       appflowy
       pcloud
     ];
