@@ -115,6 +115,9 @@ in
     powertop.enable = true;
   };
 
+  # https://wiki.archlinux.org/title/GPGPU#ICD_loader_(libOpenCL.so)
+  environment.etc."ld.so.conf.d/00-usrlib.conf".text = "/usr/lib";
+
   hardware = {
     enableAllFirmware = true;
     enableRedistributableFirmware = true;
@@ -134,6 +137,7 @@ in
       };
     };
 
+    # https://wiki.archlinux.org/title/GPGPU
     opengl = {
       enable = true;
       driSupport = true;
