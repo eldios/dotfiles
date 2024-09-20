@@ -23,7 +23,7 @@
 
       # DevOps stuff
       act # run GitHub Actions Locally
-      #awscli2 # FIXME: broken
+      awscli2
       azure-cli
       dnsutils
       docker
