@@ -105,7 +105,7 @@ in
       bitwarden
       brave
       mailspring
-      #pdfposter
+      #pdfposter # FIXME: broken
       variety
       vesktop # discord + some fixes
     ]) ++ (with unstablePkgs; [
