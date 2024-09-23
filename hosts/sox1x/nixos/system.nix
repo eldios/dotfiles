@@ -13,18 +13,26 @@
 
     cloudflared.enable = true;
 
+    libinput = {
+      enable = true;
+      touchpad = {
+        clickMethod = "buttonareas";
+        #clickMethod = "clickfinger";
+        disableWhileTyping = true;
+      };
+    };
+
+    displayManager = {
+      defaultSession = "cinnamon";
+      sessionPackages = with pkgs; [ 
+        sway
+        hyprland
+      ];
+    };
+
     xserver = {
       enable = true;
       autorun = true;
-
-      libinput = {
-        enable = true;
-        touchpad = {
-          clickMethod = "buttonareas";
-          #clickMethod = "clickfinger";
-          disableWhileTyping = true;
-        };
-      };
 
       videoDrivers = [
         "nvidia"
@@ -35,16 +43,8 @@
       };
 
       displayManager = {
-
-        defaultSession = "cinnamon";
-
         gdm.enable = true;
         gdm.wayland = true;
-
-        sessionPackages = with pkgs; [ 
-          sway
-          hyprland
-        ];
       };
     };
 
