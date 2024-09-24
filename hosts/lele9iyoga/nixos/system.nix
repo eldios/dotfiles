@@ -12,11 +12,17 @@ let
     src = unstablePkgs.fetchFromGitHub {
       owner = "smunaut";
       repo = "compute-runtime";
-      rev = "fix-arc";
-      hash = "sha256-+bx6P1vZlgolHrINzkH4ukXT+hgAtH18DOX6vb9vPVs=";
+      rev = "3bc54ac0140cc6ff985590dc90330bb8229535c5";
+      hash = "sha256-aamf9WeWihzfvAsFRA5RanBr8+flc2dS+hjV+jOfZKQ=";
     };
   });
-
+  #davinci-resolve-studio = unstablePkgs.davinci-resolve-studio.override (old: {
+  #  buildFHSEnv = a: (old.buildFHSEnv (a // {
+  #    extraBwrapArgs = a.extraBwrapArgs ++ [
+  #      "--bind /run/opengl-driver/etc/OpenCL /etc/OpenCL"
+  #    ];
+  #  }));
+  #});
 in
 {
   system = {
@@ -70,6 +76,8 @@ in
       enable = true;
       autorun = true;
 
+      videoDrivers = [ "modesetting" ];
+
       displayManager = {
         gdm.enable = true;
         gdm.wayland = true;
@@ -107,7 +115,7 @@ in
   virtualisation.waydroid.enable = false;
   virtualisation.docker.storageDriver = "btrfs";
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = (with pkgs; [
     sof-firmware
     qmk
     qmk-udev-rules
@@ -115,10 +123,17 @@ in
     vial
     gvfs
     jmtpfs
-  ];
+  ]) ++ (with unstablePkgs; [
+    davinci-resolve-studio
+  ]);
 
   programs = {
-    steam.enable = true;
+    steam = {
+      enable = true;
+      extraCompatPackages = with pkgs; [
+        proton-ge-bin
+      ];
+    };
     streamdeck-ui = {
       enable = true;
       autoStart = true;
@@ -133,6 +148,8 @@ in
 
   # https://wiki.archlinux.org/title/GPGPU#ICD_loader_(libOpenCL.so)
   environment.etc."ld.so.conf.d/00-usrlib.conf".text = "/usr/lib";
+
+  environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; };
 
   hardware = {
     enableAllFirmware = true;
@@ -158,18 +175,16 @@ in
     opengl = {
       enable = true;
       driSupport = true;
-      #driSupport32Bit = true;
+      driSupport32Bit = true;
       extraPackages = with pkgs; [
-        intel-media-driver # LIBVA_DRIVER_NAME=iHD
-        #vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-        vaapiVdpau
-        libvdpau-va-gl
         intel-graphics-compiler
-        intel-ocl
-        opencl-info
-        opencl-headers
+        intel-media-driver # LIBVA_DRIVER_NAME=iHD
+        onevpl-intel-gpu
       ] ++ [
         intel-compute-runtime-fix-arc
+      ];
+      extraPackages32 = with pkgs.pkgsi686Linux; [
+        intel-vaapi-driver
       ];
     };
 
