@@ -19,6 +19,7 @@
     sessionVariables = {
       TERM = "xterm-256color";
       NIXOS_OZONE_WL = "1";
+      LIBVA_DRIVER_NAME = "iHD";
     };
   }; # EOM home
 
