@@ -18,6 +18,13 @@ let
   pcloud = pkgs.pcloud.overrideAttrs (_finalAttrs:previousAttrs: {
     nativeBuildInputs = previousAttrs.nativeBuildInputs ++ [ patchelfFixes ];
   });
+  mailspring = unstablePkgs.mailspring.overrideAttrs (_finalAttrs: _previousAttrs: {
+    version = "1.14.0";
+    src = unstablePkgs.fetchurl {
+      url = "https://github.com/Foundry376/Mailspring/releases/download/${_finalAttrs.version}/mailspring-${_finalAttrs.version}-amd64.deb";
+      hash = "sha256-ZpmL6d0QkHKKxn+KF1OEDeAb1bFp9uohBobCvblE+L8=";
+    };
+  });
 
   # obsidian - 2nd brain - patch taken from https://github.com/NixOS/nixpkgs/issues/273611
   #obsidian = lib.throwIf (lib.versionOlder "1.4.16" pkgs.obsidian.version) "Obsidian no longer requires EOL Electron" (
@@ -104,7 +111,6 @@ in
     ]) ++ (with unstablePkgs; [
       bitwarden
       brave
-      mailspring
       #pdfposter # FIXME: broken
       variety
       vesktop # discord + some fixes
@@ -115,6 +121,7 @@ in
     ]) ++ [
       appflowy
       pcloud
+      mailspring
     ];
   }; # EOM home
 }
