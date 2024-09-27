@@ -75,6 +75,7 @@ in
       cryptomator
       discord
       easyeffects
+      filezilla
       geoclue2
       gimp
       inkscape
