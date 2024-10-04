@@ -6,16 +6,16 @@ let
   };
 
   #secretspath = builtins.toString inputs.secrets;
-  intel-compute-runtime-fix-arc = unstablePkgs.intel-compute-runtime.overrideAttrs (_finalAttrs: _previousAttrs: {
-    version = "fix-arc";
+  #intel-compute-runtime-fix-arc = unstablePkgs.intel-compute-runtime.overrideAttrs (_finalAttrs: _previousAttrs: {
+  #  version = "fix-arc";
 
-    src = unstablePkgs.fetchFromGitHub {
-      owner = "smunaut";
-      repo = "compute-runtime";
-      rev = "3bc54ac0140cc6ff985590dc90330bb8229535c5";
-      hash = "sha256-aamf9WeWihzfvAsFRA5RanBr8+flc2dS+hjV+jOfZKQ=";
-    };
-  });
+  #  src = unstablePkgs.fetchFromGitHub {
+  #    owner = "smunaut";
+  #    repo = "compute-runtime";
+  #    rev = "3bc54ac0140cc6ff985590dc90330bb8229535c5";
+  #    hash = "sha256-aamf9WeWihzfvAsFRA5RanBr8+flc2dS+hjV+jOfZKQ=";
+  #  };
+  #});
   #davinci-resolve-studio = unstablePkgs.davinci-resolve-studio.override (old: {
   #  buildFHSEnv = a: (old.buildFHSEnv (a // {
   #    extraBwrapArgs = a.extraBwrapArgs ++ [
@@ -30,7 +30,10 @@ in
     autoUpgrade.enable = true;
   };
 
-  time.timeZone = lib.mkForce "Europe/Rome";
+  # default
+  # time.timeZone = lib.mkForce "Europe/Rome";
+  # Los Angeles
+  time.timeZone = lib.mkForce "America/Los_Angeles";
 
   services = {
     # don’t shutdown when power button is short-pressed
@@ -180,9 +183,8 @@ in
         intel-graphics-compiler
         intel-media-driver # LIBVA_DRIVER_NAME=iHD
         onevpl-intel-gpu
-      ] ++ [
-        intel-compute-runtime-fix-arc
-      ];
+        intel-compute-runtime
+      ] ++ [ ];
       extraPackages32 = with pkgs.pkgsi686Linux; [
         intel-vaapi-driver
       ];
