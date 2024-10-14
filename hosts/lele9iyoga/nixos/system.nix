@@ -30,10 +30,10 @@ in
     autoUpgrade.enable = true;
   };
 
-  # default
-  # time.timeZone = lib.mkForce "Europe/Rome";
+  # Italy - Rome
+  time.timeZone = lib.mkForce "Europe/Rome";
   # Los Angeles
-  time.timeZone = lib.mkForce "America/Los_Angeles";
+  # time.timeZone = lib.mkForce "America/Los_Angeles";
 
   services = {
     # don’t shutdown when power button is short-pressed
