@@ -185,9 +185,9 @@ in
         onevpl-intel-gpu
         intel-compute-runtime
       ] ++ [ ];
-      extraPackages32 = with pkgs.pkgsi686Linux; [
-        intel-vaapi-driver
-      ];
+      #extraPackages32 = with pkgs.pkgsi686Linux; [
+      #  intel-vaapi-driver
+      #];
     };
 
     keyboard.qmk.enable = true;
