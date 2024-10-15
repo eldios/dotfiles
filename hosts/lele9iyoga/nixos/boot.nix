@@ -1,10 +1,16 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   boot = {
     kernel.sysctl = {
       "vm.swappiness" = 5;
     };
-    kernelModules = [ "kvm-intel" ];
+    kernelModules = [
+      "kvm-intel"
+      "v4l2loopback"
+    ];
+    extraModulePackages = with config.boot.kernelPackages; [
+      v4l2loopback
+    ];
 
     supportedFilesystems = [ "btrfs" ];
 
@@ -13,11 +19,10 @@
     # latest non-deprecated Kernel that support ZFS
     #kernelPackages = pkgs.linuxPackages_6_6;
 
-    kernelParams =
-      [
-        "nohibernate"
-        "snd_intel_dspcfg.dsp_driver=1" # if 3 and 1 don't work move to Pulseaudio
-      ];
+    kernelParams = [
+      "nohibernate"
+      "snd_intel_dspcfg.dsp_driver=1" # if 3 and 1 don't work move to Pulseaudio
+    ];
 
     initrd = {
       supportedFilesystems = [ "btrfs" ];
