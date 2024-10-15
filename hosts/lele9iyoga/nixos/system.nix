@@ -119,13 +119,14 @@ in
   virtualisation.docker.storageDriver = "btrfs";
 
   environment.systemPackages = (with pkgs; [
-    sof-firmware
+    gvfs
+    jmtpfs
     qmk
     qmk-udev-rules
     qmk_hid
+    sof-firmware
+    v4l-utils
     vial
-    gvfs
-    jmtpfs
   ]) ++ (with unstablePkgs; [
     davinci-resolve-studio
   ]);
@@ -180,6 +181,8 @@ in
       driSupport = true;
       driSupport32Bit = true;
       extraPackages = with pkgs; [
+        libva
+        libva-utils
         intel-graphics-compiler
         intel-media-driver # LIBVA_DRIVER_NAME=iHD
         onevpl-intel-gpu
