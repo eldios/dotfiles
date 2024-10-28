@@ -78,6 +78,7 @@ in
       filezilla
       geoclue2
       gimp
+      gparted
       inkscape
       kitty
       mpv

@@ -21,6 +21,7 @@ in
       vlc
       wine
     ]) ++ (with unstablePkgs; [
+      audacity
     ]) ++ ([
       inputs.zen-browser.packages."${system}".specific
     ]);
