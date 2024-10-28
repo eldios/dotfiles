@@ -12,6 +12,7 @@
       ncdu
       networkmanager
       ntfs3g
+      p7zip
       powertop
       yt-dlp
     ];
