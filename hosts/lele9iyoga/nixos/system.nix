@@ -132,11 +132,6 @@ in
   ]);
 
   programs = {
-    nix-ld = {
-      enable = true;
-      libraries = [];
-    };
-
     steam = {
       enable = true;
       extraCompatPackages = with pkgs; [
@@ -157,67 +152,6 @@ in
 
   # https://wiki.archlinux.org/title/GPGPU#ICD_loader_(libOpenCL.so)
   environment.etc."ld.so.conf.d/00-usrlib.conf".text = "/usr/lib";
-
-  systemd.services.portmaster = {
-    enable = true;
-
-    description = "Portmaster by Safing";
-
-    unitConfig = {
-      Documentation = [
-        "https://safing.io"
-        "https://docs.safing.io"
-      ];
-      Before = [
-        "nss-lookup.target"
-        "network.target"
-        "shutdown.target"
-      ];
-      After = "systemd-networkd.service";
-      Conflicts = [
-        "shutdown.target"
-        "firewalld.service"
-      ];
-      Wants = "nss-lookup.target";
-    };
-
-    serviceConfig = {
-      Type = "simple";
-      Restart = "on-failure";
-      RestartSec = 10;
-      LockPersonality = "yes";
-      MemoryDenyWriteExecute = "yes";
-      NoNewPrivileges = "yes";
-      PrivateTmp = "yes";
-      PIDFile = "/opt/safing/portmaster/core-lock.pid";
-      Environment = [
-        "LOGLEVEL=info"
-        "PORTMASTER_ARGS="
-      ];
-      EnvironmentFile = "-/etc/default/portmaster";
-      ProtectSystem = "true";
-      #ReadWritePaths = "/var/lib/portmaster";
-      #ReadWritePaths = "/run/xtables.lock";
-      RestrictAddressFamilies = "AF_UNIX AF_NETLINK AF_INET AF_INET6";
-      RestrictNamespaces = "yes";
-      # In future version portmaster will require access to user home
-      # directories to verify application permissions.
-      ProtectHome = "read-only";
-      ProtectKernelTunables = "yes";
-      ProtectKernelLogs = "yes";
-      ProtectControlGroups = "yes";
-      PrivateDevices = "yes";
-      AmbientCapabilities = "cap_chown cap_kill cap_net_admin cap_net_bind_service cap_net_broadcast cap_net_raw cap_sys_module cap_sys_ptrace cap_dac_override cap_fowner cap_fsetid";
-      CapabilityBoundingSet = "cap_chown cap_kill cap_net_admin cap_net_bind_service cap_net_broadcast cap_net_raw cap_sys_module cap_sys_ptrace cap_dac_override cap_fowner cap_fsetid";
-      # SystemCallArchitectures = "native";
-      # SystemCallFilter = "@system-service @module";
-      # SystemCallErrorNumber = "EPERM";
-      ExecStart = "/opt/safing/portmaster/portmaster-start --data /opt/safing/portmaster core -- $PORTMASTER_ARGS";
-      ExecStopPost = "-/opt/safing/portmaster/portmaster-start recover-iptables";
-    };
-
-    wantedBy = [ "multi-user.target" ];
-  };
 
   environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; };
 

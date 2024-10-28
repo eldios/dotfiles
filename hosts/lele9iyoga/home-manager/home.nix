@@ -8,16 +8,6 @@
     };
   }; # EOM programs
 
-  xdg.desktopEntries = {
-    portmaster = {
-      name = "Portmaster";
-      exec = "/opt/safing/portmaster/portmaster-start app --data=/opt/safing/portmaster";
-      terminal = false;
-      categories = [ "Application" "System" ];
-      genericName = "Portmaster";
-    };
-  };
-
   home = {
     stateVersion = "24.05"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
 
