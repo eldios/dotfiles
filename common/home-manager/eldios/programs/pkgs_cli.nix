@@ -25,6 +25,9 @@
       act # run GitHub Actions Locally
       awscli2
       azure-cli
+      bc
+      cdrkit
+      ddrescue
       dnsutils
       docker
       doctl # Digital Ocean CLI tool
