@@ -74,6 +74,7 @@
     binutils
     btrfs-progs
     git
+    gptfdisk
     libgcc
     nix-tree
     pinentry-curses # required by GPG
