@@ -3,8 +3,7 @@
   users.mutableUsers = false;
 
   users.users.eldios = {
-    #shell = pkgs.zsh;
-    shell = pkgs.nushell;
+    shell = pkgs.zsh;
     isNormalUser = true;
     extraGroups = [
       "docker"
