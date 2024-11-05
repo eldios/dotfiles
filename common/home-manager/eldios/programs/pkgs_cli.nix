@@ -23,6 +23,8 @@
 
       # DevOps stuff
       act # run GitHub Actions Locally
+      age
+      atac
       awscli2
       azure-cli
       bc
@@ -38,6 +40,8 @@
       linode-cli
       metal-cli # official Equinix Metal CLI
       opentofu
+      portal
+      sops
       sshs
       terracognita
       terraform
