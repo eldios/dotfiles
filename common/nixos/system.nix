@@ -1,4 +1,7 @@
 { inputs, pkgs, config, lib, ... }:
+let
+  binDir = "/etc/profiles/per-user/eldios/bin";
+in
 {
   zramSwap.enable = true;
   systemd.services.zfs-mount.enable = false;
@@ -73,6 +76,10 @@
     enable = true;
     libraries = [ ];
   };
+
+  environment.shells = [
+    "${binDir}/nu"
+  ];
 
   environment.systemPackages = with pkgs; [
     # hard reqs
