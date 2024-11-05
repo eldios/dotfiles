@@ -38,6 +38,7 @@
       linode-cli
       metal-cli # official Equinix Metal CLI
       opentofu
+      sshs
       terracognita
       terraform
       terraform-compliance

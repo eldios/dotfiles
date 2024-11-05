@@ -1,6 +1,15 @@
-{ pkgs, ... }:
+{ pkgs, nixpkgs-unstable, ... }:
 let
+  unstablePkgs = import nixpkgs-unstable {
+    system = "x86_64-linux";
+    config.allowUnfree = true;
+  };
+
   myFastFetchOpt = "-s 'Title:Separator:OS:Host:Uptime:Separator:Packages:Kernel:Shell:WM:Terminal:TerminalFont:Separator:CPU:GPU:Memory:Swap:Disk:LocalIp'";
+
+  nvim = unstablePkgs.neovim;
+
+  binDir = "/etc/profiles/per-user/eldios/bin";
 in
 {
 
@@ -27,7 +36,7 @@ in
       enable = true;
       enableCompletion = true;
       autosuggestion = {
-          enable = true;
+        enable = true;
       };
 
       syntaxHighlighting = {
@@ -36,8 +45,8 @@ in
 
       localVariables = {
         TERM = "xterm-256color";
-        EDITOR = "${pkgs.neovim}/bin/nvim";
-        VISUAL = "${pkgs.neovim}/bin/nvim";
+        EDITOR = "${binDir}/nvim";
+        VISUAL = "${binDir}/nvim";
 
         ZELLIJ_AUTO_ATTACH = false;
         ZELLIJ_AUTO_EXIT = false;
@@ -89,13 +98,13 @@ in
         cgt = "cg test";
 
         ipcalc = "sipcalc";
-        ff = "${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}";
+        ff = "${binDir}/fastfetch ${myFastFetchOpt}";
 
         nixs = "nix search nixpkgs";
-        nixe = "$EDITOR $HOME/.dotfiles/hosts/$(hostname)";
+        nixe = "$EDITOR $HOME/dotfiles/hosts/$(hostname)";
 
-        nixu = "sudo nixos-rebuild switch --impure --flake $HOME/.dotfiles";
-        nixU = "sudo nix flake update $HOME/.dotfiles && nixu";
+        nixu = "sudo nixos-rebuild switch --impure --flake $HOME/dotfiles";
+        nixU = "sudo nix flake update $HOME/dotfiles && nixu";
 
         nixa = "nixe && nixu";
         nixA = "nixe && nixU";
@@ -109,7 +118,7 @@ in
         hmA = "hme && hmU";
         hm-cleanup = "home-manager expire-generations '-7 days' && nix-store --gc";
         hm-edit = "home-manager edit";
-        hm-update = "home-manager switch -b backup --flake $HOME/.dotfiles'";
+        hm-update = "home-manager switch -b backup --flake $HOME/dotfiles'";
 
         SHX = "exec \$SHELL -l";
       };
@@ -129,12 +138,12 @@ in
         bindkey '^N' history-beginning-search-forward
 
         zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
-        source <(${pkgs.carapace}/bin/carapace _carapace zsh)
+        source <(${binDir}/carapace _carapace zsh)
 
-        eval "$(${pkgs.thefuck}/bin/thefuck --alias)"
-        eval "$(${pkgs.zoxide}/bin/zoxide init zsh)"
+        eval "$(${binDir}/thefuck --alias)"
+        eval "$(${binDir}/zoxide init zsh)"
 
-        ${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}
+        ${binDir}/fastfetch ${myFastFetchOpt}
       '';
     }; # EOM zsh
 
