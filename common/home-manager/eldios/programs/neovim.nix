@@ -157,9 +157,13 @@ in
         config = function()
           require("codeium").setup({
             enable_chat = "true",
-            tools = {
-              language_server = "${codeium}/bin/codeium_language_server"
-            }
+            virtual_text = {
+              enabled = true
+            },
+            wrapper = '${pkgs.steam-run}/bin/steam-run'
+            ---tools = {
+            ---  language_server = "${codeium}/bin/codeium_language_server"
+            ---}
           })
         end
       }
@@ -219,6 +223,8 @@ in
 
       #extraPackages = with pkgs; [
       #];
+
+      package = unstablePkgs.neovim-unwrapped;
 
       plugins = with pkgs.vimPlugins; [
         nvim-cmp

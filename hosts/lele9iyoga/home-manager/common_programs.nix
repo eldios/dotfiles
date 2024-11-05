@@ -9,6 +9,7 @@
     ../../../common/home-manager/eldios/programs/zellij.nix
 
     ../../../common/home-manager/eldios/programs/zsh.nix
+    ../../../common/home-manager/eldios/programs/nushell.nix
 
     ../../../common/home-manager/eldios/programs/ssh.nix
     ../../../common/home-manager/eldios/programs/ssh-agents.nix
