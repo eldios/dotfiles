@@ -1,6 +1,8 @@
 { inputs, config, ... }:
 let
   secretspath = builtins.toString inputs.secrets;
+
+  binDir = "/etc/profiles/per-user/eldios/bin";
 in
 {
   sops.secrets = {
@@ -12,6 +14,8 @@ in
 
   users.users.eldios = {
     hashedPasswordFile = config.sops.secrets."passwords/lele9iyoga/eldios".path;
+
+    shell = "${binDir}/nu";
 
     extraGroups = [
       "input" # needed by xRemap
