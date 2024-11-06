@@ -341,11 +341,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1730797322,
-        "narHash": "sha256-cH9emjYIbDYTde/CKOmU97rh7sKuyfedzPcTz4OTJkE=",
+        "lastModified": 1730828750,
+        "narHash": "sha256-XrnZLkLiBYNlwV5gus/8DT7nncF1TS5la6Be7rdVOpI=",
         "owner": "nixos",
         "repo": "nixos-hardware",
-        "rev": "1b0b927860d7eb367ee6a3123ddeb7a8e24bd836",
+        "rev": "2e78b1af8025108ecd6edaa3ab09695b8a4d3d55",
         "type": "github"
       },
       "original": {
@@ -372,11 +372,11 @@
     },
     "nixpkgs-darwin": {
       "locked": {
-        "lastModified": 1730741070,
-        "narHash": "sha256-edm8WG19kWozJ/GqyYx2VjW99EdhjKwbY3ZwdlPAAlo=",
+        "lastModified": 1730801083,
+        "narHash": "sha256-JondW3tjHomfZ/9ZA4PobsO2Tiz4AYqPJRHObuutAps=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d063c1dd113c91ab27959ba540c0d9753409edf3",
+        "rev": "12d2bf6310b6b71b4a76ae9c5f2ebec4e3f60bdb",
         "type": "github"
       },
       "original": {
@@ -545,10 +545,10 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1726404264,
-        "narHash": "sha256-sy/0Fnk5NH06PcSCjp0e/lc+iWevuOLOiRlIa3083fw=",
+        "lastModified": 1730849901,
+        "narHash": "sha256-W4v51+3xro7kBi6voYfZ3zYDcEAE0Wqjoyl7KBeF8D4=",
         "ref": "main",
-        "rev": "a289ecf8f6c896b7c005fa477c52e6e8e4dc2e3d",
+        "rev": "e84d1900d265ef8b91df3a53fb6f609905a2ed54",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/eldios/secrets.git"

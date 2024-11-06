@@ -133,6 +133,49 @@ in
   xdg.configFile."nvim/lua/config/autocmds.lua".text = ''
   '';
 
+  xdg.configFile."nvim/lua/plugins/lulz.lua".text = ''
+    return {
+      {
+        "Eandrju/cellular-automaton.nvim",
+      },
+      {
+        "tamton-aquib/duck.nvim",
+        config = function()
+          vim.keymap.set("n", "<leader>dd", function() require("duck").hatch("🐈") end, {})
+          vim.keymap.set("n", "<leader>dk", function() require("duck").cook() end, {})
+          vim.keymap.set("n", "<leader>da", function() require("duck").cook_all() end, {})
+        end
+      },
+      {
+        "AndrewRadev/discotheque.vim",
+      },
+      {
+        "AndrewRadev/typewriter.vim",
+      },
+      {
+        "rhysd/vim-syntax-christmas-tree",
+      },
+    }
+  '';
+  xdg.configFile."nvim/lua/plugins/markdown.lua".text = ''
+    return {
+      {
+        "MeanderingProgrammer/render-markdown.nvim",
+        main = "render-markdown",
+        name = "render-markdown",
+        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+        opts = {},
+      },
+      {
+        "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreview", "MarkdownPreviewStop", "MarkdownPreviewToggle" },
+        ft = { "markdown" },
+        build = function()
+          vim.fn["mkdp#util#install"]()
+        end,
+      },
+    }
+  '';
   xdg.configFile."nvim/lua/plugins/cmp.lua".text = ''
     return {
       {
