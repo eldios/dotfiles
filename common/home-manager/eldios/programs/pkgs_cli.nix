@@ -55,6 +55,7 @@
       tflint
       tflint-plugins.tflint-ruleset-aws
       tfswitch
+      tmate
       vultr-cli
 
       # Kubernetes stuff

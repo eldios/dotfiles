@@ -5,10 +5,12 @@ let
   binDir = "/etc/profiles/per-user/eldios/bin";
 in
 {
-  sops.secrets = {
-    "passwords/lele9iyoga/eldios" = {
-      sopsFile = "${secretspath}/lele9iyoga.yaml";
-      neededForUsers = true;
+  sops = {
+    secrets = {
+      "passwords/lele9iyoga/eldios" = {
+        sopsFile = "${secretspath}/lele9iyoga.yaml";
+        neededForUsers = true;
+      };
     };
   };
 

@@ -73,15 +73,18 @@ in
       arandr
       beeper
       cryptomator
+      cool-retro-term
       discord
       easyeffects
       filezilla
       geoclue2
       gimp
       gparted
+      guardian-agent # Secure ssh-agent forwarding for Mosh and SSH
       inkscape
       kitty
       mpv
+      mosh
       obs-studio
       openlens
       paperview
