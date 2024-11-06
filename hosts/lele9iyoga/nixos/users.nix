@@ -17,7 +17,7 @@ in
   users.users.eldios = {
     hashedPasswordFile = config.sops.secrets."passwords/lele9iyoga/eldios".path;
 
-    shell = "${binDir}/nu";
+    shell = "${binDir}/zsh";
 
     extraGroups = [
       "input" # needed by xRemap
