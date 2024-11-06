@@ -142,6 +142,7 @@ in
     alias tfa = tf apply -auto-approve
     alias tfd = tf destroy -auto-approve
     alias tfp = tf plan
+    alias v = nvim
     alias y = yazi
 
     ${binDir}/fastfetch ${myFastFetchOpt}
