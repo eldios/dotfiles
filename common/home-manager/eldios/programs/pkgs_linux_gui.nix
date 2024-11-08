@@ -72,8 +72,8 @@ in
       appimage-run
       arandr
       beeper
-      cryptomator
       cool-retro-term
+      cryptomator
       discord
       easyeffects
       filezilla
@@ -82,16 +82,20 @@ in
       gparted
       guardian-agent # Secure ssh-agent forwarding for Mosh and SSH
       inkscape
+      kazam
       kitty
-      mpv
       mosh
+      mpv
       obs-studio
       openlens
       paperview
       pavucontrol
       pcmanfm
+      recapp
       redshift
+      screenkey
       scribus
+      showmethekey
       signal-desktop
       slack
       spotify-unwrapped
@@ -101,11 +105,14 @@ in
       telegram-desktop
       unclutter # unclutter -idle 1 -root -grab -visible
       vlc
+      vokoscreen
+      vokoscreen-ng
       vscode
       whatsapp-for-linux
       widevine-cdm
       xclip
       xdotool
+      xscast
       zathura
       zoom-us
 
