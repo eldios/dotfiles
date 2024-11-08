@@ -73,6 +73,21 @@ in
       window = {
         border = 0;
         hideEdgeBorders = "both";
+
+        commands = [
+          {
+            command = "border off";
+            criteria = {
+              class = "screenkey";
+            };
+          }
+          {
+            command = "floating true";
+            criteria = {
+              class = "screenkey";
+            };
+          }
+        ];
       };
 
       assigns = { };
