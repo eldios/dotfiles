@@ -41,6 +41,7 @@
       metal-cli # official Equinix Metal CLI
       opentofu
       portal
+      postman
       sops
       sshs
       terracognita

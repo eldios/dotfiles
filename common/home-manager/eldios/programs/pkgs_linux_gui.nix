@@ -80,6 +80,7 @@ in
       geoclue2
       gimp
       gparted
+      gromit-mpx
       guardian-agent # Secure ssh-agent forwarding for Mosh and SSH
       inkscape
       kitty
