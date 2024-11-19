@@ -138,10 +138,6 @@ in
         proton-ge-bin
       ];
     };
-    streamdeck-ui = {
-      enable = true;
-      autoStart = true;
-    };
   };
 
   powerManagement = {
