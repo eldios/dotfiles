@@ -64,7 +64,9 @@ in
       cava
       cavalier
       graphviz
+      mission-center
       playerctl
+      resources
 
       # GUI stuff
       alacritty # gpu accelerated terminal
@@ -123,8 +125,10 @@ in
       vesktop # discord + some fixes
     ]) ++ (with unstablePkgs; [
       # 2nd Brain stuff
+      cameractrls
       obsidian
       rnote
+      streamcontroller
     ]) ++ [
       appflowy
       pcloud
