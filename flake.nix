@@ -120,38 +120,6 @@
         ];
       };
 
-      # Hetzner Kubernetes
-      nixosConfigurations.fsn-c1 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { index = 1; } // commonSpecialArgs;
-        modules = [
-          ./hosts/fsn-c1/nixos/k3s.nix
-          ./hosts/fsn-cN/nixos/configuration.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-        ];
-      };
-      nixosConfigurations.fsn-c2 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { index = 2; } // commonSpecialArgs;
-        modules = [
-          ./hosts/fsn-c2/nixos/k3s.nix
-          ./hosts/fsn-cN/nixos/configuration.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-        ];
-      };
-      nixosConfigurations.fsn-c3 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { index = 3; } // commonSpecialArgs;
-        modules = [
-          ./hosts/fsn-c3/nixos/k3s.nix
-          ./hosts/fsn-cN/nixos/configuration.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-        ];
-      };
-
       # SOX1 Xtreme Gen2
       nixosConfigurations.sox1x = nixpkgs.lib.nixosSystem {
         specialArgs = commonSpecialArgs;
