@@ -76,6 +76,17 @@
           ;
       };
 
+      # Lele's AMD 8845 AceMagic NUC
+      nixosConfigurations.lele8845ace = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = commonSpecialArgs;
+        modules = [
+          ./hosts/lele8845ace/nixos/configuration.nix
+          disko.nixosModules.disko
+          sops-nix.nixosModules.sops
+        ];
+      };
+
       # Lele's Yoga9i
       nixosConfigurations.lele9iyoga = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
