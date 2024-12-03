@@ -79,7 +79,7 @@ in
       enable = true;
       autorun = true;
 
-      videoDrivers = [ "modesetting" ];
+      videoDrivers = [ "amdgpu" ];
 
       displayManager = {
         gdm.enable = true;
@@ -119,6 +119,7 @@ in
   virtualisation.docker.storageDriver = "btrfs";
 
   environment.systemPackages = (with pkgs; [
+    clinfo
     gvfs
     jmtpfs
     qmk
@@ -127,9 +128,7 @@ in
     sof-firmware
     v4l-utils
     vial
-  ]) ++ (with unstablePkgs; [
-    davinci-resolve-studio
-  ]);
+  ]) ++ (with unstablePkgs; [ ]);
 
   programs = {
     steam = {
@@ -171,19 +170,17 @@ in
     };
 
     # https://wiki.archlinux.org/title/GPGPU
-    # intel-compute-runtime
     opengl = {
       enable = true;
       driSupport = true;
       driSupport32Bit = true;
       extraPackages = with pkgs; [
-        libva
-        libva-utils
-        intel-graphics-compiler
-        intel-media-driver # LIBVA_DRIVER_NAME=iHD
-        onevpl-intel-gpu
-        intel-compute-runtime
-      ] ++ [ ];
+        amdvlk
+        rocmPackages.clr.icd
+      ] ;
+      extraPackages32 = with pkgs; [
+        driversi686Linux.amdvlk
+      ] ;
     };
 
     keyboard.qmk.enable = true;
