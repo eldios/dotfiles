@@ -26,7 +26,7 @@ let
 in
 {
   system = {
-    stateVersion = "24.05"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+    stateVersion = "24.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = true;
   };
 
@@ -174,14 +174,13 @@ in
     # intel-compute-runtime
     opengl = {
       enable = true;
-      driSupport = true;
       driSupport32Bit = true;
       extraPackages = with pkgs; [
         libva
         libva-utils
         intel-graphics-compiler
         intel-media-driver # LIBVA_DRIVER_NAME=iHD
-        onevpl-intel-gpu
+        vpl-intel-gpu
         intel-compute-runtime
       ] ++ [ ];
       #extraPackages32 = with pkgs.pkgsi686Linux; [
@@ -204,7 +203,6 @@ in
   };
 
   # audio
-  sound.enable = true;
   services.pipewire = {
     enable = true;
     audio.enable = true;

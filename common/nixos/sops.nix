@@ -7,6 +7,8 @@ in
     defaultSopsFile = "${secretspath}/secrets.yaml";
     validateSopsFiles = true;
 
+    gnupg.sshKeyPaths = [];
+
     age = {
       sshKeyPaths = [
         "/etc/ssh/ssh_host_ed25519_key"

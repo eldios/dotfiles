@@ -1,4 +1,4 @@
-{ inputs, config, ... }:
+{ lib, inputs, config, ... }:
 let
   secretspath = builtins.toString inputs.secrets;
 
@@ -17,7 +17,7 @@ in
   users.users.eldios = {
     hashedPasswordFile = config.sops.secrets."passwords/lele9iyoga/eldios".path;
 
-    shell = "${binDir}/zsh";
+    shell = lib.mkForce "${binDir}/zsh";
 
     extraGroups = [
       "input" # needed by xRemap

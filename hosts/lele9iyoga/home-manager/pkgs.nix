@@ -13,7 +13,6 @@ in
       dbeaver-bin
       guvcview
       quickemu
-      quickgui
       remmina
       spice
       uqm
