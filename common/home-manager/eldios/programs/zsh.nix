@@ -16,9 +16,10 @@ in
   home = {
     packages = with pkgs; [
       carapace
-      colorls # like `ls --color=auto -F` but cooler
+      #colorls # like `ls --color=auto -F` but cooler
       fastfetch
       fzf
+      lsd
       nnn
       thefuck
       zoxide
@@ -66,7 +67,7 @@ in
       };
 
       shellAliases = {
-        ls = "colorls";
+        ls = "lsd";
         ll = "ls -lh";
         l = "ls -lhtra";
 
