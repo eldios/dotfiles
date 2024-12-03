@@ -22,6 +22,7 @@ in
       wine
     ]) ++ (with unstablePkgs; [
       audacity
+      davinci-resolve-studio
     ]) ++ ([
       inputs.zen-browser.packages."${system}".specific
     ]);
