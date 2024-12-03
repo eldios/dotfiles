@@ -102,7 +102,6 @@ in
     btop
     byobu
     colorls # like `ls --color=auto -F` but cooler
-    cryptomator
     fastfetch
     file
     ffmpeg
