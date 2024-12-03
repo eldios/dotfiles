@@ -171,16 +171,15 @@ in
     };
 
     # https://wiki.archlinux.org/title/GPGPU
-    # intel-compute-runtime
-    opengl = {
+    graphics = {
       enable = true;
-      driSupport32Bit = true;
+      enable32Bit = true;
       extraPackages = with pkgs; [
         libva
         libva-utils
         intel-graphics-compiler
         intel-media-driver # LIBVA_DRIVER_NAME=iHD
-        vpl-intel-gpu
+        vpl-gpu-rt
         intel-compute-runtime
       ] ++ [ ];
       #extraPackages32 = with pkgs.pkgsi686Linux; [
