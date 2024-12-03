@@ -75,7 +75,6 @@ in
       arandr
       beeper
       cool-retro-term
-      cryptomator
       discord
       easyeffects
       filezilla
@@ -83,13 +82,12 @@ in
       gimp
       gparted
       gromit-mpx
-      guardian-agent # Secure ssh-agent forwarding for Mosh and SSH
       inkscape
       kitty
       mosh
       mpv
       obs-studio
-      openlens
+      lens
       paperview
       pavucontrol
       pcmanfm
@@ -100,7 +98,6 @@ in
       slack
       spotify-unwrapped
       syncthing
-      syncthing-cli
       syncthing-tray
       telegram-desktop
       unclutter # unclutter -idle 1 -root -grab -visible
@@ -114,13 +111,14 @@ in
       zoom-us
 
       # 3D printing
-      #super-slicer # FIXME: broken
       prusa-slicer
-      cura
+      #cura
     ]) ++ (with unstablePkgs; [
       bitwarden
       brave
-      #pdfposter # FIXME: broken
+      cryptomator
+      #super-slicer
+      #pdfposter
       variety
       vesktop # discord + some fixes
     ]) ++ (with unstablePkgs; [

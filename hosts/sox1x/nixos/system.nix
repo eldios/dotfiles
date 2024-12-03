@@ -1,7 +1,7 @@
 { pkgs , ... }:
 {
   system = {
-    stateVersion = "24.05"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+    stateVersion = "24.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = true;
   };
 
@@ -84,7 +84,6 @@
     opengl = {
       enable = true;
 
-      driSupport      = true;
       driSupport32Bit = true;
 
       #extraPackages = with pkgs; [ ];
@@ -138,7 +137,6 @@
   };
 
   # audio
-  sound.enable = true ;
   services.pipewire = {
     enable = true;
     alsa.enable = true;

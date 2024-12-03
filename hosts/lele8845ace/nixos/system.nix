@@ -26,7 +26,7 @@ let
 in
 {
   system = {
-    stateVersion = "24.05"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+    stateVersion = "24.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = true;
   };
 
@@ -170,10 +170,9 @@ in
     };
 
     # https://wiki.archlinux.org/title/GPGPU
-    opengl = {
+    graphics = {
       enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
+      enable32Bit = true;
       extraPackages = with pkgs; [
         amdvlk
         rocmPackages.clr.icd
@@ -198,7 +197,6 @@ in
   };
 
   # audio
-  sound.enable = true;
   services.pipewire = {
     enable = true;
     audio.enable = true;
