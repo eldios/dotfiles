@@ -101,13 +101,14 @@ in
     age
     btop
     byobu
-    colorls # like `ls --color=auto -F` but cooler
+    #colorls # like `ls --color=auto -F` but cooler
     fastfetch
     file
     ffmpeg
     gnumake
     htop
     just
+    lsd
     lshw
     manix
     mdadm
