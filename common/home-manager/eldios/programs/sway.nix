@@ -86,6 +86,7 @@ in
   home = {
     packages = with pkgs; [
       # BEGIN Sway confguration
+      adwaita-icon-theme
       adwaita-qt
       adwaita-qt6
       bemenu # wayland clone of dmenu
@@ -98,9 +99,7 @@ in
       gammastep
       geoclue2
       glpaper
-      gnome.adwaita-icon-theme
-      gnome.gnome-themes-extra
-      gnome3.adwaita-icon-theme # default gnome cursors
+      gnome-themes-extra
       grim # screenshot functionality
       grimblast # screenshot functionality
       gsettings-desktop-schemas
