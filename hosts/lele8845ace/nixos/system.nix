@@ -1,28 +1,9 @@
-{ config, lib, pkgs, nixpkgs-unstable, ... }:
+{ config, inputs, lib, pkgs, nixpkgs-unstable, peerix, portmaster, ... }:
 let
   unstablePkgs = import nixpkgs-unstable {
     system = "x86_64-linux";
     config.allowUnfree = true;
   };
-
-  #secretspath = builtins.toString inputs.secrets;
-  #intel-compute-runtime-fix-arc = unstablePkgs.intel-compute-runtime.overrideAttrs (_finalAttrs: _previousAttrs: {
-  #  version = "fix-arc";
-
-  #  src = unstablePkgs.fetchFromGitHub {
-  #    owner = "smunaut";
-  #    repo = "compute-runtime";
-  #    rev = "3bc54ac0140cc6ff985590dc90330bb8229535c5";
-  #    hash = "sha256-aamf9WeWihzfvAsFRA5RanBr8+flc2dS+hjV+jOfZKQ=";
-  #  };
-  #});
-  #davinci-resolve-studio = unstablePkgs.davinci-resolve-studio.override (old: {
-  #  buildFHSEnv = a: (old.buildFHSEnv (a // {
-  #    extraBwrapArgs = a.extraBwrapArgs ++ [
-  #      "--bind /run/opengl-driver/etc/OpenCL /etc/OpenCL"
-  #    ];
-  #  }));
-  #});
 in
 {
   system = {
@@ -40,6 +21,15 @@ in
     logind.extraConfig = ''
       HandlePowerKey=ignore
     '';
+
+    peerix = {
+      enable = true;
+      package = peerix.packages.${pkgs.system}.peerix;
+      openFirewall = false;
+      #privateKeyFile = config.sops.secrets."keys/peerix/private".path;
+      #publicKeyFile = config.sops.secrets."keys/peerix/public".path;
+      #publicKey = "key1 key2 key3";
+    };
 
     # BEGIN - laptop related stuff
     thermald.enable = true;
@@ -128,7 +118,9 @@ in
     sof-firmware
     v4l-utils
     vial
-  ]) ++ (with unstablePkgs; [ ]);
+  ]) ++ (with unstablePkgs; [ ]) ++ [
+    portmaster.legacyPackages.${pkgs.system}.portmaster
+  ];
 
   programs = {
     steam = {
