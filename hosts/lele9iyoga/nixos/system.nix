@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs-unstable, portmaster, ... }:
+{ config, lib, pkgs, nixpkgs-unstable, portmaster, peerix, ... }:
 let
   unstablePkgs = import nixpkgs-unstable {
     system = "x86_64-linux";
