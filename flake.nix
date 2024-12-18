@@ -39,16 +39,25 @@
       url = "git+ssh://git@github.com/eldios/secrets.git?ref=main&shallow=1";
       flake = false;
     };
+
+    portmaster.url = "github:railwhale/nixpkgs/portmaster";
+
+    peerix = {
+      url = "github:tomasharkema/peerix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     { nixpkgs
-    , nixpkgs-unstable
-    , nixpkgs-darwin
-    , home-manager
     , darwin
-    , nixos-hardware
     , disko
+    , home-manager
+    , nixos-hardware
+    , nixpkgs-darwin
+    , nixpkgs-unstable
+    , peerix
+    , portmaster
     , sops-nix
     , xremap
     , ...
@@ -64,13 +73,15 @@
       # Define common specialArgs for nixosConfigurations and homeConfigurations
       commonSpecialArgs = {
         inherit
-          inputs
-          nixpkgs
-          nixpkgs-unstable
-          nixpkgs-darwin
-          home-manager
-          nixos-hardware
           disko
+          home-manager
+          inputs
+          nixos-hardware
+          nixpkgs
+          nixpkgs-darwin
+          nixpkgs-unstable
+          peerix
+          portmaster
           sops-nix
           xremap
           ;
@@ -84,6 +95,7 @@
           ./hosts/lele8845ace/nixos/configuration.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
+          peerix.nixosModules.peerix
         ];
       };
 
