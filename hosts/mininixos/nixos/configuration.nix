@@ -4,7 +4,12 @@
   imports =
     [
       # select hardware from https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
-      nixos-hardware.nixosModules.common-cpu-amd
+      # mininixos
+      #nixos-hardware.nixosModules.common-cpu-amd
+      # nucone
+      nixos-hardware.nixosModules.intel-nuc-8i7beh
+      nixos-hardware.nixosModules.common-cpu-intel
+
       nixos-hardware.nixosModules.common-pc-ssd
 
       ../../../common/nixos/sops.nix
