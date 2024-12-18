@@ -7,8 +7,7 @@
 
     supportedFilesystems = [ "zfs" ];
 
-    #kernelPackages = pkgs.linuxPackages_latest;
-    kernelPackages = pkgs.linuxPackages_6_6;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams =
     [
       "nohibernate"
@@ -16,7 +15,7 @@
     ];
 
     initrd = {
-      supportedFilesystems = [ "zfs" ];
+      supportedFilesystems = [ "zfs" "btrfs" ];
       kernelModules = [ "uas" "usbcore" "usb_storage" "usbhid" "vfat" "nls_cp437" "nls_iso8859_1" ];
 
       # Support for Yubikey PBA
