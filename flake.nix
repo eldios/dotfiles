@@ -107,6 +107,7 @@
           ./hosts/lele9iyoga/nixos/configuration.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
+          peerix.nixosModules.peerix
         ];
       };
 
@@ -118,6 +119,7 @@
           ./hosts/mininixos/nixos/configuration.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
+          peerix.nixosModules.peerix
         ];
       };
 
@@ -129,6 +131,7 @@
           ./hosts/nucone/nixos/configuration.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
+          peerix.nixosModules.peerix
         ];
       };
 
@@ -140,6 +143,7 @@
           ./hosts/kube-casa1/nixos/configuration.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
+          peerix.nixosModules.peerix
         ];
       };
 
