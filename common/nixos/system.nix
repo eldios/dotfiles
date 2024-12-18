@@ -28,6 +28,9 @@ in
       options = "--delete-older-than 7d";
     };
     settings = {
+      # access-tokens = [
+      #   "github.com=" tokenFile = config.sops.secrets."tokens/kubernetes/casa".path;
+      # ];
       # Nix Settings
       auto-optimise-store = true; # Auto Optimize nix store.
       experimental-features = [ "nix-command" "flakes" ]; # Enable experimental features.
