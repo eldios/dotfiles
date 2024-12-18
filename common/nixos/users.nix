@@ -3,7 +3,7 @@
   users.mutableUsers = false;
 
   users.users.eldios = {
-    shell = lib.mkDefault pkgs.zsh;
+    shell = lib.mkForce pkgs.zsh;
 
     isNormalUser = true;
     extraGroups = [
