@@ -4,25 +4,6 @@ let
     system = "x86_64-linux";
     config.allowUnfree = true;
   };
-
-  #secretspath = builtins.toString inputs.secrets;
-  #intel-compute-runtime-fix-arc = unstablePkgs.intel-compute-runtime.overrideAttrs (_finalAttrs: _previousAttrs: {
-  #  version = "fix-arc";
-
-  #  src = unstablePkgs.fetchFromGitHub {
-  #    owner = "smunaut";
-  #    repo = "compute-runtime";
-  #    rev = "3bc54ac0140cc6ff985590dc90330bb8229535c5";
-  #    hash = "sha256-aamf9WeWihzfvAsFRA5RanBr8+flc2dS+hjV+jOfZKQ=";
-  #  };
-  #});
-  #davinci-resolve-studio = unstablePkgs.davinci-resolve-studio.override (old: {
-  #  buildFHSEnv = a: (old.buildFHSEnv (a // {
-  #    extraBwrapArgs = a.extraBwrapArgs ++ [
-  #      "--bind /run/opengl-driver/etc/OpenCL /etc/OpenCL"
-  #    ];
-  #  }));
-  #});
 in
 {
   system = {
@@ -136,9 +117,7 @@ in
     sof-firmware
     v4l-utils
     vial
-  ]) ++ (with unstablePkgs; [
-    davinci-resolve-studio
-  ]) ++ [
+  ]) ++ (with unstablePkgs; [ ]) ++ [
     portmaster.legacyPackages.${pkgs.system}.portmaster
   ];
 
