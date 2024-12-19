@@ -13,6 +13,17 @@
       trim.enable = true;
     };
   };
+
+  systemd.services.disable-offload = {
+    description = "Disable network offloading";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.ethtool}/bin/ethtool -K eno1 gro off tso off gso off";
+    };
+  };
 }
 
 # vim: set ts=2 sw=2 et ai list nu
