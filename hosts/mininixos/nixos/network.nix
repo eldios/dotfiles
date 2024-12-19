@@ -1,17 +1,20 @@
 {
   networking = {
     dhcpcd.enable = true;
+    usePredictableInterfaceNames = true
 
     interfaces = {
       eno1 = {
+        macAddress = "1c:69:7a:0e:15:6d";
+      };
+
+      br0 = {
         useDHCP = true;
         ipv4.addresses = [{
           address = "192.168.155.111";
           prefixLength = 21;
         }];
       };
-
-      br0.useDHCP = true;
     };
 
     bridges = {
