@@ -10,6 +10,14 @@
           prefixLength = 21;
         }];
       };
+
+      br0.useDHCP = true;
+    };
+
+    bridges = {
+      br0 = {
+        interfaces = [ "eno1" ];  # Replace with your actual network interface
+      };
     };
 
     #defaultGateway = "192.168.1.1";
@@ -22,6 +30,8 @@
       enable = false;
       # allowedTCPPorts = [ ... ];
       # allowedUDPPorts = [ ... ];
+      checkReversePath = false;
+      trustedInterfaces = [ "br0" ];
     };
   };
 }
