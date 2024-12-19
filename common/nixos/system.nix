@@ -105,6 +105,7 @@ in
     btop
     byobu
     #colorls # like `ls --color=auto -F` but cooler
+    ethtool
     fastfetch
     file
     ffmpeg
