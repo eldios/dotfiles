@@ -1,7 +1,7 @@
 {
   networking = {
     dhcpcd.enable = true;
-    usePredictableInterfaceNames = true
+    usePredictableInterfaceNames = true;
 
     interfaces = {
       eno1 = {
