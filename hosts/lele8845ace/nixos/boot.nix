@@ -12,7 +12,7 @@
       v4l2loopback
     ];
 
-    supportedFilesystems = [ "btrfs" ];
+    supportedFilesystems = [ "btrfs" "ntfs" ];
 
     # latest kernel
     kernelPackages = pkgs.linuxPackages_latest;
