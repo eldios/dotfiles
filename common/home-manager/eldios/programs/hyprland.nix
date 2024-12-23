@@ -185,24 +185,25 @@ in
       bind = [
         # Window management
         "$mod SHIFT, C, killactive"
-        "$mod, Q, togglespecialworkspace"
-        "$mod SHIFT, Q, movetoworkspace, special"
+
         "$mod, F, fullscreen"
+        #"$mod, Q, togglespecialworkspace"
+        #"$mod SHIFT, Q, movetoworkspace, special"
         "$mod SHIFT, Space, togglefloating"
 
         # Master layout controls
-        "$mod, Return, layoutmsg, swapwithmaster"
-        "$mod, I, layoutmsg, addmaster"
-        "$mod, D, layoutmsg, removemaster"
-        "$mod, O, layoutmsg, orientationcycle left top right bottom"
-        "$mod SHIFT, O, layoutmsg, orientationcycle bottom left top right"
-        "$mod, P, pseudo"
+        #"$mod, Return, layoutmsg, swapwithmaster"
+        #"$mod, I, layoutmsg, addmaster"
+        #"$mod, D, layoutmsg, removemaster"
+        #"$mod, O, layoutmsg, orientationcycle left top right bottom"
+        #"$mod SHIFT, O, layoutmsg, orientationcycle bottom left top right"
+        #"$mod, P, pseudo"
 
         # Applications
-        "$mod, M, exec, ${full_menu}"
-        "$mod SHIFT, M, exec, ${quick_menu}"
+        "$mod, D, exec, ${full_menu}"
+        "$mod SHIFT, D, exec, ${quick_menu}"
         "$mod SHIFT, E, exec, ${file_menu}"
-        "$mod SHIFT, Return, exec, ${terminal}"
+        "$mod, Return, exec, ${terminal}"
         "$mod SHIFT, M, exec, ${mail}"
 
         # System controls
