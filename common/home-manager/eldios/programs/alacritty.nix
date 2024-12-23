@@ -7,7 +7,7 @@
 
       settings = {
 
-        live_config_reload = true;
+        general.live_config_reload = true;
 
         window = {
           padding.x = 0;
