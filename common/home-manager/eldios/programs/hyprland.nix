@@ -207,9 +207,9 @@ in
         "$mod SHIFT, M, exec, ${mail}"
 
         # System controls
-        "$mod CTRL, Q, exec, ${powermenu}"
-        "$mod CTRL SHIFT, Q, exit"
-        "$mod CTRL, L, exec, ${lockscreen}"
+        "$mod CTRL, SHIFT, Q, exec, ${powermenu}"
+        #"$mod CTRL SHIFT, Q, exit"
+        "$mod CTRL, Q, exec, ${lockscreen}"
 
         # Screenshots
         "$mod SHIFT, S, exec, ${screenshot_select}"
