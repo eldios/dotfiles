@@ -18,8 +18,15 @@ in
   home = {
     packages = with pkgs; [
       # LSPs
-      nil # Nix LSP
       deno
+      fd
+      lua-language-server
+      nil # Nix LSP
+      nodejs
+      nodePackages.typescript
+      nodePackages.typescript-language-server
+      pyright
+      tree-sitter
       # Golang
       go
       # Rust
@@ -80,14 +87,14 @@ in
         rtp = {
           -- disable some rtp plugins
           disabled_plugins = {
-            "gzip",
+            -- "gzip",
             -- "matchit",
             -- "matchparen",
             -- "netrwPlugin",
-            "tarPlugin",
-            "tohtml",
-            "tutor",
-            "zipPlugin",
+            -- "tarPlugin",
+            -- "tohtml",
+            -- "tutor",
+            -- "zipPlugin",
           },
         },
       },
@@ -217,7 +224,19 @@ in
   # this file is automatically loaded by LazyVim
   xdg.configFile."nvim/lua/config/autocmds.lua".text = ''
   '';
-
+  xdg.configFile."nvim/lua/plugins/cmp.lua".text = ''
+    return {
+      {
+        "hrsh7th/nvim-cmp",
+        dependencies = { "hrsh7th/cmp-emoji" },
+        ---@param opts cmp.ConfigSchema
+        opts = function(_, opts)
+          table.insert(opts.sources, { name = "emoji" })
+          table.insert(opts.sources, { name = "codeium" })
+        end,
+      },
+    }
+  '';
   xdg.configFile."nvim/lua/plugins/lulz.lua".text = ''
     return {
       {
@@ -261,26 +280,12 @@ in
       },
     }
   '';
-  xdg.configFile."nvim/lua/plugins/cmp.lua".text = ''
-    return {
-      {
-        "hrsh7th/nvim-cmp",
-        dependencies = { "hrsh7th/cmp-emoji" },
-        ---@param opts cmp.ConfigSchema
-        opts = function(_, opts)
-          table.insert(opts.sources, { name = "emoji" })
-          table.insert(opts.sources, { name = "codeium" })
-        end,
-      },
-    }
-  '';
   xdg.configFile."nvim/lua/plugins/codeium.lua".text = ''
     return {
       {
         "Exafunction/codeium.nvim",
         dependencies = {
           "nvim-lua/plenary.nvim",
-          "hrsh7th/nvim-cmp",
         },
         config = function()
           require("codeium").setup({
@@ -354,9 +359,7 @@ in
 
       package = unstablePkgs.neovim-unwrapped;
 
-      plugins = with pkgs.vimPlugins; [
-        nvim-cmp
-      ];
+      plugins = with pkgs.vimPlugins; [ ];
 
       extraConfig = ''
       '';
