@@ -123,7 +123,6 @@ in
       general = {
         layout = "dwindle";
         resize_on_border = true;
-        sensitivity = 1;
         gaps_in = 3;
         gaps_out = 3;
         border_size = 2;
@@ -151,13 +150,11 @@ in
         pseudotile = true;
         preserve_split = true;
         force_split = 2;
-        no_gaps_when_only = 2; # (default: disabled - 0) no border - 1, with border - 2
       };
 
       gestures = {
         workspace_swipe = true;
         workspace_swipe_forever = true;
-        workspace_swipe_numbered = true;
       };
 
       windowrule = let
@@ -199,12 +196,6 @@ in
           xray = true;
           special = true;
         };
-
-        drop_shadow = false;
-        shadow_range = 8;
-        shadow_render_power = 3;
-        shadow_offset = "2 2";
-        "col.shadow" = "rgb(f300ff)";
       };
 
 
