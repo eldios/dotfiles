@@ -1,12 +1,14 @@
 { pkgs, ...}:
 let
-  terminal = "alacritty";
+  terminal = "${pkgs.kitty}/bin/kitty";
 
-  quick_menu = "rofi -show run -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
-  full_menu = "rofi -show drun -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
-  file_menu = "rofi -show filebrowser -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
+  quick_menu = "${pkgs.rofi}/bin/rofi -show run -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
+  full_menu = "${pkgs.rofi}/bin/rofi -show drun -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
+  file_menu = "${pkgs.rofi}/bin/rofi -show filebrowser -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
 
-  powermenu = "wlogout";
+  powermenu = "${pkgs.wlogout}/bin/wlogout";
+
+  mail = "mailspring --password-store=\"gnome-libsecret\"";
 
   swayidle = pkgs.writeShellScriptBin "swayidle-script" ''
     swayidle -w \
@@ -107,7 +109,7 @@ in
     settings = {
       exec-once = [
         #"systemctl --user restart swaybg xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk"
-        "hyprctl setcursor Qogir 24"
+        "hyprctl setcursor Qogir 16"
         "waybar"
         "alacritty"
         "mako"
@@ -115,7 +117,7 @@ in
       ];
 
       monitor = [
-        "eDP-1, 1920x1080, 0x0, 1"
+        #"eDP-1, 1920x1080, 0x0, 1"
         # "HDMI-A-1, 2560x1440, 1920x0, 1"
         # ",preferred,auto,1"
       ];
@@ -179,7 +181,7 @@ in
       decoration = {
         # See https://wiki.hyprland.org/Configuring/Variables/ for more
 
-        rounding = 0;
+        rounding = 1;
 
         dim_inactive = false;
         dim_strength = 0.7;
@@ -233,6 +235,8 @@ in
         "$mod SHIFT     , J , changegroupactive, f"
         "$mod SHIFT     , K , changegroupactive, b"
 
+        "$mod SHIFT     , m , exec, ${mail}"
+
         "$mod           , Return , exec , ${terminal}"
 
         "$mod CTRL      , Q , exec , ${powermenu}"
@@ -251,10 +255,6 @@ in
         "$mod           , k , movefocus , u"
         "$mod           , l , movefocus , r"
 
-        "$mod           , left  , movewindow , l"
-        "$mod           , right , movewindow , r"
-        "$mod           , up    , movewindow , u"
-        "$mod           , down  , movewindow , d"
         "$mod SHIFT     , h , movewindow , l"
         "$mod SHIFT     , j , movewindow , d"
         "$mod SHIFT     , k , movewindow , u"
