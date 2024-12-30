@@ -104,7 +104,7 @@ in
         "${pkgs.swaybg}/bin/swaybg -i ~/.config/wallpaper.jpg --mode fill"
       ];
 
-      monitor = [];
+      monitor = [ ];
 
       general = {
         layout = "master";
@@ -158,7 +158,7 @@ in
         kb_layout = "us";
         follow_mouse = 1;
         touchpad = {
-          natural_scroll = true;
+          natural_scroll = false;
           disable_while_typing = true;
           drag_lock = true;
         };
@@ -264,8 +264,8 @@ in
         ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
         ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
         ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86MonBrightnessUp, exec, light -A 5"
-        ", XF86MonBrightnessDown, exec, light -U 5"
+        ", XF86MonBrightnessUp, exec, sudo light -A 5"
+        ", XF86MonBrightnessDown, exec, sudo light -U 5"
         ", XF86AudioPlay, exec, playerctl play-pause"
         ", XF86AudioNext, exec, playerctl next"
         ", XF86AudioPrev, exec, playerctl previous"
