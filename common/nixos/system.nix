@@ -34,6 +34,10 @@ in
       # Nix Settings
       auto-optimise-store = true; # Auto Optimize nix store.
       experimental-features = [ "nix-command" "flakes" ]; # Enable experimental features.
+      trusted-users = [
+        "root"
+        "eldios"
+      ];
       substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
