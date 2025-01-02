@@ -1,6 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, nixpkgs-unstable, ... }:
 let
-  terminal = "${pkgs.kitty}/bin/kitty";
+  unstablePkgs = import nixpkgs-unstable {
+    system = "x86_64-linux";
+    config.allowUnfree = true;
+  };
+
+  #terminal = "${pkgs.kitty}/bin/kitty";
+  terminal = "${unstablePkgs.ghostty}/bin/ghostty";
   rofi_opts = "-show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
   quick_menu = "${pkgs.rofi}/bin/rofi -show run ${rofi_opts}";
   full_menu = "${pkgs.rofi}/bin/rofi -show drun ${rofi_opts}";
@@ -102,6 +108,7 @@ in
         "swayidle"
         "hyprpaper"
         "${pkgs.swaybg}/bin/swaybg -i ~/.config/wallpaper.jpg --mode fill"
+        "${pkgs.variety}/bin/variety"
       ];
 
       monitor = [ ];
