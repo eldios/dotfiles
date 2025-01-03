@@ -1,4 +1,4 @@
-{ pkgs , ... }:
+{ pkgs, ... }:
 {
   system = {
     stateVersion = "24.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
@@ -24,7 +24,7 @@
 
     displayManager = {
       defaultSession = "cinnamon";
-      sessionPackages = with pkgs; [ 
+      sessionPackages = with pkgs; [
         sway
         hyprland
       ];
@@ -52,8 +52,8 @@
     printing.enable = true;
     # needed by CUPS for auto-discovery
     avahi = {
-      enable       = true;
-      nssmdns4     = true;
+      enable = true;
+      nssmdns4 = true;
       openFirewall = true;
     };
   };
@@ -72,7 +72,7 @@
 
     bluetooth = {
       enable = true;
-      powerOnBoot = true ;
+      powerOnBoot = true;
       settings = {
         General = {
           Enable = "Source,Sink,Media,Socket";
@@ -128,9 +128,9 @@
     enable = true;
     #wlr.enable = true;
     # gtk portal needed to make gtk apps happy
-    config.common.default = "*" ;
+    config.common.default = "*";
     extraPortals = [
-      #pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-wlr
       pkgs.xdg-desktop-portal-hyprland
     ];
@@ -141,6 +141,10 @@
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
+    wireplumber = {
+      enable = true;
+      configPackages = [ ];
+    };
   };
   services.blueman = {
     enable = true;
@@ -155,7 +159,7 @@
   services.dbus.enable = true;
 
   security = {
-    pam.services.swaylock = {};
+    pam.services.swaylock = { };
   };
 
 }
