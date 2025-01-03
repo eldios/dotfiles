@@ -169,7 +169,7 @@ in
         libvdpau-va-gl
         rocmPackages.clr.icd
         vaapiVdpau
-      ] ;
+      ];
     };
 
     amdgpu = {
@@ -191,8 +191,8 @@ in
     config.common.default = "*";
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-wlr
-      #pkgs.xdg-desktop-portal-hyprland
+      #pkgs.xdg-desktop-portal-wlr
+      pkgs.xdg-desktop-portal-hyprland
     ];
   };
 
@@ -206,6 +206,10 @@ in
       support32Bit = true;
     };
     jack.enable = false;
+    wireplumber = {
+      enable = true;
+      configPackages = [ ];
+    };
   };
   services.blueman = {
     enable = true;
