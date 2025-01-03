@@ -91,6 +91,7 @@ in
   environment.systemPackages = with pkgs; [
     # hard reqs
     binutils
+    borgbackup
     btrfs-progs
     git
     gptfdisk
