@@ -4,15 +4,6 @@ let
     system = "x86_64-linux";
     config.allowUnfree = true;
   };
-
-  codeium = unstablePkgs.codeium.overrideAttrs (_finalAttrs: _previousAttrs: {
-    version = "1.8.80";
-    src = unstablePkgs.fetchurl {
-      name = "${_finalAttrs.pname}-${_finalAttrs.version}.gz";
-      url = "https://github.com/Exafunction/codeium/releases/download/language-server-v${_finalAttrs.version}/language_server_linux_x64.gz";
-      hash = "sha256-ULHO7NrbW0DDlOYiSHGXwJ+NOa68Ma+HMHgq2WyAKBA=";
-    };
-  });
 in
 {
   home = {
@@ -38,9 +29,7 @@ in
       # vars
       ripgrep # used by space-f-g
       ripgrep-all # used by space-f-g
-    ] ++ (with unstablePkgs; [ ] ++ [
-      codeium
-    ]);
+    ] ++ (with unstablePkgs; [ ] ++ [ ]);
 
   };
 
@@ -120,7 +109,6 @@ in
       { import = "lazyvim.plugins.extras.lang.typescript" },
       { import = "lazyvim.plugins.extras.lang.yaml" },
       -- Lele plugins
-      { import = "lazyvim.plugins.extras.coding.codeium" },
     }
   '';
   xdg.configFile."nvim/lua/config/snacks.lua".text = ''
@@ -220,20 +208,110 @@ in
   '';
   # this file is automatically loaded by LazyVim
   xdg.configFile."nvim/lua/config/keymaps.lua".text = ''
+    vim.api.nvim_set_keymap("v", "<LocalLeader>ce", "", {
+      callback = function()
+        require("codecompanion").prompt("explain")
+      end,
+      noremap = true,
+      silent = true,
+    })
+
+    vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+    vim.api.nvim_set_keymap("v", "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+    vim.api.nvim_set_keymap("n", "<LocalLeader>a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
+    vim.api.nvim_set_keymap("v", "<LocalLeader>a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
+    vim.api.nvim_set_keymap("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+
+    -- Expand 'cc' into 'CodeCompanion' in the command line
+    vim.cmd([[cab cc CodeCompanion]])
   '';
   # this file is automatically loaded by LazyVim
   xdg.configFile."nvim/lua/config/autocmds.lua".text = ''
   '';
-  xdg.configFile."nvim/lua/plugins/cmp.lua".text = ''
+  # https://github.com/olimorris/codecompanion.nvim
+  xdg.configFile."nvim/lua/plugins/ai.lua".text = ''
+    -- AI Configuration for NeoVim
+    -- Using codecompanion with multiple AI providers
+    -- Author: eldios
+    -- Repository: https://github.com/eldios/.dotfiles
+
+    -- Helper function to read API keys and configuration from files
+    local function read_config_file(file_path)
+      local file = io.open(file_path, "r")
+      if file then
+        local content = file:read("*all")
+        file:close()
+        -- Remove any whitespace and newlines
+        return content:gsub("%s+", "")
+      end
+      vim.notify("Config file not found: " .. file_path, vim.log.levels.ERROR)
+      return nil
+    end
+
+    -- Read configuration from files
+    local config_path = os.getenv("HOME") .. "/.ai/"
+    local anthropic_key = read_config_file(config_path .. "anthropic.key")
+    local gemini_key = read_config_file(config_path .. "gemini.key")
+    local openai_key = read_config_file(config_path .. "openai.key")
+    local ollama_key = read_config_file(config_path .. "ollama.key")
+    local ollama_url = read_config_file(config_path .. "ollama.url")
+
     return {
       {
-        "hrsh7th/nvim-cmp",
-        dependencies = { "hrsh7th/cmp-emoji" },
-        ---@param opts cmp.ConfigSchema
-        opts = function(_, opts)
-          table.insert(opts.sources, { name = "emoji" })
-          table.insert(opts.sources, { name = "codeium" })
-        end,
+        "olimorris/codecompanion.nvim",
+        dependencies = {
+          "nvim-lua/plenary.nvim",
+          "nvim-treesitter/nvim-treesitter",
+        },
+        config = function()
+          require('codecompanion').setup{
+            strategies = {
+              chat = {
+                adapter = "anthropic",
+              },
+              inline = {
+                adapter = "anthropic",
+              },
+            },
+            adapters = {
+              gemini = function()
+                return require("codecompanion.adapters").extend("gemini", {
+                  env = {
+                    api_key = gemini_key
+                  }
+                })
+              end,
+              anthropic = function()
+                return require("codecompanion.adapters").extend("anthropic", {
+                  env = {
+                    api_key = anthropic_key
+                  }
+                })
+              end,
+              openai = function()
+                return require("codecompanion.adapters").extend("openai", {
+                  env = {
+                    api_key = openai_key
+                  }
+                })
+              end,
+              ollama = function()
+                return require("codecompanion.adapters").extend("ollama", {
+                  schema = {
+                    model = {
+                      default = "llama3:8b",
+                    },
+                  },
+                  env = {
+                    url = ollama_url,
+                    api_key = ollama_key,
+                    chat_url = "/api/chat/completions",
+                  },
+                })
+              end,
+            },
+          }
+        end
       },
     }
   '';
@@ -278,28 +356,6 @@ in
           vim.fn["mkdp#util#install"]()
         end,
       },
-    }
-  '';
-  xdg.configFile."nvim/lua/plugins/codeium.lua".text = ''
-    return {
-      {
-        "Exafunction/codeium.nvim",
-        dependencies = {
-          "nvim-lua/plenary.nvim",
-        },
-        config = function()
-          require("codeium").setup({
-            enable_chat = "true",
-            virtual_text = {
-              enabled = true
-            },
-            wrapper = '${pkgs.steam-run}/bin/steam-run'
-            ---tools = {
-            ---  language_server = "${codeium}/bin/codeium_language_server"
-            ---}
-          })
-        end
-      }
     }
   '';
   xdg.configFile."nvim/lua/plugins/obsidian.lua".text = ''
@@ -354,8 +410,10 @@ in
       withRuby = true;
       withPython3 = true;
 
-      #extraPackages = with pkgs; [
-      #];
+      extraPackages = with pkgs; [
+        curl
+        jq
+      ];
 
       package = unstablePkgs.neovim-unwrapped;
 
