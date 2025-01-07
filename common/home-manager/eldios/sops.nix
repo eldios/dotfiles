@@ -1,6 +1,6 @@
 { inputs, ... }:
 let
-  main_user_id = 1000; # run `id` to find it
+  main_user_id = "1000"; # run `id` to find it
 
   secretspath = builtins.toString inputs.secrets;
 in
