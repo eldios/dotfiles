@@ -30,7 +30,6 @@ in
       ripgrep # used by space-f-g
       ripgrep-all # used by space-f-g
     ] ++ (with unstablePkgs; [ ] ++ [ ]);
-
   };
 
   # this file is used to setup LazyVim
@@ -237,7 +236,7 @@ in
     local gemini_key = ${config.sops.secrets."tokens/gemini/key".path};
     local openai_key = ${config.sops.secrets."tokens/openai/key".path};
     local ollama_key = ${config.sops.secrets."tokens/ollama/key".path};
-    local ollama_url = ${config.sops.secrets."tokens/ollama.url".path};
+    local ollama_url = ${config.sops.secrets."tokens/ollama/url".path};
     return {
       {
         "olimorris/codecompanion.nvim",

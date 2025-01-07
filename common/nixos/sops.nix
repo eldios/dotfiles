@@ -24,12 +24,6 @@ in
 
       "tokens/github/nix" = { };
 
-      "tokens/anthropic/key" = { };
-      "tokens/openai/key" = { };
-      "tokens/gemini/key" = { };
-      "tokens/ollama/key" = { };
-      "tokens/ollama/url" = { };
-
       "keys/peerix/private" = { };
       "keys/peerix/public" = { };
 
