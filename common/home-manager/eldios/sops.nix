@@ -1,11 +1,17 @@
 { inputs, ... }:
 let
+  main_user_id = 1000; # run `id` to find it
+
   secretspath = builtins.toString inputs.secrets;
 in
 {
   sops = {
-    defaultSopsFile = "${secretspath}/secrets.yaml";
     validateSopsFiles = true;
+
+    defaultSopsFile = "${secretspath}/secrets.yaml";
+    # workaround to have home-manager work with sops
+    defaultSymlinkPath = "/run/user/${main_user_id}/secrets";
+    defaultSecretsMountPoint = "/run/user/${main_user_id}/secrets.d";
 
     gnupg.sshKeyPaths = [ ];
 
