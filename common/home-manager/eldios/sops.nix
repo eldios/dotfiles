@@ -16,20 +16,16 @@ in
 
       keyFile = "/etc/sops/key.txt";
 
-      generateKey = true;
+      generateKey = false;
     };
 
     secrets = {
-      "tokens/kubernetes/casa" = { };
-
-      "tokens/github/nix" = { };
-
-      "keys/peerix/private" = { };
-      "keys/peerix/public" = { };
-
-      "passwords/root" = {
-        neededForUsers = true;
-      };
+      "tokens/anthropic/key" = { };
+      "tokens/openai/key" = { };
+      "tokens/gemini/key" = { };
+      "tokens/ollama/key" = { };
+      "tokens/ollama/url" = { };
     };
   };
+
 }
