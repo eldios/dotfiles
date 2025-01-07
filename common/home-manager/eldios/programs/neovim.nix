@@ -232,11 +232,11 @@ in
     end
 
     -- Read configuration from files
-    local anthropic_key = ${config.sops.secrets."tokens/anthropic/key".path};
-    local gemini_key = ${config.sops.secrets."tokens/gemini/key".path};
-    local openai_key = ${config.sops.secrets."tokens/openai/key".path};
-    local ollama_key = ${config.sops.secrets."tokens/ollama/key".path};
-    local ollama_url = ${config.sops.secrets."tokens/ollama/url".path};
+    local anthropic_key = read_config_file("${config.sops.secrets."tokens/anthropic/key".path}");
+    local gemini_key = read_config_file("${config.sops.secrets."tokens/gemini/key".path}");
+    local openai_key = read_config_file("${config.sops.secrets."tokens/openai/key".path}");
+    local ollama_key = read_config_file("${config.sops.secrets."tokens/ollama/key".path}");
+    local ollama_url = read_config_file("${config.sops.secrets."tokens/ollama/url".path}");
     return {
       {
         "olimorris/codecompanion.nvim",
