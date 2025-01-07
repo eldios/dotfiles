@@ -1,4 +1,4 @@
-{ pkgs, nixpkgs-unstable, ... }:
+{ pkgs, config, nixpkgs-unstable, ... }:
 let
   unstablePkgs = import nixpkgs-unstable {
     system = "x86_64-linux";
@@ -233,13 +233,11 @@ in
     end
 
     -- Read configuration from files
-    local config_path = os.getenv("HOME") .. "/.ai/"
-    local anthropic_key = read_config_file(config_path .. "anthropic.key")
-    local gemini_key = read_config_file(config_path .. "gemini.key")
-    local openai_key = read_config_file(config_path .. "openai.key")
-    local ollama_key = read_config_file(config_path .. "ollama.key")
-    local ollama_url = read_config_file(config_path .. "ollama.url")
-
+    local anthropic_key = config.sops.secrets."token/anthropic/key".path;
+    local gemini_key = config.sops.secrets."token/gemini/key".path;
+    local openai_key = config.sops.secrets."token/openai/key".path;
+    local ollama_key = config.sops.secrets."token/ollama/key".path;
+    local ollama_url = config.sops.secrets."token/ollama.url".path;
     return {
       {
         "olimorris/codecompanion.nvim",
