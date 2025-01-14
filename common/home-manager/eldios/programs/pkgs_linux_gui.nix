@@ -121,6 +121,8 @@ in
       #pdfposter
       variety
       vesktop # discord + some fixes
+      vivaldi
+      vivaldi-ffmpeg-codecs
     ]) ++ (with unstablePkgs; [
       # 2nd Brain stuff
       cameractrls
