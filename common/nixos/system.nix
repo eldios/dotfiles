@@ -3,7 +3,11 @@ let
   binDir = "/etc/profiles/per-user/eldios/bin";
 in
 {
-  zramSwap.enable = true;
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 10;
+  };
   systemd.services.zfs-mount.enable = false;
   systemd.services.NetworkManager-wait-online.enable = false;
 
