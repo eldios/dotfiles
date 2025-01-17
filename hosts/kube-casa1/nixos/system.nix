@@ -47,9 +47,7 @@
     accelerationDevices = [
       "/dev/dri/renderD128"
     ];
-    dataDir = [
-      "/data/10TB/data/plex"
-    ];
+    dataDir = "/data/10TB/data/plex";
   };
 
 }
