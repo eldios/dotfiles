@@ -6,6 +6,13 @@
   };
 
   services = {
+    xserver = {
+      xkb = {
+        layout = "us"; #"it"
+        variant = "";
+      };
+    };
+
     zfs = {
       autoScrub.enable = true;
       trim.enable = true;
