@@ -1,4 +1,4 @@
-{ inputs , pkgs , config , lib , ... }:
+{ pkgs , config , lib , ... }:
 {
   environment.systemPackages = with pkgs; [
     # Docker
