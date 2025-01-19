@@ -24,32 +24,6 @@
     };
 
   };
-
-  environment.etc.crypttab = {
-    enable = true;
-    text = ''
-      KMb /dev/disk/by-id/ata-WDC_WD102KFBX-68M95N0_VCG9HBKM-part1 /root/data.key luks
-      KMc /dev/disk/by-id/ata-WDC_WD102KFBX-68M95N0_VCG6MLWN-part1 /root/data.key luks
-    '';
-  };
-
-  fileSystems."10TB" = {
-    label = "10TB";
-    mountPoint = "/data/10TB";
-    fsType = "btrfs";
-  };
-
-  services.plex = {
-    enable = true;
-    openFirewall = true;
-    user = "eldios";
-    group = "users";
-    accelerationDevices = [
-      "/dev/dri/renderD128"
-    ];
-    dataDir = "/data/10TB/data/plex";
-  };
-
 }
 
 # vim: set ts=2 sw=2 et ai list nu

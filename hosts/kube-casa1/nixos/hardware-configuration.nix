@@ -48,6 +48,25 @@
       fsType = "vfat";
     };
 
+  environment.etc.crypttab = {
+    enable = true;
+    text = ''
+      KMb /dev/disk/by-id/wwn-0x5000cca0b0c4510c-part1 /root/data.key luks
+      KMc /dev/disk/by-id/wwn-0x5000cca0b0c303d6-part1 /root/data.key luks
+    '';
+  };
+
+  fileSystems."/data/10TB" =
+  {
+    mountPoint = "/data/10TB";
+    device = "/dev/disk/by-label/10TB";
+    fsType = "btrfs";
+    depends = [
+      "/data"
+    ];
+    neededForBoot = false;
+  };
+
   swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
