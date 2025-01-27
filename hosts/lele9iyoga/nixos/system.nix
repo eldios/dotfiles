@@ -16,7 +16,16 @@ in
   # Los Angeles
   # time.timeZone = lib.mkForce "America/Los_Angeles";
 
+  systemd.services.fprintd = {
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.Type = "simple";
+  };
+
   services = {
+    fprintd = {
+      enable = true;
+    };
+
     # don’t shutdown when power button is short-pressed
     logind.extraConfig = ''
       HandlePowerKey=ignore
