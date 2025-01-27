@@ -12,6 +12,7 @@
 
       # Rust
       cargo
+      pkg-config
       protobuf
       rustc
       rustfmt
