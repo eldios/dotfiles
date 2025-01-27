@@ -12,6 +12,7 @@
 
       # Rust
       cargo
+      protobuf
       rustc
       rustfmt
 
