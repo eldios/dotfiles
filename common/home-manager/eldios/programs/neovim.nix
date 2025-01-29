@@ -333,7 +333,21 @@ in
                 return require("codecompanion.adapters").extend("ollama", {
                   schema = {
                     model = {
-                      default = "llama3:8b",
+                      default = "llama3.2:latest",
+                    },
+                  },
+                  env = {
+                    url = ollama_url,
+                    api_key = ollama_key,
+                    chat_url = "/api/chat/completions",
+                  },
+                })
+              end,
+              deepseek = function()
+                return require("codecompanion.adapters").extend("ollama", {
+                  schema = {
+                    model = {
+                      default = "deepseek-r1:8b",
                     },
                   },
                   env = {
