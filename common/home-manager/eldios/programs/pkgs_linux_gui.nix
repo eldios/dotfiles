@@ -114,6 +114,7 @@ in
       prusa-slicer
       #cura
     ]) ++ (with unstablePkgs; [
+      betterdiscordctl
       bitwarden
       brave
       cryptomator
@@ -123,7 +124,6 @@ in
       vesktop # discord + some fixes
       vivaldi
       vivaldi-ffmpeg-codecs
-      webcord
     ]) ++ (with unstablePkgs; [
       # 2nd Brain stuff
       cameractrls
