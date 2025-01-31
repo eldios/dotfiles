@@ -14,6 +14,8 @@
       ntfs3g
       p7zip
       powertop
+      sshx
+      tty-share
       yt-dlp
     ];
   };
