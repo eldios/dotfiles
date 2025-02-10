@@ -114,7 +114,6 @@ in
       prusa-slicer
       #cura
     ]) ++ (with unstablePkgs; [
-      betterdiscordctl
       bitwarden
       brave
       cryptomator
