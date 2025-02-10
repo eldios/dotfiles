@@ -239,7 +239,7 @@ in
     local ollama_url = read_config_file("${config.sops.secrets."tokens/ollama/url".path}");
     return {
       {
-        "olimorris/codecompanion.nvim",
+        "eldios/codecompanion.nvim",
         dependencies = {
           "nvim-lua/plenary.nvim",
           "nvim-treesitter/nvim-treesitter",
@@ -329,8 +329,8 @@ in
                   }
                 })
               end,
-              ollama = function()
-                return require("codecompanion.adapters").extend("ollama", {
+              openwebui = function()
+                return require("codecompanion.adapters").extend("openwebui", {
                   schema = {
                     model = {
                       default = "llama3.2:latest",
