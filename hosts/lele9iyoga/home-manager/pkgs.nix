@@ -19,6 +19,9 @@ in
       uvcdynctrl
       vlc
       wine
+      # handwriting
+      saber
+      xournalpp
     ]) ++ (with unstablePkgs; [
       audacity
     ]) ++ ([
