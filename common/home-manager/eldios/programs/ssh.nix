@@ -25,7 +25,11 @@
       AddKeysToAgent yes
       ForwardAgent yes
 
+    # apply to all hosts that have gone through canonicalization
     Match canonical all
+
+    # apply to all hosts
+    Match all
       User root
       PasswordAuthentication yes
       ForwardAgent no
