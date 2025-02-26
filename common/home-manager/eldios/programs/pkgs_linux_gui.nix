@@ -125,6 +125,7 @@ in
       vivaldi-ffmpeg-codecs
     ]) ++ (with unstablePkgs; [
       # 2nd Brain stuff
+      anytype
       cameractrls
       obsidian
       rnote
