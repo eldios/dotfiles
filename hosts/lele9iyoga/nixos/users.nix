@@ -18,6 +18,7 @@ in
     hashedPasswordFile = config.sops.secrets."passwords/lele9iyoga/eldios".path;
 
     extraGroups = [
+      "networkmanager"
       "input" # needed by xRemap
       "uinput" # needed by xRemap
     ];

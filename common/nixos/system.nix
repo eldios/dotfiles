@@ -106,8 +106,11 @@ in
     ripgrep
     screen
     smartmontools
+    sshuttle
+    proxychains-ng
     tmux
     wget
+    wireguard-tools
 
     # utils
     age
