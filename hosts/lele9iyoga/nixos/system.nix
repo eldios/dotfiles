@@ -11,10 +11,8 @@ in
     autoUpgrade.enable = true;
   };
 
-  # Italy - Rome
+  # HOME - Italy - Rome
   time.timeZone = lib.mkForce "Europe/Rome";
-  # Los Angeles
-  # time.timeZone = lib.mkForce "America/Los_Angeles";
 
   systemd.services.fprintd = {
     wantedBy = [ "multi-user.target" ];
@@ -25,6 +23,8 @@ in
     fprintd = {
       enable = true;
     };
+
+    tailscale.enable = lib.mkForce false;
 
     # don’t shutdown when power button is short-pressed
     logind.extraConfig = ''
@@ -124,9 +124,13 @@ in
     qmk-udev-rules
     qmk_hid
     sof-firmware
+    tailscale
     v4l-utils
     vial
-  ]) ++ (with unstablePkgs; [ ]) ++ [
+  ]) ++ (with unstablePkgs; [
+    protonvpn-cli
+    protonvpn-gui
+  ]) ++ [
     portmaster.legacyPackages.${pkgs.system}.portmaster
   ];
 
