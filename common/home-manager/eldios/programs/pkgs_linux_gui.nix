@@ -110,6 +110,13 @@ in
       zathura
       zoom-us
 
+      # handwriting and notes
+      krita
+      saber
+      styluslabs-write-bin
+      write_stylus
+      xournalpp
+
       # 3D printing
       prusa-slicer
       #cura
