@@ -39,6 +39,7 @@
       (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
       infisical
       jira-cli-go
+      jless
       linode-cli
       metal-cli # official Equinix Metal CLI
       opentofu
