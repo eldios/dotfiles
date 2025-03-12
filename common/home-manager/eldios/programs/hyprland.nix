@@ -81,6 +81,7 @@ in
       wl-gammactl
       wl-screenrec
       wlogout
+      wlr-layout-ui
       wlr-randr
       wlroots
       wlsunset
