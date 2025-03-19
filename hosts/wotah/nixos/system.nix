@@ -90,9 +90,15 @@ in
       package = config.boot.kernelPackages.nvidiaPackages.stable;
 
       prime = {
-        sync = false;
-        offload = false;
-        reverseSync = false;
+        sync = {
+          enable = false;
+        };
+        offload = {
+          enable = false;
+        };
+        reverseSync = {
+          enable = false;
+        };
       };
     };
   };
