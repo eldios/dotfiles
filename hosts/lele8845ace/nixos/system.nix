@@ -20,6 +20,12 @@ in
   };
 
   services = {
+    hardware = {
+      openrgb = {
+        enable = true;
+      };
+    };
+
     fprintd = {
       enable = true;
     };
@@ -119,6 +125,7 @@ in
     clinfo
     gvfs
     jmtpfs
+    openrgb-with-all-plugins
     qmk
     qmk-udev-rules
     qmk_hid
