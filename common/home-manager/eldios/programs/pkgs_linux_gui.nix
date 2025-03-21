@@ -121,6 +121,7 @@ in
       prusa-slicer
       #cura
     ]) ++ (with unstablePkgs; [
+      beeper
       bitwarden
       brave
       cryptomator
