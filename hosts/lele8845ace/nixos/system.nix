@@ -118,7 +118,6 @@ in
   };
 
   # run Android apps on linux
-  virtualisation.waydroid.enable = false;
   virtualisation.docker.storageDriver = "btrfs";
 
   environment.systemPackages = (with pkgs; [
