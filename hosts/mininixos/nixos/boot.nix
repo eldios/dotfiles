@@ -7,12 +7,13 @@
 
     supportedFilesystems = [ "zfs" ];
 
+    zfs.package = pkgs.linuxPackages_latest.zfs_2_3;
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams =
-    [
-      "nohibernate"
-      "zfs.zfs_arc_max=6442856000"
-    ];
+      [
+        "nohibernate"
+        "zfs.zfs_arc_max=6442856000"
+      ];
 
     initrd = {
       supportedFilesystems = [ "zfs" "btrfs" ];
@@ -69,11 +70,11 @@
         efiSysMountPoint = "/boot";
       };
       grub = {
-        enable           = true;
-        device           = "nodev";
-        efiSupport       = true;
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
         efiInstallAsRemovable = true;
-        zfsSupport       = true;
+        zfsSupport = true;
         enableCryptodisk = true;
       };
     };
