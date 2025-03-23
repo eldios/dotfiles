@@ -3,7 +3,7 @@
   users.mutableUsers = false;
 
   users.users.eldios = {
-    shell = lib.mkForce pkgs.zsh;
+    shell = lib.mkDefault pkgs.zsh;
 
     isNormalUser = true;
     extraGroups = [
@@ -14,12 +14,18 @@
       "video"
       "wheel"
     ];
-    openssh.authorizedKeys.keys = (lib.splitString "\n" (builtins.readFile ../files/authorized_keys));
+
+    openssh.authorizedKeys.keys = (
+      lib.splitString "\n" (builtins.readFile ../files/authorized_keys)
+    );
   };
 
   users.users.root = {
     shell = pkgs.bash;
-    openssh.authorizedKeys.keys = (lib.splitString "\n" (builtins.readFile ../files/authorized_keys));
     hashedPasswordFile = config.sops.secrets."passwords/root".path;
+
+    openssh.authorizedKeys.keys = (
+      lib.splitString "\n" (builtins.readFile ../files/authorized_keys)
+    );
   };
 }
