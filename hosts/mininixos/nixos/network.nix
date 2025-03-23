@@ -19,7 +19,7 @@
 
     bridges = {
       br0 = {
-        interfaces = [ "eno1" ];  # Replace with your actual network interface
+        interfaces = [ "eno1" ]; # Replace with your actual network interface
       };
     };
 
@@ -27,10 +27,10 @@
     #nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
     hostName = "mininixos";
-    hostId   = "d34d0003"; # random chars
+    hostId = "d34d0003"; # random chars
 
     firewall = {
-      enable = false;
+      enable = true;
       # allowedTCPPorts = [ ... ];
       # allowedUDPPorts = [ ... ];
       checkReversePath = false;
