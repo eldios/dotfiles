@@ -7,7 +7,6 @@
 
     supportedFilesystems = [ "zfs" ];
 
-    zfs.package = pkgs.linuxPackages_latest.zfs_2_1;
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams =
       [
