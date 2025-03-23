@@ -15,7 +15,6 @@
       ../../../common/nixos/system.nix
 
       ../../../common/nixos/programs/neovim.nix
-      ../../../common/nixos/programs/zsh.nix
 
       ../../../common/nixos/virtualisation.nix
 
