@@ -1,8 +1,6 @@
 {
   programs = {
 
-    bash.enable = true;
-
     command-not-found.enable = false; # mutually exclusive with nix-index
     nix-index = {
       enable = true;
@@ -10,9 +8,9 @@
     };
 
     dircolors.enable = true;
-    htop.enable      = true;
-    info.enable      = true;
-    jq.enable        = true;
+    htop.enable = true;
+    info.enable = true;
+    jq.enable = true;
 
     fzf = {
       enable = true;
