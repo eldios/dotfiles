@@ -8,7 +8,7 @@
     supportedFilesystems = [ "zfs" ];
 
     #kernelPackages = pkgs.linuxPackages_latest;
-    kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
+    kernelPackages = pkgs.linuxPackages;
     kernelParams =
       [
         "nohibernate"
