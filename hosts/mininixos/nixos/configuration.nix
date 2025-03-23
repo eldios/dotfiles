@@ -33,6 +33,10 @@
       {
         home-manager.users.eldios = import ../home-manager/home.nix;
 
+        home-manager.sharedModules = [
+          inputs.sops-nix.homeManagerModules.sops
+        ];
+
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
