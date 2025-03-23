@@ -30,7 +30,6 @@
     containerd.enable = true;
     docker = {
       enable = true;
-      storageDriver = lib.mkDefault "zfs";
       autoPrune = {
         enable = true;
         dates = "weekly";

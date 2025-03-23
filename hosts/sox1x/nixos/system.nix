@@ -5,6 +5,8 @@
     autoUpgrade.enable = true;
   };
 
+  virtualisation.docker.storageDriver = "btrfs";
+
   services = {
     xserver = {
       xkb = {

@@ -5,6 +5,8 @@
     autoUpgrade.enable = true;
   };
 
+  virtualisation.docker.storageDriver = "zfs";
+
   services = {
     zfs = {
       autoScrub = {
