@@ -1,4 +1,4 @@
-{ pkgs , config , lib , ... }:
+{ pkgs, config, lib, ... }:
 {
   environment.systemPackages = with pkgs; [
     # Docker
@@ -12,7 +12,6 @@
     kubectx
     kubelogin
     kubelogin-oidc
-    kubernetes-helm
     kubernetes-helm
     nerdctl
     yamlfmt
