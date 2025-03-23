@@ -56,96 +56,116 @@ in
   services = {
     fwupd.enable = true;
 
-    openssh = {
+    fail2ban = {
       enable = true;
-      openFirewall = true;
-      settings = {
-        PermitRootLogin = "no";
-        PasswordAuthentication = false;
-        KbdInteractiveAuthentication = false;
-        AllowAgentForwarding = true;
+      # Ban IP after 5 failures
+      maxretry = 5;
+      ignoreIP = [
+        # Whitelist some subnets
+        "192.168.152.0/21"
+      ];
+      bantime = "24h"; # Ban IPs for one day on the first ban
+      bantime-increment = {
+        enable = true; # Enable increment of bantime after each violation
+        formula = "ban.Time * math.exp(float(ban.Count+1)*banFactor)/math.exp(1*banFactor)";
+        multipliers = "1 2 4 8 16 32 64";
+        maxtime = "168h"; # Do not ban for more than 1 week
+        overalljails = true; # Calculate the bantime based on all the violations
       };
     };
 
-    smartd = {
-      enable = true;
-      autodetect = true;
-    };
-
-    fstrim = {
-      enable = true;
-      interval = "daily";
-    };
-
-    pcscd.enable = true;
-
-    tailscale.enable = true;
-
   };
 
-  programs.nix-ld = {
+  openssh = {
     enable = true;
-    libraries = [ ];
-  };
-
-  environment.shells = [
-    "${binDir}/nu"
-  ];
-
-  environment.systemPackages = with pkgs; [
-    # hard reqs
-    binutils
-    borgbackup
-    btrfs-progs
-    git
-    gptfdisk
-    libgcc
-    nix-tree
-    pinentry-curses # required by GPG
-    python3
-    ripgrep
-    screen
-    smartmontools
-    sshuttle
-    proxychains-ng
-    tmux
-    wget
-    wireguard-tools
-
-    # utils
-    age
-    btop
-    byobu
-    #colorls # like `ls --color=auto -F` but cooler
-    ethtool
-    fastfetch
-    file
-    ffmpeg
-    gnumake
-    htop
-    just
-    lsd
-    lshw
-    manix
-    mdadm
-    openssl
-    rclone
-    sops
-    yubikey-personalization
-
-    # WAYLAND + SWAY
-    dbus # make dbus-update-activation-environment available in the path
-    glib # gsettings
-  ];
-
-  security = {
-    polkit.enable = true;
-
-    sudo = {
-      enable = true;
-      wheelNeedsPassword = false;
+    openFirewall = true;
+    settings = {
+      PermitRootLogin = "prohibit-password";
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+      AllowAgentForwarding = true;
     };
   };
+
+  smartd = {
+    enable = true;
+    autodetect = true;
+  };
+
+  fstrim = {
+    enable = true;
+    interval = "daily";
+  };
+
+  pcscd.enable = true;
+
+  tailscale.enable = true;
+
+};
+
+programs.nix-ld = {
+enable = true;
+libraries = [ ];
+};
+
+environment.shells = [
+"${binDir}/nu"
+];
+
+environment.systemPackages = with pkgs; [
+# hard reqs
+binutils
+borgbackup
+btrfs-progs
+git
+gptfdisk
+libgcc
+nix-tree
+pinentry-curses # required by GPG
+python3
+ripgrep
+screen
+smartmontools
+sshuttle
+proxychains-ng
+tmux
+wget
+wireguard-tools
+
+# utils
+age
+btop
+byobu
+#colorls # like `ls --color=auto -F` but cooler
+ethtool
+fastfetch
+file
+ffmpeg
+gnumake
+htop
+just
+lsd
+lshw
+manix
+mdadm
+openssl
+rclone
+sops
+yubikey-personalization
+
+# WAYLAND + SWAY
+dbus # make dbus-update-activation-environment available in the path
+glib # gsettings
+];
+
+security = {
+polkit.enable = true;
+
+sudo = {
+enable = true;
+wheelNeedsPassword = false;
+};
+};
 }
 
 # vim: set ts=2 sw=2 et ai list nu
