@@ -73,7 +73,6 @@ in
       alacritty-theme # alacritty themes
       appimage-run
       arandr
-      #beeper
       cool-retro-term
       discord
       easyeffects
@@ -133,7 +132,6 @@ in
       vivaldi-ffmpeg-codecs
     ]) ++ (with unstablePkgs; [
       # 2nd Brain stuff
-      anytype
       cameractrls
       obsidian
       rnote
