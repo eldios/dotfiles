@@ -21,7 +21,7 @@ in
       wine
     ]) ++ (with unstablePkgs; [
       audacity
-      #davinci-resolve-studio
+      davinci-resolve-studio
       ghostty
     ]) ++ ([
       inputs.zen-browser.packages."${system}".specific
