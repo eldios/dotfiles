@@ -24,8 +24,6 @@ in
       enable = true;
     };
 
-    tailscale.enable = lib.mkForce false;
-
     # don’t shutdown when power button is short-pressed
     logind.extraConfig = ''
       HandlePowerKey=ignore
