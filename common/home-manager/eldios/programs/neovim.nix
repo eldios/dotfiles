@@ -237,6 +237,8 @@ in
     local openai_key = read_config_file("${config.sops.secrets."tokens/openai/key".path}");
     local ollama_key = read_config_file("${config.sops.secrets."tokens/ollama/key".path}");
     local ollama_url = read_config_file("${config.sops.secrets."tokens/ollama/url".path}");
+    local litellm_key = read_config_file("${config.sops.secrets."tokens/litellm/key".path}");
+    local litellm_url = read_config_file("${config.sops.secrets."tokens/litellm/url".path}");
     return {
       {
         "eldios/codecompanion.nvim",
@@ -301,60 +303,24 @@ in
           require('codecompanion').setup{
             strategies = {
               chat = {
-                adapter = "anthropic",
+                adapter = "litellm",
               },
               inline = {
-                adapter = "anthropic",
+                adapter = "litellm",
               },
             },
             adapters = {
-              gemini = function()
-                return require("codecompanion.adapters").extend("gemini", {
-                  env = {
-                    api_key = gemini_key
-                  }
-                })
-              end,
-              anthropic = function()
-                return require("codecompanion.adapters").extend("anthropic", {
-                  env = {
-                    api_key = anthropic_key
-                  }
-                })
-              end,
-              openai = function()
-                return require("codecompanion.adapters").extend("openai", {
-                  env = {
-                    api_key = openai_key
-                  }
-                })
-              end,
-              openwebui = function()
-                return require("codecompanion.adapters").extend("openwebui", {
+              litellm = function()
+                return require("codecompanion.adapters").extend("openai_compatible", {
                   schema = {
                     model = {
-                      default = "llama3.2:latest",
+                      default = "anthropic/claude-sonnet-3-7-latest",
                     },
                   },
                   env = {
-                    url = ollama_url,
-                    api_key = ollama_key,
-                    chat_url = "/api/chat/completions",
-                  },
-                })
-              end,
-              deepseek = function()
-                return require("codecompanion.adapters").extend("ollama", {
-                  schema = {
-                    model = {
-                      default = "deepseek-r1:8b",
-                    },
-                  },
-                  env = {
-                    url = ollama_url,
-                    api_key = ollama_key,
-                    chat_url = "/api/chat/completions",
-                  },
+                    api_key = litellm_key,
+                    url = litellm_url,
+                  }
                 })
               end,
             },
