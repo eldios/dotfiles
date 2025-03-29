@@ -27,6 +27,8 @@ in
       "tokens/gemini/key" = { };
       "tokens/ollama/key" = { };
       "tokens/ollama/url" = { };
+      "tokens/litellm/key" = { };
+      "tokens/litellm/url" = { };
     };
   };
 
