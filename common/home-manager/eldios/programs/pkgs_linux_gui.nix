@@ -19,10 +19,10 @@ let
     nativeBuildInputs = previousAttrs.nativeBuildInputs ++ [ patchelfFixes ];
   });
   mailspring = unstablePkgs.mailspring.overrideAttrs (_finalAttrs: _previousAttrs: {
-    version = "1.14.0";
+    version = "1.15.1";
     src = unstablePkgs.fetchurl {
       url = "https://github.com/Foundry376/Mailspring/releases/download/${_finalAttrs.version}/mailspring-${_finalAttrs.version}-amd64.deb";
-      hash = "sha256-ZpmL6d0QkHKKxn+KF1OEDeAb1bFp9uohBobCvblE+L8=";
+      hash = "sha256-+glQaz36mKMtnNeyHH4brZmzYe9SHCtccO6CIJpTH2k=";
     };
   });
 
