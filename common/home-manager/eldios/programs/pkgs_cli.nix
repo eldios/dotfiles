@@ -111,6 +111,7 @@
       cmatrix
       cowsay
       entr
+      exfat
       fd # A simple, fast and user-friendly alternative to find
       figlet
       fortune
