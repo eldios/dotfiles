@@ -235,8 +235,6 @@ in
     local anthropic_key = read_config_file("${config.sops.secrets."tokens/anthropic/key".path}");
     local gemini_key = read_config_file("${config.sops.secrets."tokens/gemini/key".path}");
     local openai_key = read_config_file("${config.sops.secrets."tokens/openai/key".path}");
-    local ollama_key = read_config_file("${config.sops.secrets."tokens/ollama/key".path}");
-    local ollama_url = read_config_file("${config.sops.secrets."tokens/ollama/url".path}");
     local litellm_key = read_config_file("${config.sops.secrets."tokens/litellm/key".path}");
     local litellm_url = read_config_file("${config.sops.secrets."tokens/litellm/url".path}");
     return {
@@ -308,13 +306,17 @@ in
               inline = {
                 adapter = "litellm",
               },
+              cmd = {
+                adapter = "litellm",
+              },
             },
             adapters = {
               litellm = function()
                 return require("codecompanion.adapters").extend("openai_compatible", {
+                  name = "litellm",
                   schema = {
                     model = {
-                      default = "anthropic/claude-sonnet-3-7-latest",
+                      default = "anthropic/claude-3-7-sonnet-latest",
                     },
                   },
                   env = {
