@@ -78,7 +78,7 @@ in
       easyeffects
       filezilla
       geoclue2
-      gimp
+      gimp-with-plugins
       gparted
       gromit-mpx
       inkscape
@@ -124,12 +124,12 @@ in
       bitwarden
       brave
       cryptomator
-      #super-slicer
-      #pdfposter
       variety
       vesktop # discord + some fixes
       vivaldi
       vivaldi-ffmpeg-codecs
+      #super-slicer
+      #pdfposter
     ]) ++ (with unstablePkgs; [
       # 2nd Brain stuff
       cameractrls
