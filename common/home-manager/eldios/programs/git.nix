@@ -15,7 +15,6 @@ in
   home = {
     packages = with pkgs; [
       github-cli
-      git-lfs
     ];
   };
 
@@ -28,6 +27,7 @@ in
 
     git = {
       enable = true;
+      lfs.enable = true;
       aliases = {
         w = "worktree";
         wa = "worktree add";
