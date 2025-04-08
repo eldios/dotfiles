@@ -29,6 +29,7 @@ in
       "tokens/ollama/url" = { };
       "tokens/litellm/key" = { };
       "tokens/litellm/url" = { };
+      "tokens/kagi/key" = { };
     };
   };
 
