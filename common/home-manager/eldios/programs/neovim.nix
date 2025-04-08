@@ -204,6 +204,7 @@ in
     vim.opt.softtabstop = 2
     vim.opt.expandtab = true
     vim.opt.colorcolumn = { 80 }
+    vim.opt.laststatus = 3
   '';
   # this file is automatically loaded by LazyVim
   xdg.configFile."nvim/lua/config/keymaps.lua".text = ''
@@ -212,7 +213,178 @@ in
   xdg.configFile."nvim/lua/config/autocmds.lua".text = ''
   '';
   # https://github.com/olimorris/codecompanion.nvim
-  xdg.configFile."nvim/lua/plugins/ai.lua".text = ''
+  xdg.configFile."nvim/lua/plugins/avante.lua".text = ''
+    local function read_config_file(file_path)
+      local file = io.open(file_path, "r")
+      if file then
+        local content = file:read("*all")
+        file:close()
+        -- Remove any whitespace and newlines
+        return content:gsub("%s+", "")
+      end
+      vim.notify("Config file not found: " .. file_path, vim.log.levels.ERROR)
+      return nil
+    end
+
+    return {
+      {
+        "yetone/avante.nvim",
+        event = "VeryLazy",
+        version = false, -- Never set this value to "*"! Never!
+        opts = {
+          provider = "claude",
+          auto_suggestions_provider = "claude",
+          claude = {
+            api_key_name = "cmd:cat ${config.sops.secrets."tokens/anthropic/key".path}",
+            endpoint = "https://api.anthropic.com",
+            model = "claude-3-7-sonnet-latest",
+            timeout = 30000,
+            temperature = 0,
+            max_tokens = 131072, -- Increase this to include reasoning tokens (for reasoning models)
+            --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+          },
+          openai = {
+            api_key_name = "cmd:cat ${config.sops.secrets."tokens/openai/key".path}",
+            endpoint = "https://api.opanai.com/v1",
+            model = "o3-mini",
+            timeout = 30000,
+            temperature = 0,
+            max_tokens = 131072, -- Increase this to include reasoning tokens (for reasoning models)
+            --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+          },
+          gemini = {
+            api_key_name = "cmd:cat ${config.sops.secrets."tokens/gemini/key".path}",
+            model = "o3-mini",
+            timeout = 30000,
+            temperature = 0,
+            max_tokens = 131072, -- Increase this to include reasoning tokens (for reasoning models)
+            --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+          },
+          ---Specify the special dual_boost mode
+          ---1. enabled: Whether to enable dual_boost mode. Default to false.
+          ---2. first_provider: The first provider to generate response. Default to "openai".
+          ---3. second_provider: The second provider to generate response. Default to "claude".
+          ---4. prompt: The prompt to generate response based on the two reference outputs.
+          ---5. timeout: Timeout in milliseconds. Default to 60000.
+          ---How it works:
+          --- When dual_boost is enabled, avante will generate two responses from the first_provider and second_provider respectively. Then use the response from the first_provider as provider1_output and the response from the second_provider as provider2_output. Finally, avante will generate a response based on the prompt and the two reference outputs, with the default Provider as normal.
+          ---Note: This is an experimental feature and may not work as expected.
+          dual_boost = {
+            enabled = false,
+            first_provider = "openai",
+            second_provider = "claude",
+            prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
+            timeout = 60000, -- Timeout in milliseconds
+          },
+          behaviour = {
+            auto_suggestions = true, -- Experimental stage
+            auto_set_highlight_group = true,
+            auto_set_keymaps = true,
+            auto_apply_diff_after_generation = true,
+            support_paste_from_clipboard = true,
+            minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
+            enable_token_counting = true, -- Whether to enable token counting. Default to true.
+            enable_cursor_planning_mode = true, -- Whether to enable Cursor Planning Mode. Default to false.
+            enable_claude_text_editor_tool_mode = true, -- Whether to enable Claude Text Editor Tool Mode.
+          },
+        },
+        rag_service = {
+          enabled = true, -- Enables the RAG service
+          host_mount = os.getenv("HOME"), -- Host mount path for the rag service
+          provider = "openai", -- The provider to use for RAG service (e.g. openai or ollama)
+          endpoint = "https://api.openai.com/v1", -- The API endpoint for RAG service
+          -- llm_model = "", -- The LLM model to use for RAG service
+          -- embed_model = "", -- The embedding model to use for RAG service
+        },
+        web_search_engine = {
+          api_key_name = "cmd:cat ${config.sops.secrets."tokens/kagi/key".path}",
+          provider = "kagi", -- tavily, serpapi, searchapi, google or kagi
+          proxy = nil, -- proxy support, e.g., http://127.0.0.1:7890
+        },
+        mappings = {
+          --- @class AvanteConflictMappings
+          diff = {
+            ours = "co",
+            theirs = "ct",
+            all_theirs = "ca",
+            both = "cb",
+            cursor = "cc",
+            next = "]x",
+            prev = "[x",
+          },
+          suggestion = {
+            accept = "<M-l>",
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          },
+          jump = {
+            next = "]]",
+            prev = "[[",
+          },
+          submit = {
+            normal = "<CR>",
+            insert = "<C-s>",
+          },
+          cancel = {
+            normal = { "<C-c>", "<Esc>", "q" },
+            insert = { "<C-c>" },
+          },
+          sidebar = {
+            apply_all = "A",
+            apply_cursor = "a",
+            retry_user_request = "r",
+            edit_user_request = "e",
+            switch_windows = "<Tab>",
+            reverse_switch_windows = "<S-Tab>",
+            remove_file = "d",
+            add_file = "@",
+            close = { "<Esc>", "q" },
+            close_from_input = nil, -- e.g., { normal = "<Esc>", insert = "<C-d>" }
+          },
+        },
+        hints = { enabled = true },
+        dependencies = {
+          "nvim-treesitter/nvim-treesitter",
+          "stevearc/dressing.nvim",
+          "nvim-lua/plenary.nvim",
+          "MunifTanjim/nui.nvim",
+          --- The below dependencies are optional,
+          "echasnovski/mini.pick", -- for file_selector provider mini.pick
+          --- "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+          "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+          --- "ibhagwan/fzf-lua", -- for file_selector provider fzf
+          "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+          --- "zbirenbaum/copilot.lua", -- for providers='copilot'
+          {
+            -- support for image pasting
+            "HakonHarnes/img-clip.nvim",
+            event = "VeryLazy",
+            opts = {
+              -- recommended settings
+              default = {
+                embed_image_as_base64 = true,
+                prompt_for_file_name = true,
+                drag_and_drop = {
+                  insert_mode = true,
+                },
+                use_absolute_path = true,
+              },
+            },
+          },
+          {
+            -- Make sure to set this up properly if you have lazy=true
+            'MeanderingProgrammer/render-markdown.nvim',
+            opts = {
+              file_types = { "markdown", "Avante" },
+            },
+            ft = { "markdown", "Avante" },
+          },
+        },
+      }
+    }
+  '';
+  xdg.configFile."nvim/lua/plugins.disabled/codecompanion.lua".text = ''
     -- AI Configuration for NeoVim
     -- Using codecompanion with multiple AI providers
     -- Author: eldios
