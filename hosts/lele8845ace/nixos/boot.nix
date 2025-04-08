@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   boot = {
     kernel.sysctl = {
@@ -16,13 +16,23 @@
 
     # latest kernel
     kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_zen;
     # latest non-deprecated Kernel that support ZFS
     #kernelPackages = pkgs.linuxPackages_6_6;
 
     kernelParams = [
       "nohibernate"
+      "acpi_enforce_resources=lax"
       #"snd_intel_dspcfg.dsp_driver=1" # if 3 and 1 don't work move to Pulseaudio
     ];
+
+    #kernelPatches = [{
+    #  name = "NCT6775 driver";
+    #  patch = null;
+    #  extraStructuredConfig = with lib.kernel; {
+    #    I2C_NCT6775 = lib.mkForce yes;
+    #  };
+    #}];
 
     initrd = {
       supportedFilesystems = [ "btrfs" ];
