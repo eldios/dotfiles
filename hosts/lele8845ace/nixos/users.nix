@@ -21,6 +21,7 @@ in
     };
   };
 
+  users.groups.i2c.members = [ "eldios" ];
   users.users.eldios = {
     hashedPasswordFile = config.sops.secrets."passwords/lele8845ace/eldios".path;
 
