@@ -23,6 +23,8 @@ in
     hardware = {
       openrgb = {
         enable = true;
+        motherboard = "amd";
+        package = pkgs.openrgb-with-all-plugins;
       };
     };
 
@@ -123,6 +125,7 @@ in
   environment.systemPackages = (with pkgs; [
     clinfo
     gvfs
+    i2c-tools
     jmtpfs
     openrgb-with-all-plugins
     qmk
