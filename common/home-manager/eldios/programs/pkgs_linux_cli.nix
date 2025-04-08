@@ -23,7 +23,9 @@ in
       sshx
       tty-share
       yt-dlp
-    ] ++ (with unstablePkgs; [ ]);
+    ] ++ (with unstablePkgs; [
+      claude-code
+    ]);
   };
 } # EOF
 # vim: set ts=2 sw=2 et ai list nu
