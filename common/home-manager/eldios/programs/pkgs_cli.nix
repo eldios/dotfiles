@@ -148,6 +148,7 @@
       usbutils
       util-linux
       wget
+      magic-wormhole-rs
       yazi
       zip
     ];
