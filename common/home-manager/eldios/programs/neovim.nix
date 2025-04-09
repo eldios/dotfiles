@@ -224,6 +224,7 @@ in
         "yetone/avante.nvim",
         event = "VeryLazy",
         version = false, -- Never set this value to "*"! Never!
+        build = "make",
         opts = {
           provider = "claude",
           auto_suggestions_provider = "claude",
@@ -233,7 +234,7 @@ in
             model = "claude-3-7-sonnet-latest",
             timeout = 30000,
             temperature = 0,
-            max_tokens = 131072, -- Increase this to include reasoning tokens (for reasoning models)
+            max_tokens = 32000, -- Increase this to include reasoning tokens (for reasoning models)
             --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
           },
           openai = {
@@ -242,14 +243,14 @@ in
             model = "o3-mini",
             timeout = 30000,
             temperature = 0,
-            max_tokens = 131072, -- Increase this to include reasoning tokens (for reasoning models)
+            max_tokens = 32000, -- Increase this to include reasoning tokens (for reasoning models)
           },
           gemini = {
             api_key_name = "cmd:cat ${config.sops.secrets."tokens/gemini/key".path}",
             endpoint = "https://generativelanguage.googleapis.com/v1beta/models",
             timeout = 30000, -- Timeout in milliseconds
             temperature = 0,
-            max_tokens = 131072, -- Increase this to include reasoning tokens (for reasoning models)
+            max_tokens = 32000, -- Increase this to include reasoning tokens (for reasoning models)
           },
           ---Specify the special dual_boost mode
           ---1. enabled: Whether to enable dual_boost mode. Default to false.
@@ -601,11 +602,16 @@ in
       extraPackages = with pkgs; [
         curl
         jq
+        gcc # For compiling Avante components
+        gnumake # Required for Avante build process
+        binutils # Provides tools like 'ld' for linking
       ];
 
       package = unstablePkgs.neovim-unwrapped;
 
-      plugins = with pkgs.vimPlugins; [ ];
+      plugins = with pkgs.vimPlugins; [
+        avante-nvim
+      ];
 
       extraConfig = ''
       '';
