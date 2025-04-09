@@ -1,7 +1,7 @@
 { pkgs, config, nixpkgs-unstable, ... }:
 let
   unstablePkgs = import nixpkgs-unstable {
-    system = "x86_64-linux";
+    system = pkgs.system;
     config.allowUnfree = true;
   };
 in
@@ -29,7 +29,7 @@ in
       # vars
       ripgrep # used by space-f-g
       ripgrep-all # used by space-f-g
-    ] ++ (with unstablePkgs; [ ] ++ [ ]);
+    ] ++ (with unstablePkgs; [ ]);
   };
 
   # this file is used to setup LazyVim
@@ -91,9 +91,10 @@ in
   # this file is automatically loaded by LazyVim
   xdg.configFile."nvim/lua/config/lazy.lua".text = ''
     return {
-      -- Lele UI settings
+      -- UI extras
       { import = "lazyvim.plugins.extras.ui.mini-animate" },
-      -- Lele Lang settings
+
+      -- Language support
       { import = "lazyvim.plugins.extras.lang.cmake" },
       { import = "lazyvim.plugins.extras.lang.docker" },
       { import = "lazyvim.plugins.extras.lang.go" },
@@ -107,7 +108,11 @@ in
       { import = "lazyvim.plugins.extras.lang.terraform" },
       { import = "lazyvim.plugins.extras.lang.typescript" },
       { import = "lazyvim.plugins.extras.lang.yaml" },
-      -- Lele plugins
+
+      -- Tool integrations
+      { import = "lazyvim.plugins.extras.formatting.prettier" },
+      { import = "lazyvim.plugins.extras.util.mini-hipatterns" },
+      { import = "lazyvim.plugins.extras.editor.mini-files" },
     }
   '';
   xdg.configFile."nvim/lua/config/snacks.lua".text = ''
@@ -212,21 +217,8 @@ in
   # this file is automatically loaded by LazyVim
   xdg.configFile."nvim/lua/config/autocmds.lua".text = ''
   '';
-  # https://github.com/olimorris/codecompanion.nvim
   # https://github.com/yetone/avante.nvim/blob/main/lua/avante/config.lua
   xdg.configFile."nvim/lua/plugins/avante.lua".text = ''
-    local function read_config_file(file_path)
-      local file = io.open(file_path, "r")
-      if file then
-        local content = file:read("*all")
-        file:close()
-        -- Remove any whitespace and newlines
-        return content:gsub("%s+", "")
-      end
-      vim.notify("Config file not found: " .. file_path, vim.log.levels.ERROR)
-      return nil
-    end
-
     return {
       {
         "yetone/avante.nvim",
@@ -246,7 +238,7 @@ in
           },
           openai = {
             api_key_name = "cmd:cat ${config.sops.secrets."tokens/openai/key".path}",
-            endpoint = "https://api.opanai.com/v1",
+            endpoint = "https://api.openai.com/v1",
             model = "o3-mini",
             timeout = 30000,
             temperature = 0,
@@ -290,23 +282,23 @@ in
             support_paste_from_clipboard = true,
             use_cwd_as_project_root = true,
           },
-        },
-        rag_service = {
-          enabled = true, -- Enables the RAG service
-          host_mount = os.getenv("HOME"), -- Host mount path for the rag service
-          provider = "openai", -- The provider to use for RAG service (e.g. openai or ollama)
-          endpoint = "https://api.openai.com/v1", -- The API endpoint for RAG service
-          -- llm_model = "", -- The LLM model to use for RAG service
-          -- embed_model = "", -- The embedding model to use for RAG service
-        },
-        web_search_engine = {
-          provider = "kagi", -- tavily, serpapi, searchapi, google or kagi
-          providers = {
-            kagi = {
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/kagi/key".path}",
-            },
+          rag = {
+            enabled = true, -- Enables the RAG service
+            host_mount = os.getenv("HOME"), -- Host mount path for the rag service
+            provider = "openai", -- The provider to use for RAG service (e.g. openai or ollama)
+            endpoint = "https://api.openai.com/v1", -- The API endpoint for RAG service
+            -- llm_model = "", -- The LLM model to use for RAG service
+            -- embed_model = "", -- The embedding model to use for RAG service
           },
         },
+          web_search_engine = {
+            provider = "kagi", -- tavily, serpapi, searchapi, google or kagi
+            providers = {
+              kagi = {
+                api_key_name = "cmd:cat ${config.sops.secrets."tokens/kagi/key".path}",
+              },
+            },
+          },
         mappings = {
           --- @class AvanteConflictMappings
           diff = {
@@ -390,12 +382,9 @@ in
       }
     }
   '';
+  # https://github.com/olimorris/codecompanion.nvim
+  # https://github.com/eldios/codecompanion.nvim
   xdg.configFile."nvim/lua/plugins.disabled/codecompanion.lua".text = ''
-    -- AI Configuration for NeoVim
-    -- Using codecompanion with multiple AI providers
-    -- Author: eldios
-    -- Repository: https://github.com/eldios/.dotfiles
-
     -- Helper function to read API keys and configuration from files
     local function read_config_file(file_path)
       local file = io.open(file_path, "r")
