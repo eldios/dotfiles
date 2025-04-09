@@ -213,6 +213,7 @@ in
   xdg.configFile."nvim/lua/config/autocmds.lua".text = ''
   '';
   # https://github.com/olimorris/codecompanion.nvim
+  # https://github.com/yetone/avante.nvim/blob/main/lua/avante/config.lua
   xdg.configFile."nvim/lua/plugins/avante.lua".text = ''
     local function read_config_file(file_path)
       local file = io.open(file_path, "r")
@@ -250,15 +251,13 @@ in
             timeout = 30000,
             temperature = 0,
             max_tokens = 131072, -- Increase this to include reasoning tokens (for reasoning models)
-            --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
           },
           gemini = {
             api_key_name = "cmd:cat ${config.sops.secrets."tokens/gemini/key".path}",
-            model = "o3-mini",
-            timeout = 30000,
+            endpoint = "https://generativelanguage.googleapis.com/v1beta/models",
+            timeout = 30000, -- Timeout in milliseconds
             temperature = 0,
             max_tokens = 131072, -- Increase this to include reasoning tokens (for reasoning models)
-            --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
           },
           ---Specify the special dual_boost mode
           ---1. enabled: Whether to enable dual_boost mode. Default to false.
@@ -277,15 +276,19 @@ in
             timeout = 60000, -- Timeout in milliseconds
           },
           behaviour = {
-            auto_suggestions = true, -- Experimental stage
+            auto_apply_diff_after_generation = false,
+            auto_focus_sidebar = true,
             auto_set_highlight_group = true,
             auto_set_keymaps = true,
-            auto_apply_diff_after_generation = true,
-            support_paste_from_clipboard = true,
-            minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
-            enable_token_counting = true, -- Whether to enable token counting. Default to true.
-            enable_cursor_planning_mode = true, -- Whether to enable Cursor Planning Mode. Default to false.
+            auto_suggestions = true, -- Experimental stage
+            auto_suggestions_respect_ignore = true,
             enable_claude_text_editor_tool_mode = true, -- Whether to enable Claude Text Editor Tool Mode.
+            enable_cursor_planning_mode = true, -- Whether to enable Cursor Planning Mode. Default to false.
+            enable_token_counting = false, -- Whether to enable token counting. Default to true.
+            jump_result_buffer_on_finish = true,
+            minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
+            support_paste_from_clipboard = true,
+            use_cwd_as_project_root = true,
           },
         },
         rag_service = {
@@ -297,9 +300,12 @@ in
           -- embed_model = "", -- The embedding model to use for RAG service
         },
         web_search_engine = {
-          api_key_name = "cmd:cat ${config.sops.secrets."tokens/kagi/key".path}",
           provider = "kagi", -- tavily, serpapi, searchapi, google or kagi
-          proxy = nil, -- proxy support, e.g., http://127.0.0.1:7890
+          providers = {
+            kagi = {
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/kagi/key".path}",
+            },
+          },
         },
         mappings = {
           --- @class AvanteConflictMappings
