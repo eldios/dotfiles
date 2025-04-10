@@ -203,16 +203,20 @@ in
 
   xdg.portal = {
     enable = true;
+    xdgOpenUsePortal = true;
     wlr.enable = true;
-    config.common.default = "*";
+    config = {
+      common.default = [ "gtk" ];
+      hyprland.default = [ "gtk" "hyprland" ];
+    };
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
-      #pkgs.xdg-desktop-portal-wlr
       pkgs.xdg-desktop-portal-hyprland
     ];
   };
 
   # audio
+  security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
     audio.enable = true;
