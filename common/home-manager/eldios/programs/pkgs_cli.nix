@@ -64,6 +64,7 @@
 
       # Kubernetes stuff
       argocd
+      daytona-bin
       devpod
       devspace
       eksctl
