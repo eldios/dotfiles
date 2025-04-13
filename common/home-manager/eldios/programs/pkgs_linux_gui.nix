@@ -4,9 +4,14 @@ let
     system = "x86_64-linux";
     config.allowUnfree = true;
   };
-  appflowy = unstablePkgs.appflowy.overrideAttrs (_finalAttrs: _previousAttrs: {
-    version = "v0.6.8";
-  });
+  #appflowy = unstablePkgs.appflowy.overrideAttrs (_finalAttrs: _previousAttrs: {
+  #  version = "0.8.8";
+  #  src = unstablePkgs.fetchzip {
+  #    url = "https://github.com/AppFlowy-IO/appflowy/releases/download/${_finalAttrs.version}/AppFlowy-${_finalAttrs.version}-linux-x86_64.tar.gz";
+  #    hash = "sha256-n190ErYfhYbJ0Yxb+7dhIDqTtA0Nk03uAWzjPI+G1qk=";
+  #    stripRoot = false;
+  #  };
+  #});
   patchelfFixes = pkgs.patchelfUnstable.overrideAttrs (_finalAttrs: _previousAttrs: {
     src = pkgs.fetchFromGitHub {
       owner = "Patryk27";
@@ -132,12 +137,12 @@ in
       #pdfposter
     ]) ++ (with unstablePkgs; [
       # 2nd Brain stuff
+      appflowy
       cameractrls
       obsidian
       rnote
       streamcontroller
     ]) ++ [
-      appflowy
       pcloud
       mailspring
     ];
