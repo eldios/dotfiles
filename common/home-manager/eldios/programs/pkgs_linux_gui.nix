@@ -137,6 +137,7 @@ in
       #pdfposter
     ]) ++ (with unstablePkgs; [
       # 2nd Brain stuff
+      anytype
       appflowy
       cameractrls
       obsidian
