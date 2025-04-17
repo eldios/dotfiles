@@ -133,6 +133,7 @@ in
     qmk_hid
     sof-firmware
     v4l-utils
+    via
     vial
   ]) ++ (with unstablePkgs; [ ]) ++ [
     portmaster.legacyPackages.${pkgs.system}.portmaster
