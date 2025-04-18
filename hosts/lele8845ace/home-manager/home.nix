@@ -3,7 +3,8 @@
   nixpkgs.config.allowUnfree = true;
 
   programs = {
-    home-manager = { # set home-manager to handle itself
+    home-manager = {
+      # set home-manager to handle itself
       enable = true;
     };
   }; # EOM programs
@@ -17,10 +18,14 @@
     file = { };
 
     sessionVariables = {
-      TERM = "xterm-256color";
-      NIXOS_OZONE_WL = "1";
+      GDK_BACKEND = "wayland";
       LIBVA_DRIVER_NAME = "radeonsi";
+      MOZ_ENABLE_WAYLAND = "1";
+      NIXOS_OZONE_WL = "1";
+      TERM = "xterm-256color";
+      T_QPA_PLATFORM = "wayland";
       VDPAU_DRIVER = "radeonsi";
+      WLR_NO_HARDWARE_CURSORS = "1";
     };
   }; # EOM home
 
