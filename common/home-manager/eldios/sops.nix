@@ -1,7 +1,5 @@
-{ inputs, ... }:
+{ inputs, config, ... }:
 let
-  #main_user_id = "1000"; # run `id` to find it
-
   secretspath = builtins.toString inputs.secrets;
 in
 {
@@ -24,13 +22,29 @@ in
     secrets = {
       "tokens/anthropic/key" = { };
       "tokens/openai/key" = { };
+      "tokens/openrouter/aider/key" = { };
       "tokens/gemini/key" = { };
       "tokens/ollama/key" = { };
       "tokens/ollama/url" = { };
-      "tokens/litellm/key" = { };
-      "tokens/litellm/url" = { };
+      "tokens/litellm/neovim/key" = { };
+      "tokens/litellm/neovim/url" = { };
+      "tokens/litellm/aider/key" = { };
+      "tokens/litellm/aider/url" = { };
       "tokens/kagi/key" = { };
     };
+
+    templates = {
+      "aider.conf.yml" = {
+        content = ''
+          dark_mode: true
+
+          openai-api-key: "${config.sops.placeholder."tokens/litellm/aider/key"}"
+          openai-api-base: "${config.sops.placeholder."tokens/litellm/aider/url"}"
+        '';
+        path = "/home/eldios/.aider.conf.yml";
+      };
+    };
+
   };
 
 }
