@@ -36,7 +36,7 @@ in
     templates = {
       "aider.conf.yml" = {
         content = ''
-          dark_mode: true
+          dark-mode: true
 
           openai-api-key: "${config.sops.placeholder."tokens/litellm/aider/key"}"
           openai-api-base: "${config.sops.placeholder."tokens/litellm/aider/url"}"
