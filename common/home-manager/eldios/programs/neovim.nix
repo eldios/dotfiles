@@ -29,7 +29,9 @@ in
       # vars
       ripgrep # used by space-f-g
       ripgrep-all # used by space-f-g
-    ] ++ (with unstablePkgs; [ ]);
+    ] ++ (with unstablePkgs; [
+      aider-chat
+    ]);
   };
 
   # this file is used to setup LazyVim
