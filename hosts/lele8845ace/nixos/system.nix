@@ -157,7 +157,20 @@ in
   # https://wiki.archlinux.org/title/GPGPU#ICD_loader_(libOpenCL.so)
   environment.etc."ld.so.conf.d/00-usrlib.conf".text = "/usr/lib";
 
-  #environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; };
+  environment.sessionVariables = {
+    GDK_BACKEND = "wayland";
+    MOZ_ENABLE_WAYLAND = "1";
+    NIXOS_OZONE_WL = "1";
+    T_QPA_PLATFORM = "wayland";
+    WLR_NO_HARDWARE_CURSORS = "1";
+  };
+
+  environment.variables = {
+    # If cursor is not visible, try to set this to "on".
+    XDG_CURRENT_DESKTOP = "Hyprland";
+    XDG_SESSION_TYPE = "wayland";
+    XDG_SESSION_DESKTOP = "Hyprland";
+  };
 
   hardware = {
     enableAllFirmware = true;
