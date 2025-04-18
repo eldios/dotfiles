@@ -405,8 +405,8 @@ in
     local anthropic_key = read_config_file("${config.sops.secrets."tokens/anthropic/key".path}");
     local gemini_key = read_config_file("${config.sops.secrets."tokens/gemini/key".path}");
     local openai_key = read_config_file("${config.sops.secrets."tokens/openai/key".path}");
-    local litellm_key = read_config_file("${config.sops.secrets."tokens/litellm/key".path}");
-    local litellm_url = read_config_file("${config.sops.secrets."tokens/litellm/url".path}");
+    local litellm_key = read_config_file("${config.sops.secrets."tokens/litellm/neovim/key".path}");
+    local litellm_url = read_config_file("${config.sops.secrets."tokens/litellm/neovim/url".path}");
     return {
       {
         "eldios/codecompanion.nvim",
