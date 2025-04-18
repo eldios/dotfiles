@@ -79,7 +79,6 @@ in
       appimage-run
       arandr
       cool-retro-term
-      discord
       easyeffects
       filezilla
       geoclue2
@@ -125,10 +124,12 @@ in
       prusa-slicer
       #cura
     ]) ++ (with unstablePkgs; [
+      anytype
       beeper
       bitwarden
       brave
       cryptomator
+      discord-canary
       variety
       vesktop # discord + some fixes
       vivaldi
@@ -137,7 +138,6 @@ in
       #pdfposter
     ]) ++ (with unstablePkgs; [
       # 2nd Brain stuff
-      anytype
       appflowy
       cameractrls
       obsidian
