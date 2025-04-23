@@ -31,10 +31,10 @@ in
       dates = "weekly";
       options = "--delete-older-than 31d";
     };
+    extraOptions = ''
+      !include ${config.sops.secrets."tokens/github/nix".path}
+    '';
     settings = {
-      # access-tokens = [
-      #   "github.com=" tokenFile = config.sops.secrets."tokens/kubernetes/casa".path;
-      # ];
       # Nix Settings
       auto-optimise-store = true; # Auto Optimize nix store.
       experimental-features = [ "nix-command" "flakes" ]; # Enable experimental features.
