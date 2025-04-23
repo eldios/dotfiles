@@ -228,15 +228,28 @@ in
         version = false, -- Never set this value to "*"! Never!
         build = "make",
         opts = {
-          provider = "claude",
-          auto_suggestions_provider = "claude",
+          provider = "litellm",
+          auto_suggestions_provider = "litellm",
+          vendors = {
+            litellm = {
+              __inherited_from = 'openai',
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
+              endpoint = "https://litellm.lele.rip/v1",
+              model = "openrouter/anthropic/claude-3-7-sonnet",
+              timeout = 30000,
+              temperature = 0,
+              max_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
+              -- disable_tools = true,
+              -- reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+            },
+          },
           claude = {
             api_key_name = "cmd:cat ${config.sops.secrets."tokens/anthropic/key".path}",
             endpoint = "https://api.anthropic.com",
             model = "claude-3-7-sonnet-latest",
             timeout = 30000,
             temperature = 0,
-            max_tokens = 32000, -- Increase this to include reasoning tokens (for reasoning models)
+            max_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
             --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
           },
           openai = {
@@ -245,14 +258,14 @@ in
             model = "o3-mini",
             timeout = 30000,
             temperature = 0,
-            max_tokens = 32000, -- Increase this to include reasoning tokens (for reasoning models)
+            max_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
           },
           gemini = {
             api_key_name = "cmd:cat ${config.sops.secrets."tokens/gemini/key".path}",
             endpoint = "https://generativelanguage.googleapis.com/v1beta/models",
             timeout = 30000, -- Timeout in milliseconds
             temperature = 0,
-            max_tokens = 32000, -- Increase this to include reasoning tokens (for reasoning models)
+            max_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
           },
           ---Specify the special dual_boost mode
           ---1. enabled: Whether to enable dual_boost mode. Default to false.
@@ -275,7 +288,7 @@ in
             auto_focus_sidebar = true,
             auto_set_highlight_group = true,
             auto_set_keymaps = true,
-            auto_suggestions = true, -- Experimental stage
+            auto_suggestions = false,
             auto_suggestions_respect_ignore = true,
             enable_claude_text_editor_tool_mode = true, -- Whether to enable Claude Text Editor Tool Mode.
             enable_cursor_planning_mode = true, -- Whether to enable Cursor Planning Mode. Default to false.
@@ -288,12 +301,11 @@ in
           rag = {
             enabled = true, -- Enables the RAG service
             host_mount = os.getenv("HOME"), -- Host mount path for the rag service
-            provider = "openai", -- The provider to use for RAG service (e.g. openai or ollama)
-            endpoint = "https://api.openai.com/v1", -- The API endpoint for RAG service
+            provider = "litellm", -- The provider to use for RAG service (e.g. openai or ollama)
+            -- endpoint = "https://api.openai.com/v1", -- The API endpoint for RAG service
             -- llm_model = "", -- The LLM model to use for RAG service
             -- embed_model = "", -- The embedding model to use for RAG service
           },
-        },
           web_search_engine = {
             provider = "kagi", -- tavily, serpapi, searchapi, google or kagi
             providers = {
@@ -302,6 +314,7 @@ in
               },
             },
           },
+        },
         mappings = {
           --- @class AvanteConflictMappings
           diff = {
