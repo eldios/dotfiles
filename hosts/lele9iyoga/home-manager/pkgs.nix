@@ -10,7 +10,6 @@ in
   home = {
     packages = (with pkgs; [
       barrier
-      dbeaver-bin
       guvcview
       quickemu
       remmina
@@ -24,6 +23,7 @@ in
       xournalpp
     ]) ++ (with unstablePkgs; [
       audacity
+      dbeaver-bin
     ]) ++ ([
       inputs.zen-browser.packages."${system}".specific
     ]);
