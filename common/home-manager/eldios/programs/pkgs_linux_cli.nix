@@ -9,7 +9,7 @@ in
   home = {
     packages = with pkgs; [
       atop
-      cloudflare-warp
+      #cloudflare-warp
       gcal
       graph-easy
       imagemagick

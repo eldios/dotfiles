@@ -1,13 +1,6 @@
-{ pkgs, nixpkgs-unstable, ... }:
+{ pkgs, ... }:
 let
-  unstablePkgs = import nixpkgs-unstable {
-    system = "x86_64-linux";
-    config.allowUnfree = true;
-  };
-
   myFastFetchOpt = "-s 'Title:Separator:OS:Host:Uptime:Separator:Packages:Kernel:Shell:WM:Terminal:TerminalFont:Separator:CPU:GPU:Memory:Swap:Disk:LocalIp'";
-
-  nvim = unstablePkgs.neovim;
 
   binDir = "/etc/profiles/per-user/eldios/bin";
 in
