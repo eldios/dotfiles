@@ -1,4 +1,16 @@
-{ pkgs , ... }:
+{ pkgs, nixpkgs-unstable, ... }:
+let
+  unstablePkgs = import nixpkgs-unstable {
+    system = pkgs.system;
+    config.allowUnfree = true;
+  };
+
+  neovim-unwrapped = unstablePkgs.neovim-unwrapped.overrideAttrs (old: {
+    meta = old.meta or { } // {
+      maintainers = [ ];
+    };
+  });
+in
 {
   environment.variables.EDITOR = "${pkgs.neovim}/bin/nvim";
 
@@ -10,6 +22,8 @@
 
       viAlias = true;
       vimAlias = true;
+
+      package = neovim-unwrapped;
 
       configure = {
         customRC = ''
