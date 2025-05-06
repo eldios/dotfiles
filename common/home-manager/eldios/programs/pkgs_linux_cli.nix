@@ -10,11 +10,14 @@ in
     packages = with pkgs; [
       atop
       #cloudflare-warp
+      dive
+      docker-slim
       gcal
       graph-easy
       imagemagick
       iotop
       k3s
+      lazydocker
       ncdu
       networkmanager
       ntfs3g
