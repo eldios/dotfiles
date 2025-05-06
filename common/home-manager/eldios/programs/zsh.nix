@@ -9,7 +9,6 @@ in
   home = {
     packages = with pkgs; [
       carapace
-      #colorls # like `ls --color=auto -F` but cooler
       fastfetch
       fzf
       lsd
@@ -65,7 +64,8 @@ in
         l = "ls -lhtra";
 
         g = "git";
-        lg = "lazygit";
+        lazg = "lazygit";
+        lazd = "lazydocker";
 
         n = "nnn";
         y = "yazi";
