@@ -4,6 +4,12 @@ let
     system = pkgs.system;
     config.allowUnfree = true;
   };
+
+  neovim-unwrapped = unstablePkgs.neovim-unwrapped.overrideAttrs (old: {
+    meta = old.meta or { } // {
+      maintainers = [ ];
+    };
+  });
 in
 {
   home = {
@@ -622,7 +628,7 @@ in
         binutils # Provides tools like 'ld' for linking
       ];
 
-      package = unstablePkgs.neovim-unwrapped;
+      package = neovim-unwrapped;
 
       plugins = with pkgs.vimPlugins; [
         avante-nvim
