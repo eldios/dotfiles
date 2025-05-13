@@ -99,7 +99,6 @@ in
       scribus
       signal-desktop
       slack
-      spotify-unwrapped
       syncthing
       syncthing-tray
       telegram-desktop
@@ -130,6 +129,7 @@ in
       brave
       cryptomator
       discord-canary
+      spotify-unwrapped
       variety
       vesktop # discord + some fixes
       vivaldi
