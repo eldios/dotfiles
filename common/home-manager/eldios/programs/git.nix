@@ -51,6 +51,12 @@ in
         commit = {
           gpgsign = true;
         };
+        tag = {
+          gpgsign = true;
+        };
+        format = {
+          signoff = true;
+        };
         user = {
           username = "eldios";
           name = "Emanuele \"Lele\" Calo";
