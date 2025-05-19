@@ -244,6 +244,7 @@ in
       enable = true;
       configPackages = [ ];
     };
+    extraConfig.pipewire.noresample = { "context.properties" = { "default.clock.allowed-rates" = [ 44100 48000 192000 ]; }; };
   };
   services.blueman = {
     enable = true;
