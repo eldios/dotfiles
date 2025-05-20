@@ -93,6 +93,7 @@ in
       lens
       paperview
       pavucontrol
+      pulseaudio # to install tools like pactl
       pcmanfm
       redshift
       screenkey
