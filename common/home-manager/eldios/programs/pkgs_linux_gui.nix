@@ -130,6 +130,7 @@ in
       cryptomator
       discord-canary
       spotify-unwrapped
+      tidal-hifi
       variety
       vesktop # discord + some fixes
       vivaldi
