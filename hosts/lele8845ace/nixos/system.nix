@@ -231,23 +231,45 @@ in
 
   # audio
   security.rtkit.enable = true;
+
   services.pipewire = {
     enable = true;
     audio.enable = true;
-    pulse.enable = true;
+    pulse.enable = true; # For PulseAudio applications
     alsa = {
       enable = true;
-      support32Bit = true;
+      support32Bit = true; # Good for compatibility
     };
-    jack.enable = false;
-    wireplumber = {
-      enable = true;
-      configPackages = [ ];
+    jack.enable = false; # PipeWire provides JACK library compatibility by default
+    # so dedicated JACK server is not needed for most cases.
+    wireplumber.enable = true; # Recommended session manager
+
+    # You can rename 'noresample' to something more descriptive if you like,
+    # e.g., 'custom-audio-properties'. The name becomes the .conf filename
+    # in /etc/pipewire/pipewire.conf.d/
+    extraConfig.pipewire."audio-quality-optimizations" = {
+      "context.properties" = {
+        # Core properties for bit-perfect playback and quality
+        "default.clock.allowed-rates" = [ 44100 48000 88200 96000 176400 192000 ];
+        "default.clock.rate" = 48000; # Default rate when idle or unspecified
+        "resample.quality" = 10; # Resampler quality (0-15 for SPA, 10 is very good, 15 is max)
+
+        # Optional: Enforce a minimum buffer size for all streams for added stability.
+        # This uses a newer PipeWire feature to override application requests for smaller quantums.
+        # Your PipeWire version on NixOS (likely 0.3.83+ or 1.x) supports this.
+        "vm.overrides" = {
+          "default.clock.min-quantum" = 1024; # In samples. Default is 32.
+          # 1024 samples at 48kHz = ~21.3ms buffer
+          # 1024 samples at 192kHz = ~5.3ms buffer
+          # "default.clock.quantum" = 2048; # You could also set a larger default quantum if desired.
+          # Default is 1024.
+        };
+
+        # Other potential tweaks, usually not needed with modern DACs:
+        # "alsa.no-htimestamp" = true; # Some ALSA drivers/devices might have issues with high-resolution timestamps.
+        # Default is false (timestamps enabled). Try if you experience issues.
+      };
     };
-    extraConfig.pipewire.noresample = { "context.properties" = { "default.clock.allowed-rates" = [ 44100 48000 192000 ]; }; };
-  };
-  services.blueman = {
-    enable = true;
   };
 
   # xdg-desktop-portal works by exposing a series of D-Bus interfaces
