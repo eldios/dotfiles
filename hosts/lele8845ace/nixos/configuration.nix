@@ -17,7 +17,7 @@
 
     ../../../common/nixos/programs/neovim.nix
 
-    ../../../common/nixos/programs/roon.nix
+    #../../../common/nixos/programs/roon.nix
 
     ../../../common/nixos/virtualisation.nix
 
