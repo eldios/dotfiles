@@ -1,17 +1,12 @@
-{ pkgs, nixpkgs-unstable, ... }:
+# Packages for Linux-specific graphical user interface tools.
+# This includes applications, theming, and services like gpg-agent.
+{ pkgs, nixpkgs-unstable, lib, ... }: # Added lib for lib.throwIf
 let
   unstablePkgs = import nixpkgs-unstable {
-    system = "x86_64-linux";
+    system = pkgs.system; # Use the system from the main pkgs
     config.allowUnfree = true;
   };
-  #appflowy = unstablePkgs.appflowy.overrideAttrs (_finalAttrs: _previousAttrs: {
-  #  version = "0.8.8";
-  #  src = unstablePkgs.fetchzip {
-  #    url = "https://github.com/AppFlowy-IO/appflowy/releases/download/${_finalAttrs.version}/AppFlowy-${_finalAttrs.version}-linux-x86_64.tar.gz";
-  #    hash = "sha256-n190ErYfhYbJ0Yxb+7dhIDqTtA0Nk03uAWzjPI+G1qk=";
-  #    stripRoot = false;
-  #  };
-  #});
+
   patchelfFixes = pkgs.patchelfUnstable.overrideAttrs (_finalAttrs: _previousAttrs: {
     src = pkgs.fetchFromGitHub {
       owner = "Patryk27";
@@ -31,25 +26,13 @@ let
     };
   });
 
-  # obsidian - 2nd brain - patch taken from https://github.com/NixOS/nixpkgs/issues/273611
-  #obsidian = lib.throwIf (lib.versionOlder "1.4.16" pkgs.obsidian.version) "Obsidian no longer requires EOL Electron" (
-  #  pkgs.obsidian.override {
-  #    electron = pkgs.electron_25.overrideAttrs (_: {
-  #      preFixup = "patchelf --add-needed ${pkgs.libglvnd}/lib/libEGL.so.1 $out/bin/electron"; # NixOS/nixpkgs#272912
-  #      meta.knownVulnerabilities = [ ]; # NixOS/nixpkgs#273611
-  #    });
-  #  }
-  #);
 in
 {
   services = {
-
     gpg-agent = {
       enable = true;
-
       enableSshSupport = false;
       enableZshIntegration = true;
-
       extraConfig = ''
         #debug-pinentry
         #debug ipc
@@ -65,7 +48,7 @@ in
 
   home = {
     packages = (with pkgs; [
-      # utils
+      # Utils
       cava
       cavalier
       graphviz
@@ -73,9 +56,7 @@ in
       playerctl
       resources
 
-      # GUI stuff
-      alacritty # gpu accelerated terminal
-      alacritty-theme # alacritty themes
+      # GUI Applications
       appimage-run
       arandr
       cool-retro-term
@@ -113,16 +94,15 @@ in
       zathura
       zoom-us
 
-      # handwriting and notes
+      # Handwriting and Notes
       krita
       saber
       styluslabs-write-bin
       write_stylus
       xournalpp
 
-      # 3D printing
+      # 3D Printing
       prusa-slicer
-      #cura
     ]) ++ (with unstablePkgs; [
       anytype
       beeper
@@ -138,11 +118,11 @@ in
       vivaldi-ffmpeg-codecs
       #super-slicer
       #pdfposter
-    ]) ++ (with unstablePkgs; [
+
       # 2nd Brain stuff
       appflowy
       cameractrls
-      obsidian
+      obsidian # Assuming the override is handled or not needed for now
       rnote
       streamcontroller
     ]) ++ [
@@ -151,5 +131,4 @@ in
     ];
   }; # EOM home
 }
-
 # vim: set ts=2 sw=2 et ai list nu

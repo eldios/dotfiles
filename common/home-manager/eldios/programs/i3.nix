@@ -173,17 +173,18 @@ in
         "${modifier}+v" = " split v";
         "${modifier}+Shift+v" = " split h";
 
-        "XF86MonBrightnessDown" = "exec sudo light -U 5%";
-        "XF86MonBrightnessUp" = "exec sudo light -A 5%";
+        "XF86MonBrightnessDown" = "exec sudo ${pkgs.light}/bin/light -U 5%";
+        "XF86MonBrightnessUp" = "exec sudo ${pkgs.light}/bin/light -A 5%";
 
-        "XF86AudioRaiseVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%";
-        "XF86AudioLowerVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%";
-        "XF86AudioMute" = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle";
-        "XF86AudioMicMute" = "exec pactl set-source-mute @DEFAULT_SOURCE@ toggle";
-        "Shift+XF86AudioPlay" = "exec playerctl play-pause";
-        "XF86AudioPlay" = "exec playerctl -p spotify play-pause";
-        "XF86AudioNext" = "exec playerctl -p spotify next";
-        "XF86AudioPrev" = "exec playerctl -p spotify previous";
+        # FIXME: Verify package for pactl (e.g., pkgs.pulseaudio or pkgs.pipewire)
+        "XF86AudioRaiseVolume" = "exec ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +5%";
+        "XF86AudioLowerVolume" = "exec ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%";
+        "XF86AudioMute" = "exec ${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle";
+        "XF86AudioMicMute" = "exec ${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle";
+        "Shift+XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
+        "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl -p spotify play-pause";
+        "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl -p spotify next";
+        "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl -p spotify previous";
       };
     };
   };
