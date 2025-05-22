@@ -6,6 +6,11 @@ let
   };
 in
 {
+  # Kernel modules and options for GPU passthrough
+  boot.kernelModules = [ "vfio-pci" "vfio" "vfio_iommu_type1" ];
+  boot.blacklistedKernelModules = [ "nvidia" "nouveau" "nvidiafb" "rivafb" ];
+  boot.extraModprobeConfig = "options vfio-pci ids=10de:XXXX,10de:YYYY # FIXME: Replace 10de:XXXX and 10de:YYYY with actual Nvidia 3090 GPU and Audio device IDs respectively";
+
   system = {
     stateVersion = "24.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = true;

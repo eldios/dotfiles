@@ -1,11 +1,10 @@
+# Packages for macOS-specific command-line interface tools.
 { pkgs, ... }:
 {
   home = {
     packages = with pkgs; [
       kubectl
-
-      # deps
-      libiconv
+      libiconv # dep for other stuff
     ];
   };
 } # EOF

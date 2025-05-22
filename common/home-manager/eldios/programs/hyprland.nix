@@ -1,29 +1,44 @@
-{ pkgs, nixpkgs-unstable, ... }:
+{ pkgs, nixpkgs-unstable, config, ... }:
 let
   unstablePkgs = import nixpkgs-unstable {
     system = "x86_64-linux";
     config.allowUnfree = true;
   };
 
+  # Preferred terminal emulator
   #terminal = "${pkgs.kitty}/bin/kitty";
-  terminal = "${unstablePkgs.ghostty}/bin/ghostty";
+  terminal = "${unstablePkgs.ghostty}/bin/ghostty"; # Currently using ghostty
+  # FIXME: Theme Ghostty manually if Stylix doesn't support it. Stylix colors can be sourced from generated files or environment variables.
+
+  # FIXME: Rofi theming is now primarily managed by Stylix. These options should be compatible, but review appearance.
+  # Common Rofi options for consistent appearance and behavior
   rofi_opts = "-show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
+  # Rofi menu for running commands
   quick_menu = "${pkgs.rofi}/bin/rofi -show run ${rofi_opts}";
+  # Rofi menu for launching applications (drun)
   full_menu = "${pkgs.rofi}/bin/rofi -show drun ${rofi_opts}";
+  # Rofi menu for browsing files
   file_menu = "${pkgs.rofi}/bin/rofi -show filebrowser ${rofi_opts}";
 
+  # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
+  # Screen locker command using swaylock-effects with a blur effect
+  # FIXME: Color '-c 000000' might be managed by Stylix for swaylock, or needs manual adjustment.
   lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5";
+  # Command to launch Mailspring email client
   mail = "mailspring --password-store=\"gnome-libsecret\"";
+  # Flameshot command for selecting an area to screenshot and copy to clipboard
   screenshot_select = "${pkgs.flameshot}/bin/flameshot gui -c";
+  # Flameshot command for taking a full-screen screenshot (GUI mode)
   screenshot_full = "${pkgs.flameshot}/bin/flameshot gui";
 
+  # Swayidle script for managing idle states: locks screen, then turns off display, then sleeps.
   swayidle = pkgs.writeShellScriptBin "swayidle-script" ''
-    swayidle -w \
-    timeout 300 'swaylock' \
-    timeout 360 'hyprctl dispatch dpms off eDP-1 && hyprctl dispatch dpms off DP-1' \
-    resume 'hyprctl dispatch dpms on' \
-    before-sleep 'swaylock'
+    ${pkgs.swayidle}/bin/swayidle -w \
+    timeout 300 '${lockscreen}' \ # Using the variable which has the full path
+    timeout 360 '${pkgs.hyprland}/bin/hyprctl dispatch dpms off eDP-1 && ${pkgs.hyprland}/bin/hyprctl dispatch dpms off DP-1' \ # Turn off displays after 360 seconds
+    resume '${pkgs.hyprland}/bin/hyprctl dispatch dpms on' \ # Resume displays on activity
+    before-sleep '${lockscreen}' # Lock screen before system sleep
   '';
 in
 {
@@ -85,7 +100,7 @@ in
       wlr-randr
       wlroots
       wlsunset
-      wofi
+      wofi # FIXME: Wofi theming may need to be done manually if Stylix doesn't support it and if Wofi is used.
       wshowkeys
       wtype
       xdg-desktop-portal
@@ -102,70 +117,82 @@ in
     systemd.enable = true;
 
     settings = {
+      # Commands to execute once on Hyprland startup
       exec-once = [
-        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-        "hyprctl setcursor Catppuccin-Cursor 24"
-        "waybar"
-        "mako"
-        "swayidle"
-        "hyprpaper"
-        "${pkgs.swaybg}/bin/swaybg -i ~/.config/wallpaper.jpg --mode fill"
-        "${pkgs.variety}/bin/variety"
+        "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # Ensures DBus environment is aware of Wayland specifics for systemd services
+        # FIXME: Cursor theme now managed by Stylix.
+        # "${pkgs.hyprland}/bin/hyprctl setcursor Catppuccin-Cursor 24" # Sets the mouse cursor theme and size
+        "${pkgs.waybar}/bin/waybar" # Starts the Waybar status bar
+        "${pkgs.mako}/bin/mako" # Starts the Mako notification daemon
+        "${swayidle}/bin/swayidle-script" # Starts the swayidle daemon defined above
+        "${pkgs.hyprpaper}/bin/hyprpaper" # Starts hyprpaper for wallpaper management
+        # FIXME: Review wallpaper and cursor theme if Stylix handles them.
+        "${pkgs.swaybg}/bin/swaybg -i ~/.config/wallpaper.jpg --mode fill" # Fallback wallpaper using swaybg (can be overridden by hyprpaper or variety)
+        # FIXME: Review wallpaper and cursor theme if Stylix handles them.
+        "${pkgs.variety}/bin/variety" # Starts Variety for wallpaper management
+        "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar" # Start Eww daemon and open the bar
       ];
 
+      # Monitor configuration (e.g., resolution, position, scale). Empty here means auto-config or configured elsewhere.
       monitor = [ ];
 
       general = {
-        layout = "master";
-        resize_on_border = true;
+        layout = "master"; # Default window layout (master-stack)
+        resize_on_border = true; # Allows resizing windows by dragging borders
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = "rgba(ca9ee6ff) rgba(f2d5cfff) 45deg";
-        "col.inactive_border" = "rgba(1e1e2eff)";
-        no_focus_fallback = true;
+        "col.active_border" = "0xff${config.lib.stylix.colors.base0B} 0xff${config.lib.stylix.colors.base0D} 45deg"; # Neon Cyan and Neon Pink from eldios_neon.yaml
+        "col.inactive_border" = "0xaa${config.lib.stylix.colors.base03}"; # Dimmed grey for inactive from eldios_neon.yaml
+        no_focus_fallback = true; # Prevents focus from falling back to desktop if no window is focusable
       };
 
       master = {
-        new_on_top = true;
-        mfact = 0.5;
-        orientation = "left";
-        special_scale_factor = 0.8;
-        allow_small_split = true;
-        smart_resizing = true;
+        # Settings for the master layout
+        new_on_top = true; # New windows appear on top of the master stack
+        mfact = 0.5; # Master area factor (percentage of screen width/height)
+        orientation = "left"; # Master area position
+        special_scale_factor = 0.8; # Scale factor for windows in special workspaces (e.g., scratchpad)
+        allow_small_split = true; # Allows splitting even if the resulting window would be very small
+        smart_resizing = true; # Enables smarter window resizing logic
       };
 
       decoration = {
-        rounding = 10;
+        # Window decorations (blur, opacity, etc.)
+        rounding = 10; # Corner rounding radius for windows
         blur = {
+          # Blur settings for transparent windows
           enabled = true;
-          size = 8;
-          passes = 3;
-          new_optimizations = true;
-          ignore_opacity = true;
-          xray = true;
+          size = 8; # Blur kernel size
+          passes = 3; # Number of blur passes
+          new_optimizations = true; # Use newer blur optimizations
+          ignore_opacity = true; # Whether to blur windows with no transparency
+          xray = true; # See through windows with blur
           contrast = 0.9;
           brightness = 0.8;
         };
-        active_opacity = 0.95;
-        inactive_opacity = 0.85;
+        active_opacity = 0.95; # Opacity for active windows
+        inactive_opacity = 0.85; # Opacity for inactive windows
       };
 
       animations = {
+        # Animation settings for window transitions, workspaces, etc.
         enabled = true;
-        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
+        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05"; # Custom bezier curve for animations
         animation = [
-          "windows, 1, 7, myBezier"
-          "windowsOut, 1, 7, default, popin 80%"
-          "border, 1, 10, default"
-          "fade, 1, 7, default"
-          "workspaces, 1, 6, default"
+          # Define various animations
+          "windows, 1, 7, myBezier" # Window open/close animation
+          "windowsOut, 1, 7, default, popin 80%" # Window close animation (pop out)
+          "border, 1, 10, default" # Border animation
+          "fade, 1, 7, default" # Fade animation for layers
+          "workspaces, 1, 6, default" # Workspace switch animation
         ];
       };
 
       input = {
-        kb_layout = "us";
-        follow_mouse = 1;
+        # Input device settings (keyboard, mouse, touchpad)
+        kb_layout = "us"; # Default keyboard layout
+        follow_mouse = 1; # Focus follows mouse movement (1 = normal, 2 = aggressive)
         touchpad = {
           natural_scroll = false;
           disable_while_typing = true;
@@ -180,16 +207,16 @@ in
       };
 
       misc = {
-        disable_hyprland_logo = true;
-        disable_splash_rendering = true;
-        mouse_move_enables_dpms = true;
-        key_press_enables_dpms = true;
-        animate_manual_resizes = true;
-        animate_mouse_windowdragging = true;
-        enable_swallow = true;
+        disable_hyprland_logo = true; # Disables the Hyprland logo on startup
+        disable_splash_rendering = true; # Disables the startup splash screen
+        mouse_move_enables_dpms = true; # Mouse movement wakes displays from DPMS
+        key_press_enables_dpms = true; # Key press wakes displays from DPMS
+        animate_manual_resizes = true; # Animate window resizes done manually
+        animate_mouse_windowdragging = true; # Animate windows when dragged with mouse
+        enable_swallow = true; # Enable window swallowing (e.g., terminal swallows child processes like image viewers)
       };
 
-      "$mod" = "SUPER";
+      "$mod" = "SUPER"; # Defines the Super (Windows/Command) key as the primary modifier
 
       bind = [
         # Window management
@@ -266,18 +293,19 @@ in
 
         # Reload
         "$mod SHIFT, R, forcerendererreload"
-        "$mod SHIFT CTRL, R, exec, hyprctl reload"
+        "$mod SHIFT CTRL, R, exec, ${pkgs.hyprland}/bin/hyprctl reload"
       ];
 
       binde = [
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86MonBrightnessUp, exec, sudo light -A 5"
-        ", XF86MonBrightnessDown, exec, sudo light -U 5"
-        ", XF86AudioPlay, exec, playerctl play-pause"
-        ", XF86AudioNext, exec, playerctl next"
-        ", XF86AudioPrev, exec, playerctl previous"
+        # FIXME: Verify package for wpctl (e.g., pkgs.wireplumber or pkgs.pipewire)
+        ", XF86AudioRaiseVolume, exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+        ", XF86AudioLowerVolume, exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        ", XF86AudioMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ", XF86MonBrightnessUp, exec, sudo ${pkgs.light}/bin/light -A 5"
+        ", XF86MonBrightnessDown, exec, sudo ${pkgs.light}/bin/light -U 5"
+        ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
+        ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
+        ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
       ];
 
       bindm = [

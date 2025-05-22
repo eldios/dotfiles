@@ -31,6 +31,7 @@
 
       home-manager.sharedModules = [
         inputs.sops-nix.homeManagerModules.sops
+        # inputs.stylix.homeManagerModules.stylix # This is now imported by common/home-manager/eldios/style/stylix.nix
       ];
 
       home-manager.useGlobalPkgs = true;

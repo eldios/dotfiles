@@ -6,6 +6,8 @@
       enable = true;
 
       settings = {
+        # INFO: Alacritty colors are managed by Stylix.
+        # No hardcoded 'colors' block was present here. If one were added, it should be commented out.
 
         general.live_config_reload = true;
 

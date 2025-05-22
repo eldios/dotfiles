@@ -1,8 +1,9 @@
+# Packages for common graphical user interface tools and fonts, intended to be cross-platform.
 { pkgs, ... }:
 {
   home = {
     packages = with pkgs; [
-      # var
+      # GUI Utilities
       alacritty # gpu accelerated terminal
       alacritty-theme # alacritty themes
       cointop
@@ -12,7 +13,7 @@
       wmctrl
       yt-dlp
 
-      # fonts
+      # Fonts
       anonymousPro
       corefonts
       fira-code-nerdfont

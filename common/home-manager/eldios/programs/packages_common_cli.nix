@@ -1,29 +1,22 @@
+# Packages for common command-line interface tools, intended to be cross-platform.
 { pkgs, ... }:
 {
   home = {
     packages = with pkgs; [
-      # Golang
+      # Dev Languages & Tools
       go
-
-      # NodeJS
+      cargo
+      rustc
+      rustfmt
+      ghc
       bun
       nodejs
       nodenv
-
-      # Rust
-      cargo
       pkg-config
       protobuf
-      rustc
-      rustfmt
-
-      # Haskell
-      ghc
-
-      # Python3
       python3
 
-      # DevOps stuff
+      # DevOps & Cloud
       act # run GitHub Actions Locally
       age
       atac
@@ -62,7 +55,7 @@
       tmate
       vultr-cli
 
-      # Kubernetes stuff
+      # Kubernetes
       argocd
       daytona-bin
       devpod
@@ -86,7 +79,7 @@
       yamlfmt
       yamllint
 
-      # nix stuff
+      # Nix Utilities
       cachix # adding/managing alternative binary caches hosted by Cachix
       comma # run software from without installing it
       niv # easy dependency management for nix projects
@@ -96,14 +89,14 @@
       nodePackages.node2nix
       prefetch-npm-deps
 
-      # charm.sh CLI utils
+      # Charm.sh CLI Utils
       glow
       gum
       mods
       vhs
       zfxtop
 
-      # utils
+      # General CLI Utilities
       asciiquarium
       bombadillo
       btop
