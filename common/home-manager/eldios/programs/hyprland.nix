@@ -7,11 +7,9 @@ let
 
   # Preferred terminal emulator
   #terminal = "${pkgs.kitty}/bin/kitty";
-  terminal = "${unstablePkgs.ghostty}/bin/ghostty"; # Currently using ghostty
-  # FIXME: Theme Ghostty manually if Stylix doesn't support it. Stylix colors can be sourced from generated files or environment variables.
+  #terminal = "${pkgs.ghostty}/bin/ghostty"; # Currently using ghostty
+  terminal = "${pkgs.rio}/bin/rio"; # Current terminal
 
-  # FIXME: Rofi theming is now primarily managed by Stylix. These options should be compatible, but review appearance.
-  # Common Rofi options for consistent appearance and behavior
   rofi_opts = "-show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
   # Rofi menu for running commands
   quick_menu = "${pkgs.rofi}/bin/rofi -show run ${rofi_opts}";
@@ -23,7 +21,6 @@ let
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
   # Screen locker command using swaylock-effects with a blur effect
-  # FIXME: Color '-c 000000' might be managed by Stylix for swaylock, or needs manual adjustment.
   lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5";
   # Command to launch Mailspring email client
   mail = "mailspring --password-store=\"gnome-libsecret\"";
@@ -100,7 +97,6 @@ in
       wlr-randr
       wlroots
       wlsunset
-      wofi # FIXME: Wofi theming may need to be done manually if Stylix doesn't support it and if Wofi is used.
       wshowkeys
       wtype
       xdg-desktop-portal
@@ -120,15 +116,11 @@ in
       # Commands to execute once on Hyprland startup
       exec-once = [
         "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # Ensures DBus environment is aware of Wayland specifics for systemd services
-        # FIXME: Cursor theme now managed by Stylix.
-        # "${pkgs.hyprland}/bin/hyprctl setcursor Catppuccin-Cursor 24" # Sets the mouse cursor theme and size
         "${pkgs.waybar}/bin/waybar" # Starts the Waybar status bar
         "${pkgs.mako}/bin/mako" # Starts the Mako notification daemon
         "${swayidle}/bin/swayidle-script" # Starts the swayidle daemon defined above
         "${pkgs.hyprpaper}/bin/hyprpaper" # Starts hyprpaper for wallpaper management
-        # FIXME: Review wallpaper and cursor theme if Stylix handles them.
         "${pkgs.swaybg}/bin/swaybg -i ~/.config/wallpaper.jpg --mode fill" # Fallback wallpaper using swaybg (can be overridden by hyprpaper or variety)
-        # FIXME: Review wallpaper and cursor theme if Stylix handles them.
         "${pkgs.variety}/bin/variety" # Starts Variety for wallpaper management
         "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar" # Start Eww daemon and open the bar
       ];
