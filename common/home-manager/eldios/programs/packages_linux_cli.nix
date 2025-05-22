@@ -1,7 +1,8 @@
+# Packages for Linux-specific command-line interface tools.
 { pkgs, nixpkgs-unstable, ... }:
 let
   unstablePkgs = import nixpkgs-unstable {
-    system = "x86_64-linux";
+    system = pkgs.system; # Use the system from the main pkgs
     config.allowUnfree = true;
   };
 in
@@ -9,12 +10,10 @@ in
   home = {
     packages = with pkgs; [
       atop
-      #cloudflare-warp
       dive
       docker-slim
       gcal
       graph-easy
-      imagemagick
       iotop
       k3s
       lazydocker
@@ -25,7 +24,6 @@ in
       powertop
       sshx
       tty-share
-      yt-dlp
     ] ++ (with unstablePkgs; [
       claude-code
     ]);
