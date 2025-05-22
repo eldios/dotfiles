@@ -41,6 +41,7 @@
       qemu = {
         ovmf.enable = true;
         runAsRoot = false;
+        swtpm.enable = true; # Enable SWTPM for virtual TPM support
       };
 
       onBoot = "ignore";

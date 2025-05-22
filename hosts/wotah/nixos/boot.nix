@@ -20,6 +20,8 @@
     kernelParams = [
       "nohibernate"
       #"snd_intel_dspcfg.dsp_driver=1" # if 3 and 1 don't work move to Pulseaudio
+      "amd_iommu=on"
+      "iommu=pt"
     ];
 
     initrd = {

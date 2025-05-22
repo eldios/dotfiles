@@ -6,7 +6,6 @@
     ../../../common/home-manager/eldios/sops.nix
 
     ../../../common/home-manager/eldios/programs/neovim.nix
-    ../../../common/home-manager/eldios/programs/lunarvim.nix
     ../../../common/home-manager/eldios/programs/zellij.nix
 
     ../../../common/home-manager/eldios/programs/zsh.nix
@@ -27,11 +26,11 @@
 
     ../../../common/home-manager/eldios/programs/var.nix
 
-    ../../../common/home-manager/eldios/programs/pkgs_cli.nix # common packages needed everywhere - CLI version
-    ../../../common/home-manager/eldios/programs/pkgs_gui.nix # common packages needed everywhere - GUI version
+    ../../../common/home-manager/eldios/programs/packages_common_cli.nix # common packages needed everywhere - CLI version
+    ../../../common/home-manager/eldios/programs/packages_common_gui.nix # common packages needed everywhere - GUI version
 
-    ../../../common/home-manager/eldios/programs/pkgs_linux_cli.nix # common packages needed on Linux - CLI version
-    ../../../common/home-manager/eldios/programs/pkgs_linux_gui.nix # common packages needed on Linux - GUI version
+    ../../../common/home-manager/eldios/programs/packages_linux_cli.nix # common packages needed on Linux - CLI version
+    ../../../common/home-manager/eldios/programs/packages_linux_gui.nix # common packages needed on Linux - GUI version
 
   ];
 

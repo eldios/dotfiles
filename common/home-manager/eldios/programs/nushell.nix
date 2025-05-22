@@ -26,7 +26,7 @@ in
     if not ($starship_cache | path exists) {
       mkdir $starship_cache
     }
-    ${binDir}/starship init nu | save --force /home/eldios/.cache/starship/init.nu
+    ${pkgs.starship}/bin/starship init nu | save --force /home/eldios/.cache/starship/init.nu
 
     $env.config = {
       show_banner: false,
@@ -35,7 +35,7 @@ in
     $env.STARSHIP_SHELL = "nu"
 
     def create_left_prompt [] {
-        ${binDir}/starship prompt --cmd-duration $env.CMD_DURATION_MS $'--status=($env.LAST_EXIT_CODE)'
+        ${pkgs.starship}/bin/starship prompt --cmd-duration $env.CMD_DURATION_MS $'--status=($env.LAST_EXIT_CODE)'
     }
 
     # Use nushell functions to define your right and left prompt
@@ -50,8 +50,8 @@ in
     $env.PROMPT_MULTILINE_INDICATOR = "::: "
 
     $env.TERM = "xterm-256color";
-    $env.EDITOR = "${binDir}/nvim";
-    $env.VISUAL = "${binDir}/nvim";
+    $env.EDITOR = "${pkgs.neovim}/bin/nvim";
+    $env.VISUAL = "${pkgs.neovim}/bin/nvim";
 
     $env.ZELLIJ_AUTO_ATTACH = false;
     $env.ZELLIJ_AUTO_EXIT = false;
@@ -59,7 +59,7 @@ in
     $env.SOPS_AGE_KEY_FILE = "/etc/sops/key.txt";
 
     let carapace_completer = {|spans|
-      ${binDir}/carapace $spans.0 nushell ...$spans | from json
+      ${pkgs.carapace}/bin/carapace $spans.0 nushell ...$spans | from json
     }
 
     zoxide init nushell | save -f ${nushellCfgDir}/zoxide.nu
@@ -72,7 +72,7 @@ in
         $env.config.hooks.pre_prompt?
         | default []
         | append {||
-            let direnv = (${binDir}/direnv export json
+            let direnv = (${pkgs.direnv}/bin/direnv export json
             | from json
             | default {})
             if ($direnv | is-empty) {
@@ -96,7 +96,8 @@ in
         }
     )
 
-    ^${binDir}/ssh-agents -c -a ~/.ssh/id_ed25519 |
+    # FIXME: Verify package for ssh-agents (e.g., pkgs.ssh-agent-switcher or similar)
+    ^${pkgs.ssh-agent-switcher}/bin/ssh-agents -c -a ~/.ssh/id_ed25519 |
       lines |
       str replace --all --regex "(.*) export.*" "''\${1}" |
       parse "{name}={value};" |
@@ -106,46 +107,46 @@ in
   xdg.configFile."nushell/config.nu".text = ''
     source ${nushellCfgDir}/zoxide.nu
 
-    alias TF = terraform
-    alias cg = cargo
+    alias TF = ${pkgs.terraform}/bin/terraform
+    alias cg = ${pkgs.cargo}/bin/cargo # FIXME: Or from pkgs.rustc
     alias cgb = cg build
     alias cgc = cg check
     alias cgn = cg new
     alias cgr = cg run
     alias cgt = cg test
-    alias ff = ${binDir}/fastfetch ${myFastFetchOpt}
-    alias g = git
-    alias hm = home-manager
-    alias hm-cleanup = home-manager expire-generations '-7 days' and nix-store --gc
-    alias hm-edit = home-manager edit
-    alias hm-update = home-manager switch -b backup --flake $env.HOME/dotfiles
+    alias ff = ${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}
+    alias g = ${pkgs.git}/bin/git
+    alias hm = ${pkgs.home-manager}/bin/home-manager
+    alias hm-cleanup = hm expire-generations '-7 days' and nix-store --gc # nix-store is usually in PATH
+    alias hm-edit = hm edit
+    alias hm-update = hm switch -b backup --flake $env.HOME/dotfiles
     alias hmA = hme and hmU
     alias hmU = nixu and hm-update
     alias hma = hme and hmu
     alias hmc = hm-cleanup
     alias hme = hm-edit
     alias hmu = hm-update
-    alias ipcalc = sipcalc
-    alias j = just
-    alias ji = jira issue
-    alias jil = jira issue list
-    alias jim = jira issue list -a 'lele@switchboard.xyz' --order-by STATUS
-    alias k = kubectl
-    alias l = ls
-    alias la = ls -a
-    alias lg = lazygit
-    alias ll = ls -l
-    alias nixU = sudo nix flake update $env.HOME/dotfiles and nixu
-    alias nixs = nix search nixpkgs
-    alias nixu = sudo nixos-rebuild switch --impure --flake $env.HOME/dotfiles
-    alias tf = tofu
+    alias ipcalc = ${pkgs.sipcalc}/bin/sipcalc
+    alias j = ${pkgs.just}/bin/just
+    alias ji = ${pkgs.jira-cli-go}/bin/jira issue
+    alias jil = ji list
+    alias jim = ji list -a 'lele@switchboard.xyz' --order-by STATUS
+    alias k = ${pkgs.kubernetes-cli}/bin/kubectl # FIXME: Verify package name, could be pkgs.kubectl
+    alias l = ${pkgs.coreutils}/bin/ls # Using coreutils ls as lsd is not in nushell packages
+    alias la = l -a
+    alias lg = ${pkgs.lazygit}/bin/lazygit
+    alias ll = l -l
+    alias nixU = sudo nix flake update $env.HOME/dotfiles and nixu # 'nix' assumed in PATH
+    alias nixs = nix search nixpkgs # 'nix' assumed in PATH
+    alias nixu = sudo nixos-rebuild switch --impure --flake $env.HOME/dotfiles # nixos-rebuild assumed in PATH
+    alias tf = ${pkgs.opentofu}/bin/tofu
     alias tfa = tf apply -auto-approve
     alias tfd = tf destroy -auto-approve
     alias tfp = tf plan
-    alias v = nvim
-    alias y = yazi
+    alias v = ${pkgs.neovim}/bin/nvim
+    alias y = ${pkgs.yazi}/bin/yazi
 
-    ${binDir}/fastfetch ${myFastFetchOpt}
+    ${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}
   '';
 
   programs = {

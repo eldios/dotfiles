@@ -62,6 +62,10 @@
           };
         };
       };
+
+      # IMPORTANT FOR WINDOWS VM: The disk intended for the Windows 11 VM (currently placeholder '/dev/disk/by-id/CHANGE_WITH_CORRECT_ID')
+      # should NOT be configured or managed by Disko here. It needs to be exclusively available for passthrough to the VM.
+      # Ensure that no entry in this 'disko.devices.disk' block attempts to format or partition it.
     };
   };
 }

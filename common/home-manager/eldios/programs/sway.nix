@@ -1,15 +1,16 @@
 { pkgs, ... }:
 
 let
-  quick_menu = "rofi -show run -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail";
-  full_menu = "rofi -show drun -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail";
+  quick_menu = "${pkgs.rofi}/bin/rofi -show run -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail";
+  full_menu = "${pkgs.rofi}/bin/rofi -show drun -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail";
 
-  lockscreen = "swaylock -c '#000000'";
-  idle_and_lockscreen = "swayidle -w timeout 300 'swaylock -f -c 000000' timeout 600  'swaymsg \"output * dpms off\"' resume 'swaymsg \output * dpms on\"' before-sleep 'swaylock -f -c 000000'\"";
+  lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -c '#000000'"; # Assuming swaylock-effects from packages list
+  # FIXME: Verify sway package for swaymsg (pkgs.sway or pkgs.swayfx)
+  idle_and_lockscreen = "${pkgs.swayidle}/bin/swayidle -w timeout 300 '${pkgs.swaylock-effects}/bin/swaylock -f -c 000000' timeout 600  '${pkgs.swayfx}/bin/swaymsg \"output * dpms off\"' resume '${pkgs.swayfx}/bin/swaymsg \"output * dpms on\"' before-sleep '${pkgs.swaylock-effects}/bin/swaylock -f -c 000000'\"";
 
-  daynightscreen = "wlsunset -l 43.841667 -L 10.502778";
+  daynightscreen = "${pkgs.wlsunset}/bin/wlsunset -l 43.841667 -L 10.502778";
 
-  powermenu = "wlogout";
+  powermenu = "${pkgs.wlogout}/bin/wlogout";
 
 in
 {
@@ -146,8 +147,9 @@ in
       xdg-desktop-portal-gtk
       xdg-utils # for opening default programs when clicking links
       ydotool
+      # FIXME: Verify sway package for sway reload (pkgs.sway or pkgs.swayfx)
       (pkgs.writeShellScriptBin "fix-wm" ''
-        pkill waybar && sway reload
+        ${pkgs.procps}/bin/pkill waybar && ${pkgs.swayfx}/bin/sway reload
       '') # EOF fix-wm script
     ];
   };
@@ -200,13 +202,14 @@ in
       right = "l";
 
       # Set default terminal
-      terminal = "KITTY_ENABLE_WAYLAND=1 kitty";
-      menu = "rofi";
+      terminal = "KITTY_ENABLE_WAYLAND=1 ${pkgs.kitty}/bin/kitty";
+      menu = "${pkgs.rofi}/bin/rofi"; # Assuming this is used with exec $menu
 
       startup = [
-        { command = "syncthing-tray"; }
+        # FIXME: Verify package name for syncthing-tray (e.g., pkgs.syncthingtray or pkgs.syncthing-gtk)
+        { command = "${pkgs.syncthingtray}/bin/syncthing-tray"; }
         { command = "${daynightscreen}"; }
-        { command = "variety"; }
+        { command = "${pkgs.variety}/bin/variety"; }
         { command = "${idle_and_lockscreen}"; }
       ];
 
@@ -296,16 +299,17 @@ in
         "${modifier}+Shift+9" = "move container to workspace number 9";
         "${modifier}+Shift+0" = "move container to workspace number 10";
 
-        "XF86AudioRaiseVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%";
-        "XF86AudioLowerVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%";
-        "XF86AudioMute" = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle";
-        "XF86AudioMicMute" = "exec pactl set-source-mute @DEFAULT_SOURCE@ toggle";
-        "XF86MonBrightnessDown" = "exec sudo light -U 5%";
-        "XF86MonBrightnessUp" = "exec sudo light -A 5%";
-        "Shift+XF86AudioPlay" = "exec playerctl play-pause";
-        "XF86AudioPlay" = "exec playerctl -p spotify play-pause";
-        "XF86AudioNext" = "exec playerctl -p spotify next";
-        "XF86AudioPrev" = "exec playerctl -p spotify previous";
+        # FIXME: Verify package for pactl (e.g., pkgs.pulseaudio or pkgs.pipewire)
+        "XF86AudioRaiseVolume" = "exec ${pkgs.pipewire}/bin/pactl set-sink-volume @DEFAULT_SINK@ +5%";
+        "XF86AudioLowerVolume" = "exec ${pkgs.pipewire}/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%";
+        "XF86AudioMute" = "exec ${pkgs.pipewire}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle";
+        "XF86AudioMicMute" = "exec ${pkgs.pipewire}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle";
+        "XF86MonBrightnessDown" = "exec sudo ${pkgs.light}/bin/light -U 5%";
+        "XF86MonBrightnessUp" = "exec sudo ${pkgs.light}/bin/light -A 5%";
+        "Shift+XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
+        "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl -p spotify play-pause";
+        "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl -p spotify next";
+        "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl -p spotify previous";
       }; # EOM keybindings
 
     }; # EOM config

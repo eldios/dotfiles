@@ -38,8 +38,8 @@ in
 
       localVariables = {
         TERM = "xterm-256color";
-        EDITOR = "${binDir}/nvim";
-        VISUAL = "${binDir}/nvim";
+        EDITOR = "${pkgs.neovim}/bin/nvim";
+        VISUAL = "${pkgs.neovim}/bin/nvim";
 
         ZELLIJ_AUTO_ATTACH = false;
         ZELLIJ_AUTO_EXIT = false;
@@ -59,62 +59,62 @@ in
       };
 
       shellAliases = {
-        ls = "lsd";
-        ll = "ls -lh";
-        l = "ls -lhtra";
+        ls = "${pkgs.lsd}/bin/lsd";
+        ll = "${pkgs.lsd}/bin/lsd -lh";
+        l = "${pkgs.lsd}/bin/lsd -lhtra";
 
-        g = "git";
-        lazg = "lazygit";
-        lazd = "lazydocker";
+        g = "${pkgs.git}/bin/git";
+        lazg = "${pkgs.lazygit}/bin/lazygit";
+        lazd = "${pkgs.lazydocker}/bin/lazydocker";
 
-        n = "nnn";
-        y = "yazi";
+        n = "${pkgs.nnn}/bin/nnn";
+        y = "${pkgs.yazi}/bin/yazi";
 
         # Kubectl
-        k = "kubectl";
-        j = "just";
+        k = "${pkgs.kubernetes-cli}/bin/kubectl"; # FIXME: Verify package name for kubectl
+        j = "${pkgs.just}/bin/just";
 
-        ji = "jira issue";
-        jil = "jira issue list";
-        jim = "jira issue list -a lele@switchboard.xyz --order-by STATUS";
+        ji = "${pkgs.jira-cli-go}/bin/jira issue";
+        jil = "ji list"; # Uses the 'ji' alias
+        jim = "ji list -a lele@switchboard.xyz --order-by STATUS"; # Uses the 'ji' alias
 
-        TF = "terraform";
-        tf = "tofu";
-        tfp = "tf plan";
-        tfa = "tf apply -auto-approve";
-        tfd = "tf destroy -auto-approve";
+        TF = "${pkgs.terraform}/bin/terraform";
+        tf = "${pkgs.opentofu}/bin/tofu";
+        tfp = "tf plan"; # Uses the 'tf' alias
+        tfa = "tf apply -auto-approve"; # Uses the 'tf' alias
+        tfd = "tf destroy -auto-approve"; # Uses the 'tf' alias
 
-        cg = "cargo";
-        cgb = "cg build";
-        cgc = "cg check";
-        cgn = "cg new";
-        cgr = "cg run";
-        cgt = "cg test";
+        cg = "${pkgs.cargo}/bin/cargo"; # FIXME: Or from pkgs.rustc
+        cgb = "cg build"; # Uses the 'cg' alias
+        cgc = "cg check"; # Uses the 'cg' alias
+        cgn = "cg new"; # Uses the 'cg' alias
+        cgr = "cg run"; # Uses the 'cg' alias
+        cgt = "cg test"; # Uses the 'cg' alias
 
-        ipcalc = "sipcalc";
-        ff = "${binDir}/fastfetch ${myFastFetchOpt}";
+        ipcalc = "${pkgs.sipcalc}/bin/sipcalc";
+        ff = "${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}";
 
-        nixs = "nix search nixpkgs";
-        nixe = "$EDITOR $HOME/dotfiles/hosts/$(hostname)";
+        nixs = "nix search nixpkgs"; # 'nix' assumed in PATH
+        nixe = "$EDITOR $HOME/dotfiles/hosts/$(hostname)"; # Uses $EDITOR variable
 
-        nixu = "sudo nixos-rebuild switch --impure --flake $HOME/dotfiles";
-        nixU = "sudo nix flake update $HOME/dotfiles && nixu";
+        nixu = "sudo nixos-rebuild switch --impure --flake $HOME/dotfiles"; # 'sudo' and 'nixos-rebuild' assumed in PATH
+        nixU = "sudo nix flake update $HOME/dotfiles && nixu"; # 'sudo', 'nix', and 'nixu' alias
 
-        nixa = "nixe && nixu";
-        nixA = "nixe && nixU";
+        nixa = "nixe && nixu"; # Uses aliases
+        nixA = "nixe && nixU"; # Uses aliases
 
-        hm = "home-manager";
-        hmc = "hm-cleanup";
-        hme = "hm-edit";
-        hmu = "hm-update";
-        hmU = "nixu && hm-update";
-        hma = "hme && hmu";
-        hmA = "hme && hmU";
-        hm-cleanup = "home-manager expire-generations '-7 days' && nix-store --gc";
-        hm-edit = "home-manager edit";
-        hm-update = "home-manager switch -b backup --flake $HOME/dotfiles'";
+        hm = "${pkgs.home-manager}/bin/home-manager";
+        hmc = "hm-cleanup"; # Uses 'hm-cleanup' alias which calls 'hm'
+        hme = "hm-edit";   # Uses 'hm-edit' alias which calls 'hm'
+        hmu = "hm-update"; # Uses 'hm-update' alias which calls 'hm'
+        hmU = "nixu && hm-update"; # Uses aliases
+        hma = "hme && hmu"; # Uses aliases
+        hmA = "hme && hmU"; # Uses aliases
+        hm-cleanup = "hm expire-generations '-7 days' && nix-store --gc"; # Uses 'hm' alias, 'nix-store' in PATH
+        hm-edit = "hm edit"; # Uses 'hm' alias
+        hm-update = "hm switch -b backup --flake $HOME/dotfiles'"; # Uses 'hm' alias
 
-        SHX = "exec \$SHELL -l";
+        SHX = "exec \$SHELL -l"; # Uses $SHELL environment variable
       };
 
       shellGlobalAliases = {
@@ -132,12 +132,12 @@ in
         bindkey '^N' history-beginning-search-forward
 
         zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
-        source <(${binDir}/carapace _carapace zsh)
+        source <(${pkgs.carapace}/bin/carapace _carapace zsh)
 
-        eval "$(${binDir}/thefuck --alias)"
-        eval "$(${binDir}/zoxide init zsh)"
+        eval "$(${pkgs.thefuck}/bin/thefuck --alias)"
+        eval "$(${pkgs.zoxide}/bin/zoxide init zsh)"
 
-        ${binDir}/fastfetch ${myFastFetchOpt}
+        ${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}
       '';
     }; # EOM zsh
 

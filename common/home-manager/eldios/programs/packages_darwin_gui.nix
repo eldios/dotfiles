@@ -1,3 +1,4 @@
+# Packages for macOS-specific graphical user interface tools.
 { pkgs, ... }:
 {
   home = {

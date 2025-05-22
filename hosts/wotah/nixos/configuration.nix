@@ -20,6 +20,8 @@
 
     ./disko.nix
 
+    ./windows-vm.nix # Configuration for the Windows 11 VM
+
     ./boot.nix
     ./system.nix
     ./network.nix
@@ -31,6 +33,7 @@
 
       home-manager.sharedModules = [
         inputs.sops-nix.homeManagerModules.sops
+        # inputs.stylix.homeManagerModules.stylix # This is now imported by common/home-manager/eldios/style/stylix.nix
       ];
 
       home-manager.useGlobalPkgs = true;
