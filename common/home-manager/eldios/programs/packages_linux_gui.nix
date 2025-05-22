@@ -63,7 +63,6 @@ in
       easyeffects
       filezilla
       geoclue2
-      ghostty
       gimp-with-plugins
       gparted
       gromit-mpx
@@ -78,7 +77,6 @@ in
       pulseaudio # to install tools like pactl
       pcmanfm
       redshift
-      rio
       screenkey
       scribus
       signal-desktop
