@@ -3,10 +3,6 @@ let
   binDir = "/etc/profiles/per-user/eldios/bin";
 in
 {
-  imports = [
-    ./theme.nix # Import the common Stylix theme configuration
-  ];
-
   zramSwap = {
     enable = true;
     algorithm = "zstd";

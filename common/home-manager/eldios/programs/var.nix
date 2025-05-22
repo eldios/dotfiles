@@ -19,10 +19,6 @@
 
     bat = {
       enable = true;
-      config = {
-        theme = "GitHub";
-        italic-text = "always";
-      };
     }; # EOM bat
 
     direnv = {
