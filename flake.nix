@@ -47,8 +47,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
-      url = "github:danth/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:danth/stylix/release-24.11";
     };
   };
 
@@ -63,7 +62,7 @@
     , peerix
     , portmaster
     , sops-nix
-    , stylix # Added stylix here
+    , stylix
     , xremap
     , ...
     } @ inputs:
@@ -89,7 +88,7 @@
           peerix
           portmaster
           sops-nix
-          stylix# Added stylix here
+          stylix
           xremap
           ;
       };
@@ -104,8 +103,8 @@
         modules = [
           ./hosts/lele8845ace/nixos/configuration.nix
           disko.nixosModules.disko
-          sops-nix.nixosModules.sops
           peerix.nixosModules.peerix
+          sops-nix.nixosModules.sops
         ];
       };
 

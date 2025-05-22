@@ -142,8 +142,6 @@ in
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = "0xff${config.lib.stylix.colors.base0B} 0xff${config.lib.stylix.colors.base0D} 45deg"; # Neon Cyan and Neon Pink from eldios_neon.yaml
-        "col.inactive_border" = "0xaa${config.lib.stylix.colors.base03}"; # Dimmed grey for inactive from eldios_neon.yaml
         no_focus_fallback = true; # Prevents focus from falling back to desktop if no window is focusable
       };
 
