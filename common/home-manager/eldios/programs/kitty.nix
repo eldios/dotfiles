@@ -7,7 +7,6 @@
       settings = {
         # INFO: Kitty colors and theme are managed by Stylix.
         font_size = "12.0";
-        background_opacity = "0.9";
         dynamic_background_opacity = "yes";
         # ZSH
         shell = "${pkgs.zsh}/bin/zsh -l";

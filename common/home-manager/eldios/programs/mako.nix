@@ -9,7 +9,6 @@
     borderRadius = 10;
     defaultTimeout = 5000;
     ignoreTimeout = false;
-    backgroundColor = "#282828";
   };
 
 } # EOF

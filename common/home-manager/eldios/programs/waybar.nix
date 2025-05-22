@@ -49,36 +49,36 @@ in
       }
 
       window#waybar {
-          background-color: #${config.lib.stylix.colors.base00}E6; /* base00 with ~90% alpha */
-          color: #${config.lib.stylix.colors.base05}; /* Main foreground color */
-          border-radius: 10px; /* Rounded corners for the bar */
-          border: 1px solid #${config.lib.stylix.colors.base02}; /* Subtle border */
+          background-color: #${config.lib.stylix.colors.base00};
+          color: #${config.lib.stylix.colors.base05};
+          border-radius: 10px;
+          border: 1px solid #${config.lib.stylix.colors.base02};
       }
 
       /* Workspace buttons */
       #workspaces button {
           padding: 2px 10px;
           margin: 2px 2px;
-          color: #${config.lib.stylix.colors.base04}; /* Dimmed foreground for inactive workspaces */
+          color: #${config.lib.stylix.colors.base04};
           background-color: transparent;
           border-radius: 8px;
           transition: all 0.3s ease;
       }
 
       #workspaces button.active {
-          color: #${config.lib.stylix.colors.base0B}; /* Neon Cyan for active workspace text */
-          background-color: #${config.lib.stylix.colors.base01}BF; /* Darker bg with alpha for active */
-          border: 1px solid #${config.lib.stylix.colors.base0B}; /* Neon Cyan border */
+          color: #${config.lib.stylix.colors.base0B};
+          background-color: #${config.lib.stylix.colors.base01};
+          border: 1px solid #${config.lib.stylix.colors.base0B};
       }
 
-      #workspaces button.focused { /* Often the same as active or a slight variation */
-          color: #${config.lib.stylix.colors.base0D}; /* Neon Pink for focused workspace (often indicates monitor focus) */
-          background-color: #${config.lib.stylix.colors.base02}99; /* Slightly different bg for focus */
+      #workspaces button.focused {
+          color: #${config.lib.stylix.colors.base0D};
+          background-color: #${config.lib.stylix.colors.base02};
       }
 
       #workspaces button.urgent {
           color: #${config.lib.stylix.colors.base00};
-          background-color: #${config.lib.stylix.colors.base0A}; /* Neon Yellow for urgent */
+          background-color: #${config.lib.stylix.colors.base0A};
           border-radius: 8px;
       }
 
@@ -86,30 +86,30 @@ in
       #clock, #battery, #cpu, #memory, #network, #pulseaudio, #tray, #custom-menu, #custom-seperator-left, #custom-seperator-right, #custom-gammastep, #custom-currentplayer, #custom-player, #idle_inhibitor, #backlight {
           padding: 0 8px;
           margin: 2px 0px;
-          color: #${config.lib.stylix.colors.base05}; /* Default module text color */
+          color: #${config.lib.stylix.colors.base05};
       }
-      
+
       #clock {
-        color: #${config.lib.stylix.colors.base0E}; /* Neon Pink variant for clock */
+        color: #${config.lib.stylix.colors.base0E};
       }
 
       #battery.charging, #battery.plugged {
-          color: #${config.lib.stylix.colors.base0C}; /* Neon Green for charging */
+          color: #${config.lib.stylix.colors.base0C};
       }
 
       #battery.critical:not(.charging) {
-          background-color: #${config.lib.stylix.colors.base08}; /* Accent Pink/Magenta for critical battery */
-          color: #${config.lib.stylix.colors.base00}; /* Dark text on bright critical background */
+          background-color: #${config.lib.stylix.colors.base08};
+          color: #${config.lib.stylix.colors.base00};
           border-radius: 4px;
           margin: 2px 2px;
       }
 
       #pulseaudio.muted {
-        color: #${config.lib.stylix.colors.base03}; /* Dimmed color for muted audio */
+        color: #${config.lib.stylix.colors.base03};
       }
-      
+
       #network.disconnected {
-        color: #${config.lib.stylix.colors.base0F}; /* Bright Red/Orange for disconnected */
+        color: #${config.lib.stylix.colors.base0F};
       }
 
       /* Tooltip styling */

@@ -96,8 +96,7 @@ in
         }
     )
 
-    # FIXME: Verify package for ssh-agents (e.g., pkgs.ssh-agent-switcher or similar)
-    ^${pkgs.ssh-agent-switcher}/bin/ssh-agents -c -a ~/.ssh/id_ed25519 |
+    ssh-agents -c -a ~/.ssh/id_ed25519 |
       lines |
       str replace --all --regex "(.*) export.*" "''\${1}" |
       parse "{name}={value};" |
@@ -131,7 +130,7 @@ in
     alias ji = ${pkgs.jira-cli-go}/bin/jira issue
     alias jil = ji list
     alias jim = ji list -a 'lele@switchboard.xyz' --order-by STATUS
-    alias k = ${pkgs.kubernetes-cli}/bin/kubectl # FIXME: Verify package name, could be pkgs.kubectl
+    alias k = ${pkgs.kubectl}/bin/kubectl # FIXME: Verify package name, could be pkgs.kubectl
     alias l = ${pkgs.coreutils}/bin/ls # Using coreutils ls as lsd is not in nushell packages
     alias la = l -a
     alias lg = ${pkgs.lazygit}/bin/lazygit

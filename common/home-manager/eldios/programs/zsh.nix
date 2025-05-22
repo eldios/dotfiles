@@ -71,7 +71,7 @@ in
         y = "${pkgs.yazi}/bin/yazi";
 
         # Kubectl
-        k = "${pkgs.kubernetes-cli}/bin/kubectl"; # FIXME: Verify package name for kubectl
+        k = "${pkgs.kubectl}/bin/kubectl"; # FIXME: Verify package name for kubectl
         j = "${pkgs.just}/bin/just";
 
         ji = "${pkgs.jira-cli-go}/bin/jira issue";
@@ -105,7 +105,7 @@ in
 
         hm = "${pkgs.home-manager}/bin/home-manager";
         hmc = "hm-cleanup"; # Uses 'hm-cleanup' alias which calls 'hm'
-        hme = "hm-edit";   # Uses 'hm-edit' alias which calls 'hm'
+        hme = "hm-edit"; # Uses 'hm-edit' alias which calls 'hm'
         hmu = "hm-update"; # Uses 'hm-update' alias which calls 'hm'
         hmU = "nixu && hm-update"; # Uses aliases
         hma = "hme && hmu"; # Uses aliases
