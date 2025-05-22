@@ -9,8 +9,14 @@ in
   # Enable Eww program
   programs.eww = {
     enable = true;
-    package = pkgs.eww; # Or pkgs.eww-wayland if a specific variant is needed/preferred
+    configDir = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/eww";
+    package = pkgs.eww; # Using wayland variant for Hyprland compatibility
   };
+
+  # Ensure required fonts are installed
+  home.packages = with pkgs; [
+    font-awesome
+  ];
 
   # Create Eww configuration files using home.file
   home.file = {
@@ -34,7 +40,7 @@ in
           (box :class "eww_bar_right" :halign "end" :spacing 10
             (cpu_widget)
             (memory_widget)
-            ;; (volume_widget) ; TODO
+            (volume_widget)
           )
         )
       )
@@ -42,35 +48,43 @@ in
       ;; Clock
       (defpoll time_val :interval "1s" "date +'%H:%M:%S'")
       (defwidget clock_widget []
-        (box :class "clock" :halign "center" 
+        (box :class "clock" :halign "center"
           (label :text time_val)
         )
       )
 
-      ;; Workspaces 
-      ;; FIXME: This requires a script to listen to Hyprland socket for workspace changes, 
-      ;; or polling `hyprctl workspaces -j`. For now, a placeholder.
+      ;; Workspaces
+      (defpoll workspaces :interval "1s" "~/.config/eww/scripts/get-workspaces.sh")
       (defwidget workspaces_widget []
         (box :class "workspaces" :orientation "h" :spacing 5
-          (label :text "W:[1|2|3]") ;; Placeholder
+          (literal :content workspaces)
         )
       )
-      
+
       ;; CPU Usage
       (defpoll cpu_usage :interval "2s" "echo $(LANG=C top -bn1 | awk '/Cpu\\(s\\):/ {print $2 + $4}')%")
       (defwidget cpu_widget []
         (box :class "cpu" :orientation "h" :spacing 5
-          (label :text "") ;; CPU icon
+          (label :text "󰻠") ;; CPU icon from Nerd Font
           (label :text cpu_usage)
         )
       )
 
       ;; Memory Usage
-      (defpoll mem_usage :interval "2s" "LANG=C free -m | awk 'NR==2{printf "%.0f%%", $3*100/$2 }'")
+      (defpoll mem_usage :interval "2s" "LANG=C free -m | awk 'NR==2{printf \"%.0f%%\", $3*100/$2 }'")
       (defwidget memory_widget []
         (box :class "memory" :orientation "h" :spacing 5
-          (label :text "") ;; Memory icon
+          (label :text "󰍛") ;; Memory icon from Nerd Font
           (label :text mem_usage)
+        )
+      )
+
+      ;; Volume Widget
+      (defpoll volume :interval "1s" "~/.config/eww/scripts/get-volume.sh")
+      (defwidget volume_widget []
+        (box :class "volume" :orientation "h" :spacing 5
+          (label :text "󰕾") ;; Volume icon from Nerd Font
+          (label :text volume)
         )
       )
     '';
@@ -83,6 +97,7 @@ in
       $accent_cyan: #${colors.base0B};
       $accent_pink: #${colors.base0D};
       $accent_yellow: #${colors.base0A};
+      $accent_green: #${colors.base0C};
       $inactive: #${colors.base03};
       $bar_radius: 8px;
       $widget_padding: 0 10px;
@@ -95,7 +110,7 @@ in
         font-size: ${builtins.toString config.stylix.fonts.sizes.applications}px;
         padding: 0 5px; /* Padding for the overall bar content */
       }
-      
+
       .eww_bar_left, .eww_bar_center, .eww_bar_right {
         padding: 2px 8px; /* Padding around groups of widgets */
         background-color: rgba($bg, 0.7); /* Semi-transparent background for widget groups */
@@ -104,12 +119,12 @@ in
       }
 
       /* Individual widget styling */
-      .clock, .workspaces, .cpu, .memory {
+      .clock, .workspaces, .cpu, .memory, .volume {
         color: $fg;
         padding: $widget_padding;
       }
-      
-      .workspaces button { /* Example if workspaces were buttons */
+
+      .workspaces button {
           color: $inactive;
           &.active { color: $accent_cyan; }
           &.occupied { color: $fg; }
@@ -117,13 +132,50 @@ in
 
       .cpu label:first-child { color: $accent_pink; } /* Icon color */
       .memory label:first-child { color: $accent_yellow; } /* Icon color */
+      .volume label:first-child { color: $accent_green; } /* Icon color */
     '';
-    
-    # Placeholder for scripts if needed later
-    # ".config/eww/scripts/example_script.sh" = {
-    #   executable = true;
-    #   text = "#!/bin/sh
-#echo 'Hello from Eww script'";
-    # };
+
+    # Scripts for widgets
+    ".config/eww/scripts/get-workspaces.sh" = {
+      executable = true;
+      text = ''
+        #!/bin/sh
+        # Script to get Hyprland workspaces
+
+        workspaces() {
+          # Get active workspace
+          active=$(hyprctl activeworkspace -j | jq '.id')
+
+          # Generate workspace buttons
+          echo "(box :class \"workspaces\" :orientation \"h\" :spacing 5"
+          for i in {1..9}; do
+            # Check if workspace is occupied
+            occupied=$(hyprctl workspaces -j | jq ".[] | select(.id == $i) | .id" | wc -l)
+
+            if [ "$i" -eq "$active" ]; then
+              echo "  (button :class \"active\" :onclick \"hyprctl dispatch workspace $i\" \"$i\")"
+            elif [ "$occupied" -eq 1 ]; then
+              echo "  (button :class \"occupied\" :onclick \"hyprctl dispatch workspace $i\" \"$i\")"
+            else
+              echo "  (button :onclick \"hyprctl dispatch workspace $i\" \"$i\")"
+            fi
+          done
+          echo ")"
+        }
+
+        workspaces
+      '';
+    };
+
+    ".config/eww/scripts/get-volume.sh" = {
+      executable = true;
+      text = ''
+        #!/bin/sh
+        # Script to get volume percentage
+
+        volume=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '[0-9]+(?=%)' | head -1)
+        echo "$volume%"
+      '';
+    };
   };
 }

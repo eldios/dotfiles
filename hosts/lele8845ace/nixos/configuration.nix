@@ -17,8 +17,6 @@
 
     ../../../common/nixos/programs/neovim.nix
 
-    #../../../common/nixos/programs/roon.nix
-
     ../../../common/nixos/virtualisation.nix
 
     ./disko.nix
@@ -30,11 +28,13 @@
 
     home-manager.nixosModules.home-manager
     {
+      home-manager.backupFileExtension = "hm-backup";
+
       home-manager.users.eldios = import ../home-manager/home.nix;
 
       home-manager.sharedModules = [
         inputs.sops-nix.homeManagerModules.sops
-        inputs.stylix.homeModules.stylix
+        inputs.stylix.homeManagerModules.stylix
       ];
 
       home-manager.useGlobalPkgs = true;
