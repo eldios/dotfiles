@@ -2,6 +2,8 @@
 
   imports = [
 
+    ../../../common/home-manager/eldios/style/stylix.nix
+
     ../../../common/home-manager/eldios/services.nix
     ../../../common/home-manager/eldios/sops.nix
 
