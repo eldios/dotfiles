@@ -15,6 +15,8 @@ let
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   playerctld = "${pkgs.playerctl}/bin/playerctld";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
+  nmcli = "${pkgs.networkmanager}/bin/nmcli";
+  df = "${pkgs.coreutils}/bin/df";
 
   # jsonOutput: A helper function to generate JSON strings for Waybar custom modules.
   # It takes a module name and a set of attributes (text, tooltip, alt, class, percentage)
@@ -42,26 +44,30 @@ in
 
     style = ''
       * {
-          /* Default font for text, assuming FontAwesome is available for icons */
           font-family: "${config.stylix.fonts.monospace.name}", FontAwesome;
           font-size: ${builtins.toString config.stylix.fonts.sizes.applications}px;
-          /* Other global properties like padding, margin can be set here if needed */
       }
 
       window#waybar {
           background-color: #${config.lib.stylix.colors.base00};
           color: #${config.lib.stylix.colors.base05};
-          border-radius: 10px;
+          border-radius: 12px;
+          margin-top: 8px;
+          margin-bottom: 4px;
           border: 1px solid #${config.lib.stylix.colors.base02};
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
       }
 
-      /* Workspace buttons */
+      #workspaces {
+          margin: 0 4px;
+      }
+
       #workspaces button {
-          padding: 2px 10px;
-          margin: 2px 2px;
+          padding: 0px 6px;
+          margin: 0 2px;
           color: #${config.lib.stylix.colors.base04};
           background-color: transparent;
-          border-radius: 8px;
+          border-radius: 6px;
           transition: all 0.3s ease;
       }
 
@@ -79,18 +85,16 @@ in
       #workspaces button.urgent {
           color: #${config.lib.stylix.colors.base00};
           background-color: #${config.lib.stylix.colors.base0A};
-          border-radius: 8px;
       }
 
-      /* Module styling */
-      #clock, #battery, #cpu, #memory, #network, #pulseaudio, #tray, #custom-menu, #custom-seperator-left, #custom-seperator-right, #custom-gammastep, #custom-currentplayer, #custom-player, #idle_inhibitor, #backlight {
-          padding: 0 8px;
-          margin: 2px 0px;
+      #clock, #battery, #cpu, #memory, #network, #pulseaudio, #tray, #custom-menu, #custom-seperator-left, #custom-seperator-right, #custom-gammastep, #custom-currentplayer, #custom-player, #idle_inhibitor, #backlight, #disk {
+          padding: 0 10px;
+          margin: 3px 0px;
           color: #${config.lib.stylix.colors.base05};
       }
 
       #clock {
-        color: #${config.lib.stylix.colors.base0E};
+          color: #${config.lib.stylix.colors.base0E};
       }
 
       #battery.charging, #battery.plugged {
@@ -105,14 +109,13 @@ in
       }
 
       #pulseaudio.muted {
-        color: #${config.lib.stylix.colors.base03};
+          color: #${config.lib.stylix.colors.base03};
       }
 
       #network.disconnected {
-        color: #${config.lib.stylix.colors.base0F};
+          color: #${config.lib.stylix.colors.base0F};
       }
 
-      /* Tooltip styling */
       tooltip {
           background-color: #${config.lib.stylix.colors.base01};
           color: #${config.lib.stylix.colors.base05};
@@ -130,17 +133,17 @@ in
       primary = {
         mode = "dock";
         layer = "top";
-        height = 30;
-        margin-top = 10;
-        margin-left = 13;
-        margin-right = 13;
+        height = 32;
+        margin-top = 8;
+        margin-left = 10;
+        margin-right = 10;
         position = "top";
 
         modules-left = [
-          "custom/menu" # Custom module for a main application menu
-          "sway/workspaces"
-          "custom/seperator-left" # Decorative separator
-          "sway/window"
+          "custom/menu"
+          "hyprland/workspaces"
+          "custom/seperator-left"
+          "hyprland/window"
         ];
 
         modules-center = [
@@ -152,8 +155,9 @@ in
         modules-right = [
           "tray"
           "network"
+          "disk"
           "battery"
-          "custom/seperator-right" # Decorative separator
+          "custom/seperator-right"
           "cpu"
           "memory"
           "backlight"
@@ -166,16 +170,14 @@ in
         clock = {
           interval = 1;
           format = "{:%a, %b %d   %r}";
-          # on-click = "mode";
           tooltip-format = ''
             <tt><small>{calendar}</small></tt>
-          ''; # TODO: Implement gcal: {gcal --starting-day=1 | sed -e 's|<|\[|g' -e 's|>|\]|g}
+          '';
         };
 
         cava = {
           framerate = 30;
           autosens = 1;
-          # sensitivity = 100;
           bars = 10;
           lower_cutoff_freq = 50;
           higher_cutoff_freq = 15000;
@@ -188,11 +190,7 @@ in
           waves = false;
           noise_reduction = 0.77;
           input_delay = 2;
-          format-icons = [ "▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" ];
-          actions = {
-            # on-click-right = "mode";
-            # on-click-left = "${playerctl} play-pause";
-          };
+          format-icons = [ " " "▂" "▃" "▄" "▅" "▆" "▇" "█" ];
         };
 
         pulseaudio = {
@@ -231,7 +229,7 @@ in
           all-outputs = true;
         };
 
-        "sway/workspaces" = {
+        "workspaces" = {
           disable-scroll = true;
           all-outputs = true;
         };
@@ -250,16 +248,16 @@ in
 
         network = {
           interval = 3;
-          format-wifi = "󰖩 ";
-          format-ethernet = "󰈁 Connected";
-          format-disconnected = "";
+          format-wifi = "󰖩 {bandwidthUpBits} 󰖪 {bandwidthDownBits}";
+          format-ethernet = "󰈁 {bandwidthUpBits} 󰖪 {bandwidthDownBits}";
+          format-disconnected = "󰤯";
           tooltip-format = ''
               {essid}
             󱘖  {ifname}
               {ipaddr}/{cidr}
             󱚺  {bandwidthUpBits}
             󱚶  {bandwidthDownBits}'';
-          on-click = ""; #FIXME: Add on-click setup for preview like macos
+          on-click = "${nmcli} dev wifi connect"; #FIXME: Add on-click setup for preview like macos
         };
 
         backlight = {
@@ -270,57 +268,57 @@ in
           on-scroll-down = "${pkgs.light}/bin/light -U 5";
         };
 
+        disk = {
+          interval = 60;
+          format = "󰋊 {percentage}%";
+          tooltip = "Disk Usage: {used} / {total}";
+          path = "/";
+        };
+
         "custom/seperator-left" = {
           return-type = "json";
           exec = jsonOutput "seperator-left" {
-            text = "";
-            # tooltip = ''$(${cat} /etc/os-release | ${grep} PRETTY_NAME | ${cut} -d '"' -f2)'';
+            text = "";
           };
         };
 
         "custom/seperator-right" = {
           return-type = "json";
           exec = jsonOutput "seperator-right" {
-            text = "";
-            # tooltip = ''$(${cat} /etc/os-release | ${grep} PRETTY_NAME | ${cut} -d '"' -f2)'';
+            text = "";
           };
         };
 
         "custom/menu" = {
-          # Displays a Linux distribution logo ()
           return-type = "json";
           exec = jsonOutput "menu" {
-            # Uses the jsonOutput helper
-            text = ""; # Icon representing the menu (NixOS logo)
-            tooltip = ''$(${cat} /etc/os-release | ${grep} PRETTY_NAME | ${cut} -d '"' -f2)''; # Tooltip shows OS pretty name
+            text = "";
+            tooltip = ''$(${cat} /etc/os-release | ${grep} PRETTY_NAME | ${cut} -d '"' -f2)'';
           };
-          on-click-left = "${pkgs.rofi}/bin/rofi -S drun -x 10 -y 10 -W 25% -H 60%"; # Left-click opens Rofi application launcher
-          on-click-right = "swaymsg scratchpad show"; # Right-click shows the scratchpad workspace
+          #on-click-left = "";
+          #on-click-right = "";
         };
 
         "custom/hostname" = {
-          # Displays user@hostname
-          exec = "echo $USER@$HOSTNAME"; # Simple echo command
-          on-click = "${systemctl} --user restart waybar"; # Click to restart Waybar
+          exec = "echo $USER@$HOSTNAME";
+          on-click = "${systemctl} --user restart waybar";
         };
 
         "custom/gammastep" = {
-          # Controls and displays status for Gammastep (screen temperature)
-          interval = 5; # Update interval
+          interval = 5;
           return-type = "json";
           exec = jsonOutput "gammastep" {
-            # Uses jsonOutput helper
-            pre = '' # Shell script to determine Gammastep status and period (Day/Night)
+            pre = ''
               if unit_status="$(${systemctl} --user is-active gammastep)"; then
-              status="$unit_status ($(${journalctl} --user -u gammastep.service -g 'Period: ' | ${tail} -1 | ${cut} -d ':' -f6 | ${xargs}))" # Extracts period if active
+              status="$unit_status ($(${journalctl} --user -u gammastep.service -g 'Period: ' | ${tail} -1 | ${cut} -d ':' -f6 | ${xargs}))"
               else
-              status="$unit_status" # inactive
+              status="$unit_status"
               fi
             '';
-            alt = "\${status:-inactive}"; # Fallback alt text
-            tooltip = "Gammastep is $status"; # Tooltip shows detailed status
+            alt = "\${status:-inactive}";
+            tooltip = "Gammastep is $status";
           };
-          format = "{icon}"; # Display format is just an icon
+          format = "{icon}";
           format-icons = {
             "activating" = "󰁪 ";
             "deactivating" = "󰁪 ";
@@ -334,29 +332,27 @@ in
             "active (Transition (Day)" = " ";
             "active (Transition (Daytime)" = " ";
           };
-          on-click = "${systemctl} --user is-active gammastep && ${systemctl} --user stop gammastep || ${systemctl} --user start gammastep"; # Toggles Gammastep on click
+          on-click = "${systemctl} --user is-active gammastep && ${systemctl} --user stop gammastep || ${systemctl} --user start gammastep";
         };
 
         "custom/currentplayer" = {
-          # Shows the current media player icon and count of other players
-          interval = 2; # Update interval
+          interval = 2;
           return-type = "json";
           exec = jsonOutput "currentplayer" {
-            # Uses jsonOutput helper
-            pre = '' # Shell script to get current player name and count of available players
-              player="$(${playerctl} status -f "{{playerName}}" 2>/dev/null || echo "No player active" | ${cut} -d '.' -f1)" # Get current player or "No player active"
-              count="$(${playerctl} -l 2>/dev/null | ${wc} -l)" # Count total active players
+            pre = ''
+              player="$(${playerctl} status -f "{{playerName}}" 2>/dev/null || echo "No player active" | ${cut} -d '.' -f1)"
+              count="$(${playerctl} -l 2>/dev/null | ${wc} -l)"
               if ((count > 1)); then
-                more=" +$((count - 1))" # If more than one, show "+N"
+                more=" +$((count - 1))"
               else
                 more=""
               fi
             '';
-            alt = "$player"; # Alt text shows current player name
-            tooltip = "$player ($count available)"; # Tooltip shows current player and total available
-            text = "$more"; # Displays "+N" if multiple players are active
+            alt = "$player";
+            tooltip = "$player ($count available)";
+            text = "$more";
           };
-          format = "{icon}{}"; # Displays icon and the "+N" text
+          format = "{icon}{}";
           format-icons = {
             "No player active" = " ";
             "Celluloid" = "󰎁 ";
@@ -370,17 +366,15 @@ in
             "chromium" = " ";
             "brave" = " ";
           };
-          on-click = "${playerctld} shift"; # Left-click cycles to the next player
-          on-click-right = "${playerctld} unshift"; # Right-click cycles to the previous player
+          on-click = "${playerctld} shift";
+          on-click-right = "${playerctld} unshift";
         };
 
         "custom/player" = {
-          # Displays metadata of the currently playing media
-          exec-if = "${playerctl} status 2>/dev/null"; # Only run if a player is active
-          # Retrieves metadata (title, artist, status, album) from playerctl and formats it as JSON for Waybar
+          exec-if = "${playerctl} status 2>/dev/null";
           exec = ''${playerctl} metadata --format '{"text": "{{title}} - {{artist}}", "alt": "{{status}}", "tooltip": "{{title}} - {{artist}} ({{album}})"}' 2>/dev/null '';
-          return-type = "json"; # Expects JSON output from exec command
-          interval = 2; # Update interval
+          return-type = "json";
+          interval = 2;
           max-length = 30;
           format = "{icon} {}";
           format-icons = {
@@ -393,5 +387,5 @@ in
       };
     };
   };
-} # EOF
+}
 # vim: set ts=2 sw=2 et ai list nu
