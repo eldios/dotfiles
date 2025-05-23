@@ -7,8 +7,9 @@ let
 
   # Preferred terminal emulator
   #terminal = "${pkgs.kitty}/bin/kitty";
-  #terminal = "${pkgs.ghostty}/bin/ghostty"; # Currently using ghostty
-  terminal = "${pkgs.rio}/bin/rio"; # Current terminal
+  #terminal = "${pkgs.rio}/bin/rio";
+  # Current terminal
+  terminal = "${pkgs.ghostty}/bin/ghostty";
 
   rofi_opts = "-show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
   # Rofi menu for running commands
