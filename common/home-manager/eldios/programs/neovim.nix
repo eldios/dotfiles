@@ -235,7 +235,7 @@ in
         build = "make",
         opts = {
           provider = "litellm",
-          auto_suggestions_provider = "litellm",
+          auto_suggestions_provider = "gemini",
           vendors = {
             litellm = {
               __inherited_from = 'openai',
@@ -269,9 +269,10 @@ in
           gemini = {
             api_key_name = "cmd:cat ${config.sops.secrets."tokens/gemini/key".path}",
             endpoint = "https://generativelanguage.googleapis.com/v1beta/models",
+            model = "gemini-2.5-pro",
             timeout = 30000, -- Timeout in milliseconds
             temperature = 0,
-            max_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
+            max_tokens = 16384, -- Increase this to include reasoning tokens (for reasoning models)
           },
           ---Specify the special dual_boost mode
           ---1. enabled: Whether to enable dual_boost mode. Default to false.
@@ -284,7 +285,7 @@ in
           ---Note: This is an experimental feature and may not work as expected.
           dual_boost = {
             enabled = false,
-            first_provider = "openai",
+            first_provider = "gemini",
             second_provider = "claude",
             prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
             timeout = 60000, -- Timeout in milliseconds
