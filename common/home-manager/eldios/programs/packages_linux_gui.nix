@@ -85,6 +85,8 @@ in
       syncthing-tray
       telegram-desktop
       unclutter # unclutter -idle 1 -root -grab -visible
+      vivaldi
+      vivaldi-ffmpeg-codecs
       vlc
       whatsapp-for-linux
       widevine-cdm
@@ -113,8 +115,6 @@ in
       tidal-hifi
       variety
       vesktop # discord + some fixes
-      vivaldi
-      vivaldi-ffmpeg-codecs
       vscode
       #super-slicer
       #pdfposter

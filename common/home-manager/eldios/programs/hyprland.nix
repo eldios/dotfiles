@@ -68,7 +68,6 @@ in
       lavalauncher
       libva-utils
       mako
-      nerdfonts
       papirus-icon-theme
       pinentry-bemenu
       polkit_gnome
