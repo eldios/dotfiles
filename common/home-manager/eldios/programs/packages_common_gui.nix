@@ -16,7 +16,6 @@
       # Fonts
       anonymousPro
       corefonts
-      fira-code-nerdfont
       font-awesome
       meslo-lgs-nf
     ] ++ (builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts));
