@@ -1,9 +1,8 @@
 { ... }:
 {
-  nixpkgs.config.allowUnfree = true;
-
   programs = {
-    home-manager = { # set home-manager to handle itself
+    home-manager = {
+      # set home-manager to handle itself
       enable = true;
     };
   }; # EOM programs
@@ -27,7 +26,7 @@
     ./common_programs.nix
     ./programs/git.nix
     ../../../common/home-manager/eldios/style/stylix.nix # Common Stylix theme and config
-    ../../../common/home-manager/eldios/programs/eww.nix   # Eww dashboard/bar
+    ../../../common/home-manager/eldios/programs/eww.nix # Eww dashboard/bar
   ];
 
 } # EOF
