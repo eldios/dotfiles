@@ -33,7 +33,7 @@
 
       home-manager.sharedModules = [
         inputs.sops-nix.homeManagerModules.sops
-        inputs.stylix.homeManagerModules.stylix
+        inputs.stylix.homeModules.stylix
       ];
 
       home-manager.useGlobalPkgs = true;
