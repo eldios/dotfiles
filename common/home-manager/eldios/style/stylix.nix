@@ -31,7 +31,7 @@ in
       wezterm.enable = true; # If still used and Stylix supports it well
       firefox = {
         enable = true;
-        profileName = [ "Lele" ];
+        profileNames = [ "eldios" ];
       };
     };
   };
