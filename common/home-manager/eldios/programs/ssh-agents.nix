@@ -15,7 +15,7 @@ in
     ];
   }; # EOM ZSH deps
 
-  programs.zsh.initExtra = ''
+  programs.zsh.initContent = ''
     eval "$(${eldios-ssh-agents}/bin/ssh-agents -c -a ~/.ssh/id_ed25519)"
   '';
 

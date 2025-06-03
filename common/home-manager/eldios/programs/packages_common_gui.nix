@@ -19,8 +19,7 @@
       fira-code-nerdfont
       font-awesome
       meslo-lgs-nf
-      nerdfonts
-    ];
-  };
-} # EOF
+    ] ++ (builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts));
+  }; # EOF
+}
 # vim: set ts=2 sw=2 et ai list nu
