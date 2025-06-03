@@ -1,10 +1,8 @@
 { ... }:
 {
-  nixpkgs.config.allowUnfree = true;
-
   programs = {
+    # set home-manager to handle itself
     home-manager = {
-      # set home-manager to handle itself
       enable = true;
     };
   }; # EOM programs
