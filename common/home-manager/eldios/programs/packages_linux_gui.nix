@@ -82,7 +82,6 @@ in
       signal-desktop
       slack
       syncthing
-      syncthing-tray
       telegram-desktop
       unclutter # unclutter -idle 1 -root -grab -visible
       vivaldi

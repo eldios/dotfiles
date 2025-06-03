@@ -206,8 +206,6 @@ in
       menu = "${pkgs.rofi}/bin/rofi"; # Assuming this is used with exec $menu
 
       startup = [
-        # FIXME: Verify package name for syncthing-tray (e.g., pkgs.syncthingtray or pkgs.syncthing-gtk)
-        { command = "${pkgs.syncthingtray}/bin/syncthing-tray"; }
         { command = "${daynightscreen}"; }
         { command = "${pkgs.variety}/bin/variety"; }
         { command = "${idle_and_lockscreen}"; }
