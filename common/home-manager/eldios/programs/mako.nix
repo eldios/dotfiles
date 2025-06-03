@@ -1,14 +1,16 @@
 {
   services.mako = {
     enable = true;
-    maxVisible = -1;
-    layer = "overlay";
-    anchor = "top-right";
-    borderSize = 2;
-    #borderColor = "#${config.colorScheme.colors.base0C}";
-    borderRadius = 10;
-    defaultTimeout = 5000;
-    ignoreTimeout = false;
+    settings = {
+      maxVisible = -1;
+      layer = "overlay";
+      anchor = "top-right";
+      borderSize = 2;
+      #borderColor = "#${config.colorScheme.colors.base0C}";
+      borderRadius = 10;
+      defaultTimeout = 5000;
+      ignoreTimeout = false;
+    };
   };
 
 } # EOF
