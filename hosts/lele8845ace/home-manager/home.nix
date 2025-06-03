@@ -1,7 +1,5 @@
 { ... }:
 {
-  nixpkgs.config.allowUnfree = true;
-
   programs = {
     home-manager = {
       # set home-manager to handle itself
