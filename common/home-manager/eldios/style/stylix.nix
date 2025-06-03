@@ -29,6 +29,10 @@ in
       rofi.enable = true;
       waybar.enable = true; # Will be themed manually using Stylix vars
       wezterm.enable = true; # If still used and Stylix supports it well
+      firefox = {
+        enable = true;
+        profileName = [ "Lele" ];
+      };
     };
   };
 }
