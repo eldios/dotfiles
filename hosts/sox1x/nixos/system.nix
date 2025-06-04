@@ -1,3 +1,5 @@
+# `hardware.opengl.driSupport32Bit' has been renamed to `hardware.graphics.enable32Bit'.
+# `hardware.opengl.enable' has been renamed to `hardware.graphics.enable'.
 { pkgs, ... }:
 {
   system = {
@@ -76,9 +78,6 @@
   hardware = {
     enableAllFirmware = true;
 
-    # use pipewire instead
-    pulseaudio.enable = false;
-
     bluetooth = {
       enable = true;
       powerOnBoot = true;
@@ -90,11 +89,9 @@
       };
     };
 
-    opengl = {
+    graphics = {
       enable = true;
-
-      driSupport32Bit = true;
-
+      enable32Bit = true;
       #extraPackages = with pkgs; [ ];
     };
 
@@ -146,6 +143,8 @@
   };
 
   # audio
+  services.pulseaudio.enable = false;
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
