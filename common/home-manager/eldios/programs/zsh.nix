@@ -64,6 +64,7 @@ in
         l = "${pkgs.lsd}/bin/lsd -lhtra";
 
         g = "${pkgs.git}/bin/git";
+        lg = "${pkgs.lazygit}/bin/lazygit";
         lazg = "${pkgs.lazygit}/bin/lazygit";
         lazd = "${pkgs.lazydocker}/bin/lazydocker";
 
