@@ -30,6 +30,8 @@
 
       home-manager.nixosModules.home-manager
       {
+        home-manager.backupFileExtension = "hm-backup";
+
         home-manager.users.eldios = import ../home-manager/home.nix;
 
         home-manager.sharedModules = [
