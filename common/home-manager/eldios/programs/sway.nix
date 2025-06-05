@@ -1,12 +1,19 @@
 { pkgs, ... }:
 
 let
-  quick_menu = "${pkgs.rofi}/bin/rofi -show run -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail";
-  full_menu = "${pkgs.rofi}/bin/rofi -show drun -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail";
+  rofi_common_opts = "-show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
+  quick_menu = "${pkgs.rofi}/bin/rofi -show run ${rofi_common_opts}";
+  full_menu = "${pkgs.rofi}/bin/rofi -show drun ${rofi_common_opts}";
+  file_menu = "${pkgs.rofi}/bin/rofi -show filebrowser ${rofi_common_opts}";
 
-  lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -c '#000000'"; # Assuming swaylock-effects from packages list
-  # FIXME: Verify sway package for swaymsg (pkgs.sway or pkgs.swayfx)
-  idle_and_lockscreen = "${pkgs.swayidle}/bin/swayidle -w timeout 300 '${pkgs.swaylock-effects}/bin/swaylock -f -c 000000' timeout 600  '${pkgs.swayfx}/bin/swaymsg \"output * dpms off\"' resume '${pkgs.swayfx}/bin/swaymsg \"output * dpms on\"' before-sleep '${pkgs.swaylock-effects}/bin/swaylock -f -c 000000'\"";
+  lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5"; # Enhanced lockscreen command
+
+  # Define swaymsg commands separately for clarity and robust parsing
+  swaymsg_dpms_off = ''${pkgs.swayfx}/bin/swaymsg "output * dpms off"'';
+  swaymsg_dpms_on = ''${pkgs.swayfx}/bin/swaymsg "output * dpms on"'';
+
+  # FIXME: Verify sway package for swaymsg (pkgs.sway or pkgs.swayfx) - Using swayfx as per package config
+  idle_and_lockscreen = "${pkgs.swayidle}/bin/swayidle -w timeout 300 '${lockscreen}' timeout 600 '${swaymsg_dpms_off}' resume '${swaymsg_dpms_on}' before-sleep '${lockscreen}'";
 
   daynightscreen = "${pkgs.wlsunset}/bin/wlsunset -l 43.841667 -L 10.502778";
 
@@ -99,6 +106,7 @@ in
       fuzzel # wayland clone of dmenu
       gammastep
       geoclue2
+      ghostty # Added as preferred terminal
       glpaper
       gnome-themes-extra
       grim # screenshot functionality
@@ -174,19 +182,45 @@ in
       export XDG_CURRENT_DESKTOP=sway
       export XDG_SESSION_DESKTOP=sway
       export GDK_BACKEND="wayland,x11"
+      # Set TERMINAL env var if other tools need it, sway's 'terminal' setting is primary for sway keybindings
+      # export TERMINAL="${pkgs.kitty}/bin/kitty";
+      # export TERMINAL="${pkgs.rio}/bin/rio";
+      # Current terminal
+      export TERMINAL="${pkgs.ghostty}/bin/ghostty"
+      ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
     '';
 
     extraConfig = ''
+      # Existing touchpad config
       input type:touchpad {
           left_handed disabled
           natural_scroll disabled
           tap enabled
-          dwt enabled
-          accel_profile "flat" # disable mouse acceleration (enabled by default; to set it manually, use "adaptive" instead of "flat")
-          pointer_accel 0.5 # set mouse sensitivity (between -1 and 1)
+          dwt enabled 
+          accel_profile "flat" 
+          pointer_accel 0.5 
       }
 
+      # Existing flameshot rule (can be kept if flameshot is used alongside grimblast)
       for_window [app_id="flameshot"] floating enable, fullscreen disable, move absolute position 0 0, border pixel 0
+
+      # General settings from Hyprland / For a beautiful look
+      gaps inner 5
+      gaps outer 10
+      default_border pixel 2
+      focus_follows_mouse yes
+
+      # Font configuration should be handled by Stylix.
+      # Example: font pango:DejaVu Sans Mono 10 (if not fully covered by Stylix)
+
+      # Window rules from Hyprland
+      for_window [title="^pavucontrol$"] floating enable
+      for_window [app_id="^nm-connection-editor$"] floating enable
+      for_window [app_id="^org.gnome.Calculator$"] floating enable
+      for_window [app_id="^org.gnome.Nautilus$"] floating enable
+      for_window [app_id="^org.gnome.Settings$"] floating enable
+      for_window [title="^Picture-in-Picture$"] floating enable
+      for_window [app_id="^screenkey$"] floating enable, border none
     ''; # EOM extraConfig
 
     config = rec {
@@ -201,14 +235,16 @@ in
       up = "k";
       right = "l";
 
-      # Set default terminal
-      terminal = "KITTY_ENABLE_WAYLAND=1 ${pkgs.kitty}/bin/kitty";
+      # Set default terminal to ghostty
+      terminal = "${pkgs.ghostty}/bin/ghostty";
       menu = "${pkgs.rofi}/bin/rofi"; # Assuming this is used with exec $menu
 
       startup = [
         { command = "${daynightscreen}"; }
         { command = "${pkgs.variety}/bin/variety"; }
         { command = "${idle_and_lockscreen}"; }
+        # mako should be started by its systemd service (services.mako.enable = true)
+        { command = "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar"; } # Start eww widgets
       ];
 
       output = {
@@ -227,10 +263,11 @@ in
 
       keybindings = {
         "${modifier}+Return" = "exec ${terminal}";
-        "${modifier}+Shift+m" = "exec mailspring --password-store=\"gnome-libsecret\"";
+        "${modifier}+Shift+m" = "exec mailspring --password-store='gnome-libsecret'";
 
         "${modifier}+d" = "exec ${full_menu}";
         "${modifier}+Shift+d" = "exec ${quick_menu}";
+        "${modifier}+Shift+e" = "exec ${file_menu}"; # Added file menu
 
         "${modifier}+Shift+c" = "kill";
         "${modifier}+Ctrl+f" = "focus mode_toggle";
@@ -239,6 +276,10 @@ in
         "${modifier}+Ctrl+q" = "exec ${lockscreen}";
 
         "${modifier}+Shift+Ctrl+q" = "exec ${powermenu}";
+
+        # Screenshots using grimblast
+        "${modifier}+Shift+s" = "exec ${pkgs.grimblast}/bin/grimblast --notify copy area";
+        "${modifier}+Shift+a" = "exec ${pkgs.grimblast}/bin/grimblast --notify copy screen";
 
         "${modifier}+Shift+Ctrl+r" = "reload";
         "${modifier}+Ctrl+r" = "mode resize";
