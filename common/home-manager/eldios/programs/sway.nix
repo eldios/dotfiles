@@ -240,9 +240,8 @@ in
       startup = [
         { command = "${daynightscreen}"; }
         { command = "${pkgs.variety}/bin/variety"; }
-        { command = "${idle_and_lockscreen}"; }
-        # mako should be started by its systemd service (services.mako.enable = true)
-        { command = "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar"; } # Start eww widgets
+        #{ command = "${idle_and_lockscreen}"; }
+        #{ command = "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar"; } # Start eww widgets
       ];
 
       output = {
@@ -274,6 +273,7 @@ in
         "${modifier}+Ctrl+q" = "exec ${lockscreen}";
 
         "${modifier}+Shift+Ctrl+q" = "exec ${powermenu}";
+        "${modifier}+Shift+Ctrl+l" = "exec ${idle_and_lockscreen}";
 
         # Screenshots using grimblast
         "${modifier}+Shift+s" = "exec ${pkgs.grimblast}/bin/grimblast --notify copy area";
