@@ -304,11 +304,11 @@ in
       ];
 
       windowrule = [
-        "float, ^(pavucontrol)$"
-        "float, ^(nm-connection-editor)$"
-        "float, ^(org.gnome.Calculator)$"
-        "float, ^(org.gnome.Nautilus)$"
-        "float, ^(org.gnome.Settings)$"
+        "float, title:^(pavucontrol)$"
+        "float, title:^(nm-connection-editor)$"
+        "float, title:^(org.gnome.Calculator)$"
+        "float, title:^(org.gnome.Nautilus)$"
+        "float, title:^(org.gnome.Settings)$"
         "float, title:^(Picture-in-Picture)$"
         "float, class:^(screenkey)$"
         "noborder, class:^(screenkey)$"
