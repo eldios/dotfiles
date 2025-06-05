@@ -275,6 +275,9 @@ in
         "${modifier}+Shift+Ctrl+q" = "exec ${powermenu}";
         "${modifier}+Shift+Ctrl+l" = "exec ${idle_and_lockscreen}";
 
+        # Eww bar toggle
+        "${modifier}+Shift+Ctrl+b" = "exec ~/.config/eww/scripts/toggle-bar-mode.sh";
+
         # Screenshots using grimblast
         "${modifier}+Shift+s" = "exec ${pkgs.grimblast}/bin/grimblast --notify copy area";
         "${modifier}+Shift+a" = "exec ${pkgs.grimblast}/bin/grimblast --notify copy screen";
