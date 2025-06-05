@@ -1,0 +1,8 @@
+{ ... }:
+{
+  programs = {
+    niri = {
+      enable = true;
+    };
+  };
+}
