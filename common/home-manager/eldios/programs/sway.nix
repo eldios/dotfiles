@@ -12,7 +12,6 @@ let
   swaymsg_dpms_off = ''${pkgs.swayfx}/bin/swaymsg "output * dpms off"'';
   swaymsg_dpms_on = ''${pkgs.swayfx}/bin/swaymsg "output * dpms on"'';
 
-  # FIXME: Verify sway package for swaymsg (pkgs.sway or pkgs.swayfx) - Using swayfx as per package config
   idle_and_lockscreen = "${pkgs.swayidle}/bin/swayidle -w timeout 300 '${lockscreen}' timeout 600 '${swaymsg_dpms_off}' resume '${swaymsg_dpms_on}' before-sleep '${lockscreen}'";
 
   daynightscreen = "${pkgs.wlsunset}/bin/wlsunset -l 43.841667 -L 10.502778";
@@ -155,7 +154,6 @@ in
       xdg-desktop-portal-gtk
       xdg-utils # for opening default programs when clicking links
       ydotool
-      # FIXME: Verify sway package for sway reload (pkgs.sway or pkgs.swayfx)
       (pkgs.writeShellScriptBin "fix-wm" ''
         ${pkgs.procps}/bin/pkill waybar && ${pkgs.swayfx}/bin/sway reload
       '') # EOF fix-wm script
@@ -255,7 +253,7 @@ in
           transform = "0";
         };
         # "*" = { # change background for all outputs
-        #   bg = "~/.dotfiles/users/alex/extraConfig/wallpapers/synthwave-night-skyscrapers.jpg fill";
+        #   bg = "~/wallpapers/wp.jpg fill";
         # };
       };
 
@@ -338,17 +336,14 @@ in
         "${modifier}+Shift+9" = "move container to workspace number 9";
         "${modifier}+Shift+0" = "move container to workspace number 10";
 
-        # FIXME: Verify package for pactl (e.g., pkgs.pulseaudio or pkgs.pipewire)
-        "XF86AudioRaiseVolume" = "exec ${pkgs.pipewire}/bin/pactl set-sink-volume @DEFAULT_SINK@ +5%";
-        "XF86AudioLowerVolume" = "exec ${pkgs.pipewire}/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%";
-        "XF86AudioMute" = "exec ${pkgs.pipewire}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle";
-        "XF86AudioMicMute" = "exec ${pkgs.pipewire}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle";
-        "XF86MonBrightnessDown" = "exec sudo ${pkgs.light}/bin/light -U 5%";
-        "XF86MonBrightnessUp" = "exec sudo ${pkgs.light}/bin/light -A 5%";
-        "Shift+XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
-        "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl -p spotify play-pause";
-        "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl -p spotify next";
-        "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl -p spotify previous";
+        "XF86AudioRaiseVolume" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
+        "XF86AudioLowerVolume" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+        "XF86AudioMute" = "exec ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+        "XF86MonBrightnessDown" = "exec sudo ${pkgs.light}/bin/light -U 5";
+        "XF86MonBrightnessUp" = "exec sudo ${pkgs.light}/bin/light -A 5";
+        "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
+        "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl next";
+        "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl previous";
       }; # EOM keybindings
 
     }; # EOM config
