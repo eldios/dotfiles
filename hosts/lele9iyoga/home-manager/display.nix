@@ -1,9 +1,10 @@
 {
   imports = [
+    ../../../common/home-manager/eldios/programs/eww.nix
+    ../../../common/home-manager/eldios/programs/hyprland.nix
     ../../../common/home-manager/eldios/programs/i3.nix
     ../../../common/home-manager/eldios/programs/mako.nix
     ../../../common/home-manager/eldios/programs/sway.nix
-    ../../../common/home-manager/eldios/programs/hyprland.nix
     ../../../common/home-manager/eldios/programs/waybar.nix
   ];
 

@@ -118,11 +118,9 @@ in
         "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # Ensures DBus environment is aware of Wayland specifics for systemd services
         "${pkgs.waybar}/bin/waybar" # Starts the Waybar status bar
         "${pkgs.mako}/bin/mako" # Starts the Mako notification daemon
-        "${swayidle}/bin/swayidle-script" # Starts the swayidle daemon defined above
-        "${pkgs.hyprpaper}/bin/hyprpaper" # Starts hyprpaper for wallpaper management
-        "${pkgs.swaybg}/bin/swaybg -i ~/.config/wallpaper.jpg --mode fill" # Fallback wallpaper using swaybg (can be overridden by hyprpaper or variety)
         "${pkgs.variety}/bin/variety" # Starts Variety for wallpaper management
-        "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar" # Start Eww daemon and open the bar
+        # "${swayidle}/bin/swayidle-script" # Starts the swayidle daemon defined above
+        # "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar" # Start Eww daemon and open the bar
       ];
 
       # Monitor configuration (e.g., resolution, position, scale). Empty here means auto-config or configured elsewhere.
@@ -236,6 +234,9 @@ in
         "$mod CTRL SHIFT, Q, exec, ${powermenu}"
         #"$mod CTRL SHIFT, Q, exit"
         "$mod CTRL, Q, exec, ${lockscreen}"
+
+        # Eww bar toggle
+        "$mod SHIFT CTRL, B, exec, ~/.config/eww/scripts/toggle-bar-mode.sh"
 
         # Screenshots
         "$mod SHIFT, S, exec, ${screenshot_select}"
