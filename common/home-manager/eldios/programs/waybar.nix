@@ -142,6 +142,7 @@ in
         modules-left = [
           "custom/menu"
           "hyprland/workspaces"
+          "sway/workspaces"
           "custom/seperator-left"
           "hyprland/window"
         ];
