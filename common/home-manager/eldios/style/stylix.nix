@@ -13,22 +13,24 @@ let
 in
 {
   stylix = {
-    enable = true; # Enable stylix for this home-manager user
-    autoEnable = true; # We will explicitly define targets
+    enable = true;
+    autoEnable = true;
 
     image = "${ themesBaseDir }/wp.jpg";
     polarity = "dark";
 
+    # https://nix-community.github.io/stylix/options/platforms/nixos.html
     targets = {
-      # Explicitly enable targets based on previous setup
-      alacritty.enable = true; # Will be themed manually using Stylix vars
-      gtk.enable = true;
+      alacritty.enable = true;
       ghostty.enable = true;
-      hyprland.enable = true; # Stylix can still manage some hyprland vars
+      gtk.enable = true;
+      hyprland.enable = true;
       kitty.enable = true;
       rofi.enable = true;
-      waybar.enable = true; # Will be themed manually using Stylix vars
-      wezterm.enable = true; # If still used and Stylix supports it well
+      sway.enable = true;
+      waybar.enable = true;
+      wezterm.enable = true;
+      
       firefox = {
         enable = true;
         profileNames = [ "eldios" ];
