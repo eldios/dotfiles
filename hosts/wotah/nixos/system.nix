@@ -12,7 +12,7 @@ in
   boot.extraModprobeConfig = "options vfio-pci ids=10de:XXXX,10de:YYYY # FIXME: Replace 10de:XXXX and 10de:YYYY with actual Nvidia 3090 GPU and Audio device IDs respectively";
 
   system = {
-    stateVersion = "24.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+    stateVersion = "25.05"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = true;
   };
 
