@@ -222,6 +222,9 @@ in
     ''; # EOM extraConfig
 
     config = rec {
+      bars = [
+        { command = "waybar"; }
+      ];
 
       gaps = {
         inner = 2;
