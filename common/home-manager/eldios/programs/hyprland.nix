@@ -115,12 +115,25 @@ in
     settings = {
       # Commands to execute once on Hyprland startup
       exec-once = [
-        "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # Ensures DBus environment is aware of Wayland specifics for systemd services
+        "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT" # Enhanced DBus environment
         "${pkgs.waybar}/bin/waybar" # Starts the Waybar status bar
         "${pkgs.mako}/bin/mako" # Starts the Mako notification daemon
         "${pkgs.variety}/bin/variety" # Starts Variety for wallpaper management
         # "${swayidle}/bin/swayidle-script" # Starts the swayidle daemon defined above
         # "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar" # Start Eww daemon and open the bar
+      ];
+
+      # Environment variables for Wayland compatibility
+      env = [
+        "NIXOS_OZONE_WL,1"
+        "MOZ_ENABLE_WAYLAND,1"
+        "QT_QPA_PLATFORM,wayland"
+        "GDK_BACKEND,wayland,x11"
+        "XDG_CURRENT_DESKTOP,Hyprland"
+        "XDG_SESSION_TYPE,wayland"
+        "XDG_SESSION_DESKTOP,Hyprland"
+        "ELECTRON_OZONE_PLATFORM_HINT,wayland"
+        "WAYLAND_DISPLAY,wayland-1"
       ];
 
       # Monitor configuration (e.g., resolution, position, scale). Empty here means auto-config or configured elsewhere.
