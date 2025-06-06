@@ -208,7 +208,9 @@ in
       # Existing flameshot rule (can be kept if flameshot is used alongside grimblast)
       for_window [app_id="flameshot"] floating enable, fullscreen disable, move absolute position 0 0, border pixel 0
 
-      default_border none
+      smart_borders smart
+      smart_gaps smart
+      default_border pixel 2
       default_floating_border pixel 2
 
       # Window rules from Hyprland
