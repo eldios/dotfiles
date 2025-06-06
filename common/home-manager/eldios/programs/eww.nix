@@ -254,6 +254,12 @@ in
           for monitor in $monitors; do
             ${pkgs.eww}/bin/eww open "eww_bar_$monitor" 2>/dev/null || true
           done
+        elif command -v niri >/dev/null 2>&1 && pgrep -x "niri" >/dev/null; then
+          # Niri monitor detection
+          monitors=$(niri msg -j outputs | jq -r '.[] | select(.active) | .name' | nl -v0 -nln | cut -f1)
+          for monitor in $monitors; do
+            ${pkgs.eww}/bin/eww open "eww_bar_$monitor" 2>/dev/null || true
+          done
         else
           # Fallback - open first two bars
           ${pkgs.eww}/bin/eww open eww_bar_0 2>/dev/null || true

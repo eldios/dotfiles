@@ -135,7 +135,7 @@ in
 
           mouse {
               // off
-              natural-scroll
+              // natural-scroll
               // accel-speed 0.75
               // accel-profile "flat"
               // scroll-method "no-scroll"
@@ -321,7 +321,6 @@ in
               // draw the shadow correctly, without having to draw it behind the
               // window. These will also remove client-side shadows if the window
               // draws any.
-              //
               draw-behind-window true
 
               // You can change how shadows look. The values below are in logical
@@ -360,6 +359,7 @@ in
 
       // This line starts waybar, a commonly used bar for Wayland compositors.
       spawn-at-startup "${pkgs.dbus}/bin/dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "DISPLAY"
+      spawn-at-startup "~/.config/niri/session-setup.sh"
       spawn-at-startup "${pkgs.waybar}/bin/waybar"
       spawn-at-startup "${pkgs.mako}/bin/mako"
       spawn-at-startup "${pkgs.variety}/bin/variety"
@@ -740,7 +740,7 @@ in
       # Start XWayland if not already running
       if [ -z "$DISPLAY" ] || ! ${pkgs.xorg.xset}/bin/xset q >/dev/null 2>&1; then
         export DISPLAY=:0
-        ${pkgs.xwayland}/bin/Xwayland "$DISPLAY" -rootless -terminate -core -listen tcp &
+        ${pkgs.xwayland}/bin/Xwayland "$DISPLAY" -rootless -terminate -core -nolisten tcp &
         
         # Wait for X server to be ready
         while ! ${pkgs.xorg.xset}/bin/xset q >/dev/null 2>&1; do
