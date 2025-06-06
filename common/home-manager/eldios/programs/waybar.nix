@@ -134,9 +134,10 @@ in
         mode = "dock";
         layer = "top";
         height = 32;
-        margin-top = 8;
-        margin-left = 10;
-        margin-right = 10;
+        margin-top = 0;
+        margin-left = 0;
+        margin-right = 0;
+        margin-bottom = 0;
         position = "top";
 
         modules-left = [
