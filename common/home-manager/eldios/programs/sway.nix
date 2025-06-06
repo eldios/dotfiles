@@ -208,27 +208,10 @@ in
       # Existing flameshot rule (can be kept if flameshot is used alongside grimblast)
       for_window [app_id="flameshot"] floating enable, fullscreen disable, move absolute position 0 0, border pixel 0
 
-      default_border pixel 2
+      default_border none
       default_floating_border pixel 2
-      hide_edge_borders --i3 smart
-      smart_borders smart
-      smart_gaps smart
-      titlebar_border_thickness 0
-
-      corner_radius 4
-
-      shadows enable
-      shadows_on_csd enable
-      shadow_blur_radius 5
-
-      blur enable
-      blur passes 2
-      blur_radius 3
-
-      focus_follows_mouse yes
 
       # Window rules from Hyprland
-      for_window [app_id="^.waybar-wrapped$"] border none, gaps none
       for_window [title="^pavucontrol$"] floating enable
       for_window [app_id="^nm-connection-editor$"] floating enable
       for_window [app_id="^org.gnome.Calculator$"] floating enable
@@ -240,9 +223,14 @@ in
 
     config = rec {
 
-      bars = [
-        { command = "waybar"; }
-      ];
+      gaps = {
+        inner = 2;
+        outer = 0;
+        top = 0; # No extra gap at top
+        bottom = 0; # No extra gap at bottom
+        left = 0; # No extra gap at left
+        right = 0; # No extra gap at right
+      };
 
       modifier = "Mod4";
       left = "h";
