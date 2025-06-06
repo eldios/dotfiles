@@ -180,12 +180,17 @@ in
       export XDG_CURRENT_DESKTOP=sway
       export XDG_SESSION_DESKTOP=sway
       export GDK_BACKEND="wayland,x11"
+      
+      # Chromium/Electron apps Wayland support
+      export ELECTRON_OZONE_PLATFORM_HINT=wayland
+      export CHROME_EXECUTABLE="${pkgs.chromium}/bin/chromium"
+      
+      # Ensure Wayland display is set
+      export WAYLAND_DISPLAY=wayland-1
+      
       # Set TERMINAL env var if other tools need it, sway's 'terminal' setting is primary for sway keybindings
-      # export TERMINAL="${pkgs.kitty}/bin/kitty";
-      # export TERMINAL="${pkgs.rio}/bin/rio";
-      # Current terminal
       export TERMINAL="${pkgs.ghostty}/bin/ghostty"
-      ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+      ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT
     '';
 
     extraConfig = ''
@@ -352,6 +357,24 @@ in
     }; # EOM config
 
   }; # EOM wayland WM sway
+
+  # Add systemd user service for browser Wayland compatibility
+  systemd.user.services.browser-wayland-env = {
+    Unit = {
+      Description = "Set browser Wayland environment variables";
+      PartOf = [ "sway-session.target" ];
+    };
+    
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.systemd}/bin/systemctl --user import-environment NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT WAYLAND_DISPLAY'";
+      RemainAfterExit = true;
+    };
+    
+    Install = {
+      WantedBy = [ "sway-session.target" ];
+    };
+  };
 
 } # EOF
 # vim: set ts=2 sw=2 et ai list nu
