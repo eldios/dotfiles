@@ -166,7 +166,8 @@ in
     systemd.enable = true;
     wrapperFeatures.gtk = true;
 
-    package = pkgs.swayfx;
+    #package = pkgs.sway-unwrapped;
+    package = pkgs.swayfx-unwrapped;
 
     checkConfig = false;
 
@@ -180,14 +181,14 @@ in
       export XDG_CURRENT_DESKTOP=sway
       export XDG_SESSION_DESKTOP=sway
       export GDK_BACKEND="wayland,x11"
-      
+
       # Chromium/Electron apps Wayland support
       export ELECTRON_OZONE_PLATFORM_HINT=wayland
       export CHROME_EXECUTABLE="${pkgs.chromium}/bin/chromium"
-      
+
       # Ensure Wayland display is set
       export WAYLAND_DISPLAY=wayland-1
-      
+
       # Set TERMINAL env var if other tools need it, sway's 'terminal' setting is primary for sway keybindings
       export TERMINAL="${pkgs.ghostty}/bin/ghostty"
       ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT
@@ -207,16 +208,27 @@ in
       # Existing flameshot rule (can be kept if flameshot is used alongside grimblast)
       for_window [app_id="flameshot"] floating enable, fullscreen disable, move absolute position 0 0, border pixel 0
 
-      # General settings from Hyprland / For a beautiful look
-      gaps inner 5
-      gaps outer 10
       default_border pixel 2
+      default_floating_border pixel 2
+      hide_edge_borders --i3 smart
+      smart_borders smart
+      smart_gaps smart
+      titlebar_border_thickness 0
+
+      corner_radius 4
+
+      shadows enable
+      shadows_on_csd enable
+      shadow_blur_radius 5
+
+      blur enable
+      blur passes 2
+      blur_radius 3
+
       focus_follows_mouse yes
 
-      # Font configuration should be handled by Stylix.
-      # Example: font pango:DejaVu Sans Mono 10 (if not fully covered by Stylix)
-
       # Window rules from Hyprland
+      for_window [app_id="^.waybar-wrapped$"] border none, gaps none
       for_window [title="^pavucontrol$"] floating enable
       for_window [app_id="^nm-connection-editor$"] floating enable
       for_window [app_id="^org.gnome.Calculator$"] floating enable
@@ -364,13 +376,13 @@ in
       Description = "Set browser Wayland environment variables";
       PartOf = [ "sway-session.target" ];
     };
-    
+
     Service = {
       Type = "oneshot";
       ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.systemd}/bin/systemctl --user import-environment NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT WAYLAND_DISPLAY'";
       RemainAfterExit = true;
     };
-    
+
     Install = {
       WantedBy = [ "sway-session.target" ];
     };
