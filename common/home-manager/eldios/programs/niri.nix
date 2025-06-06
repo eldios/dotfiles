@@ -31,6 +31,7 @@ in
 
     # Add XWayland for X11 app compatibility
     xwayland
+    xwayland-satellite
 
     # Wayland essentials (from your Sway config)
     adwaita-icon-theme
@@ -359,7 +360,8 @@ in
 
       // This line starts waybar, a commonly used bar for Wayland compositors.
       spawn-at-startup "${pkgs.dbus}/bin/dbus-update-activation-environment" "--systemd" "SSH_AUTH_SOCK" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "DISPLAY"
-      spawn-at-startup "~/.config/niri/session-setup.sh"
+      spawn-at-startup "${pkgs.polkit_gnome}libexec/polkit-gnome-authentication-agent-1"
+      spawn-at-startup "${pkgs.xwayland-satellite}/bin/xwayland-satellite"
       spawn-at-startup "${pkgs.waybar}/bin/waybar"
       spawn-at-startup "${pkgs.mako}/bin/mako"
       spawn-at-startup "${pkgs.variety}/bin/variety"
@@ -376,25 +378,25 @@ in
           XDG_SESSION_DESKTOP "niri"
           XDG_SESSION_TYPE "wayland"
           GDK_BACKEND "wayland,x11"
-          
+
           // Chromium/Electron apps Wayland support
           ELECTRON_OZONE_PLATFORM_HINT "auto"
-          
+
           // XWayland compatibility
           DISPLAY ":0"
-          
+
           // Ensure both displays are available
           WAYLAND_DISPLAY "wayland-1"
-          
+
           // Java applications
           _JAVA_AWT_WM_NONREPARENTING "1"
-          
+
           // SDL applications
           SDL_VIDEODRIVER "wayland,x11"
-          
+
           // Clutter applications
           CLUTTER_BACKEND "wayland"
-          
+
           // EGL applications
           EGL_PLATFORM "wayland"
       }
@@ -687,7 +689,7 @@ in
       PartOf = [ "graphical-session.target" ];
       After = [ "graphical-session-pre.target" ];
     };
-    
+
     Service = {
       Type = "oneshot";
       ExecStart = pkgs.writeShellScript "niri-env-setup" ''
@@ -708,7 +710,7 @@ in
           _JAVA_AWT_WM_NONREPARENTING \
           CLUTTER_BACKEND \
           EGL_PLATFORM
-        
+
         # Update DBus environment
         ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd \
           SSH_AUTH_SOCK \
@@ -721,7 +723,7 @@ in
       '';
       RemainAfterExit = true;
     };
-    
+
     Install = {
       WantedBy = [ "graphical-session.target" ];
     };
