@@ -308,6 +308,24 @@ in
             fi
           done
           echo ")"
+          
+        elif command -v niri >/dev/null 2>&1 && pgrep -x "niri" >/dev/null; then
+          # Niri workspaces
+          workspaces=$(niri msg workspaces 2>/dev/null || echo "[]")
+          active=$(echo "$workspaces" | jq -r '.[] | select(.is_focused==true) | .idx' 2>/dev/null || echo "1")
+          
+          echo "(box :class \"workspaces\" :orientation \"h\" :spacing 5"
+          for i in {1..9}; do
+            occupied=$(echo "$workspaces" | jq ".[] | select(.idx==$i) | .idx" 2>/dev/null | wc -l)
+            if [ "$i" -eq "$active" ]; then
+              echo "  (button :class \"active\" :onclick \"niri msg action focus-workspace $i\" \"$i\")"
+            elif [ "$occupied" -eq 1 ]; then
+              echo "  (button :class \"occupied\" :onclick \"niri msg action focus-workspace $i\" \"$i\")"
+            else
+              echo "  (button :onclick \"niri msg action focus-workspace $i\" \"$i\")"
+            fi
+          done
+          echo ")"
         else
           # Fallback - static workspaces
           echo "(box :class \"workspaces\" :orientation \"h\" :spacing 5"
