@@ -693,6 +693,7 @@ in
       ExecStart = pkgs.writeShellScript "niri-env-setup" ''
         # Import all necessary environment variables for both Wayland and XWayland apps
         ${pkgs.systemd}/bin/systemctl --user import-environment \
+          SSH_AUTH_SOCK \
           WAYLAND_DISPLAY \
           DISPLAY \
           XDG_CURRENT_DESKTOP \
@@ -710,6 +711,7 @@ in
         
         # Update DBus environment
         ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd \
+          SSH_AUTH_SOCK \
           WAYLAND_DISPLAY \
           DISPLAY \
           XDG_CURRENT_DESKTOP \
