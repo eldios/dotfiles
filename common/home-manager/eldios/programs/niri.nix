@@ -358,7 +358,7 @@ in
       // See the binds section below for more spawn examples.
 
       // This line starts waybar, a commonly used bar for Wayland compositors.
-      spawn-at-startup "${pkgs.dbus}/bin/dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "DISPLAY"
+      spawn-at-startup "${pkgs.dbus}/bin/dbus-update-activation-environment" "--systemd" "SSH_AUTH_SOCK" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "DISPLAY"
       spawn-at-startup "~/.config/niri/session-setup.sh"
       spawn-at-startup "${pkgs.waybar}/bin/waybar"
       spawn-at-startup "${pkgs.mako}/bin/mako"
@@ -727,32 +727,28 @@ in
     };
   };
 
-  # Add session script to ensure XWayland is available
-  home.file.".config/niri/session-setup.sh" = {
-    executable = true;
-    text = ''
-      #!/bin/sh
-      # Ensure XWayland is running and DISPLAY is set
-      
-      # Wait for Wayland display to be available
-      while [ ! -S "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" ]; do
-        sleep 0.1
-      done
-      
-      # Start XWayland if not already running
-      if [ -z "$DISPLAY" ] || ! ${pkgs.xorg.xset}/bin/xset q >/dev/null 2>&1; then
-        export DISPLAY=:0
-        ${pkgs.xwayland}/bin/Xwayland "$DISPLAY" -rootless -terminate -core -nolisten tcp &
-        
-        # Wait for X server to be ready
-        while ! ${pkgs.xorg.xset}/bin/xset q >/dev/null 2>&1; do
-          sleep 0.1
-        done
-      fi
-      
-      # Update systemd environment with DISPLAY
-      ${pkgs.systemd}/bin/systemctl --user import-environment DISPLAY
-      ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd DISPLAY
-    '';
+  # This systemd service ensures that Niri is started with the correct
+  # environment, including the SSH agent and XWayland.
+  systemd.user.services.niri-session = {
+    Unit = {
+      Description = "Niri Wayland Compositor";
+      BindsTo = [ "graphical-session.target" ];
+      After = [ "graphical-session-pre.target" ];
+    };
+
+    Service = {
+      Type = "simple";
+      ExecStart = ''
+        ${pkgs.systemd}/bin/systemctl --user import-environment
+        /usr/bin/sh -c "${pkgs.xwayland}/bin/Xwayland -nolisten tcp & sleep 1 && exec ${pkgs.niri}/bin/niri"
+      '';
+      Restart = "on-failure";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
+    };
+
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
   };
 }
