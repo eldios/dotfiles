@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, nixpkgs-unstable, peerix, portmaster, ... }:
+{ config, lib, pkgs, nixpkgs-unstable, peerix, portmaster, ... }:
 let
   unstablePkgs = import nixpkgs-unstable {
     system = "x86_64-linux";
@@ -32,7 +32,7 @@ in
       enable = true;
     };
 
-    # don’t shutdown when power button is short-pressed
+    # don't shutdown when power button is short-pressed
     logind.extraConfig = ''
       HandlePowerKey=ignore
     '';
