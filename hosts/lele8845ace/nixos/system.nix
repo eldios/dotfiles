@@ -223,13 +223,15 @@ in
       common.default = [ "gtk" ];
       hyprland.default = [ "gtk" "hyprland" ];
       sway.default = [ "gtk" "wlr" "luminous" ];
+      niri.default = [ "gtk" "gnome" ];
     };
     extraPortals = [
+      pkgs.xdg-desktop-portal
+      pkgs.xdg-desktop-portal-gnome
       pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-hyprland
-      pkgs.xdg-desktop-portal
-      pkgs.xdg-desktop-portal-wlr
       pkgs.xdg-desktop-portal-luminous
+      pkgs.xdg-desktop-portal-wlr
     ];
   };
 
