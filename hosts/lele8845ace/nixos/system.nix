@@ -222,10 +222,14 @@ in
     config = {
       common.default = [ "gtk" ];
       hyprland.default = [ "gtk" "hyprland" ];
+      sway.default = [ "gtk" "wlr" "luminous" ];
     };
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-hyprland
+      pkgs.xdg-desktop-portal
+      pkgs.xdg-desktop-portal-wlr
+      pkgs.xdg-desktop-portal-luminous
     ];
   };
 
