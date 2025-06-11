@@ -6,6 +6,8 @@
     ../../../common/home-manager/eldios/programs/mako.nix
     ../../../common/home-manager/eldios/programs/sway.nix
     ../../../common/home-manager/eldios/programs/waybar.nix
+
+    ../../../common/home-manager/eldios/programs/wayfire.nix
   ];
 
   dconf.settings = {
