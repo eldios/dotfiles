@@ -12,6 +12,7 @@
       imagemagick
       wmctrl
       yewtube
+      yt-dlp
 
       # Fonts
       anonymousPro
