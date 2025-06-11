@@ -11,7 +11,7 @@
       flameshot
       imagemagick
       wmctrl
-      yt-dlp
+      yewtube
 
       # Fonts
       anonymousPro
