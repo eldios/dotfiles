@@ -191,12 +191,24 @@ in
 
   xdg.portal = {
     enable = true;
+    xdgOpenUsePortal = true;
     wlr.enable = true;
-    config.common.default = "*";
+    config = {
+      common.default = [ "gtk" ];
+      hyprland.default = [ "gtk" "hyprland" ];
+      # needs to run the two following commands at restart
+      # dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+      # systemctl --user restart pipewire wireplumber xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk
+      sway.default = [ "gtk" "wlr" "luminous" ];
+      niri.default = [ "gtk" "gnome" ];
+    };
     extraPortals = [
+      pkgs.xdg-desktop-portal
+      pkgs.xdg-desktop-portal-gnome
       pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-hyprland
+      pkgs.xdg-desktop-portal-luminous
       pkgs.xdg-desktop-portal-wlr
-      #pkgs.xdg-desktop-portal-hyprland
     ];
   };
 
