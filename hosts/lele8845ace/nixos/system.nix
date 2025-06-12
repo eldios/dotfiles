@@ -222,6 +222,9 @@ in
     config = {
       common.default = [ "gtk" ];
       hyprland.default = [ "gtk" "hyprland" ];
+      # needs to run the two following commands at restart
+      # dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+      # systemctl --user restart pipewire wireplumber xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk
       sway.default = [ "gtk" "wlr" "luminous" ];
       niri.default = [ "gtk" "gnome" ];
     };
