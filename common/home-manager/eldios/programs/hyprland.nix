@@ -26,9 +26,9 @@ let
   # Command to launch Mailspring email client
   mail = "mailspring --password-store=\"gnome-libsecret\"";
   # Flameshot command for selecting an area to screenshot and copy to clipboard
-  screenshot_select = "${pkgs.flameshot}/bin/flameshot gui -c";
+  screenshot_select = "flameshot gui -c";
   # Flameshot command for taking a full-screen screenshot (GUI mode)
-  screenshot_full = "${pkgs.flameshot}/bin/flameshot gui";
+  screenshot_full = "flameshot gui";
 
   # Swayidle script for managing idle states: locks screen, then turns off display, then sleeps.
   swayidle = pkgs.writeShellScriptBin "swayidle-script" ''

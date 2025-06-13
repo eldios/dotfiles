@@ -16,8 +16,8 @@ let
 
   terminal = "${pkgs.kitty}/bin/kitty";
 
-  screenshot_select = "${pkgs.flameshot}/bin/flameshot gui -c";
-  screenshot_full = "${pkgs.flameshot}/bin/flameshot gui";
+  screenshot_select = "flameshot gui -c";
+  screenshot_full = "flameshot gui";
 in
 {
   home = {
@@ -42,16 +42,6 @@ in
       "100:class_g *?= 'Rofi'"
       "100:class_g *?= 'i3lock'"
     ];
-  };
-
-  services.flameshot = {
-    enable = true;
-    settings = {
-      General = {
-        uiColor = "#FFFFFF";
-        showHelp = false;
-      };
-    };
   };
 
   xsession.windowManager.i3 = {

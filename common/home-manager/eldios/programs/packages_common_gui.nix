@@ -8,7 +8,7 @@
       alacritty-theme # alacritty themes
       cointop
       ffmpeg
-      flameshot
+      (flameshot.override { enableWlrSupport = true; })
       imagemagick
       wmctrl
       yewtube
