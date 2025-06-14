@@ -10,6 +10,7 @@
       ffmpeg
       (flameshot.override { enableWlrSupport = true; })
       imagemagick
+      papirus-icon-theme # Icon theme for rofi
       wmctrl
       yewtube
       yt-dlp

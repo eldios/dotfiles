@@ -2,9 +2,11 @@
 let
   modifier = "Mod4";
 
-  # basic_menu = "${pkgs.dmenu}/bin/dmenu_run";
-  quick_menu = "${pkgs.rofi}/bin/rofi -show run -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail";
-  full_menu = "${pkgs.rofi}/bin/rofi -show drun -show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail";
+  # Use the unified rofi scripts from rofi.nix
+  quick_menu = "rofi-run";
+  full_menu = "rofi-drun";
+  file_menu = "rofi-filebrowser";
+  window_menu = "rofi-window";
 
   lockscreen = "${pkgs.i3lock}/bin/i3lock -c 000000";
 
@@ -127,6 +129,8 @@ in
 
         "${modifier}+d" = "exec ${full_menu}";
         "${modifier}+Shift+d" = "exec ${quick_menu}";
+        "${modifier}+Shift+e" = "exec ${file_menu}"; # Added file menu
+        "${modifier}+Shift+w" = "exec ${window_menu}"; # Added window menu
 
         "${modifier}+Return" = "exec ${terminal}";
 

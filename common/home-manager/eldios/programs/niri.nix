@@ -4,11 +4,12 @@ let
   # Application definitions (matching your Sway/Hyprland configs)
   terminal = "${pkgs.ghostty}/bin/ghostty";
 
-  rofi_opts = "-show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
+  # Use the unified rofi scripts from rofi.nix
   fuzzel_menu = "${pkgs.fuzzel}/bin/fuzzel";
-  quick_menu = "${pkgs.rofi-wayland-unwrapped}/bin/rofi -show run ${rofi_opts}";
-  full_menu = "${pkgs.rofi-wayland-unwrapped}/bin/rofi -show drun ${rofi_opts}";
-  file_menu = "${pkgs.rofi-wayland-unwrapped}/bin/rofi -show filebrowser ${rofi_opts}";
+  quick_menu = "rofi-run";
+  full_menu = "rofi-drun";
+  file_menu = "rofi-filebrowser";
+  window_menu = "rofi-window";
 
   lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5";
   powermenu = "${pkgs.wlogout}/bin/wlogout";
@@ -481,6 +482,7 @@ in
           Mod+D       hotkey-overlay-title="Open Rofi menu" { spawn "${full_menu}"; }
           Mod+Shift+D hotkey-overlay-title="Open Rofi menu" { spawn "${quick_menu}"; }
           Mod+Shift+E hotkey-overlay-title="Open Rofi menu" { spawn "${file_menu}"; }
+          Mod+Shift+W hotkey-overlay-title="Open Window menu" { spawn "${window_menu}"; }
           Mod+Ctrl+D  hotkey-overlay-title="Open Fuzzel menu" { spawn "${fuzzel_menu}"; }
 
           Mod+Ctrl+Q        hotkey-overlay-title="Lock screen" { spawn "${lockscreen}"; }
