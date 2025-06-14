@@ -3,13 +3,15 @@ let
   # Preferred terminal emulator
   terminal = "${pkgs.ghostty}/bin/ghostty";
 
-  rofi_opts = "-show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
+  # Use the unified rofi scripts from rofi.nix
   # Rofi menu for running commands
-  quick_menu = "${pkgs.rofi}/bin/rofi -show run ${rofi_opts}";
+  quick_menu = "rofi-run";
   # Rofi menu for launching applications (drun)
-  full_menu = "${pkgs.rofi}/bin/rofi -show drun ${rofi_opts}";
+  full_menu = "rofi-drun";
   # Rofi menu for browsing files
-  file_menu = "${pkgs.rofi}/bin/rofi -show filebrowser ${rofi_opts}";
+  file_menu = "rofi-filebrowser";
+  # Rofi menu for window selection
+  window_menu = "rofi-window";
 
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
@@ -299,6 +301,9 @@ in
 
         binding_file_browser = "super_shift_e";
         command_file_browser = file_menu;
+
+        binding_window_menu = "super_shift_w";
+        command_window_menu = window_menu;
 
         # Mail client
         binding_mail = "super_shift_m";

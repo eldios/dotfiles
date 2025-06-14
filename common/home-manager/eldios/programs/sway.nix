@@ -1,10 +1,11 @@
 { pkgs, ... }:
 
 let
-  rofi_common_opts = "-show-icons -fixed-num-lines -sorting-method fzf -drun-show-actions -sidebar-mode -steal-focus -window-thumbnail -auto-select";
-  quick_menu = "${pkgs.rofi}/bin/rofi -show run ${rofi_common_opts}";
-  full_menu = "${pkgs.rofi}/bin/rofi -show drun ${rofi_common_opts}";
-  file_menu = "${pkgs.rofi}/bin/rofi -show filebrowser ${rofi_common_opts}";
+  # Use the unified rofi scripts from rofi.nix
+  quick_menu = "rofi-run";
+  full_menu = "rofi-drun";
+  file_menu = "rofi-filebrowser";
+  window_menu = "rofi-window";
 
   lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5"; # Enhanced lockscreen command
 
@@ -275,6 +276,7 @@ in
         "${modifier}+d" = "exec ${full_menu}";
         "${modifier}+Shift+d" = "exec ${quick_menu}";
         "${modifier}+Shift+e" = "exec ${file_menu}"; # Added file menu
+        "${modifier}+Shift+w" = "exec ${window_menu}"; # Added window menu
 
         "${modifier}+Shift+c" = "kill";
         "${modifier}+Ctrl+f" = "focus mode_toggle";

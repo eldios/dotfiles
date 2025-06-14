@@ -21,6 +21,7 @@
     ../../../common/home-manager/eldios/programs/kitty.nix
     ../../../common/home-manager/eldios/programs/niri.nix
     ../../../common/home-manager/eldios/programs/rio.nix
+    ../../../common/home-manager/eldios/programs/rofi.nix
     ../../../common/home-manager/eldios/programs/tmux.nix
     ../../../common/home-manager/eldios/programs/wezterm.nix
 
