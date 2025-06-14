@@ -32,25 +32,29 @@ in
       window-format = "{w} · {c} · {t}";
     };
 
+    # Let Stylix handle the theme completely
+    # Since stylix.targets.rofi.enable = true is set in stylix.nix,
+    # Stylix will automatically generate and apply the theme
+
+    # We only need to specify the structural elements
+    # and let Stylix handle all the colors
     theme =
       let
-        inherit (config.lib.stylix) colors;
         inherit (config.lib.formats.rasi) mkLiteral;
       in
       {
-        "*" = {
-          # Window properties
-          width = 800;
-          height = 500;
-          border = 2;
-          border-radius = 8;
-          padding = 10;
-        };
-
+        # Window properties
         "window" = {
           transparency = "real";
           border = mkLiteral "2px";
           border-radius = mkLiteral "8px";
+          width = 800;
+          height = 500;
+        };
+
+        "mainbox" = {
+          padding = mkLiteral "12px";
+          spacing = mkLiteral "0px";
         };
 
         "inputbar" = {
@@ -61,13 +65,13 @@ in
         };
 
         "prompt" = {
-          padding = mkLiteral "0px 4px 0px 4px";
+          padding = mkLiteral "8px";
           font = mkLiteral "\"JetBrainsMono Nerd Font 12\"";
         };
 
         "entry" = {
           placeholder = "Search...";
-          padding = mkLiteral "0px 8px";
+          padding = mkLiteral "8px";
         };
 
         "listview" = {
@@ -77,17 +81,17 @@ in
           scrollbar = true;
           border = mkLiteral "0px";
           border-radius = mkLiteral "8px";
-          padding = mkLiteral "4px 0px 0px";
+          padding = mkLiteral "8px 4px";
         };
 
         "element" = {
-          padding = mkLiteral "8px";
+          padding = mkLiteral "8px 12px";
           spacing = mkLiteral "8px";
           border-radius = mkLiteral "4px";
         };
 
         "element-icon" = {
-          size = mkLiteral "1.0em";
+          size = mkLiteral "1.2em";
           vertical-align = mkLiteral "0.5";
         };
 
@@ -124,5 +128,7 @@ in
     (writeShellScriptBin "rofi-filebrowser" ''
       ${pkgs.rofi-wayland}/bin/rofi -show filebrowser ${common_opts} "$@"
     '')
+    # Additional dependency for better Rofi appearance
+    papirus-icon-theme
   ];
 }

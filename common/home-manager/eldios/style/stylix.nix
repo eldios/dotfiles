@@ -18,7 +18,7 @@ in
 
     image = "${ themesBaseDir }/wp.jpg";
     polarity = "dark";
-    
+
     # Add base16 scheme if theme file doesn't exist
     base16Scheme = lib.mkDefault "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 
@@ -33,7 +33,7 @@ in
       sway.enable = true;
       waybar.enable = true;
       wezterm.enable = true;
-      
+
       firefox = {
         enable = true;
         profileNames = [ "eldios" ];

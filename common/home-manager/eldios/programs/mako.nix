@@ -11,7 +11,7 @@ in
     # Main settings
     settings = {
       # Appearance
-      font = lib.mkDefault "${config.stylix.fonts.sansSerif.name} 11";
+      font = lib.mkForce "${config.stylix.fonts.sansSerif.name} 11";
       width = 400;
       height = 150;
       margin = "10,20";
@@ -22,15 +22,15 @@ in
       max-icon-size = 48;
 
       # Colors with Stylix integration
-      background-color = lib.mkDefault "#${colors.base00}DD"; # Base background with transparency
-      text-color = lib.mkDefault "#${colors.base05}FF"; # Base text color
-      border-color = lib.mkDefault "#${colors.base0D}FF"; # Accent color for border
-      progress-color = lib.mkDefault "over #${colors.base0B}FF"; # Progress bar color
+      background-color = lib.mkForce "#${colors.base00}DD"; # Base background with transparency
+      text-color = lib.mkForce "#${colors.base05}FF"; # Base text color
+      border-color = lib.mkForce "#${colors.base0D}FF"; # Accent color for border
+      progress-color = lib.mkForce "over #${colors.base0B}FF"; # Progress bar color
 
       # Position and behavior
       layer = "overlay"; # Show on top of fullscreen windows
       anchor = "top-right"; # Position in the top-right corner
-      default-timeout = 7000; # Default timeout in milliseconds
+      default-timeout = 7000; # Force timeout in milliseconds
       ignore-timeout = false; # Respect notification's requested timeout
       max-visible = 5; # Maximum number of visible notifications
       sort = "-time"; # Sort by time, newest first
@@ -50,24 +50,24 @@ in
 
       # Critical notifications - red border, longer timeout
       "urgency=critical" = {
-        border-color = lib.mkDefault "#${colors.base08}FF";
-        default-timeout = lib.mkDefault 10000;
+        border-color = lib.mkForce "#${colors.base08}FF";
+        default-timeout = lib.mkForce 10000;
       };
 
       # Low urgency - more subtle
       "urgency=low" = {
-        border-color = lib.mkDefault "#${colors.base03}FF";
-        default-timeout = lib.mkDefault 5000;
+        border-color = lib.mkForce "#${colors.base03}FF";
+        default-timeout = lib.mkForce 5000;
       };
 
       # Notifications with images - more space
       "actionable" = {
-        border-color = lib.mkDefault "#${colors.base0E}FF";
+        border-color = lib.mkForce "#${colors.base0E}FF";
       };
 
       # Media player notifications
       "category=mpris" = {
-        default-timeout = lib.mkDefault 3000;
+        default-timeout = lib.mkForce 3000;
       };
     };
   };
