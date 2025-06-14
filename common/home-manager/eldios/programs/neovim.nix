@@ -242,25 +242,45 @@ in
               api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
               endpoint = "https://litellm.lele.rip/v1",
               model = "openrouter/anthropic/claude-3-7-sonnet",
-              timeout = 30000,
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
             },
             claude = {
               api_key_name = "cmd:cat ${config.sops.secrets."tokens/anthropic/key".path}",
               endpoint = "https://api.anthropic.com",
               model = "claude-3-7-sonnet-latest",
-              timeout = 30000,
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
             },
             openai = {
               api_key_name = "cmd:cat ${config.sops.secrets."tokens/openai/key".path}",
               endpoint = "https://api.openai.com/v1",
               model = "o3-mini",
-              timeout = 30000,
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
             },
             gemini = {
               api_key_name = "cmd:cat ${config.sops.secrets."tokens/gemini/key".path}",
               endpoint = "https://generativelanguage.googleapis.com/v1beta/models",
               model = "gemini-2.5-pro",
-              timeout = 30000, -- Timeout in milliseconds
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
             },
           },
           ---Specify the special dual_boost mode
