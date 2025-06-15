@@ -13,8 +13,6 @@ let
   swaymsg_dpms_off = ''${pkgs.swayfx}/bin/swaymsg "output * dpms off"'';
   swaymsg_dpms_on = ''${pkgs.swayfx}/bin/swaymsg "output * dpms on"'';
 
-  idle_and_lockscreen = "${pkgs.swayidle}/bin/swayidle -w timeout 300 '${lockscreen}' timeout 600 '${swaymsg_dpms_off}' resume '${swaymsg_dpms_on}' before-sleep '${lockscreen}'";
-
   daynightscreen = "${pkgs.wlsunset}/bin/wlsunset -l 43.841667 -L 10.502778";
 
   powermenu = "${pkgs.wlogout}/bin/wlogout";
@@ -129,7 +127,6 @@ in
       shotman
       slurp # screenshot functionality
       swaybg
-      swayidle
       swaylock-effects
       swaynotificationcenter
       swayr
@@ -251,7 +248,6 @@ in
       startup = [
         { command = "${daynightscreen}"; }
         { command = "${pkgs.variety}/bin/variety"; }
-        #{ command = "${idle_and_lockscreen}"; }
         #{ command = "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar"; } # Start eww widgets
       ];
 
@@ -285,7 +281,6 @@ in
         "${modifier}+Ctrl+q" = "exec ${lockscreen}";
 
         "${modifier}+Shift+Ctrl+q" = "exec ${powermenu}";
-        "${modifier}+Shift+Ctrl+l" = "exec ${idle_and_lockscreen}";
 
         # Eww bar toggle
         "${modifier}+Shift+Ctrl+b" = "exec ~/.config/eww/scripts/toggle-bar-mode.sh";
