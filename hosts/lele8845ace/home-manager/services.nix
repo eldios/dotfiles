@@ -10,6 +10,9 @@
         matches = [
           {
             node.name= "alsa_output.usb-Schiit_Audio_Schiit_Unison_Modius_ES-00.iec958-stereo"
+          },
+          {
+            node.name= "alsa_output.usb-Schiit_Audio_Schiit_Bifrost_2_Unison_USB-00.iec958-stereo"
           }
         ]
         actions = {
