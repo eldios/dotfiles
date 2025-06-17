@@ -31,15 +31,6 @@ let
   screenshot_select = "flameshot gui -c";
   # Flameshot command for taking a full-screen screenshot (GUI mode)
   screenshot_full = "flameshot gui";
-
-  # Swayidle script for managing idle states: locks screen, then turns off display, then sleeps.
-  swayidle = pkgs.writeShellScriptBin "swayidle-script" ''
-    ${pkgs.swayidle}/bin/swayidle -w \
-    timeout 300 '${lockscreen}' \ # Using the variable which has the full path
-    timeout 360 '${pkgs.hyprland}/bin/hyprctl dispatch dpms off eDP-1 && ${pkgs.hyprland}/bin/hyprctl dispatch dpms off DP-1' \ # Turn off displays after 360 seconds
-    resume '${pkgs.hyprland}/bin/hyprctl dispatch dpms on' \ # Resume displays on activity
-    before-sleep '${lockscreen}' # Lock screen before system sleep
-  '';
 in
 {
   home = {
@@ -80,7 +71,6 @@ in
       shotman
       slurp
       swaybg
-      swayidle
       swaylock-effects
       swayr
       swayrbar
@@ -121,7 +111,6 @@ in
         "${pkgs.waybar}/bin/waybar" # Starts the Waybar status bar
         "${pkgs.mako}/bin/mako" # Starts the Mako notification daemon
         "${pkgs.variety}/bin/variety" # Starts Variety for wallpaper management
-        # "${swayidle}/bin/swayidle-script" # Starts the swayidle daemon defined above
         # "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar" # Start Eww daemon and open the bar
       ];
 
