@@ -237,12 +237,16 @@ in
         "$mod SHIFT, Space, togglefloating"
 
         # Dwindle layout controls
-        "$mod, P, pseudo" # Toggle pseudo-tiling (fixed size windows)
-        "$mod, J, togglesplit" # Toggle split direction
-        "$mod, G, layoutmsg, togglesplit" # Toggle between dwindle/master
-        "$mod, S, swapnext" # Swap with window in direction
-        "$mod, O, cyclenext" # Cycle window focus
-        "$mod CTRL, Return, layoutmsg, swapwithmaster" # Swap focused window with biggest
+        "$mod, p, pseudo" # Toggle pseudo-tiling (fixed size windows)
+        "$mod SHIFT, t, pin" # Toggle pseudo-tiling (fixed size windows)
+
+        "$mod, i, cyclenext, prev" # Cycle window focus
+        "$mod, o, cyclenext" # Cycle window focus
+        "$mod SHIFT, i, swapnext, prev" # Swap with window in direction
+        "$mod SHIFT, o, swapnext" # Swap with window in direction
+
+        "$mod, x, togglesplit" # Toggle split direction
+        "$mod SHIFT, x, layoutmsg, togglesplit" # Toggle between dwindle/master
 
         # Applications
         "$mod, D, exec, ${full_menu}"
