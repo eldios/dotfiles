@@ -166,18 +166,37 @@ in
         active_opacity = 0.95; # Opacity for active windows
         inactive_opacity = 0.85; # Opacity for inactive windows
       };
-
       animations = {
         # Animation settings for window transitions, workspaces, etc.
         enabled = true;
-        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05"; # Custom bezier curve for animations
+
+        # Custom bezier curve for fade animations
+        bezier = [
+          "fadeBezier, 0.1, 0.9, 0.1, 1" # Elegant fade effect
+        ];
+
+        # Detailed animation configurations, all set to use fade
         animation = [
-          # Define various animations
-          "windows, 1, 7, myBezier" # Window open/close animation
-          "windowsOut, 1, 7, default, popin 80%" # Window close animation (pop out)
-          "border, 1, 10, default" # Border animation
-          "fade, 1, 7, default" # Fade animation for layers
-          "workspaces, 1, 6, default" # Workspace switch animation
+          # Windows - fade only
+          "windows, 1, 6, fadeBezier"
+          "windowsOut, 1, 6, fadeBezier"
+          "windowsMove, 1, 5, fadeBezier"
+
+          # Fading effects
+          "fade, 1, 8, fadeBezier"
+          "fadeOut, 1, 5, fadeBezier"
+          "fadeIn, 1, 5, fadeBezier"
+          "fadeDim, 1, 4, fadeBezier"
+
+          # Borders
+          "border, 1, 10, fadeBezier"
+
+          # Workspace transitions - fade only
+          "workspaces, 1, 7, fadeBezier"
+          "specialWorkspace, 1, 6, fadeBezier"
+
+          # Layers
+          "layers, 1, 8, fadeBezier"
         ];
       };
 
