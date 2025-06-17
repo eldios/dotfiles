@@ -61,7 +61,6 @@ in
       shotman
       slurp
       swaybg
-      swayidle
       swaylock-effects
       swayr
       swayrbar
@@ -153,9 +152,6 @@ in
 
         # Start wallpaper manager
         variety = "${pkgs.variety}/bin/variety";
-
-        # Idle management (commented out by default)
-        # idle = "${swayidle-script}/bin/swayidle-script";
 
         # Environment variables
         env_NIXOS_OZONE_WL = 1;
