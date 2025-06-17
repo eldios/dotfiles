@@ -316,6 +316,10 @@ in
         "$mod ALT, l, resizeactive, 20 0"
         "$mod ALT, k, resizeactive, 0 -20"
         "$mod ALT, j, resizeactive, 0 20"
+        "$mod SHIFT ALT, h, resizeactive, -100 0"
+        "$mod SHIFT ALT, l, resizeactive, 100 0"
+        "$mod SHIFT ALT, k, resizeactive, 0 -100"
+        "$mod SHIFT ALT, j, resizeactive, 0 100"
       ];
 
       windowrule = [
