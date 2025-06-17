@@ -13,6 +13,8 @@
     ../../../common/home-manager/eldios/programs/zsh.nix
     ../../../common/home-manager/eldios/programs/nushell.nix
 
+    ../../../common/home-manager/eldios/programs/atuin.nix
+
     ../../../common/home-manager/eldios/programs/ssh.nix
     ../../../common/home-manager/eldios/programs/ssh-agents.nix
 
