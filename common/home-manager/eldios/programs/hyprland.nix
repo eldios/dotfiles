@@ -131,7 +131,7 @@ in
       monitor = [ ];
 
       general = {
-        layout = "master"; # Default window layout (master-stack)
+        layout = "dwindle"; # Use dwindle layout (binary tree) instead of master-stack
         resize_on_border = true; # Allows resizing windows by dragging borders
         gaps_in = 5;
         gaps_out = 10;
@@ -139,14 +139,14 @@ in
         no_focus_fallback = true; # Prevents focus from falling back to desktop if no window is focusable
       };
 
-      master = {
-        # Settings for the master layout
-        new_on_top = true; # New windows appear on top of the master stack
-        mfact = 0.5; # Master area factor (percentage of screen width/height)
-        orientation = "left"; # Master area position
-        special_scale_factor = 0.8; # Scale factor for windows in special workspaces (e.g., scratchpad)
-        allow_small_split = true; # Allows splitting even if the resulting window would be very small
-        smart_resizing = true; # Enables smarter window resizing logic
+      # Settings for the dwindle layout
+      dwindle = {
+        pseudotile = false; # Enable pseudotiling on dwindle
+        preserve_split = true; # Preserves split direction when opening new windows
+        #no_gaps_when_only = false; # Keep gaps when there's only one window
+        force_split = 0; # 0 = split follows mouse, 1 = always split to the left/top, 2 = always to the right/bottom
+        use_active_for_splits = true; # Use the active window as the split target
+        default_split_ratio = 1.0; # Default split ratio (0.1 - 1.9)
       };
 
       decoration = {
@@ -215,17 +215,15 @@ in
         "$mod SHIFT, C, killactive"
 
         "$mod, F, fullscreen"
-        #"$mod, Q, togglespecialworkspace"
-        #"$mod SHIFT, Q, movetoworkspace, special"
         "$mod SHIFT, Space, togglefloating"
 
-        # Master layout controls
-        #"$mod, Return, layoutmsg, swapwithmaster"
-        #"$mod, I, layoutmsg, addmaster"
-        #"$mod, D, layoutmsg, removemaster"
-        #"$mod, O, layoutmsg, orientationcycle left top right bottom"
-        #"$mod SHIFT, O, layoutmsg, orientationcycle bottom left top right"
-        #"$mod, P, pseudo"
+        # Dwindle layout controls
+        "$mod, P, pseudo" # Toggle pseudo-tiling (fixed size windows)
+        "$mod, J, togglesplit" # Toggle split direction
+        "$mod, G, layoutmsg, togglesplit" # Toggle between dwindle/master
+        "$mod, S, swapnext" # Swap with window in direction
+        "$mod, O, cyclenext" # Cycle window focus
+        "$mod CTRL, Return, layoutmsg, swapwithmaster" # Swap focused window with biggest
 
         # Applications
         "$mod, D, exec, ${full_menu}"
@@ -288,15 +286,22 @@ in
         "$mod SHIFT, 0, movetoworkspacesilent, 10"
 
         # Scratchpad
-        "$mod SHIFT, minus, movetoworkspace, special:scratchpad"
         "$mod, minus, togglespecialworkspace, scratchpad"
+        "$mod SHIFT, minus, movetoworkspace, special:scratchpad"
 
         # Reload
         "$mod SHIFT, R, forcerendererreload"
         "$mod SHIFT CTRL, R, exec, ${pkgs.hyprland}/bin/hyprctl reload"
       ];
 
+      bindm = [
+        "$mod, mouse:272, movewindow"
+        "$mod, mouse:273, resizewindow"
+      ];
+
+      # Add resize bindings with keyboard
       binde = [
+        # Volume and media controls
         ", XF86AudioRaiseVolume, exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
         ", XF86AudioLowerVolume, exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
         ", XF86AudioMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
@@ -305,11 +310,12 @@ in
         ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
         ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
         ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
-      ];
 
-      bindm = [
-        "$mod, mouse:272, movewindow"
-        "$mod, mouse:273, resizewindow"
+        # Window resize bindings (for dwindle layout)
+        "$mod ALT, h, resizeactive, -20 0"
+        "$mod ALT, l, resizeactive, 20 0"
+        "$mod ALT, k, resizeactive, 0 -20"
+        "$mod ALT, j, resizeactive, 0 20"
       ];
 
       windowrule = [
