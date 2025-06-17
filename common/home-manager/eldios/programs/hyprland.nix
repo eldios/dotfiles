@@ -248,6 +248,10 @@ in
         "$mod SHIFT, A, exec, ${screenshot_full}"
 
         # Focus
+        "$mod, Tab, focusmonitor, +1"
+        "$mod SHIFT, Tab, focusmonitor, -1"
+
+        # Focus
         "$mod, h, movefocus, l"
         "$mod, j, movefocus, d"
         "$mod, k, movefocus, u"
