@@ -19,9 +19,6 @@ let
   screenshot_select = "${pkgs.grimblast}/bin/grimblast --notify copy area";
   screenshot_full = "${pkgs.grimblast}/bin/grimblast --notify copy screen";
 
-  # Idle management
-  idle_and_lockscreen = "${pkgs.swayidle}/bin/swayidle -w timeout 300 '${lockscreen}' timeout 600 'niri msg action power-off-monitors' resume 'niri msg action power-on-monitors' before-sleep '${lockscreen}'";
-
   # Day/night screen adjustment
   daynightscreen = "${pkgs.wlsunset}/bin/wlsunset -l 43.841667 -L 10.502778";
 in
@@ -67,7 +64,6 @@ in
     shotman
     slurp
     swaybg
-    swayidle
     swaylock-effects
     swaynotificationcenter
     swww
@@ -487,7 +483,6 @@ in
 
           Mod+Ctrl+Q        hotkey-overlay-title="Lock screen" { spawn "${lockscreen}"; }
           Mod+Ctrl+Shift+Q  hotkey-overlay-title="Logout" { spawn "${powermenu}"; }
-          //Mod+Ctrl+Shift+L  hotkey-overlay-title="Launch idle screen timeout" { spawn "${idle_and_lockscreen}"; }
           Mod+Shift+Q       hotkey-overlay-title="Niri native Logout" { quit; }
 
           // Screenshots
