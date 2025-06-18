@@ -240,10 +240,10 @@ in
         "$mod, p, pseudo" # Toggle pseudo-tiling (fixed size windows)
         "$mod SHIFT, t, pin" # Toggle pseudo-tiling (fixed size windows)
 
-        "$mod, i, cyclenext, prev" # Cycle window focus
-        "$mod, o, cyclenext" # Cycle window focus
-        "$mod SHIFT, i, swapnext, prev" # Swap with window in direction
-        "$mod SHIFT, o, swapnext" # Swap with window in direction
+        "$mod, i, cyclenext" # Cycle window focus
+        "$mod, o, cyclenext, prev" # Cycle window focus
+        "$mod SHIFT, i, swapnext" # Swap with window in direction
+        "$mod SHIFT, o, swapnext, prev" # Swap with window in direction
 
         "$mod, x, togglesplit" # Toggle split direction
         "$mod SHIFT, x, layoutmsg, togglesplit" # Toggle between dwindle/master
