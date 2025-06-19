@@ -15,6 +15,7 @@
       pkg-config
       protobuf
       python3
+      uv
 
       # DevOps & Cloud
       act # run GitHub Actions Locally

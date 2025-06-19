@@ -33,21 +33,30 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    zen-browser.url = "github:MarceColl/zen-browser-flake";
+    zen-browser = {
+      url = "github:MarceColl/zen-browser-flake";
+    };
 
     secrets = {
       url = "git+ssh://git@github.com/eldios/secrets.git?ref=main&shallow=1";
       flake = false;
     };
 
-    portmaster.url = "github:railwhale/nixpkgs/portmaster";
+    portmaster = {
+      url = "github:railwhale/nixpkgs/portmaster";
+    };
 
     peerix = {
       url = "github:tomasharkema/peerix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     stylix = {
       url = "github:danth/stylix/release-25.05";
+    };
+
+    mpc-hub = {
+      url = "github:ravitemer/mcp-hub";
     };
   };
 
@@ -56,6 +65,7 @@
     , darwin
     , disko
     , home-manager
+    , mpc-hub
     , nixos-hardware
     , nixpkgs-darwin
     , nixpkgs-unstable
@@ -81,6 +91,7 @@
           disko
           home-manager
           inputs
+          mpc-hub
           nixos-hardware
           nixpkgs
           nixpkgs-darwin
