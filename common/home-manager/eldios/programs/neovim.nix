@@ -228,7 +228,7 @@ in
   xdg.configFile."nvim/lua/config/autocmds.lua".text = ''
   '';
   # MCPHub servers configuration
-  xdg.configFile."mcphub/kagi.json".text = ''
+  xdg.configFile."mcphub/servers.json".text = ''
     {
       "mcpServers": {
         "github.com/kagisearch/kagimcp": {
@@ -257,7 +257,7 @@ in
       config = function()
         require("mcphub").setup({
             --- `mcp-hub` binary related options-------------------
-            config = vim.fn.expand("~/.config/mcphub/*.json"), -- Absolute path to MCP Servers config file (will create if not exists)
+            config = vim.fn.expand("~/.config/mcphub/servers.json"), -- Absolute path to MCP Servers config file (will create if not exists)
             port = 37373, -- The port `mcp-hub` server listens to
             shutdown_delay = 60 * 10 * 000, -- Delay in ms before shutting down the server when last instance closes (default: 10 minutes)
             use_bundled_binary = false, -- Use local `mcp-hub` binary (set this to true when using build = "bundled_build.lua")
