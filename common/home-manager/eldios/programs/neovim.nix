@@ -1,4 +1,4 @@
-{ pkgs, config, nixpkgs-unstable, ... }:
+{ pkgs, config, nixpkgs-unstable, inputs, ... }:
 let
   unstablePkgs = import nixpkgs-unstable {
     system = pkgs.system;
@@ -37,6 +37,8 @@ in
       ripgrep-all # used by space-f-g
     ] ++ (with unstablePkgs; [
       aider-chat
+    ] ++ [
+      inputs.mpc-hub.packages."${system}".default
     ]);
   };
 
@@ -225,6 +227,82 @@ in
   # this file is automatically loaded by LazyVim
   xdg.configFile."nvim/lua/config/autocmds.lua".text = ''
   '';
+  # MCPHub servers configuration
+  xdg.configFile."mcphub/kagi.json".text = ''
+    {
+      "mcpServers": {
+        "github.com/kagisearch/kagimcp": {
+          "command": "uvx",
+          "args": ["kagimcp"],
+          "env": {
+            "KAGI_API_KEY": "${config.sops.secrets."tokens/kagi/key".path}",
+            "KAGI_SUMMARIZER_ENGINE": "cecil"
+          }
+        },
+        "github.com/modelcontextprotocol/servers/tree/main/src/git": {
+          "command": "uvx",
+          "args": ["mcp-server-git", "--repository", "/home/eldios/dotfiles"]
+        }
+      }
+    }
+  '';
+
+  # MPC-HUB - https://ravitemer.github.io/mcphub.nvim/installation.html#lazy-nvim
+  xdg.configFile."nvim/lua/plugins/mpc-hub.lua".text = ''
+    return {
+      "ravitemer/mcphub.nvim",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+      },
+      config = function()
+        require("mcphub").setup({
+            --- `mcp-hub` binary related options-------------------
+            config = vim.fn.expand("~/.config/mcphub/*.json"), -- Absolute path to MCP Servers config file (will create if not exists)
+            port = 37373, -- The port `mcp-hub` server listens to
+            shutdown_delay = 60 * 10 * 000, -- Delay in ms before shutting down the server when last instance closes (default: 10 minutes)
+            use_bundled_binary = false, -- Use local `mcp-hub` binary (set this to true when using build = "bundled_build.lua")
+            mcp_request_timeout = 60000, --Max time allowed for a MCP tool or resource to execute in milliseconds, set longer for long running tasks
+
+            ---Chat-plugin related options-----------------
+            auto_approve = false, -- Auto approve mcp tool calls
+            auto_toggle_mcp_servers = true, -- Let LLMs start and stop MCP servers automatically
+            extensions = {
+                avante = {
+                    make_slash_commands = true, -- make /slash commands from MCP server prompts
+                }
+            },
+
+            --- Plugin specific options-------------------
+            native_servers = {}, -- add your custom lua native servers here
+            ui = {
+                window = {
+                    width = 0.8, -- 0-1 (ratio); "50%" (percentage); 50 (raw number)
+                    height = 0.8, -- 0-1 (ratio); "50%" (percentage); 50 (raw number)
+                    align = "center", -- "center", "top-left", "top-right", "bottom-left", "bottom-right", "top", "bottom", "left", "right"
+                    relative = "editor",
+                    zindex = 50,
+                    border = "rounded", -- "none", "single", "double", "rounded", "solid", "shadow"
+                },
+                wo = { -- window-scoped options (vim.wo)
+                    winhl = "Normal:MCPHubNormal,FloatBorder:MCPHubBorder",
+                },
+            },
+            on_ready = function(hub)
+                -- Called when hub is ready
+            end,
+            on_error = function(err)
+                -- Called on errors
+            end,
+            log = {
+                level = vim.log.levels.WARN,
+                to_file = false,
+                file_path = nil,
+                prefix = "MCPHub",
+            },
+        })
+      end
+    }
+  '';
   # https://github.com/yetone/avante.nvim/blob/main/lua/avante/config.lua
   xdg.configFile."nvim/lua/plugins/avante.lua".text = ''
     return {
@@ -297,6 +375,18 @@ in
               },
             },
           },
+          -- system_prompt as function ensures LLM always has latest MCP server state
+          -- This is evaluated for every message, even in existing chats
+          system_prompt = function()
+              local hub = require("mcphub").get_hub_instance()
+              return hub and hub:get_active_servers_prompt() or ""
+          end,
+          -- Using function prevents requiring mcphub before it's loaded
+          custom_tools = function()
+              return {
+                  require("mcphub.extensions.avante").mcp_tool(),
+              }
+          end,
         },
         mappings = {
           --- @class AvanteConflictMappings
