@@ -231,17 +231,114 @@ in
   xdg.configFile."mcphub/servers.json".text = ''
     {
       "mcpServers": {
-        "github.com/kagisearch/kagimcp": {
-          "command": "uvx",
-          "args": ["kagimcp"],
+        "git": {
+          "command": "docker",
+          "args": [
+            "run",
+            "--rm",
+            "-i",
+            "--mount",
+            "type=bind,src=/home/eldios,dst=/home/eldios",
+            "mcp/git"
+          ]
+        },
+        "time": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "mcp/time"
+          ]
+        },
+        "sequentialthinking": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "mcp/sequentialthinking"
+          ]
+        },
+        "fetch": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "mcp/fetch"
+          ]
+        },
+        "wikipedia-mcp": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "mcp/wikipedia-mcp"
+          ]
+        },
+        "basic-memory": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "mcp/basic-memory"
+          ]
+        },
+        "kagisearch": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "-e",
+            "KAGI_SUMMARIZER_ENGINE",
+            "-e",
+            "KAGI_API_KEY",
+            "mcp/kagisearch"
+          ],
           "env": {
-            "KAGI_API_KEY": "${config.sops.secrets."tokens/kagi/key".path}",
-            "KAGI_SUMMARIZER_ENGINE": "cecil"
+            "KAGI_SUMMARIZER_ENGINE": "cecil",
+            "KAGI_API_KEY": "${config.sops.secrets."tokens/kagi/key".path}"
           }
         },
-        "github.com/modelcontextprotocol/servers/tree/main/src/git": {
-          "command": "uvx",
-          "args": ["mcp-server-git", "--repository", "/home/eldios/dotfiles"]
+        "aws-diagram": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "mcp/aws-diagram"
+          ]
+        },
+        "aws-documentation": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "mcp/aws-documentation"
+          ]
+        },
+        "aws-terraform": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "mcp/aws-terraform"
+          ]
+        },
+        "kubernetes": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "mcp/kubernetes"
+          ]
         }
       }
     }
