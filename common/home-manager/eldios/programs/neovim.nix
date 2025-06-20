@@ -259,6 +259,20 @@ in
     }
   '';
 
+  # Blink.cmp configuration for manual-only completion
+  xdg.configFile."nvim/lua/plugins/blink-cmp.lua".text = ''
+    return {
+      "saghen/blink.cmp",
+      lazy = false, -- ensure it loads early
+      -- version = "v0.*", -- use the latest stable version
+      dependencies = {
+        "rafamadriz/friendly-snippets",
+      },
+      opts = {
+      },
+    }
+  '';
+
   # MPC-HUB - https://ravitemer.github.io/mcphub.nvim/installation.html#lazy-nvim
   xdg.configFile."nvim/lua/plugins/mpc-hub.lua".text = ''
     return {
@@ -324,14 +338,86 @@ in
         version = false, -- Never set this value to "*"! Never!
         build = "make",
         opts = {
-          provider = "litellm",
-          auto_suggestions_provider = "gemini",
+          provider = "gemini25pro",
+          auto_suggestions_provider = "gemini25flash",
           providers = {
-            litellm = {
+            --- https://openrouter.ai/anthropic/claude-3.7-sonnet
+            --- $3/M input tokens || $15/M output tokens
+            claude37Sonnet = {
+              __inherited_from = 'openai',
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
+              endpoint = "https://litellm.lele.rip/v1",
+              model = "openrouter/anthropic/claude-3.7-sonnet",
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
+            },
+            --- https://openrouter.ai/anthropic/claude-sonnet-4
+            --- $3/M input tokens || $15/M output tokens
+            claude4sonnet = {
               __inherited_from = 'openai',
               api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
               endpoint = "https://litellm.lele.rip/v1",
               model = "openrouter/anthropic/claude-sonnet-4",
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
+            },
+            --- https://openrouter.ai/anthropic/claude-opus-4
+            --- $15/M input tokens || $75/M output tokens
+            claude4opus = {
+              __inherited_from = 'openai',
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
+              endpoint = "https://litellm.lele.rip/v1",
+              model = "openrouter/anthropic/claude-opus-4",
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
+            },
+            --- https://openrouter.ai/google/gemini-2.5-flash
+            --- $0.30/M input tokens || $2.50/M output tokens
+            gemini25flash = {
+              __inherited_from = 'openai',
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
+              endpoint = "https://litellm.lele.rip/v1",
+              model = "openrouter/google/gemini-2.5-flash",
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
+            },
+            --- https://openrouter.ai/google/gemini-2.5-pro
+            --- $1.25/M input tokens || $10/M output tokens
+            gemini25pro = {
+              __inherited_from = 'openai',
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
+              endpoint = "https://litellm.lele.rip/v1",
+              model = "openrouter/google/gemini-2.5-pro",
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
+            },
+            --- https://openrouter.ai/openai/gpt-4.1
+            --- $2/M input tokens || $8/M output tokens
+            gtp41 = {
+              __inherited_from = 'openai',
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
+              endpoint = "https://litellm.lele.rip/v1",
+              model = "openrouter/openai/gpt-4.1",
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
@@ -351,8 +437,8 @@ in
           ---Note: This is an experimental feature and may not work as expected.
           dual_boost = {
             enabled = false,
-            first_provider = "gemini",
-            second_provider = "claude",
+            first_provider = "gemini25pro",
+            second_provider = "claude4sonnet",
             prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
             timeout = 60000, -- Timeout in milliseconds
           },
@@ -374,7 +460,7 @@ in
           rag = {
             enabled = true, -- Enables the RAG service
             host_mount = os.getenv("HOME"), -- Host mount path for the rag service
-            provider = "litellm", -- The provider to use for RAG service (e.g. openai or ollama)
+            provider = "gemini25pro", -- The provider to use for RAG service (e.g. openai or ollama)
             -- endpoint = "https://api.openai.com/v1", -- The API endpoint for RAG service
             -- llm_model = "", -- The LLM model to use for RAG service
             -- embed_model = "", -- The embedding model to use for RAG service
