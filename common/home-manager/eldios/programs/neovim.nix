@@ -193,15 +193,6 @@ in
             "mcp/wikipedia-mcp"
           ]
         },
-        "basic-memory": {
-          "command": "docker",
-          "args": [
-            "run",
-            "-i",
-            "--rm",
-            "mcp/basic-memory"
-          ]
-        },
         "kagisearch": {
           "command": "docker",
           "args": [
@@ -219,33 +210,6 @@ in
             "KAGI_API_KEY": "${config.sops.secrets."tokens/kagi/key".path}"
           }
         },
-        "aws-diagram": {
-          "command": "docker",
-          "args": [
-            "run",
-            "-i",
-            "--rm",
-            "mcp/aws-diagram"
-          ]
-        },
-        "aws-documentation": {
-          "command": "docker",
-          "args": [
-            "run",
-            "-i",
-            "--rm",
-            "mcp/aws-documentation"
-          ]
-        },
-        "aws-terraform": {
-          "command": "docker",
-          "args": [
-            "run",
-            "-i",
-            "--rm",
-            "mcp/aws-terraform"
-          ]
-        },
         "kubernetes": {
           "command": "docker",
           "args": [
@@ -258,6 +222,45 @@ in
       }
     }
   '';
+  /*
+    Disabled cause they stay alive even after the editor is dead
+    "basic-memory": {
+    "command": "docker",
+    "args": [
+    "run",
+    "-i",
+    "--rm",
+    "mcp/basic-memory"
+    ]
+    },
+    "aws-diagram": {
+    "command": "docker",
+    "args": [
+    "run",
+    "-i",
+    "--rm",
+    "mcp/aws-diagram"
+    ]
+    },
+    "aws-documentation": {
+    "command": "docker",
+    "args": [
+    "run",
+    "-i",
+    "--rm",
+    "mcp/aws-documentation"
+    ]
+    },
+    "aws-terraform": {
+    "command": "docker",
+    "args": [
+    "run",
+    "-i",
+    "--rm",
+    "mcp/aws-terraform"
+    ]
+    },
+  */
 
   # Blink.cmp configuration for manual-only completion
   xdg.configFile."nvim/lua/plugins/blink-cmp.lua".text = ''
