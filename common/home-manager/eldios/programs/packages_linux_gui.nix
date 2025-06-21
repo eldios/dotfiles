@@ -101,8 +101,6 @@ in
       write_stylus
       xournalpp
 
-      # 3D Printing
-      prusa-slicer
     ]) ++ (with unstablePkgs; [
       anytype
       beeper
@@ -115,8 +113,11 @@ in
       variety
       vesktop # discord + some fixes
       vscode
-      #super-slicer
       #pdfposter
+
+      # 3D Printing
+      #super-slicer
+      prusa-slicer
 
       # 2nd Brain stuff
       appflowy
