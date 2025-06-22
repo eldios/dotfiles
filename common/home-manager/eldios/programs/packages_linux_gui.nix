@@ -118,6 +118,7 @@ in
       # 3D Printing
       #super-slicer
       prusa-slicer
+      freecad-wayland
 
       # 2nd Brain stuff
       appflowy
