@@ -60,6 +60,7 @@ in
       appimage-run
       arandr
       cool-retro-term
+      dia
       easyeffects
       filezilla
       geoclue2
