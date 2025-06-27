@@ -75,6 +75,7 @@ in
       lens
       paperview
       pavucontrol
+      pika-backup
       pulseaudio # to install tools like pactl
       pcmanfm
       redshift
