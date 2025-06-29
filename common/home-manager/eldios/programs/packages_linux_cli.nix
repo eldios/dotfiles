@@ -22,6 +22,7 @@ in
       ntfs3g
       p7zip
       powertop
+      quickemu
       sshx
       tty-share
     ] ++ (with unstablePkgs; [
