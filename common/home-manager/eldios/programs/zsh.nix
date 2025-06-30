@@ -1,8 +1,6 @@
 { pkgs, ... }:
 let
   myFastFetchOpt = "-s 'Title:Separator:OS:Host:Uptime:Separator:Packages:Kernel:Shell:WM:Terminal:TerminalFont:Separator:CPU:GPU:Memory:Swap:Disk:LocalIp'";
-
-  binDir = "/etc/profiles/per-user/eldios/bin";
 in
 {
 
@@ -38,8 +36,8 @@ in
 
       localVariables = {
         TERM = "xterm-256color";
-        EDITOR = "${pkgs.neovim}/bin/nvim";
-        VISUAL = "${pkgs.neovim}/bin/nvim";
+        EDITOR = "$(which nvim)";
+        VISUAL = "$(which nvim)";
 
         ZELLIJ_AUTO_ATTACH = false;
         ZELLIJ_AUTO_EXIT = false;
@@ -96,9 +94,9 @@ in
         ff = "${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}";
 
         nixs = "nix search nixpkgs"; # 'nix' assumed in PATH
-        nixe = "$EDITOR $HOME/dotfiles/hosts/$(hostname)"; # Uses $EDITOR variable
+        nixe = "$EDITOR $HOME/dotfiles"; # Uses $EDITOR variable
 
-        nixu = "sudo nixos-rebuild switch --impure --flake $HOME/dotfiles"; # 'sudo' and 'nixos-rebuild' assumed in PATH
+        nixu = "sudo nixos-rebuild switch --flake $HOME/dotfiles"; # 'sudo' and 'nixos-rebuild' assumed in PATH
         nixU = "sudo nix flake update $HOME/dotfiles && nixu"; # 'sudo', 'nix', and 'nixu' alias
 
         nixa = "nixe && nixu"; # Uses aliases
