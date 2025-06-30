@@ -37,6 +37,7 @@
       jless
       linode-cli
       metal-cli # official Equinix Metal CLI
+      openbao
       opentofu
       portal
       postman

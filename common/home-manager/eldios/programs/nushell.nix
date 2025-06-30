@@ -2,8 +2,6 @@
 let
   myFastFetchOpt = "-s 'Title:Separator:OS:Host:Uptime:Separator:Packages:Kernel:Shell:WM:Terminal:TerminalFont:Separator:CPU:GPU:Memory:Swap:Disk:LocalIp'";
 
-  binDir = "/etc/profiles/per-user/eldios/bin";
-
   nushellCfgDir = "/home/eldios/.config/nushell";
 in
 {
@@ -50,8 +48,8 @@ in
     $env.PROMPT_MULTILINE_INDICATOR = "::: "
 
     $env.TERM = "xterm-256color";
-    $env.EDITOR = "${pkgs.neovim}/bin/nvim";
-    $env.VISUAL = "${pkgs.neovim}/bin/nvim";
+    $env.EDITOR = "$(which nvim)";
+    $env.VISUAL = "$(which nvim)";
 
     $env.ZELLIJ_AUTO_ATTACH = false;
     $env.ZELLIJ_AUTO_EXIT = false;
@@ -137,7 +135,7 @@ in
     alias ll = l -l
     alias nixU = sudo nix flake update $env.HOME/dotfiles and nixu # 'nix' assumed in PATH
     alias nixs = nix search nixpkgs # 'nix' assumed in PATH
-    alias nixu = sudo nixos-rebuild switch --impure --flake $env.HOME/dotfiles # nixos-rebuild assumed in PATH
+    alias nixu = sudo nixos-rebuild switch --flake $env.HOME/dotfiles # nixos-rebuild assumed in PATH
     alias tf = ${pkgs.opentofu}/bin/tofu
     alias tfa = tf apply -auto-approve
     alias tfd = tf destroy -auto-approve
