@@ -1,4 +1,11 @@
-{ config, lib, pkgs, nixpkgs-unstable, portmaster, peerix, ... }:
+{ config
+, lib
+, pkgs
+, nixpkgs-unstable
+, portmaster
+, peerix
+, ...
+}:
 let
   unstablePkgs = import nixpkgs-unstable {
     system = "x86_64-linux";
@@ -63,6 +70,19 @@ in
 
     cloudflared.enable = true;
 
+    libinput = {
+      enable = true;
+      touchpad = {
+        clickMethod = "clickfinger";
+        #clickMethod = "buttonareas";
+        disableWhileTyping = true;
+        middleEmulation = false;
+        tappingDragLock = false;
+        tappingButtonMap = "lrm";
+        scrollMethod = "twofinger";
+      };
+    };
+
     displayManager = {
       sddm.enable = false;
 
@@ -113,22 +133,25 @@ in
 
   virtualisation.docker.storageDriver = "btrfs";
 
-  environment.systemPackages = (with pkgs; [
-    gvfs
-    jmtpfs
-    qmk
-    qmk-udev-rules
-    qmk_hid
-    sof-firmware
-    tailscale
-    v4l-utils
-    vial
-  ]) ++ (with unstablePkgs; [
-    protonvpn-cli
-    protonvpn-gui
-  ]) ++ [
-    portmaster.legacyPackages.${pkgs.system}.portmaster
-  ];
+  environment.systemPackages =
+    (with pkgs; [
+      gvfs
+      jmtpfs
+      qmk
+      qmk-udev-rules
+      qmk_hid
+      sof-firmware
+      tailscale
+      v4l-utils
+      vial
+    ])
+    ++ (with unstablePkgs; [
+      protonvpn-cli
+      protonvpn-gui
+    ])
+    ++ [
+      portmaster.legacyPackages.${pkgs.system}.portmaster
+    ];
 
   programs = {
     steam = {
@@ -148,7 +171,9 @@ in
   # https://wiki.archlinux.org/title/GPGPU#ICD_loader_(libOpenCL.so)
   environment.etc."ld.so.conf.d/00-usrlib.conf".text = "/usr/lib";
 
-  environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; };
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "iHD";
+  };
 
   hardware = {
     enableAllFirmware = true;
@@ -173,14 +198,17 @@ in
     graphics = {
       enable = true;
       enable32Bit = true;
-      extraPackages = with pkgs; [
-        libva
-        libva-utils
-        intel-graphics-compiler
-        intel-media-driver # LIBVA_DRIVER_NAME=iHD
-        vpl-gpu-rt
-        intel-compute-runtime
-      ] ++ [ ];
+      extraPackages =
+        with pkgs;
+        [
+          libva
+          libva-utils
+          intel-graphics-compiler
+          intel-media-driver # LIBVA_DRIVER_NAME=iHD
+          vpl-gpu-rt
+          intel-compute-runtime
+        ]
+        ++ [ ];
       #extraPackages32 = with pkgs.pkgsi686Linux; [
       #  intel-vaapi-driver
       #];
@@ -195,12 +223,22 @@ in
     wlr.enable = true;
     config = {
       common.default = [ "gtk" ];
-      hyprland.default = [ "gtk" "hyprland" ];
+      hyprland.default = [
+        "gtk"
+        "hyprland"
+      ];
       # needs to run the two following commands at restart
       # dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
       # systemctl --user restart pipewire wireplumber xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk
-      sway.default = [ "gtk" "wlr" "luminous" ];
-      niri.default = [ "gtk" "gnome" ];
+      sway.default = [
+        "gtk"
+        "wlr"
+        "luminous"
+      ];
+      niri.default = [
+        "gtk"
+        "gnome"
+      ];
     };
     extraPortals = [
       pkgs.xdg-desktop-portal
