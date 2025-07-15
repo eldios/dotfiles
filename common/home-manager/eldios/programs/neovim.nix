@@ -1,9 +1,8 @@
-{
-  pkgs,
-  config,
-  nixpkgs-unstable,
-  inputs,
-  ...
+{ pkgs
+, config
+, nixpkgs-unstable
+, inputs
+, ...
 }:
 let
   unstablePkgs = import nixpkgs-unstable {
@@ -366,6 +365,7 @@ in
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
                 max_completion_tokens = 256000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 256000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -380,6 +380,7 @@ in
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
                 max_completion_tokens = 200000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 200000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -394,6 +395,7 @@ in
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
                 max_completion_tokens = 200000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 200000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -408,6 +410,7 @@ in
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
                 max_completion_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -422,6 +425,7 @@ in
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
                 max_completion_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -436,6 +440,7 @@ in
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
                 max_completion_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
