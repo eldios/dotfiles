@@ -1,4 +1,10 @@
-{ pkgs, config, nixpkgs-unstable, inputs, ... }:
+{
+  pkgs,
+  config,
+  nixpkgs-unstable,
+  inputs,
+  ...
+}:
 let
   unstablePkgs = import nixpkgs-unstable {
     system = pkgs.system;
@@ -13,33 +19,40 @@ let
 in
 {
   home = {
-    packages = with pkgs; [
-      # LSPs
-      deno
-      fd
-      lua-language-server
-      nil # Nix LSP
-      nodejs
-      nodePackages.typescript
-      nodePackages.typescript-language-server
-      pyright
-      tree-sitter
-      # Golang
-      go
-      # Rust
-      cargo
-      rustc
-      rustfmt
-      # Haskell
-      ghc
-      # vars
-      ripgrep # used by space-f-g
-      ripgrep-all # used by space-f-g
-    ] ++ (with unstablePkgs; [
-      aider-chat
-    ] ++ [
-      inputs.mpc-hub.packages."${system}".default
-    ]);
+    packages =
+      with pkgs;
+      [
+        # LSPs
+        deno
+        fd
+        lua-language-server
+        nil # Nix LSP
+        nodejs
+        nodePackages.typescript
+        nodePackages.typescript-language-server
+        pyright
+        tree-sitter
+        # Golang
+        go
+        # Rust
+        cargo
+        rustc
+        rustfmt
+        # Haskell
+        ghc
+        # vars
+        ripgrep # used by space-f-g
+        ripgrep-all # used by space-f-g
+      ]
+      ++ (
+        with unstablePkgs;
+        [
+          aider-chat
+        ]
+        ++ [
+          inputs.mpc-hub.packages."${system}".default
+        ]
+      );
   };
 
   # this file is used to setup LazyVim
@@ -137,11 +150,9 @@ in
     vim.opt.laststatus = 3
   '';
   # this file is automatically loaded by LazyVim
-  xdg.configFile."nvim/lua/config/keymaps.lua".text = ''
-  '';
+  xdg.configFile."nvim/lua/config/keymaps.lua".text = '''';
   # this file is automatically loaded by LazyVim
-  xdg.configFile."nvim/lua/config/autocmds.lua".text = ''
-  '';
+  xdg.configFile."nvim/lua/config/autocmds.lua".text = '''';
   # MCPHub servers configuration
   xdg.configFile."mcphub/servers.json".text = ''
     {
@@ -341,20 +352,20 @@ in
         version = false, -- Never set this value to "*"! Never!
         build = "make",
         opts = {
-          provider = "gemini25pro",
+          provider = "claude4sonnet",
           auto_suggestions_provider = "gemini25flash",
           providers = {
             --- https://openrouter.ai/anthropic/claude-3.7-sonnet
             --- $3/M input tokens || $15/M output tokens
-            claude37Sonnet = {
+            xaigrok4 = {
               __inherited_from = 'openai',
               api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
               endpoint = "https://litellm.lele.rip/v1",
-              model = "openrouter/anthropic/claude-3.7-sonnet",
+              model = "openrouter/x-ai/grok-4",
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
-                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                max_completion_tokens = 256000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -368,7 +379,7 @@ in
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
-                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                max_completion_tokens = 200000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -382,7 +393,7 @@ in
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
-                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                max_completion_tokens = 200000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -396,7 +407,7 @@ in
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
-                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                max_completion_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -410,7 +421,7 @@ in
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
-                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                max_completion_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -424,7 +435,7 @@ in
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
-                max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+                max_completion_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -440,8 +451,8 @@ in
           ---Note: This is an experimental feature and may not work as expected.
           dual_boost = {
             enabled = false,
-            first_provider = "gemini25pro",
-            second_provider = "claude4sonnet",
+            first_provider = "claude4sonnet",
+            second_provider = "xaigrok4",
             prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
             timeout = 60000, -- Timeout in milliseconds
           },
@@ -601,11 +612,9 @@ in
         avante-nvim
       ];
 
-      extraConfig = ''
-      '';
+      extraConfig = '''';
 
-      extraLuaConfig = ''
-      '';
+      extraLuaConfig = '''';
     }; # EOM neovim
 
   }; # EOM programs
