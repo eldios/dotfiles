@@ -364,8 +364,8 @@ in
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
-                max_completion_tokens = 256000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 256000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_completion_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -379,8 +379,8 @@ in
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
-                max_completion_tokens = 200000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 200000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_completion_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -394,8 +394,8 @@ in
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
-                max_completion_tokens = 200000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 200000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_completion_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -409,8 +409,8 @@ in
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
-                max_completion_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_completion_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -424,8 +424,8 @@ in
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
-                max_completion_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_completion_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -439,8 +439,8 @@ in
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
-                max_completion_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 1000000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_completion_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
