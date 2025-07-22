@@ -1,8 +1,9 @@
-{ pkgs
-, config
-, nixpkgs-unstable
-, inputs
-, ...
+{
+  pkgs,
+  config,
+  nixpkgs-unstable,
+  inputs,
+  ...
 }:
 let
   unstablePkgs = import nixpkgs-unstable {
@@ -283,6 +284,35 @@ in
         "rafamadriz/friendly-snippets",
       },
       opts = {
+        -- Disable cmdline completion entirely to prevent slash command interference
+        cmdline = {
+          enabled = true,
+          completion = {
+            menu = {
+              auto_show = false
+            },
+            ghost_text = {
+              enabled = true
+            },
+          },
+        },
+
+        -- Configure trigger settings to be less aggressive
+        trigger = {
+          completion = {
+            -- Disable completion on trigger characters like "/"
+            show_on_insert_on_trigger_character = false,
+          },
+        },
+
+        signature = { enabled = true },
+
+        completion = {
+          menu = {
+            auto_show = false,
+            enabled = true,
+          },
+        },
       },
     }
   '';
@@ -446,8 +476,8 @@ in
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
-                max_completion_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_completion_tokens = 64000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 64000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
