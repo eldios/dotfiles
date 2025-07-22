@@ -31,6 +31,7 @@ in
       "tokens/litellm/aider/key" = { };
       "tokens/litellm/aider/url" = { };
       "tokens/kagi/key" = { };
+      "tokens/github/nix" = { };
       "keys/anytype/id" = { };
       "keys/anytype/networkId" = { };
       "keys/anytype/host" = { };
