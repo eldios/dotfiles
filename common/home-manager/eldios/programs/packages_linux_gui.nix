@@ -1,10 +1,9 @@
 # Packages for Linux-specific graphical user interface tools.
 # This includes applications, theming, and services like gpg-agent.
-{
-  pkgs,
-  nixpkgs-unstable,
-  lib,
-  ...
+{ pkgs
+, nixpkgs-unstable
+, lib
+, ...
 }: # Added lib for lib.throwIf
 let
   unstablePkgs = import nixpkgs-unstable {
@@ -29,10 +28,10 @@ let
   );
   mailspring = unstablePkgs.mailspring.overrideAttrs (
     _finalAttrs: _previousAttrs: {
-      version = "1.15.1";
+      version = "1.16.0";
       src = unstablePkgs.fetchurl {
         url = "https://github.com/Foundry376/Mailspring/releases/download/${_finalAttrs.version}/mailspring-${_finalAttrs.version}-amd64.deb";
-        hash = "sha256-+glQaz36mKMtnNeyHH4brZmzYe9SHCtccO6CIJpTH2k=";
+        hash = "sha256-iJ6VzwvNTIRqUq9OWNOWOSuLbqhx+Lqx584kuyIslyA=";
       };
     }
   );
