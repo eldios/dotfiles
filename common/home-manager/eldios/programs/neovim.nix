@@ -1,8 +1,9 @@
-{ pkgs
-, config
-, nixpkgs-unstable
-, inputs
-, ...
+{
+  pkgs,
+  config,
+  nixpkgs-unstable,
+  inputs,
+  ...
 }:
 let
   unstablePkgs = import nixpkgs-unstable {
@@ -46,6 +47,7 @@ in
       ++ (
         with unstablePkgs;
         [
+          # LLM related stuff
           aider-chat
         ]
         ++ [
