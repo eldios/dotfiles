@@ -54,6 +54,15 @@ in
     config = {
       inherit modifier;
 
+      # Monitor configuration for dual display setup
+      startup = [
+        {
+          command = ''${pkgs.xorg.xrandr}/bin/xrandr --output HDMI-A-1 --mode 3440x1440 --rate 59.94 --pos 0x0 --primary --output HDMI-A-2 --mode 2560x1440 --rate 143.87 --pos 3440x0'';
+          always = true;
+          notification = false;
+        }
+      ];
+
       gaps = {
         inner = 5;
         outer = 2;
