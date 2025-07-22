@@ -1,4 +1,9 @@
-{ pkgs, nixpkgs-unstable, config, ... }:
+{
+  pkgs,
+  nixpkgs-unstable,
+  config,
+  ...
+}:
 let
   unstablePkgs = import nixpkgs-unstable {
     system = "x86_64-linux";
@@ -127,8 +132,15 @@ in
         "WAYLAND_DISPLAY,wayland-1"
       ];
 
-      # Monitor configuration (e.g., resolution, position, scale). Empty here means auto-config or configured elsewhere.
-      monitor = [ ];
+      # Monitor configuration - sets up dual monitor layout
+      monitor = [
+        # Primary ultrawide monitor (left) - HDMI-A-1
+        "HDMI-A-1,3440x1440@59.94,0x0,1"
+        # Secondary monitor (right) - HDMI-A-2
+        "HDMI-A-2,2560x1440@143.87,3440x0,1"
+        # Fallback for unknown monitors
+        ",preferred,auto,1"
+      ];
 
       general = {
         layout = "dwindle"; # Use dwindle layout (binary tree) instead of master-stack

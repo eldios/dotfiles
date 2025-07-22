@@ -1,4 +1,8 @@
-{ pkgs, config, lib, ... }:
+{ pkgs
+, config
+, lib
+, ...
+}:
 let
   # Preferred terminal emulator
   terminal = "${pkgs.ghostty}/bin/ghostty";
@@ -126,6 +130,14 @@ in
 
         # Rendering settings
         max_render_time = 7;
+      };
+
+      # Output (monitor) configuration
+      output = {
+        # Primary ultrawide monitor (left) - HDMI-A-1
+        "HDMI-A-1" = "3440x1440@59.94 0,0 normal";
+        # Secondary monitor (right) - HDMI-A-2
+        "HDMI-A-2" = "2560x1440@143.87 3440,0 normal";
       };
 
       # Input configuration
