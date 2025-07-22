@@ -1,9 +1,8 @@
-{
-  pkgs,
-  config,
-  nixpkgs-unstable,
-  inputs,
-  ...
+{ pkgs
+, config
+, nixpkgs-unstable
+, inputs
+, ...
 }:
 let
   unstablePkgs = import nixpkgs-unstable {
@@ -353,51 +352,24 @@ in
         version = false, -- Never set this value to "*"! Never!
         build = "make",
         opts = {
-          provider = "claude4sonnet",
+          provider = "gemini25pro",
           auto_suggestions_provider = "gemini25flash",
           providers = {
-            --- https://openrouter.ai/anthropic/claude-3.7-sonnet
-            --- $3/M input tokens || $15/M output tokens
-            xaigrok4 = {
+
+            --- CHEAP MODELS
+
+            --- https://openrouter.ai/moonshotai/kimi-k2
+            --- $0.14/M input tokens || $2.49/M output tokens
+            kimik2 = {
               __inherited_from = 'openai',
               api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
               endpoint = "https://litellm.lele.rip/v1",
-              model = "openrouter/x-ai/grok-4",
+              model = "openrouter/moonshotai/kimi-k2",
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
-                max_completion_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-              },
-            },
-            --- https://openrouter.ai/anthropic/claude-sonnet-4
-            --- $3/M input tokens || $15/M output tokens
-            claude4sonnet = {
-              __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
-              endpoint = "https://litellm.lele.rip/v1",
-              model = "openrouter/anthropic/claude-sonnet-4",
-              extra_request_body = {
-                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
-                --temperature = 0.75,
-                max_completion_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-              },
-            },
-            --- https://openrouter.ai/anthropic/claude-opus-4
-            --- $15/M input tokens || $75/M output tokens
-            claude4opus = {
-              __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
-              endpoint = "https://litellm.lele.rip/v1",
-              model = "openrouter/anthropic/claude-opus-4",
-              extra_request_body = {
-                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
-                --temperature = 0.75,
-                max_completion_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_completion_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
@@ -431,6 +403,9 @@ in
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
+
+            --- AVG EXPENSIVE MODELS
+
             --- https://openrouter.ai/openai/gpt-4.1
             --- $2/M input tokens || $8/M output tokens
             gtp41 = {
@@ -443,6 +418,54 @@ in
                 --temperature = 0.75,
                 max_completion_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
                 max_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
+            },
+            --- https://openrouter.ai/anthropic/claude-3.7-sonnet
+            --- $3/M input tokens || $15/M output tokens
+            xaigrok4 = {
+              __inherited_from = 'openai',
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
+              endpoint = "https://litellm.lele.rip/v1",
+              model = "openrouter/x-ai/grok-4",
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
+            },
+            --- https://openrouter.ai/anthropic/claude-sonnet-4
+            --- $3/M input tokens || $15/M output tokens
+            claude4sonnet = {
+              __inherited_from = 'openai',
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
+              endpoint = "https://litellm.lele.rip/v1",
+              model = "openrouter/anthropic/claude-sonnet-4",
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
+            },
+
+            --- CRAZY EXPENSIVE MODELS
+
+            --- https://openrouter.ai/anthropic/claude-opus-4
+            --- $15/M input tokens || $75/M output tokens
+            claude4opus = {
+              __inherited_from = 'openai',
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
+              endpoint = "https://litellm.lele.rip/v1",
+              model = "openrouter/anthropic/claude-opus-4",
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
               },
             },
