@@ -22,6 +22,7 @@ in
     secrets = {
       "tokens/anthropic/key" = { };
       "tokens/openai/key" = { };
+      "tokens/openrouter/neovim/key" = { };
       "tokens/openrouter/aider/key" = { };
       "tokens/gemini/key" = { };
       "tokens/ollama/key" = { };
