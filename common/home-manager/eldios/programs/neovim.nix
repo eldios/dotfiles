@@ -1,9 +1,8 @@
-{
-  pkgs,
-  config,
-  nixpkgs-unstable,
-  inputs,
-  ...
+{ pkgs
+, config
+, nixpkgs-unstable
+, inputs
+, ...
 }:
 let
   unstablePkgs = import nixpkgs-unstable {
@@ -158,6 +157,17 @@ in
   xdg.configFile."mcphub/servers.json".text = ''
     {
       "mcpServers": {
+        "memory": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "--mount",
+            "type=bind,src=/home/eldios/.mcp/memory,dst=/local-directory",
+            "mcp/memory@sha256:db0c2db07a44b6797eba7a832b1bda142ffc899588aae82c92780cbb2252407f"
+          ]
+        },
         "git": {
           "command": "docker",
           "args": [
@@ -382,12 +392,27 @@ in
         version = false, -- Never set this value to "*"! Never!
         build = "make",
         opts = {
-          provider = "gemini25pro",
-          auto_suggestions_provider = "gemini25flash",
+          provider = "qwen3coder",
+          auto_suggestions_provider = "qwen3coder",
           providers = {
 
             --- CHEAP MODELS
 
+            --- https://openrouter.ai/qwen/qwen3-coder
+            --- $0.302/M input tokens || $0.302/M output tokens
+            qwen3coder = {
+              __inherited_from = 'openai',
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
+              endpoint = "https://litellm.lele.rip/v1",
+              model = "openrouter/qwen/qwen3-coder",
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
+            },
             --- https://openrouter.ai/moonshotai/kimi-k2
             --- $0.14/M input tokens || $2.49/M output tokens
             kimik2 = {
