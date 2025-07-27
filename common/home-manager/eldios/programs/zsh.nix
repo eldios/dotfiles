@@ -122,8 +122,13 @@ in
       };
 
       dirHashes = {
-        df = "$HOME/dotfiles";
+        nix = "$HOME/dotfiles";
         dl = "$HOME/Downloads";
+        tmp = "$HOME/tmp";
+        gh = "$HOME/go/src/github.com";
+        gheldios = "$HOME/go/src/github.com/eldios";
+        ghsw = "$HOME/go/src/github.com/switchboard-xyz";
+        ghlinera = "$HOME/go/src/github.com/linera-io";
       };
 
       initContent = ''
