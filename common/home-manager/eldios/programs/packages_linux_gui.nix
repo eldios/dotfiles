@@ -1,9 +1,10 @@
 # Packages for Linux-specific graphical user interface tools.
 # This includes applications, theming, and services like gpg-agent.
-{ pkgs
-, nixpkgs-unstable
-, lib
-, ...
+{
+  pkgs,
+  nixpkgs-unstable,
+  lib,
+  ...
 }: # Added lib for lib.throwIf
 let
   unstablePkgs = import nixpkgs-unstable {
@@ -94,6 +95,7 @@ in
         scribus
         signal-desktop
         slack
+        streamcontroller
         syncthing
         telegram-desktop
         unclutter # unclutter -idle 1 -root -grab -visible
@@ -139,7 +141,6 @@ in
         cameractrls
         obsidian # Assuming the override is handled or not needed for now
         rnote
-        #streamcontroller
       ])
       ++ [
         pcloud
