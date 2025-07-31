@@ -1,4 +1,9 @@
-{ inputs, pkgs, nixpkgs-unstable, ... }:
+{
+  inputs,
+  pkgs,
+  nixpkgs-unstable,
+  ...
+}:
 let
   system = "x86_64-linux";
   unstablePkgs = import nixpkgs-unstable {
@@ -8,24 +13,26 @@ let
 in
 {
   home = {
-    packages = (with pkgs; [
-      barrier
-      guvcview
-      quickemu
-      remmina
-      spice
-      uqm
-      uvcdynctrl
-      vlc
-      wine
-      # handwriting
-      saber
-      xournalpp
-    ]) ++ (with unstablePkgs; [
-      audacity
-      dbeaver-bin
-    ]) ++ ([
-      inputs.zen-browser.packages."${system}".specific
-    ]);
+    packages =
+      (with pkgs; [
+        barrier
+        guvcview
+        quickemu
+        remmina
+        spice
+        uqm
+        uvcdynctrl
+        vlc
+        wine
+        # handwriting
+        saber
+        xournalpp
+      ])
+      ++ (with unstablePkgs; [
+        dbeaver-bin
+      ])
+      ++ ([
+        inputs.zen-browser.packages."${system}".specific
+      ]);
   };
 } # EOF
