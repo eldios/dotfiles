@@ -71,6 +71,7 @@ in
         # GUI Applications
         appimage-run
         arandr
+        audacity
         cool-retro-term
         dia
         easyeffects
