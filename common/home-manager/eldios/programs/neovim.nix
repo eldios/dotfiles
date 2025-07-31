@@ -1,8 +1,9 @@
-{ pkgs
-, config
-, nixpkgs-unstable
-, inputs
-, ...
+{
+  pkgs,
+  config,
+  nixpkgs-unstable,
+  inputs,
+  ...
 }:
 let
   unstablePkgs = import nixpkgs-unstable {
@@ -195,6 +196,18 @@ in
             "-i",
             "--rm",
             "mcp/sequentialthinking"
+          ]
+        },
+        "filesystem": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "--mount",
+            "type=bind,src=/home/eldios,dst=/home/eldios",
+            "mcp/filesystem",
+            "/home/eldios"
           ]
         },
         "fetch": {
