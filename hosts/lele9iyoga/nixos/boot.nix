@@ -15,9 +15,9 @@
     supportedFilesystems = [ "btrfs" ];
 
     # latest kernel
-    kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_latest;
     # latest non-deprecated Kernel that support ZFS
-    #kernelPackages = pkgs.linuxPackages_6_6;
+    kernelPackages = pkgs.linuxPackages_6_15;
 
     kernelParams = [
       "nohibernate"

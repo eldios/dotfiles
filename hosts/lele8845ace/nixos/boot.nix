@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   boot = {
     kernel.sysctl = {
@@ -12,13 +17,16 @@
       v4l2loopback
     ];
 
-    supportedFilesystems = [ "btrfs" "ntfs" ];
+    supportedFilesystems = [
+      "btrfs"
+      "ntfs"
+    ];
 
     # latest kernel
-    kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_latest;
     #kernelPackages = pkgs.linuxPackages_zen;
     # latest non-deprecated Kernel that support ZFS
-    #kernelPackages = pkgs.linuxPackages_6_6;
+    kernelPackages = pkgs.linuxPackages_6_15;
 
     kernelParams = [
       "nohibernate"
