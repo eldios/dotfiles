@@ -25,6 +25,7 @@
     ../../../common/home-manager/eldios/programs/rio.nix
     ../../../common/home-manager/eldios/programs/rofi.nix
     ../../../common/home-manager/eldios/programs/tmux.nix
+    ../../../common/home-manager/eldios/programs/waveterm.nix
     ../../../common/home-manager/eldios/programs/wezterm.nix
 
     ../../../common/home-manager/eldios/programs/firefox.nix

@@ -1,0 +1,27 @@
+{
+  "ai@claude-sonnet-4": {
+    "display:name": "Claude Sonnet 4",
+    "display:order": 1,
+    "ai:*": true,
+    "ai:baseurl": "https://litellm.lele.rip/v1",
+    "ai:model": "openrouter/anthropic/claude-sonnet-4",
+    "ai:apitoken": "cmd: cat /run/user/1000/secrets/tokens/litellm/neovim/key"
+  },
+  "ai@qwen3-coder": {
+    "display:name": "Qwen3 Coder",
+    "display:order": 2,
+    "ai:*": true,
+    "ai:baseurl": "https://litellm.lele.rip/v1",
+    "ai:model": "openrouter/qwen/qwen3-coder",
+    "ai:apitoken": "cmd: cat /run/user/1000/secrets/tokens/litellm/neovim/key"
+  },
+  "ai@gemini-25-pro": {
+    "display:name": "Gemini 2.5 Pro",
+    "display:order": 3,
+    "ai:*": true,
+    "ai:baseurl": "https://litellm.lele.rip/v1",
+    "ai:model": "openrouter/google/gemini-2.5-pro",
+    "ai:apitoken": "cmd: cat /run/user/1000/secrets/tokens/litellm/neovim/key"
+  }
+}
+
