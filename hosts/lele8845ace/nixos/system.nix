@@ -1,4 +1,12 @@
-{ config, lib, pkgs, nixpkgs-unstable, peerix, portmaster, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  nixpkgs-unstable,
+  peerix,
+  portmaster,
+  ...
+}:
 let
   unstablePkgs = import nixpkgs-unstable {
     system = "x86_64-linux";
@@ -122,22 +130,25 @@ in
   # run Android apps on linux
   virtualisation.docker.storageDriver = "btrfs";
 
-  environment.systemPackages = (with pkgs; [
-    clinfo
-    gvfs
-    i2c-tools
-    jmtpfs
-    openrgb-with-all-plugins
-    qmk
-    qmk-udev-rules
-    qmk_hid
-    sof-firmware
-    v4l-utils
-    via
-    vial
-  ]) ++ (with unstablePkgs; [ ]) ++ [
-    portmaster.legacyPackages.${pkgs.system}.portmaster
-  ];
+  environment.systemPackages =
+    (with pkgs; [
+      clinfo
+      gvfs
+      i2c-tools
+      jmtpfs
+      openrgb-with-all-plugins
+      qmk
+      qmk-udev-rules
+      qmk_hid
+      sof-firmware
+      v4l-utils
+      via
+      vial
+    ])
+    ++ (with unstablePkgs; [ ])
+    ++ [
+      #portmaster.legacyPackages.${pkgs.system}.portmaster
+    ];
 
   programs = {
     steam = {
@@ -221,12 +232,22 @@ in
     wlr.enable = true;
     config = {
       common.default = [ "gtk" ];
-      hyprland.default = [ "gtk" "hyprland" ];
+      hyprland.default = [
+        "gtk"
+        "hyprland"
+      ];
       # needs to run the two following commands at restart
       # dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
       # systemctl --user restart pipewire wireplumber xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk
-      sway.default = [ "gtk" "wlr" "luminous" ];
-      niri.default = [ "gtk" "gnome" ];
+      sway.default = [
+        "gtk"
+        "wlr"
+        "luminous"
+      ];
+      niri.default = [
+        "gtk"
+        "gnome"
+      ];
     };
     extraPortals = [
       pkgs.xdg-desktop-portal
@@ -256,7 +277,14 @@ in
     # PipeWire configuration for high-quality audio
     extraConfig.pipewire."92-low-latency" = {
       "context.properties" = {
-        "default.clock.allowed-rates" = [ 44100 48000 88200 96000 176400 192000 ];
+        "default.clock.allowed-rates" = [
+          44100
+          48000
+          88200
+          96000
+          176400
+          192000
+        ];
         "default.clock.rate" = 48000; # More compatible default
         "default.clock.quantum" = 1024;
         "default.clock.min-quantum" = 256;
@@ -271,7 +299,10 @@ in
             "rt.time.soft" = 200000;
             "rt.time.hard" = 200000;
           };
-          flags = [ "ifexists" "nofail" ];
+          flags = [
+            "ifexists"
+            "nofail"
+          ];
         }
       ];
       "stream.properties" = {
@@ -297,7 +328,14 @@ in
               "session.suspend-timeout-seconds" = 0;
               # Allow the device to follow the graph sample rate
               "audio.rate" = 0; # 0 means "follow the graph rate"
-              "audio.allowed-rates" = [ 44100 48000 88200 96000 176400 192000 ];
+              "audio.allowed-rates" = [
+                44100
+                48000
+                88200
+                96000
+                176400
+                192000
+              ];
               # Increase priority so this device becomes the default
               "priority.session" = 2000;
               "priority.driver" = 2000;
