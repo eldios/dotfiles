@@ -473,7 +473,6 @@ in
             },
 
             --- AVG EXPENSIVE MODELS
-
             --- https://openrouter.ai/openai/gpt-4.1
             --- $2/M input tokens || $8/M output tokens
             gtp41 = {
@@ -481,6 +480,21 @@ in
               api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
               endpoint = "https://litellm.lele.rip/v1",
               model = "openrouter/openai/gpt-4.1",
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
+            },
+            --- https://openrouter.ai/openai/gpt-5-chat
+            --- $1.25/M input tokens || $10/M output tokens
+            gtp5 = {
+              __inherited_from = 'openai',
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
+              endpoint = "https://litellm.lele.rip/v1",
+              model = "openrouter/openai/gpt-5-chat",
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
