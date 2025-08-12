@@ -251,30 +251,7 @@ in
         #{ command = "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar"; } # Start eww widgets
       ];
 
-      output = {
-        # Primary ultrawide monitor (left) - HDMI-A-1
-        "HDMI-A-1" = {
-          mode = "3440x1440@59.94Hz";
-          pos = "0 0";
-          transform = "normal";
-        };
-        # Secondary monitor (right) - HDMI-A-2
-        "HDMI-A-2" = {
-          mode = "2560x1440@143.87Hz";
-          pos = "3440 0";
-          transform = "normal";
-        };
-        # Fallback for virtual displays
-        "Virtual-1" = {
-          res = "1920x1080";
-          mode = "1920x1080@60Hz";
-          pos = "0,0";
-          transform = "0";
-        };
-        # "*" = { # change background for all outputs
-        #   bg = "~/wallpapers/wp.jpg fill";
-        # };
-      };
+      output = {};
 
       workspaceLayout = "default";
 
