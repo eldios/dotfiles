@@ -409,15 +409,31 @@ in
           auto_suggestions_provider = "qwen3coder",
           providers = {
 
+            --- SELF-HOSTED MODELS
+
+            ollama = {
+              __inherited_from = 'openai',
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
+              endpoint = "https://litellm.lele.rip/v1",
+              model = "ollama/ollama",
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
+            },
+
             --- CHEAP MODELS
 
             --- https://openrouter.ai/qwen/qwen3-coder
             --- $0.302/M input tokens || $0.302/M output tokens
             qwen3coder = {
               __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
-              endpoint = "https://litellm.lele.rip/v1",
-              model = "openrouter/qwen/qwen3-coder",
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
+              endpoint = "https://openrouter.ai/api/v1",
+              model = "qwen/qwen3-coder",
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
@@ -430,9 +446,9 @@ in
             --- $0.14/M input tokens || $2.49/M output tokens
             kimik2 = {
               __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
-              endpoint = "https://litellm.lele.rip/v1",
-              model = "openrouter/moonshotai/kimi-k2",
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
+              endpoint = "https://openrouter.ai/api/v1",
+              model = "moonshotai/kimi-k2",
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
@@ -445,9 +461,9 @@ in
             --- $0.30/M input tokens || $2.50/M output tokens
             gemini25flash = {
               __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
-              endpoint = "https://litellm.lele.rip/v1",
-              model = "openrouter/google/gemini-2.5-flash",
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
+              endpoint = "https://openrouter.ai/api/v1",
+              model = "google/gemini-2.5-flash",
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
@@ -460,9 +476,9 @@ in
             --- $1.25/M input tokens || $10/M output tokens
             gemini25pro = {
               __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
-              endpoint = "https://litellm.lele.rip/v1",
-              model = "openrouter/google/gemini-2.5-pro",
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
+              endpoint = "https://openrouter.ai/api/v1",
+              model = "google/gemini-2.5-pro",
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
@@ -477,9 +493,9 @@ in
             --- $2/M input tokens || $8/M output tokens
             gtp41 = {
               __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
-              endpoint = "https://litellm.lele.rip/v1",
-              model = "openrouter/openai/gpt-4.1",
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
+              endpoint = "https://openrouter.ai/api/v1",
+              model = "openai/gpt-4.1",
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
@@ -492,9 +508,9 @@ in
             --- $1.25/M input tokens || $10/M output tokens
             gtp5 = {
               __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
-              endpoint = "https://litellm.lele.rip/v1",
-              model = "openrouter/openai/gpt-5-chat",
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
+              endpoint = "https://openrouter.ai/api/v1",
+              model = "openai/gpt-5-chat",
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
@@ -507,9 +523,9 @@ in
             --- $3/M input tokens || $15/M output tokens
             xaigrok4 = {
               __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
-              endpoint = "https://litellm.lele.rip/v1",
-              model = "openrouter/x-ai/grok-4",
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
+              endpoint = "https://openrouter.ai/api/v1",
+              model = "x-ai/grok-4",
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
@@ -522,9 +538,9 @@ in
             --- $3/M input tokens || $15/M output tokens
             claude4sonnet = {
               __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
-              endpoint = "https://litellm.lele.rip/v1",
-              model = "openrouter/anthropic/claude-sonnet-4",
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
+              endpoint = "https://openrouter.ai/api/v1",
+              model = "anthropic/claude-sonnet-4",
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
@@ -540,9 +556,9 @@ in
             --- $15/M input tokens || $75/M output tokens
             claude4opus = {
               __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
-              endpoint = "https://litellm.lele.rip/v1",
-              model = "openrouter/anthropic/claude-opus-4",
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
+              endpoint = "https://openrouter.ai/api/v1",
+              model = "anthropic/claude-opus-4",
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
