@@ -427,8 +427,23 @@ in
 
             --- CHEAP MODELS
 
+            --- https://openrouter.ai/deepseek/deepseek-chat-v3-0324
+            --- $0.18/M input tokens $0.72/M output tokens
+            deepseekV3 = {
+              __inherited_from = 'openai',
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
+              endpoint = "https://openrouter.ai/api/v1",
+              model = "deepseek/deepseek-chat-v3-0324",
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
+            },
             --- https://openrouter.ai/qwen/qwen3-coder
-            --- $0.302/M input tokens || $0.302/M output tokens
+            --- $0.20/M input tokens || $0.80/M output tokens
             qwen3coder = {
               __inherited_from = 'openai',
               api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
@@ -510,7 +525,7 @@ in
               __inherited_from = 'openai',
               api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
               endpoint = "https://openrouter.ai/api/v1",
-              model = "openai/gpt-5-chat",
+              model = "openai/gpt-5",
               extra_request_body = {
                 timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
                 --temperature = 0.75,
