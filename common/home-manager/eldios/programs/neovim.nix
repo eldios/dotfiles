@@ -405,8 +405,8 @@ in
         version = false, -- Never set this value to "*"! Never!
         build = "make",
         opts = {
-          provider = "qwen3coder",
-          auto_suggestions_provider = "qwen3coder",
+          provider = "deepseekV3",
+          auto_suggestions_provider = "deepseekV3",
           providers = {
 
             --- SELF-HOSTED MODELS
