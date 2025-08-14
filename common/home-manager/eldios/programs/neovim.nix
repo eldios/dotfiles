@@ -405,7 +405,7 @@ in
         version = false, -- Never set this value to "*"! Never!
         build = "make",
         opts = {
-          provider = "deepseekV3",
+          provider = "qwen3coder",
           auto_suggestions_provider = "deepseekV3",
           providers = {
 
@@ -427,6 +427,21 @@ in
 
             --- CHEAP MODELS
 
+            --- https://openrouter.ai/deepseek/deepseek-R1-0528
+            --- $0.18/M input tokens $0.72/M output tokens
+            deepseekR1 = {
+              __inherited_from = 'openai',
+              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
+              endpoint = "https://openrouter.ai/api/v1",
+              model = "deepseek/deepseek-r1-0528",
+              extra_request_body = {
+                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
+                --temperature = 0.75,
+                max_completion_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
+                max_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
+                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+              },
+            },
             --- https://openrouter.ai/deepseek/deepseek-chat-v3-0324
             --- $0.18/M input tokens $0.72/M output tokens
             deepseekV3 = {
