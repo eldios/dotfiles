@@ -15,6 +15,7 @@
       pkg-config
       protobuf
       python3
+      tree
       uv
 
       # DevOps & Cloud
@@ -36,6 +37,8 @@
       jira-cli-go
       jless
       linode-cli
+      kustomize
+      kustomize-sops
       metal-cli # official Equinix Metal CLI
       openbao
       opentofu
