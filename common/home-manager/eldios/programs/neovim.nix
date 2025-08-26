@@ -22,6 +22,8 @@ in
     packages =
       with pkgs;
       [
+        # LLM related stuff
+        aider-chat
         # LSPs
         deno
         fd
@@ -46,10 +48,7 @@ in
       ]
       ++ (
         with unstablePkgs;
-        [
-          # LLM related stuff
-          aider-chat
-        ]
+        [ ]
         ++ [
           inputs.mpc-hub.packages."${system}".default
         ]
