@@ -29,20 +29,21 @@ in
       enable = true;
       lfs.enable = true;
       aliases = {
-        w = "worktree";
-        wa = "worktree add";
-        wl = "worktree list";
-        wk = "worktree lock";
-        wK = "worktree unlock";
-        wm = "worktree move";
-        wr = "worktree remove";
-        st = "status";
         co = "checkout";
-        rc = "repo clone";
-        ppt = "pull --prune --tags";
+        chp = "cherry-pick";
         lol = "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all";
         loll = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all";
+        ppt = "pull --prune --tags";
         prettylog = "...";
+        rc = "repo clone";
+        st = "status";
+        w = "worktree";
+        wK = "worktree unlock";
+        wa = "worktree add";
+        wk = "worktree lock";
+        wl = "worktree list";
+        wm = "worktree move";
+        wr = "worktree remove";
       };
       extraConfig = {
         advice = {
