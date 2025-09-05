@@ -1,5 +1,16 @@
-{ inputs, pkgs, config, lib, ... }:
+{
+  inputs,
+  pkgs,
+  nixpkgs-unstable,
+  config,
+  lib,
+  ...
+}:
 let
+  unstablePkgs = import nixpkgs-unstable {
+    system = "x86_64-linux";
+    config.allowUnfree = true;
+  };
   binDir = "/etc/profiles/per-user/eldios/bin";
 in
 {
@@ -37,7 +48,10 @@ in
     settings = {
       # Nix Settings
       auto-optimise-store = true; # Auto Optimize nix store.
-      experimental-features = [ "nix-command" "flakes" ]; # Enable experimental features.
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ]; # Enable experimental features.
       trusted-users = [
         "root"
         "eldios"
@@ -98,7 +112,10 @@ in
 
     pcscd.enable = true;
 
-    tailscale.enable = true;
+    tailscale = {
+      enable = true;
+      package = unstablePkgs.tailscale;
+    };
 
   };
 
