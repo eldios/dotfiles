@@ -1,10 +1,11 @@
-{ config
-, lib
-, pkgs
-, nixpkgs-unstable
-, portmaster
-, peerix
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  nixpkgs-unstable,
+  portmaster,
+  peerix,
+  ...
 }:
 let
   unstablePkgs = import nixpkgs-unstable {
@@ -141,7 +142,6 @@ in
       qmk-udev-rules
       qmk_hid
       sof-firmware
-      tailscale
       v4l-utils
       vial
     ])
