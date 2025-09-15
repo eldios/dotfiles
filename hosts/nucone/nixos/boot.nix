@@ -8,18 +8,27 @@
     supportedFilesystems = [ "zfs" ];
 
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelParams =
-    [
+    kernelParams = [
       "nohibernate"
       "zfs.zfs_arc_max=6442856000"
     ];
 
     initrd = {
-      supportedFilesystems = [ "zfs" "btrfs" ];
-      kernelModules = [ "uas" "usbcore" "usb_storage" "usbhid" "vfat" "nls_cp437" "nls_iso8859_1" ];
+      supportedFilesystems = [
+        "zfs"
+        "btrfs"
+      ];
+      kernelModules = [
+        "uas"
+        "usbcore"
+        "usb_storage"
+        "usbhid"
+        "vfat"
+        "nls_cp437"
+        "nls_iso8859_1"
+      ];
 
       # Support for Yubikey PBA
-
 
       luks = {
         yubikeySupport = true;
@@ -69,9 +78,9 @@
         efiSysMountPoint = "/boot";
       };
       grub = {
-        enable           = true;
-        device           = "nodev";
-        efiSupport       = true;
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
         enableCryptodisk = true;
       };
     };

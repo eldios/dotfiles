@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   boot = {
     kernel.sysctl = {
@@ -10,13 +10,13 @@
     ];
     #extraModulePackages = with config.boot.kernelPackages; [ ];
 
-    supportedFilesystems = [ "btrfs" "exfat" "zfs" ];
+    supportedFilesystems = [
+      "btrfs"
+      "exfat"
+      "zfs"
+    ];
 
-    # latest kernel
     kernelPackages = pkgs.linuxPackages_latest;
-    # latest non-deprecated Kernel that support ZFS
-    #kernelPackages = pkgs.linuxPackages_6_6;
-
     kernelParams = [
       "nohibernate"
       #"snd_intel_dspcfg.dsp_driver=1" # if 3 and 1 don't work move to Pulseaudio
@@ -25,7 +25,10 @@
     ];
 
     initrd = {
-      supportedFilesystems = [ "btrfs" "exfat" ];
+      supportedFilesystems = [
+        "btrfs"
+        "exfat"
+      ];
       kernelModules = [ "nvidia" ];
       availableKernelModules = [
         "nls_cp437"
