@@ -7,10 +7,6 @@
   ...
 }:
 let
-  unstablePkgs = import nixpkgs-unstable {
-    system = "x86_64-linux";
-    config.allowUnfree = true;
-  };
   binDir = "/etc/profiles/per-user/eldios/bin";
 in
 {
@@ -26,6 +22,9 @@ in
     config = {
       allowUnfree = true;
     };
+    overlays = [
+      (import ./overlays/unstable-packages.nix { inherit nixpkgs-unstable; })
+    ];
   };
 
   # nix
@@ -114,7 +113,7 @@ in
 
     tailscale = {
       enable = true;
-      package = unstablePkgs.tailscale;
+      package = pkgs.unstable.tailscale;
     };
 
   };

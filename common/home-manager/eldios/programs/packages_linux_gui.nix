@@ -2,16 +2,10 @@
 # This includes applications, theming, and services like gpg-agent.
 {
   pkgs,
-  nixpkgs-unstable,
   lib,
   ...
 }: # Added lib for lib.throwIf
 let
-  unstablePkgs = import nixpkgs-unstable {
-    system = pkgs.system; # Use the system from the main pkgs
-    config.allowUnfree = true;
-  };
-
   patchelfFixes = pkgs.patchelfUnstable.overrideAttrs (
     _finalAttrs: _previousAttrs: {
       src = pkgs.fetchFromGitHub {
@@ -27,10 +21,10 @@ let
       nativeBuildInputs = previousAttrs.nativeBuildInputs ++ [ patchelfFixes ];
     }
   );
-  mailspring = unstablePkgs.mailspring.overrideAttrs (
+  mailspring = pkgs.unstable.mailspring.overrideAttrs (
     _finalAttrs: _previousAttrs: {
       version = "1.16.0";
-      src = unstablePkgs.fetchurl {
+      src = pkgs.unstable.fetchurl {
         url = "https://github.com/Foundry376/Mailspring/releases/download/${_finalAttrs.version}/mailspring-${_finalAttrs.version}-amd64.deb";
         hash = "sha256-iJ6VzwvNTIRqUq9OWNOWOSuLbqhx+Lqx584kuyIslyA=";
       };
@@ -118,7 +112,7 @@ in
         xournalpp
 
       ])
-      ++ (with unstablePkgs; [
+      ++ (with pkgs.unstable; [
         anytype
         beeper
         bitwarden
