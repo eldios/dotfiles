@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  nixpkgs-unstable,
   portmaster,
   peerix,
   ...
