@@ -1,15 +1,10 @@
 {
   inputs,
   pkgs,
-  nixpkgs-unstable,
   ...
 }:
 let
   system = "x86_64-linux";
-  unstablePkgs = import nixpkgs-unstable {
-    system = "x86_64-linux";
-    config.allowUnfree = true;
-  };
 in
 {
   home = {
@@ -26,8 +21,8 @@ in
         vlc
         wine
       ])
-      ++ (with unstablePkgs; [
-        davinci-resolve-studio
+      ++ (with pkgs.unstable; [
+        #davinci-resolve-studio
       ])
       ++ ([
         inputs.zen-browser.packages."${system}".specific

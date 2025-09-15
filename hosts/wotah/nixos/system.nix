@@ -1,10 +1,5 @@
 { config, inputs, lib, pkgs, nixpkgs-unstable, peerix, portmaster, ... }:
-let
-  unstablePkgs = import nixpkgs-unstable {
-    system = "x86_64-linux";
-    config.allowUnfree = true;
-  };
-in
+
 {
   # Kernel modules and options for GPU passthrough
   boot.kernelModules = [ "vfio-pci" "vfio" "vfio_iommu_type1" ];
@@ -69,7 +64,7 @@ in
 
   environment.systemPackages = (with pkgs; [
     clinfo
-  ]) ++ (with unstablePkgs; [ ]) ++ [ ];
+  ]) ++ (with pkgs.unstable; [ ]) ++ [ ];
 
   powerManagement = {
     enable = true;

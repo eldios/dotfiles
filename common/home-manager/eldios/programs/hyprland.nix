@@ -1,15 +1,9 @@
 {
   pkgs,
-  nixpkgs-unstable,
   config,
   ...
 }:
 let
-  unstablePkgs = import nixpkgs-unstable {
-    system = "x86_64-linux";
-    config.allowUnfree = true;
-  };
-
   # Preferred terminal emulator
   #terminal = "${pkgs.kitty}/bin/kitty";
   #terminal = "${pkgs.rio}/bin/rio";
