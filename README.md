@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.png" alt="NixOS Dotfiles Logo" width="400"/>
+  <img src="assets/logo.png" alt="NixOS Dotfiles Logo" width="980"/>
 </p>
 
 <h1 align="center">NixOS Dotfiles</h1>
