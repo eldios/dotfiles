@@ -7,12 +7,7 @@
   peerix,
   ...
 }:
-let
-  unstablePkgs = import nixpkgs-unstable {
-    system = "x86_64-linux";
-    config.allowUnfree = true;
-  };
-in
+
 {
   system = {
     stateVersion = "25.05"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
@@ -87,7 +82,7 @@ in
     displayManager = {
       sddm.enable = false;
 
-      sessionPackages = with unstablePkgs; [
+      sessionPackages = with pkgs.unstable; [
         sway
         hyprland
       ];
@@ -145,7 +140,7 @@ in
       v4l-utils
       vial
     ])
-    ++ (with unstablePkgs; [
+    ++ (with pkgs.unstable; [
       protonvpn-cli
       protonvpn-gui
     ])

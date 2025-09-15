@@ -1,15 +1,10 @@
 {
   inputs,
   pkgs,
-  nixpkgs-unstable,
   ...
 }:
 let
   system = "x86_64-linux";
-  unstablePkgs = import nixpkgs-unstable {
-    system = "x86_64-linux";
-    config.allowUnfree = true;
-  };
 in
 {
   home = {
@@ -28,7 +23,7 @@ in
         saber
         xournalpp
       ])
-      ++ (with unstablePkgs; [
+      ++ (with pkgs.unstable; [
         dbeaver-bin
       ])
       ++ ([

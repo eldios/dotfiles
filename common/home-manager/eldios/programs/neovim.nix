@@ -1,17 +1,11 @@
 {
   pkgs,
   config,
-  nixpkgs-unstable,
   inputs,
   ...
 }:
 let
-  unstablePkgs = import nixpkgs-unstable {
-    system = pkgs.system;
-    config.allowUnfree = true;
-  };
-
-  neovim-unwrapped = unstablePkgs.neovim-unwrapped.overrideAttrs (old: {
+  neovim-unwrapped = pkgs.unstable.neovim-unwrapped.overrideAttrs (old: {
     meta = old.meta or { } // {
       maintainers = [ ];
     };
@@ -47,7 +41,7 @@ in
         ripgrep-all # used by space-f-g
       ]
       ++ (
-        with unstablePkgs;
+        with pkgs.unstable;
         [ ]
         ++ [
           inputs.mpc-hub.packages."${system}".default

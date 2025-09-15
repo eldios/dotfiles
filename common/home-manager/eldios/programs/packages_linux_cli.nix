@@ -1,11 +1,5 @@
 # Packages for Linux-specific command-line interface tools.
-{ pkgs, nixpkgs-unstable, ... }:
-let
-  unstablePkgs = import nixpkgs-unstable {
-    system = pkgs.system; # Use the system from the main pkgs
-    config.allowUnfree = true;
-  };
-in
+{ pkgs, ... }:
 {
   home = {
     packages =
@@ -28,7 +22,7 @@ in
         sshx
         tty-share
       ]
-      ++ (with unstablePkgs; [
+      ++ (with pkgs.unstable; [
         claude-code
         gemini-cli
       ]);

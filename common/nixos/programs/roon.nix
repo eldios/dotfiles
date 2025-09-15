@@ -1,14 +1,8 @@
-{ pkgs, nixpkgs-unstable, ... }:
-let
-  unstablePkgs = import nixpkgs-unstable {
-    system = pkgs.system;
-    config.allowUnfree = true;
-  };
-in
+{ pkgs, ... }:
 {
   services.roon-server = {
     enable = true;
     openFirewall = true;
-    package = unstablePkgs.roon-server;
+    package = pkgs.unstable.roon-server;
   };
 }
