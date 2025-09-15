@@ -22,7 +22,6 @@
     ];
 
     kernelPackages = pkgs.linuxPackages_latest;
-
     kernelParams = [
       "nohibernate"
       "acpi_enforce_resources=lax"
