@@ -66,6 +66,7 @@ in
         lazg = "${pkgs.lazygit}/bin/lazygit";
         lazd = "${pkgs.lazydocker}/bin/lazydocker";
 
+        f = "${pkgs.superfile}/bin/superfile";
         n = "${pkgs.nnn}/bin/nnn";
         y = "${pkgs.yazi}/bin/yazi";
 
