@@ -26,6 +26,7 @@
     ./system.nix
     ./network.nix
     ./users.nix
+    ./printing.nix
 
     home-manager.nixosModules.home-manager
     {
