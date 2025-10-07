@@ -2,9 +2,8 @@
 # This includes applications, theming, and services like gpg-agent.
 {
   pkgs,
-  lib,
   ...
-}: # Added lib for lib.throwIf
+}:
 let
   patchelfFixes = pkgs.patchelfUnstable.overrideAttrs (
     _finalAttrs: _previousAttrs: {
@@ -75,6 +74,7 @@ in
         gparted
         gromit-mpx
         inkscape
+        inlyne
         kitty
         mosh
         mpv
