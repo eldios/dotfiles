@@ -74,7 +74,6 @@ in
         gparted
         gromit-mpx
         inkscape
-        inlyne
         kitty
         mosh
         mpv

@@ -67,11 +67,12 @@ in
         lazd = "${pkgs.lazydocker}/bin/lazydocker";
 
         f = "${pkgs.superfile}/bin/superfile";
+        m = "${pkgs.inlyne}/bin/inlyne -t dark -s 1.5";
         n = "${pkgs.nnn}/bin/nnn";
         y = "${pkgs.yazi}/bin/yazi";
 
         # Kubectl
-        k = "${pkgs.kubectl}/bin/kubectl"; # FIXME: Verify package name for kubectl
+        k = "${pkgs.kubectl}/bin/kubectl";
         j = "${pkgs.just}/bin/just";
 
         ji = "${pkgs.jira-cli-go}/bin/jira issue";
@@ -84,7 +85,7 @@ in
         tfa = "tf apply -auto-approve"; # Uses the 'tf' alias
         tfd = "tf destroy -auto-approve"; # Uses the 'tf' alias
 
-        cg = "${pkgs.cargo}/bin/cargo"; # FIXME: Or from pkgs.rustc
+        cg = "${pkgs.cargo}/bin/cargo";
         cgb = "cg build"; # Uses the 'cg' alias
         cgc = "cg check"; # Uses the 'cg' alias
         cgn = "cg new"; # Uses the 'cg' alias
