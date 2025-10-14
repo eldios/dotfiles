@@ -49,6 +49,7 @@
             home-manager
             nixos-hardware
             ;
+          winboat = inputs.winboat;
         };
       }
     ];

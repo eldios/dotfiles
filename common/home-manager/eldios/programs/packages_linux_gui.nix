@@ -2,6 +2,7 @@
 # This includes applications, theming, and services like gpg-agent.
 {
   pkgs,
+  winboat,
   ...
 }:
 let
@@ -69,6 +70,7 @@ in
         dia
         easyeffects
         filezilla
+        freerdp
         geoclue2
         gimp-with-plugins
         gparted
@@ -139,6 +141,7 @@ in
       ++ [
         pcloud
         mailspring
+        winboat.packages.${pkgs.system}.winboat
       ];
   }; # EOM home
 }
