@@ -1,4 +1,9 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 {
   users.mutableUsers = false;
 
@@ -7,6 +12,7 @@
 
     isNormalUser = true;
     extraGroups = [
+      "dialout"
       "docker"
       "input"
       "libvirt"
@@ -15,17 +21,13 @@
       "wheel"
     ];
 
-    openssh.authorizedKeys.keys = (
-      lib.splitString "\n" (builtins.readFile ../files/authorized_keys)
-    );
+    openssh.authorizedKeys.keys = (lib.splitString "\n" (builtins.readFile ../files/authorized_keys));
   };
 
   users.users.root = {
     shell = pkgs.bash;
     hashedPasswordFile = config.sops.secrets."passwords/root".path;
 
-    openssh.authorizedKeys.keys = (
-      lib.splitString "\n" (builtins.readFile ../files/authorized_keys)
-    );
+    openssh.authorizedKeys.keys = (lib.splitString "\n" (builtins.readFile ../files/authorized_keys));
   };
 }
