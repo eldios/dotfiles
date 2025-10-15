@@ -23,6 +23,7 @@
         tty-share
       ]
       ++ (with pkgs.unstable; [
+        opencode
         claude-code
         gemini-cli
       ]);
