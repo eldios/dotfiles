@@ -1,13 +1,22 @@
 {
+  systemd.network.links."10-eth0" = {
+    matchConfig.PermanentMACAddress = "";
+    linkConfig.Name = "eth0";
+  };
+
   networking = {
     networkmanager.enable = true;
 
     dhcpcd.enable = true;
 
-    interfaces = { };
+    bridges = {
+      br0 = {
+        interfaces = [ "eth0" ];
+      };
+    };
 
     hostName = "kube-casa1";
-    hostId   = "d34d0005"; # random chars
+    hostId = "d34d0009"; # random chars
 
     firewall.enable = true;
   };
