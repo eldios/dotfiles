@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  peerix,
   ...
 }:
 
@@ -29,15 +28,6 @@
     logind.extraConfig = ''
       HandlePowerKey=ignore
     '';
-
-    peerix = {
-      enable = true;
-      package = peerix.packages.${pkgs.system}.peerix;
-      openFirewall = false;
-      #privateKeyFile = config.sops.secrets."keys/peerix/private".path;
-      #publicKeyFile = config.sops.secrets."keys/peerix/public".path;
-      #publicKey = "key1 key2 key3";
-    };
 
     # BEGIN - laptop related stuff
     thermald.enable = true;

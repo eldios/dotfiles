@@ -1,9 +1,23 @@
-{ config, inputs, lib, pkgs, nixpkgs-unstable, peerix, portmaster, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   # Kernel modules and options for GPU passthrough
-  boot.kernelModules = [ "vfio-pci" "vfio" "vfio_iommu_type1" ];
-  boot.blacklistedKernelModules = [ "nvidia" "nouveau" "nvidiafb" "rivafb" ];
+  boot.kernelModules = [
+    "vfio-pci"
+    "vfio"
+    "vfio_iommu_type1"
+  ];
+  boot.blacklistedKernelModules = [
+    "nvidia"
+    "nouveau"
+    "nvidiafb"
+    "rivafb"
+  ];
   boot.extraModprobeConfig = "options vfio-pci ids=10de:XXXX,10de:YYYY # FIXME: Replace 10de:XXXX and 10de:YYYY with actual Nvidia 3090 GPU and Audio device IDs respectively";
 
   system = {
@@ -29,15 +43,6 @@
       HandlePowerKey=ignore
     '';
 
-    peerix = {
-      enable = true;
-      package = peerix.packages.${pkgs.system}.peerix;
-      openFirewall = false;
-      #privateKeyFile = config.sops.secrets."keys/peerix/private".path;
-      #publicKeyFile = config.sops.secrets."keys/peerix/public".path;
-      #publicKey = "key1 key2 key3";
-    };
-
     # BEGIN - laptop related stuff
     thermald.enable = true;
     auto-cpufreq = {
@@ -62,9 +67,12 @@
 
   virtualisation.docker.storageDriver = "btrfs";
 
-  environment.systemPackages = (with pkgs; [
-    clinfo
-  ]) ++ (with pkgs.unstable; [ ]) ++ [ ];
+  environment.systemPackages =
+    (with pkgs; [
+      clinfo
+    ])
+    ++ (with pkgs.unstable; [ ])
+    ++ [ ];
 
   powerManagement = {
     enable = true;
