@@ -51,11 +51,6 @@
       url = "github:railwhale/nixpkgs/portmaster";
     };
 
-    peerix = {
-      url = "github:tomasharkema/peerix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     stylix = {
       url = "github:danth/stylix/release-25.05";
     };
@@ -66,22 +61,22 @@
   };
 
   outputs =
-    { nixpkgs
-    , darwin
-    , disko
-    , home-manager
-    , mpc-hub
-    , nixos-hardware
-    , nixpkgs-darwin
-    , nixpkgs-unstable
-    , peerix
-    , portmaster
-    , sops-nix
-    , stylix
-    , winboat
-    , xremap
-    , ...
-    } @ inputs:
+    {
+      nixpkgs,
+      darwin,
+      disko,
+      home-manager,
+      mpc-hub,
+      nixos-hardware,
+      nixpkgs-darwin,
+      nixpkgs-unstable,
+      portmaster,
+      sops-nix,
+      stylix,
+      winboat,
+      xremap,
+      ...
+    }@inputs:
     let
       forAllSystems = nixpkgs.lib.genAttrs [
         "aarch64-darwin"
@@ -102,7 +97,6 @@
           nixpkgs
           nixpkgs-darwin
           nixpkgs-unstable
-          peerix
           portmaster
           sops-nix
           stylix
@@ -121,7 +115,6 @@
         modules = [
           ./hosts/lele8845ace/nixos/configuration.nix
           disko.nixosModules.disko
-          peerix.nixosModules.peerix
           sops-nix.nixosModules.sops
         ];
       };
@@ -134,7 +127,6 @@
           ./hosts/lele9iyoga/nixos/configuration.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
-          peerix.nixosModules.peerix
         ];
       };
 
@@ -146,7 +138,6 @@
           ./hosts/wotah/nixos/configuration.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
-          peerix.nixosModules.peerix
         ];
       };
 
@@ -158,7 +149,6 @@
           ./hosts/mininixos/nixos/configuration.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
-          peerix.nixosModules.peerix
         ];
       };
 
@@ -170,7 +160,6 @@
           ./hosts/nucone/nixos/configuration.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
-          peerix.nixosModules.peerix
         ];
       };
 
@@ -182,7 +171,6 @@
           ./hosts/kube-casa1/nixos/configuration.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
-          peerix.nixosModules.peerix
         ];
       };
 

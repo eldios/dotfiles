@@ -24,9 +24,6 @@ in
 
       "tokens/github/nix" = { };
 
-      "keys/peerix/private" = { };
-      "keys/peerix/public" = { };
-
       "passwords/root" = {
         neededForUsers = true;
       };
