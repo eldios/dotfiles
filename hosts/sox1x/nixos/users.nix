@@ -1,4 +1,10 @@
-{ inputs, config, lib, pkgs, ... }:
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   secretspath = builtins.toString inputs.secrets;
 in
@@ -21,12 +27,16 @@ in
 
     hashedPasswordFile = config.sops.secrets."passwords/sox1x/nimbina".path;
     extraGroups = [
-      "wheel"
       "docker"
+      "input"
+      "uinput"
       "video"
+      "wheel"
     ];
 
-    openssh.authorizedKeys.keys = (lib.splitString "\n" (builtins.readFile ../../../common/files/authorized_keys));
+    openssh.authorizedKeys.keys = (
+      lib.splitString "\n" (builtins.readFile ../../../common/files/authorized_keys)
+    );
   };
 
   users.users.eldios = {
