@@ -131,17 +131,6 @@
       };
 
       # Minis NUC
-      nixosConfigurations.wotah = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = commonSpecialArgs;
-        modules = [
-          ./hosts/wotah/nixos/configuration.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-        ];
-      };
-
-      # Minis NUC
       nixosConfigurations.mininixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = commonSpecialArgs;
