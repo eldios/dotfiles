@@ -7,13 +7,6 @@ in
 {
   sops = {
     secrets = {
-      "keys/peerix/private" = {
-        sopsFile = "${secretspath}/lele8845ace.yaml";
-      };
-      "keys/peerix/public" = {
-        sopsFile = "${secretspath}/lele8845ace.yaml";
-      };
-
       "passwords/lele8845ace/eldios" = {
         sopsFile = "${secretspath}/lele8845ace.yaml";
         neededForUsers = true;

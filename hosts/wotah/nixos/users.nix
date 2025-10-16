@@ -5,13 +5,6 @@ in
 {
   sops = {
     secrets = {
-      "keys/peerix/private" = {
-        sopsFile = "${secretspath}/wotah.yaml";
-      };
-      "keys/peerix/public" = {
-        sopsFile = "${secretspath}/wotah.yaml";
-      };
-
       "passwords/wotah/eldios" = {
         sopsFile = "${secretspath}/wotah.yaml";
         neededForUsers = true;

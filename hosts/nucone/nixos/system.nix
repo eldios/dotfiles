@@ -1,4 +1,4 @@
-{ pkgs, peerix, ... }:
+{ pkgs, ... }:
 {
   system = {
     stateVersion = "25.05"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
@@ -16,14 +16,6 @@
       trim.enable = true;
     };
 
-    peerix = {
-      enable = true;
-      package = peerix.packages.${pkgs.system}.peerix;
-      openFirewall = false;
-      #privateKeyFile = config.sops.secrets."keys/peerix/private".path;
-      #publicKeyFile = config.sops.secrets."keys/peerix/public".path;
-      #publicKey = "key1 key2 key3";
-    };
   };
 
   hardware.cpu.intel.sgx.provision.enable = true;
