@@ -178,6 +178,16 @@ in
     # WAYLAND + SWAY
     dbus # make dbus-update-activation-environment available in the path
     glib # gsettings
+
+    # keyboard related stuff
+    gvfs
+    jmtpfs
+    qmk
+    qmk-udev-rules
+    qmk_hid
+    sof-firmware
+    v4l-utils
+    vial
   ];
 
   security = {

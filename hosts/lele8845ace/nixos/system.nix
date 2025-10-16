@@ -125,26 +125,6 @@
   # run Android apps on linux
   virtualisation.docker.storageDriver = "btrfs";
 
-  environment.systemPackages =
-    (with pkgs; [
-      clinfo
-      gvfs
-      i2c-tools
-      jmtpfs
-      openrgb-with-all-plugins
-      qmk
-      qmk-udev-rules
-      qmk_hid
-      sof-firmware
-      v4l-utils
-      via
-      vial
-    ])
-    ++ (with pkgs.unstable; [ ])
-    ++ [
-      #portmaster.legacyPackages.${pkgs.system}.portmaster
-    ];
-
   programs = {
     steam = {
       enable = true;

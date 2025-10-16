@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  portmaster,
   peerix,
   ...
 }:
@@ -128,24 +127,13 @@
 
   virtualisation.docker.storageDriver = "btrfs";
 
-  environment.systemPackages =
-    (with pkgs; [
-      gvfs
-      jmtpfs
-      qmk
-      qmk-udev-rules
-      qmk_hid
-      sof-firmware
-      v4l-utils
-      vial
-    ])
-    ++ (with pkgs.unstable; [
+  environment.systemPackages = (
+    with pkgs.unstable;
+    [
       protonvpn-cli
       protonvpn-gui
-    ])
-    ++ [
-      portmaster.legacyPackages.${pkgs.system}.portmaster
-    ];
+    ]
+  );
 
   programs = {
     steam = {
