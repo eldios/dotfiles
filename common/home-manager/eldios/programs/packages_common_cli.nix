@@ -134,6 +134,7 @@
       psmisc
       pv
       pwgen
+      qmk
       rclone
       ripgrep
       ripgrep-all
@@ -147,6 +148,8 @@
       unzip
       usbutils
       util-linux
+      via
+      vial
       wget
       magic-wormhole-rs
       yazi
