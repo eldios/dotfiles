@@ -183,12 +183,14 @@ in
     gvfs
     jmtpfs
     qmk
-    qmk-udev-rules
-    qmk_hid
     sof-firmware
     v4l-utils
+    via
     vial
   ];
+
+  hardware.keyboard.qmk.enable = true;
+  services.udev.packages = [ pkgs.via ];
 
   security = {
     polkit.enable = true;
