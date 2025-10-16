@@ -255,8 +255,6 @@
   # printing and others.
   services.dbus.enable = true;
 
-  services.udev.packages = [ pkgs.via ];
-
   security = {
     pam.services.swaylock = { };
   };
