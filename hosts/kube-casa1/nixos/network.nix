@@ -1,6 +1,6 @@
 {
   systemd.network.links."10-eth0" = {
-    matchConfig.PermanentMACAddress = "";
+    matchConfig.PermanentMACAddress = "68:1d:ef:40:80:d1";
     linkConfig.Name = "eth0";
   };
 
