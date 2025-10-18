@@ -65,36 +65,47 @@ in
         # GUI Applications
         appimage-run
         arandr
+        atop
         audacity
+        barrier
+        cameractrls
         cool-retro-term
         dia
+        dive
         easyeffects
         filezilla
         freerdp
+        gcal
         geoclue2
         gimp-with-plugins
         gparted
+        graph-easy
         gromit-mpx
+        guvcview
         inkscape
         kitty
-        mosh
+        lens
         mpv
         obs-studio
-        lens
         paperview
         pavucontrol
+        pcmanfm
         pika-backup
         pulseaudio # to install tools like pactl
-        pcmanfm
+        quickgui
         redshift
+        remmina
         screenkey
         scribus
         signal-desktop
         slack
+        spice
         streamcontroller
         syncthing
         telegram-desktop
         unclutter # unclutter -idle 1 -root -grab -visible
+        uqm
+        uvcdynctrl
         vivaldi
         vivaldi-ffmpeg-codecs
         vlc
@@ -111,7 +122,6 @@ in
         styluslabs-write-bin
         write_stylus
         xournalpp
-
       ])
       ++ (with pkgs.unstable; [
         anytype
@@ -119,6 +129,7 @@ in
         bitwarden
         brave
         cryptomator
+        dbeaver-bin
         discord-canary
         spotify-unwrapped
         tidal-hifi
@@ -134,9 +145,13 @@ in
 
         # 2nd Brain stuff
         appflowy
-        cameractrls
         obsidian # Assuming the override is handled or not needed for now
         rnote
+
+        # AI CLI tools
+        opencode
+        claude-code
+        gemini-cli
       ])
       ++ [
         pcloud
