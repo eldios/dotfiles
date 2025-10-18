@@ -1,4 +1,3 @@
-# Packages for Linux-specific command-line interface tools.
 { pkgs, ... }:
 {
   home = {
@@ -6,21 +5,29 @@
       with pkgs;
       [
         atop
+        barrier
         dive
         docker-slim
         gcal
         graph-easy
+        guvcview
         iotop
         k3s
         lazydocker
+        mosh
         ncdu
         networkmanager
         ntfs3g
         p7zip
         powertop
         quickemu
+        remmina
+        spice
         sshx
         tty-share
+        uqm
+        uvcdynctrl
+        vlc
       ]
       ++ (with pkgs.unstable; [
         opencode
