@@ -1,33 +1,14 @@
 {
-  inputs,
   pkgs,
   ...
 }:
-let
-  system = "x86_64-linux";
-in
 {
   home = {
-    packages =
-      (with pkgs; [
-        barrier
-        guvcview
-        quickemu
-        remmina
-        spice
-        uqm
-        uvcdynctrl
-        vlc
-        wine
-        # handwriting
-        saber
-        xournalpp
-      ])
-      ++ (with pkgs.unstable; [
-        dbeaver-bin
-      ])
-      ++ ([
-        inputs.zen-browser.packages."${system}".specific
-      ]);
+    packages = (
+      with pkgs;
+      [
+      ]
+    );
   };
 } # EOF
+# vim: set ts=2 sw=2 et ai list nu
