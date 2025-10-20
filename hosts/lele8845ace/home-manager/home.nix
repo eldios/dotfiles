@@ -30,7 +30,6 @@
   imports = [
     ./display.nix
     ./services.nix
-    ./xremap.nix
 
     ./pkgs.nix
 
