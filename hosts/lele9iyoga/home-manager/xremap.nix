@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ...}:
+{ inputs, ... }:
 
 {
   imports = [
@@ -6,6 +6,8 @@
   ];
 
   services.xremap = {
+    enable = true;
+
     withWlroots = true;
 
     config = {
