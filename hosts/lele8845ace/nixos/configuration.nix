@@ -14,6 +14,7 @@
 
     ../../../common/nixos/users.nix
     ../../../common/nixos/system.nix
+    ../../../common/nixos/audio.nix
 
     ../../../common/nixos/programs/neovim.nix
     ../../../common/nixos/programs/niri.nix
