@@ -119,6 +119,7 @@
       github-cli
       glances
       gnupg
+      home-assistant-cli
       inetutils
       inxi
       just
