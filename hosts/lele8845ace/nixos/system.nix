@@ -22,7 +22,7 @@
   services = {
     hardware = {
       openrgb = {
-        enable = true;
+        enable = false; # disabled since mbed-tls is insecure for now
         motherboard = "amd";
         package = pkgs.openrgb-with-all-plugins;
       };
