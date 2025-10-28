@@ -1,29 +1,32 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, ... }:
 {
-  environment.systemPackages = with pkgs; [
-    # Docker
-    docker
-    docker-buildx
-    k0sctl
-    k3s
-    k9s
-    kind
-    kind
-    kubectx
-    kubelogin
-    kubelogin-oidc
-    kubernetes-helm
-    nerdctl
-    yamlfmt
-    yamllint
-
-    # Virtualisation
-    virt-manager
-    virtiofsd
-  ];
+  environment.systemPackages =
+    (with pkgs; [
+      docker
+      docker-buildx
+      k0sctl
+      k3s
+      kind
+      kind
+      kubectx
+      kubelogin
+      kubelogin-oidc
+      kubernetes-helm
+      talosctl
+      virtiofsd
+      yamlfmt
+      yamllint
+    ])
+    ++ (with pkgs.unstable; [
+      k9s
+      nerdctl
+      virt-manager
+    ]);
 
   # Add any users in the 'wheel' group to the 'libvirt' group.
-  users.groups.libvirt.members = builtins.filter (x: builtins.elem "wheel" config.users.users."${x}".extraGroups) (builtins.attrNames config.users.users);
+  users.groups.libvirt.members = builtins.filter (
+    x: builtins.elem "wheel" config.users.users."${x}".extraGroups
+  ) (builtins.attrNames config.users.users);
 
   virtualisation = {
     containerd.enable = true;
