@@ -1,12 +1,30 @@
-{ lib, ... }:
 {
+  # Rename interfaces based on MAC address to predictable names
+  systemd.network.links = {
+    "10-wlan0" = {
+      matchConfig.MACAddress = "b0:47:e9:00:bd:9c";
+      linkConfig.Name = "wlan0";
+    };
+  };
+
   networking = {
-    networkmanager.enable = true;
+    usePredictableInterfaceNames = false; # We handle naming via systemd.network.links
+    networkmanager = {
+      enable = true;
+      unmanaged = [ ];
+    };
 
-    useDHCP = lib.mkDefault true;
-    dhcpcd.enable = true;
+    bridges = {
+      br0 = {
+        interfaces = [ "wlan0" ];
+      };
+    };
 
-    interfaces = { };
+    interfaces = {
+      br0 = {
+        useDHCP = true;
+      };
+    };
 
     hostName = "lele9iyoga";
     hostId = "d34d0007"; # random chars
@@ -21,6 +39,9 @@
       allowedUDPPorts = [
         51820 # wireguard
       ];
+
+      checkReversePath = false;
+      trustedInterfaces = [ "br0" ];
     };
 
   };
