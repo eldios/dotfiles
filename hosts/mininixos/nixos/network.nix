@@ -1,15 +1,28 @@
 {
+  # Rename interfaces based on MAC address to predictable names
+  systemd.network.links = {
+    "10-eno0" = {
+      matchConfig.MACAddress = "58:47:ca:7d:39:8e";
+      linkConfig.Name = "eno0";
+    };
+    "10-wlan0" = {
+      matchConfig.MACAddress = "58:47:ca:7d:39:8e";
+      linkConfig.Name = "wlan0";
+    };
+  };
+
   networking = {
-    dhcpcd.enable = true;
-    usePredictableInterfaceNames = true;
+    usePredictableInterfaceNames = false; # We handle naming via systemd.network.links
+    networkmanager = {
+      enable = true;
+      unmanaged = [ ];
+    };
 
     interfaces = {
       eno0 = {
-        macAddress = "58:47:ca:7d:39:8e";
       };
 
       wlan0 = {
-        macAddress = "58:47:ca:7d:39:8e";
       };
 
       br0 = {
@@ -28,12 +41,6 @@
         interfaces = [ "eno0" ]; # Replace with your actual network interface
       };
     };
-
-    defaultGateway = "192.168.152.1";
-    nameservers = [
-      "1.1.1.1"
-      "8.8.8.8"
-    ];
 
     hostName = "mininixos";
     hostId = "d34d0003"; # random chars
