@@ -56,6 +56,7 @@ in
       hyprland-protocols
       hyprpaper
       hyprpicker
+      hyprshot
       kitty
       lavalauncher
       libva-utils
@@ -127,7 +128,7 @@ in
       ];
 
       # Monitor configuration - sets up dual monitor layout
-      monitor = [];
+      monitor = [ ];
 
       general = {
         layout = "dwindle"; # Use dwindle layout (binary tree) instead of master-stack
