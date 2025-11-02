@@ -4,24 +4,22 @@
     usePredictableInterfaceNames = true;
 
     interfaces = {
-      eno1 = {
-        macAddress = "1c:69:7a:0e:15:6d";
+      eno0 = {
+        macAddress = "58:47:ca:7d:39:8e";
+      };
+
+      wlan0 = {
+        macAddress = "58:47:ca:7d:39:8e";
       };
 
       br0 = {
         useDHCP = true;
-        ipv4.addresses = [
-          {
-            address = "192.168.155.111";
-            prefixLength = 21;
-          }
-        ];
       };
     };
 
     bridges = {
       br0 = {
-        interfaces = [ "eno1" ]; # Replace with your actual network interface
+        interfaces = [ "eno0" ]; # Replace with your actual network interface
       };
     };
 
