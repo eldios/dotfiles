@@ -14,6 +14,12 @@
 
       br0 = {
         useDHCP = true;
+        ipv4.addresses = [
+          {
+            address = "192.168.155.111";
+            prefixLength = 21;
+          }
+        ];
       };
     };
 
