@@ -107,6 +107,7 @@
       bombadillo
       btop
       calcurse
+      caligula
       cbonsai
       cmatrix
       cowsay
