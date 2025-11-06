@@ -145,6 +145,13 @@ in
 
         ${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}
       '';
+
+      initExtra = ''
+        # Source local configuration if it exists
+        if [[ -f "$HOME/.config/zsh/zshrc.local" ]]; then
+          source "$HOME/.config/zsh/zshrc.local"
+        fi
+      '';
     }; # EOM zsh
 
   }; # EOM programs
