@@ -34,11 +34,32 @@
           }
         ];
       };
+
+      # VLAN 50 interface for NAS network
+      "eno0.50" = {
+        # No IP needed - bridged to br50
+      };
+
+      # Bridge for VLAN 50 (NAS network)
+      br50 = {
+        # No IP needed on host - VMs will use this bridge
+      };
+    };
+
+    # VLAN interfaces
+    vlans = {
+      "eno0.50" = {
+        id = 50;
+        interface = "eno0";
+      };
     };
 
     bridges = {
       br0 = {
-        interfaces = [ "eno0" ]; # Replace with your actual network interface
+        interfaces = [ "eno0" ]; # Main network (untagged)
+      };
+      br50 = {
+        interfaces = [ "eno0.50" ]; # VLAN 50 (NAS network)
       };
     };
 
@@ -50,7 +71,7 @@
       # allowedTCPPorts = [ ... ];
       # allowedUDPPorts = [ ... ];
       checkReversePath = false;
-      trustedInterfaces = [ "br0" ];
+      trustedInterfaces = [ "br0" "br50" ];
     };
   };
 }
