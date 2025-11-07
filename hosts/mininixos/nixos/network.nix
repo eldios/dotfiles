@@ -15,7 +15,7 @@
     usePredictableInterfaceNames = false; # We handle naming via systemd.network.links
     networkmanager = {
       enable = true;
-      unmanaged = [ ];
+      unmanaged = [ "eno0" "eno0.50" "br0" "br50" ];
     };
 
     interfaces = {
