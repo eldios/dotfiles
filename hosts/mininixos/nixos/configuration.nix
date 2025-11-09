@@ -28,6 +28,7 @@
       ./boot.nix
       ./system.nix
       ./network.nix
+      ./data-storage.nix
 
       home-manager.nixosModules.home-manager
       {
