@@ -37,11 +37,6 @@
       url = "github:MarceColl/zen-browser-flake";
     };
 
-    winboat = {
-      url = "github:TibixDev/winboat";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     secrets = {
       url = "git+ssh://git@github.com/eldios/secrets.git?ref=main&shallow=1";
       flake = false;
@@ -73,7 +68,6 @@
       portmaster,
       sops-nix,
       stylix,
-      winboat,
       xremap,
       ...
     }@inputs:
@@ -100,7 +94,6 @@
           portmaster
           sops-nix
           stylix
-          winboat
           xremap
           ;
       };
