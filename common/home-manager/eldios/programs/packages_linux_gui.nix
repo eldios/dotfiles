@@ -2,7 +2,6 @@
 # This includes applications, theming, and services like gpg-agent.
 {
   pkgs,
-  winboat,
   ...
 }:
 let
@@ -156,7 +155,6 @@ in
       ++ [
         pcloud
         mailspring
-        winboat.packages.${pkgs.system}.winboat
       ];
   }; # EOM home
 }
