@@ -132,7 +132,7 @@ in
         cryptomator
         dbeaver-bin
         discord-canary
-        spotify-unwrapped
+        spotify
         tidal-hifi
         variety
         vesktop # discord + some fixes
