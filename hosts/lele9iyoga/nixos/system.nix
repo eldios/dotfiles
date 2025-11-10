@@ -120,7 +120,6 @@
   environment.systemPackages = (
     with pkgs.unstable;
     [
-      protonvpn-cli
       protonvpn-gui
     ]
   );
