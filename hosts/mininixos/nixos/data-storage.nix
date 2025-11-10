@@ -3,12 +3,12 @@
 {
   boot.initrd.luks.devices = {
     "KMa" = {
-      device = "/dev/sdc1";
+      device = "/dev/disk/by-id/ata-WDC_WD102KFBX-68M95N0_VCG9HBKM-part1";
       keyFile = "/root/data.key";
       allowDiscards = true;
     };
     "KMb" = {
-      device = "/dev/sdd1";
+      device = "/dev/disk/by-id/ata-WDC_WD102KFBX-68M95N0_VCG6MLWN-part1";
       keyFile = "/root/data.key";
       allowDiscards = true;
     };
