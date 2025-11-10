@@ -44,6 +44,7 @@
       opentofu
       portal
       postman
+      shellcheck
       sops
       sshs
       terracognita
