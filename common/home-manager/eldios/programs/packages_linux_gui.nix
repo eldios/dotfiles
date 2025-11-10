@@ -125,7 +125,9 @@ in
       ++ (with pkgs.unstable; [
         anytype
         beeper
-        bitwarden
+        bitwarden-cli
+        bitwarden-desktop
+        bitwarden-menu
         brave
         cryptomator
         dbeaver-bin
