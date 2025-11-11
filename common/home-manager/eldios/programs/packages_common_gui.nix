@@ -2,25 +2,30 @@
 { pkgs, ... }:
 {
   home = {
-    packages = with pkgs; [
-      # GUI Utilities
-      alacritty # gpu accelerated terminal
-      alacritty-theme # alacritty themes
-      cointop
-      ffmpeg
-      (flameshot.override { enableWlrSupport = true; })
-      imagemagick
-      papirus-icon-theme # Icon theme for rofi
-      wmctrl
-      yewtube
-      yt-dlp
+    packages =
+      with pkgs;
+      [
+        (flameshot.override { enableWlrSupport = true; })
 
-      # Fonts
-      anonymousPro
-      corefonts
-      font-awesome
-      meslo-lgs-nf
-    ] ++ (builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts));
+        # GUI Utilities
+        alacritty # gpu accelerated terminal
+        alacritty-theme # alacritty themes
+        cointop
+        ffmpeg
+        imagemagick
+        jellyfin-media-player
+        papirus-icon-theme # Icon theme for rofi
+        wmctrl
+        yewtube
+        yt-dlp
+
+        # Fonts
+        anonymousPro
+        corefonts
+        font-awesome
+        meslo-lgs-nf
+      ]
+      ++ (builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts));
   }; # EOF
 }
 # vim: set ts=2 sw=2 et ai list nu
