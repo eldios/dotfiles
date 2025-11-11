@@ -69,6 +69,7 @@ in
         barrier
         cameractrls
         cool-retro-term
+        cryptomator
         dia
         dive
         easyeffects
@@ -129,7 +130,6 @@ in
         bitwarden-desktop
         bitwarden-menu
         brave
-        cryptomator
         dbeaver-bin
         discord-canary
         spotify
