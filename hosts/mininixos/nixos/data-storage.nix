@@ -2,25 +2,26 @@
 
 {
   boot.initrd.luks.devices = {
-    "KMa" = {
-      device = "/dev/disk/by-id/ata-WDC_WD102KFBX-68M95N0_VCG9HBKM-part1";
+    "Kdata" = {
+      device = "/dev/md3";
       keyFile = "/root/data.key";
-      allowDiscards = true;
-    };
-    "KMb" = {
-      device = "/dev/disk/by-id/ata-WDC_WD102KFBX-68M95N0_VCG6MLWN-part1";
-      keyFile = "/root/data.key";
-      allowDiscards = true;
     };
   };
 
+  boot.swraid = {
+    enable = true;
+    mdadmConf = ''
+      ARRAY /dev/md3 devices=/dev/disk/by-id/wwn-0x5000c500ea465078,/dev/disk/by-id/wwn-0x5000c50000465a5a,/dev/disk/by-id/wwn-0x500000005a5aff0c
+    '';
+  };
+
   fileSystems."/data" = {
-    device = "/dev/disk/by-uuid/5c550c2f-ea48-422d-af69-459eeba5c822";
+    device = "/dev/mapper/Kdata"; # Your new UUID
     fsType = "btrfs";
     options = [
-      "compress=zstd"
+      "compress=zstd:3"
       "noatime"
-      "nodiratime"
+      "autodefrag"
     ];
   };
 }
