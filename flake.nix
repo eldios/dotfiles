@@ -42,10 +42,6 @@
       flake = false;
     };
 
-    portmaster = {
-      url = "github:railwhale/nixpkgs/portmaster";
-    };
-
     stylix = {
       url = "github:danth/stylix/release-25.05";
     };
@@ -53,19 +49,38 @@
     mpc-hub = {
       url = "github:ravitemer/mcp-hub";
     };
+
+    dgop = {
+      url = "github:AvengeMedia/dgop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    dms-cli = {
+      url = "github:AvengeMedia/danklinux";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    dankMaterialShell = {
+      url = "github:AvengeMedia/DankMaterialShell";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.dgop.follows = "dgop";
+      inputs.dms-cli.follows = "dms-cli";
+    };
   };
 
   outputs =
     {
-      nixpkgs,
+      dankMaterialShell,
       darwin,
+      dgop,
       disko,
+      dms-cli,
       home-manager,
       mpc-hub,
       nixos-hardware,
+      nixpkgs,
       nixpkgs-darwin,
       nixpkgs-unstable,
-      portmaster,
       sops-nix,
       stylix,
       xremap,
@@ -83,7 +98,10 @@
       # It includes inputs from other flakes (like home-manager, sops-nix) and nixpkgs instances.
       commonSpecialArgs = {
         inherit
+          dankMaterialShell
+          dgop
           disko
+          dms-cli
           home-manager
           inputs
           mpc-hub
@@ -91,7 +109,6 @@
           nixpkgs
           nixpkgs-darwin
           nixpkgs-unstable
-          portmaster
           sops-nix
           stylix
           xremap
