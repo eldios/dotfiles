@@ -1,22 +1,17 @@
 # common/home-manager/eldios/style/stylix.nix
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 
 let
   # Assuming this stylix.nix is in common/home-manager/eldios/style/
   # and themes are in common/themes/
   themesBaseDir = ../../../themes; # Relative path to the 'themes' directory
-  themeName = "eldios_neon";
-
-  currentThemePath = themesBaseDir + ("/" + themeName);
-
-  themeFile = currentThemePath + ("/" + themeName) + ".yaml";
 in
 {
   stylix = {
     enable = true;
     autoEnable = true;
 
-    image = "${ themesBaseDir }/wp.jpg";
+    image = "${themesBaseDir}/wp.jpg";
     polarity = "dark";
 
     # Add base16 scheme if theme file doesn't exist
