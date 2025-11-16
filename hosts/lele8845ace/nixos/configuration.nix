@@ -1,4 +1,11 @@
-{ inputs, nixpkgs, nixpkgs-unstable, nixos-hardware, home-manager, ... }:
+{
+  inputs,
+  nixpkgs,
+  nixpkgs-unstable,
+  nixos-hardware,
+  home-manager,
+  ...
+}:
 {
   imports = [
     # select hardware from https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
@@ -15,6 +22,7 @@
     ../../../common/nixos/users.nix
     ../../../common/nixos/system.nix
     ../../../common/nixos/audio.nix
+    ../../../common/nixos/nix-cache.nix
 
     ../../../common/nixos/programs/neovim.nix
     ../../../common/nixos/programs/niri.nix
