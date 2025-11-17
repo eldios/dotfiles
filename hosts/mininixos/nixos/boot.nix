@@ -7,7 +7,9 @@
 
     supportedFilesystems = [ "zfs" ];
 
-    kernelPackages = pkgs.linuxPackages_6_17;
+    # Use LTS kernel 6.12 for stable ZFS support
+    # 6.17 not yet supported by stable OpenZFS (only in 2.4.0-RC)
+    kernelPackages = pkgs.linuxPackages_6_12;
     kernelParams = [
       "nohibernate"
       "zfs.zfs_arc_max=6442856000"
