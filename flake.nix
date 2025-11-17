@@ -64,7 +64,7 @@
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.dgop.follows = "dgop";
-      inputs.dms-cli.follows = "dms-cli";
+      # Note: dms-cli input doesn't exist in upstream DankMaterialShell
     };
   };
 
@@ -120,7 +120,6 @@
       # its specific hardware and software configuration modules.
       # Lele's AMD 8845 AceMagic NUC
       nixosConfigurations.lele8845ace = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         specialArgs = commonSpecialArgs;
         modules = [
           ./hosts/lele8845ace/nixos/configuration.nix
@@ -131,7 +130,6 @@
 
       # Lele's Yoga9i
       nixosConfigurations.lele9iyoga = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         specialArgs = commonSpecialArgs;
         modules = [
           ./hosts/lele9iyoga/nixos/configuration.nix
@@ -142,7 +140,6 @@
 
       # Minis NUC
       nixosConfigurations.mininixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         specialArgs = commonSpecialArgs;
         modules = [
           ./hosts/mininixos/nixos/configuration.nix
@@ -153,7 +150,6 @@
 
       # intel NUC
       nixosConfigurations.nucone = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         specialArgs = commonSpecialArgs;
         modules = [
           ./hosts/nucone/nixos/configuration.nix
@@ -164,7 +160,6 @@
 
       # MiniPC NUC
       nixosConfigurations.kube-casa1 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         specialArgs = commonSpecialArgs;
         modules = [
           ./hosts/kube-casa1/nixos/configuration.nix
