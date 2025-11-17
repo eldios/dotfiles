@@ -34,6 +34,7 @@
     ./system.nix
     ./network.nix
     ./data-storage.nix
+    ./libvirt-vms.nix
 
     home-manager.nixosModules.home-manager
     {
