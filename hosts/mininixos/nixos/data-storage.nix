@@ -16,6 +16,11 @@
     before = [ "systemd-cryptsetup@Kdata.service" ];
     wantedBy = [ "multi-user.target" ];
 
+    # Only run if array is not already active
+    unitConfig = {
+      ConditionPathExists = "!/sys/block/md3/md/array_state";
+    };
+
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
