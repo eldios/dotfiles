@@ -16,7 +16,8 @@
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = "yes";
-        ExecStart = "${pkgs.libvirt}/bin/virsh start media";
+        # Only start if not already running (idempotent)
+        ExecStart = ''${pkgs.bash}/bin/bash -c "state=$(${pkgs.libvirt}/bin/virsh domstate media 2>/dev/null || echo 'shut off'); [[ \$state == 'shut off' ]] && ${pkgs.libvirt}/bin/virsh start media || exit 0"'';
         ExecStop = "${pkgs.libvirt}/bin/virsh shutdown media";
       };
     };
@@ -30,7 +31,7 @@
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = "yes";
-        ExecStart = "${pkgs.libvirt}/bin/virsh start Umbrel";
+        ExecStart = ''${pkgs.bash}/bin/bash -c "state=$(${pkgs.libvirt}/bin/virsh domstate Umbrel 2>/dev/null || echo 'shut off'); [[ \$state == 'shut off' ]] && ${pkgs.libvirt}/bin/virsh start Umbrel || exit 0"'';
         ExecStop = "${pkgs.libvirt}/bin/virsh shutdown Umbrel";
       };
     };
@@ -44,7 +45,7 @@
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = "yes";
-        ExecStart = "${pkgs.libvirt}/bin/virsh start HomeAssistant";
+        ExecStart = ''${pkgs.bash}/bin/bash -c "state=$(${pkgs.libvirt}/bin/virsh domstate HomeAssistant 2>/dev/null || echo 'shut off'); [[ \$state == 'shut off' ]] && ${pkgs.libvirt}/bin/virsh start HomeAssistant || exit 0"'';
         ExecStop = "${pkgs.libvirt}/bin/virsh shutdown HomeAssistant";
       };
     };
@@ -58,7 +59,7 @@
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = "yes";
-        ExecStart = "${pkgs.libvirt}/bin/virsh start bsdino";
+        ExecStart = ''${pkgs.bash}/bin/bash -c "state=$(${pkgs.libvirt}/bin/virsh domstate bsdino 2>/dev/null || echo 'shut off'); [[ \$state == 'shut off' ]] && ${pkgs.libvirt}/bin/virsh start bsdino || exit 0"'';
         ExecStop = "${pkgs.libvirt}/bin/virsh shutdown bsdino";
       };
     };
