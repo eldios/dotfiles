@@ -24,6 +24,8 @@
     ../../../common/nixos/users.nix
     ../../../common/nixos/system.nix
 
+    ../../../common/nixos/nix-cache.nix
+
     ../../../common/nixos/programs/neovim.nix
 
     ../../../common/nixos/virtualisation.nix
