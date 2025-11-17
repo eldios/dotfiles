@@ -118,7 +118,7 @@
   virtualisation.docker.storageDriver = "btrfs";
 
   environment.systemPackages = (
-    with pkgs.stable;
+    with pkgs;
     [
       protonvpn-gui
     ]
