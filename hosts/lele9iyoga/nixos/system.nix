@@ -11,6 +11,8 @@
     autoUpgrade.enable = true;
   };
 
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
   # HOME - Italy - Rome
   time.timeZone = lib.mkForce "Europe/Rome";
 
