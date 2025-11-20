@@ -5,6 +5,8 @@
     autoUpgrade.enable = true;
   };
 
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
   virtualisation.docker.storageDriver = "zfs";
 
   services = {
