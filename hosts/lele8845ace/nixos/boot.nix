@@ -32,6 +32,7 @@
       supportedFilesystems = [ "btrfs" ];
       kernelModules = [ "amdgpu" ];
       availableKernelModules = [
+        "ahci"
         "nls_cp437"
         "nls_iso8859_1"
         "nvme"
