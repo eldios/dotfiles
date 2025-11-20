@@ -140,9 +140,9 @@ in
         #pdfposter
 
         # 3D Printing
-        #super-slicer
-        prusa-slicer
         freecad-wayland
+        orca-slicer
+        prusa-slicer
 
         # 2nd Brain stuff
         appflowy
