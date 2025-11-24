@@ -54,27 +54,13 @@
       url = "github:AvengeMedia/dgop";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    dms-cli = {
-      url = "github:AvengeMedia/danklinux";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    dankMaterialShell = {
-      url = "github:AvengeMedia/DankMaterialShell";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.dgop.follows = "dgop";
-      # Note: dms-cli input doesn't exist in upstream DankMaterialShell
-    };
   };
 
   outputs =
     {
-      dankMaterialShell,
       darwin,
       dgop,
       disko,
-      dms-cli,
       home-manager,
       mpc-hub,
       nixos-hardware,
@@ -98,10 +84,8 @@
       # It includes inputs from other flakes (like home-manager, sops-nix) and nixpkgs instances.
       commonSpecialArgs = {
         inherit
-          dankMaterialShell
           dgop
           disko
-          dms-cli
           home-manager
           inputs
           mpc-hub
