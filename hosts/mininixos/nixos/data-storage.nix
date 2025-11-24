@@ -34,21 +34,7 @@
   # Kdata depends on RAID assembly, KMa/KMb are independent disks
   environment.etc."crypttab".text = ''
     Kdata /dev/md3 /root/data.key luks,x-systemd.requires=mdadm-assemble-md3.service
-    KMa   /dev/disk/by-id/ata-WDC_WD102KFBX-68M95N0_VCG9HBKM-part1 /root/data.key luks
-    KMb   /dev/disk/by-id/ata-WDC_WD102KFBX-68M95N0_VCG6MLWN-part1 /root/data.key luks
   '';
-
-  fileSystems."/old_data" = {
-    device = "/dev/disk/by-id/dm-name-KMa";
-    fsType = "btrfs";
-    options = [
-      "compress=zstd:3"
-      "noatime"
-      "autodefrag"
-      "nofail" # Don't fail boot if mount fails
-      "x-systemd.requires=systemd-cryptsetup@KMa.service" # Wait for decryption
-    ];
-  };
 
   fileSystems."/data" = {
     device = "/dev/mapper/Kdata";
