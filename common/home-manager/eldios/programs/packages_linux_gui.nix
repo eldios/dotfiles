@@ -152,7 +152,6 @@ in
         # AI CLI tools
         opencode
         claude-code
-        gemini-cli
       ])
       ++ [
         pcloud

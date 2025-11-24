@@ -41,6 +41,7 @@ in
     };
     overlays = [
       (import ./overlays/unstable-packages.nix { inherit nixpkgs-unstable; })
+      (import ./overlays/custom-packages.nix)
     ];
   };
 
