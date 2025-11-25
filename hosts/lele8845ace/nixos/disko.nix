@@ -21,6 +21,7 @@
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
+                mountOptions = [ "noatime" "nodiratime" ];
               };
             };
             data = {
@@ -37,23 +38,23 @@
                   subvolumes = {
                     "/os" = {
                       mountpoint = "/";
-                      mountOptions = [ "compress=zstd" "noatime" ];
+                      mountOptions = [ "compress=zstd" "noatime" "nodiratime" ];
                     };
                     "/home" = {
                       mountpoint = "/home";
-                      mountOptions = [ "compress=zstd" "noatime" ];
+                      mountOptions = [ "compress=zstd" "noatime" "nodiratime" "commit=60" ];
                     };
                     "/data" = {
                       mountpoint = "/data";
-                      mountOptions = [ "compress=zstd" "noatime" ];
+                      mountOptions = [ "compress=zstd" "noatime" "nodiratime" "commit=60" ];
                     };
                     "/var" = {
                       mountpoint = "/var";
-                      mountOptions = [ "compress=zstd" "noatime" ];
+                      mountOptions = [ "compress=zstd" "noatime" "nodiratime" ];
                     };
                     "/nix" = {
                       mountpoint = "/nix";
-                      mountOptions = [ "compress=zstd" "noatime" ];
+                      mountOptions = [ "compress=zstd:6" "noatime" "nodiratime" ];
                     };
                   };
                 };
