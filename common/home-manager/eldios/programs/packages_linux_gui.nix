@@ -132,6 +132,7 @@ in
         brave
         dbeaver-bin
         discord-canary
+        sonixd
         spotify
         tidal-hifi
         variety
