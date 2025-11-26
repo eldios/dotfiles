@@ -31,41 +31,24 @@ let
     '';
   };
 
-  claude-code = super.stdenv.mkDerivation rec {
-    pname = "claude-code";
+  claudeCodeOverride = oldAttrs: rec {
     version = "2.0.53";
 
-    src = super.fetchurl {
-      url = "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/${version}/linux-x64/claude";
-      sha256 = "1ipimfj418fm2hvg4wgl3940mpfhbq6mi8a0l5zbzdkz42gc2k4w";
+    src = super.fetchzip {
+      url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
+      hash = "sha256-GDk3oROfwlreyZ95oWkUc/OAv8pRHhHLDcwmRzXq3Wg=";
     };
 
-    dontUnpack = true;
-    dontBuild = true;
-
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $out/bin
-      cp $src $out/bin/claude
-      chmod +x $out/bin/claude
-      runHook postInstall
-    '';
-
-    meta = with super.lib; {
-      description = "Claude Code - AI-powered coding assistant for your terminal";
-      homepage = "https://github.com/anthropics/claude-code";
-      license = licenses.unfree;
-      platforms = platforms.linux;
-      mainProgram = "claude";
-    };
+    # This hash will need to be updated - let the build fail once to get the correct hash
+    npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
   };
 in
 {
   gemini-cli = super.gemini-cli.overrideAttrs geminiCliOverride;
+  claude-code = super.claude-code.overrideAttrs claudeCodeOverride;
 
-  inherit claude-code;
   unstable = super.unstable // {
     gemini-cli = super.unstable.gemini-cli.overrideAttrs geminiCliOverride;
-    inherit claude-code;
+    claude-code = super.unstable.claude-code.overrideAttrs claudeCodeOverride;
   };
 }
