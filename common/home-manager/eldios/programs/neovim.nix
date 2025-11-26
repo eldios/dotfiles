@@ -44,7 +44,7 @@ in
         with pkgs.unstable;
         [ ]
         ++ [
-          inputs.mpc-hub.packages."${system}".default
+          inputs.mpc-hub.packages."${pkgs.stdenv.hostPlatform.system}".default
         ]
       );
   };
