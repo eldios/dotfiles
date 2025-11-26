@@ -8,6 +8,12 @@
 }:
 
 {
+  # Apply overlays here to avoid warning with home-manager.useGlobalPkgs
+  nixpkgs.overlays = [
+    (import ../../../common/nixos/overlays/unstable-packages.nix { inherit nixpkgs-unstable; })
+    (import ../../../common/nixos/overlays/custom-packages.nix)
+  ];
+
   imports = [
     # select hardware from https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
     # mininixos
