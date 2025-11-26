@@ -10,6 +10,8 @@ in
   stylix = {
     enable = true;
     autoEnable = true;
+    # Disable overlays to avoid warning with home-manager.useGlobalPkgs
+    overlays.enable = false;
 
     image = "${themesBaseDir}/wp.jpg";
     polarity = "dark";

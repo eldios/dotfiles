@@ -35,15 +35,9 @@ in
   systemd.services.zfs-mount.enable = false;
   systemd.services.NetworkManager-wait-online.enable = false;
 
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-    };
-    overlays = [
-      (import ./overlays/unstable-packages.nix { inherit nixpkgs-unstable; })
-      (import ./overlays/custom-packages.nix)
-    ];
-  };
+  # nixpkgs configuration moved to avoid warning with home-manager.useGlobalPkgs
+  # Overlays are now applied through nixpkgs.overlays at host level
+  nixpkgs.config.allowUnfree = true;
 
   # nix
   nix = {
