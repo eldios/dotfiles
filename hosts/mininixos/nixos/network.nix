@@ -6,7 +6,7 @@
       linkConfig.Name = "eno0";
     };
     "10-wlan0" = {
-      matchConfig.MACAddress = "58:47:ca:7d:39:8e";
+      matchConfig.MACAddress = "24:eb:16:22:86:c5";
       linkConfig.Name = "wlan0";
     };
   };
