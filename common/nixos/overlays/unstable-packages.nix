@@ -5,8 +5,8 @@
 self: super:
 let
   unstablePkgs = import nixpkgs-unstable {
-    system = super.stdenv.hostPlatform.system;
-    config = super.config; # Inherit config from main pkgs to avoid setting it separately
+    inherit (super.stdenv.hostPlatform) system;
+    config = super.pkgs.config or {}; # Inherit config from main pkgs
   };
 in
 {
