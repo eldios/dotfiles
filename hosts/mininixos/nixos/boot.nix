@@ -12,7 +12,7 @@
     kernelPackages = pkgs.linuxPackages_6_12;
     kernelParams = [
       "nohibernate"
-      "zfs.zfs_arc_max=6442856000"
+      "zfs.zfs_arc_max=8589934592" # 8GB - host is mostly hypervisor
     ];
 
     initrd = {

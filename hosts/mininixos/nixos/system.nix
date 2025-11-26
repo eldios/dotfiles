@@ -2,7 +2,7 @@
 {
   system = {
     stateVersion = "25.05"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-    autoUpgrade.enable = true;
+    autoUpgrade.enable = false;
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
@@ -17,6 +17,13 @@
       };
       trim.enable = true;
     };
+  };
+
+  # Compressed swap in RAM - safety net for OOM
+  zramSwap = {
+    enable = true;
+    memoryPercent = 10; # ~9GB compressed swap - host is mostly hypervisor
+    algorithm = "zstd";
   };
 
   # TCP Offload Engine (TOE) is a technology used in modern NICs to move the
