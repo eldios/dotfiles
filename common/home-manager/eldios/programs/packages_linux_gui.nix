@@ -109,6 +109,7 @@ in
         vivaldi
         vivaldi-ffmpeg-codecs
         vlc
+        vorta
         whatsapp-for-linux
         widevine-cdm
         xclip
