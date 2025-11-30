@@ -4,24 +4,21 @@
 { pkgs, ... }:
 
 {
-  systemd.services = {
-    # Media VM - requires /data mount
-    "libvirt-vm-media" = {
-      description = "Libvirt VM: media (requires /data)";
-      after = [ "data.mount" "libvirtd.service" ];
-      requires = [ "data.mount" ];
-      bindsTo = [ "data.mount" ];  # Stop VM if /data unmounts
-      wantedBy = [ "multi-user.target" ];
+  # configuration.nix - il modo più semplice
+  virtualisation.docker.enable = true;
 
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = "yes";
-        # Only start if not already running (idempotent)
-        ExecStart = "${pkgs.bash}/bin/bash -c \"state=$(${pkgs.libvirt}/bin/virsh domstate media 2>/dev/null || echo 'shut off'); [[ $state == 'shut off' ]] && ${pkgs.libvirt}/bin/virsh start media || exit 0\"";
-        ExecStop = "${pkgs.libvirt}/bin/virsh shutdown media";
-      };
+  virtualisation.oci-containers.containers = {
+    portainer = {
+      image = "portainer/portainer-ce:latest";
+      ports = [ "9443:9443" ];
+      volumes = [
+        "/var/run/docker.sock:/var/run/docker.sock"
+        "/data/containers:/data"
+      ];
     };
+  };
 
+  systemd.services = {
     # Umbrel VM
     "libvirt-vm-umbrel" = {
       description = "Libvirt VM: Umbrel";
