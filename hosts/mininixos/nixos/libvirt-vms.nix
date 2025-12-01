@@ -7,9 +7,9 @@
   # configuration.nix - il modo più semplice
   virtualisation.docker.enable = true;
 
-  virtualisation.oci-containers.containers = {
+  virtualisation.oci-containers = {
     backend = "docker";
-    portainer = {
+    containers.portainer = {
       image = "portainer/portainer-ce:latest";
       ports = [ "9443:9443" ];
       volumes = [
