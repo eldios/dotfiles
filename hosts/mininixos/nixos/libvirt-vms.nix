@@ -16,6 +16,13 @@
         "/var/run/docker.sock:/var/run/docker.sock"
         "/data/containers/portainer:/data"
       ];
+      extraOptions = [
+        "--label=traefik.enable=true"
+        "--label=traefik.http.services.portainer.loadbalancer.server.port=9000"
+        "--label=traefik.http.routers.portainer.rule=Host(`portainer.casa.lele.rip`)"
+        "--label=traefik.http.routers.portainer.tls=true"
+        "--label=traefik.http.routers.portainer.tls.certresolver=cloudflare"
+      ];
     };
   };
 
