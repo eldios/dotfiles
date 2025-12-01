@@ -8,6 +8,7 @@
   virtualisation.docker.enable = true;
 
   virtualisation.oci-containers.containers = {
+    backend = "docker";
     portainer = {
       image = "portainer/portainer-ce:latest";
       ports = [ "9443:9443" ];
