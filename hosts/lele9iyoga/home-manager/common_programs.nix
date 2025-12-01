@@ -8,6 +8,7 @@
     ../../../common/home-manager/eldios/sops.nix
 
     ../../../common/home-manager/eldios/programs/neovim.nix
+    ../../../common/home-manager/eldios/programs/mcp-servers.nix
     ../../../common/home-manager/eldios/programs/zellij.nix
 
     ../../../common/home-manager/eldios/programs/zsh.nix
