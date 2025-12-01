@@ -42,6 +42,26 @@ in
       "keys/anytype/peerId/coordinator" = { };
       "keys/anytype/peerId/filenode" = { };
       "keys/anytype/peerId/consensusnode" = { };
+
+      # MCP Server tokens
+      "tokens/mcp/context7_api_key" = { };
+      "tokens/mcp/context7_encryption_key" = { };
+      "tokens/mcp/dockerhub_token" = { };
+      "tokens/mcp/github_token" = { };
+      "tokens/mcp/grafana_token" = { };
+      "tokens/mcp/grafana_url" = { };
+      "tokens/mcp/ha_api_token" = { };
+      "tokens/mcp/ha_host" = { };
+      "tokens/mcp/kagi_api_key" = { };
+      "tokens/mcp/kagi_engine" = { };
+      "tokens/mcp/n8n_api_key" = { };
+      "tokens/mcp/n8n_api_url" = { };
+      "tokens/mcp/unifi_api_key" = { };
+      "tokens/mcp/unifi_api_port" = { };
+      "tokens/mcp/unifi_api_site" = { };
+      "tokens/mcp/unifi_api_verify_ssl" = { };
+      "tokens/mcp/unifi_gateway_ip" = { };
+
     };
 
     templates = {
