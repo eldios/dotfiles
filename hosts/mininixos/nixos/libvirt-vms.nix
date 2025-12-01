@@ -13,7 +13,7 @@
       ports = [ "9443:9443" ];
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock"
-        "/data/containers:/data"
+        "/data:/data"
       ];
     };
   };
