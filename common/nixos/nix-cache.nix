@@ -21,7 +21,7 @@
     ];
 
     # Fast fallback when local cache is unreachable (outside home network)
-    connect-timeout = 3;
+    connect-timeout = 1;
     fallback = true;
   };
 }
