@@ -99,7 +99,9 @@ in
         nixe = "$EDITOR $HOME/dotfiles"; # Uses $EDITOR variable
 
         nixu = "sudo nixos-rebuild switch --flake $HOME/dotfiles"; # 'sudo' and 'nixos-rebuild' assumed in PATH
+        nixuo = "sudo nixos-rebuild switch --flake $HOME/dotfiles --option substituters 'https://cache.nixos.org https://nix-community.cachix.org'"; # offline/outside - skip local cache
         nixU = "sudo nix flake update $HOME/dotfiles && nixu"; # 'sudo', 'nix', and 'nixu' alias
+        nixUo = "sudo nix flake update $HOME/dotfiles && nixuo"; # 'sudo', 'nix', and 'nixuo' alias - outside network
 
         nixa = "nixe && nixu"; # Uses aliases
         nixA = "nixe && nixU"; # Uses aliases
