@@ -739,7 +739,7 @@ in
       Type = "simple";
       ExecStart = ''
         ${pkgs.systemd}/bin/systemctl --user import-environment
-        /usr/bin/sh -c "${pkgs.xwayland}/bin/Xwayland -nolisten tcp & sleep 1 && exec ${pkgs.niri}/bin/niri"
+        ${pkgs.bash}/bin/bash -c "${pkgs.xwayland}/bin/Xwayland -nolisten tcp & sleep 1 && exec ${pkgs.niri}/bin/niri"
       '';
       Restart = "on-failure";
       RestartSec = 1;
