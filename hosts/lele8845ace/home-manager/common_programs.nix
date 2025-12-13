@@ -2,6 +2,10 @@
 {
   imports = [
     ../../../common/home-manager/eldios/common_programs_gui.nix
+
+    # AI tools
+    ../../../common/home-manager/eldios/programs/packages_claude_code.nix
+    ../../../common/home-manager/eldios/programs/packages_gemini_cli.nix
   ];
 }
 
