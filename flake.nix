@@ -54,6 +54,8 @@
       url = "github:AvengeMedia/dgop";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
   };
 
   outputs =
@@ -63,6 +65,7 @@
       disko,
       home-manager,
       mpc-hub,
+      nixos-facter-modules,
       nixos-hardware,
       nixpkgs,
       nixpkgs-darwin,
@@ -89,6 +92,7 @@
           home-manager
           inputs
           mpc-hub
+          nixos-facter-modules
           nixos-hardware
           nixpkgs
           nixpkgs-darwin
@@ -159,6 +163,18 @@
           ./hosts/sox1x/nixos/configuration.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
+        ];
+      };
+
+      # OVH Milan dev sandbox
+      nixosConfigurations.domevh = nixpkgs.lib.nixosSystem {
+        specialArgs = commonSpecialArgs;
+        modules = [
+          ./hosts/domevh/nixos/configuration.nix
+          disko.nixosModules.disko
+          sops-nix.nixosModules.sops
+          nixos-facter-modules.nixosModules.facter
+          { facter.reportPath = "${inputs.secrets}/facter/domevh.json"; }
         ];
       };
 
