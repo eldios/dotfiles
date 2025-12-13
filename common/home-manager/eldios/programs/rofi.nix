@@ -117,15 +117,19 @@ in
   # Create helper scripts for different rofi modes
   home.packages = with pkgs; [
     (writeShellScriptBin "rofi-run" ''
+      set -euo pipefail
       ${pkgs.rofi-wayland}/bin/rofi -show run ${common_opts} "$@"
     '')
     (writeShellScriptBin "rofi-drun" ''
+      set -euo pipefail
       ${pkgs.rofi-wayland}/bin/rofi -show drun ${common_opts} "$@"
     '')
     (writeShellScriptBin "rofi-window" ''
+      set -euo pipefail
       ${pkgs.rofi-wayland}/bin/rofi -show window ${common_opts} "$@"
     '')
     (writeShellScriptBin "rofi-filebrowser" ''
+      set -euo pipefail
       ${pkgs.rofi-wayland}/bin/rofi -show filebrowser ${common_opts} "$@"
     '')
     # Additional dependency for better Rofi appearance

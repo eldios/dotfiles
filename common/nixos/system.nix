@@ -21,8 +21,8 @@ in
   systemd.services."systemd-zram-setup@zram0" = {
     serviceConfig = {
       ExecStartPre = pkgs.writeShellScript "reset-zram0" ''
-        set -e
-        if [ -e /sys/block/zram0/reset ]; then
+        set -euo pipefail
+        if [[ -e /sys/block/zram0/reset ]]; then
           # Ensure swap is off before reset
           ${pkgs.util-linux}/bin/swapoff /dev/zram0 2>/dev/null || true
           # Reset the device to allow reconfiguration

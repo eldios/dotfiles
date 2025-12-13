@@ -16,9 +16,6 @@
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
 
-    # base imports
-    utils.url = "github:numtide/flake-utils";
-
     # additional utils
     nixos-hardware.url = "github:nixos/nixos-hardware";
     xremap.url = "github:xremap/nix-flake";
@@ -31,10 +28,6 @@
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    zen-browser = {
-      url = "github:MarceColl/zen-browser-flake";
     };
 
     secrets = {
