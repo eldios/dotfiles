@@ -185,6 +185,7 @@ in
     openssl
     rclone
     sops
+    ssh-to-age
     yubikey-personalization
 
     # WAYLAND + SWAY
