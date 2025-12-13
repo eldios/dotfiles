@@ -115,7 +115,7 @@ in
         hmA = "hme && hmU"; # Uses aliases
         hm-cleanup = "hm expire-generations '-7 days' && nix-store --gc"; # Uses 'hm' alias, 'nix-store' in PATH
         hm-edit = "hm edit"; # Uses 'hm' alias
-        hm-update = "hm switch -b backup --flake $HOME/dotfiles'"; # Uses 'hm' alias
+        hm-update = "hm switch -b backup --flake $HOME/dotfiles"; # Uses 'hm' alias
 
         SHX = "exec \$SHELL -l"; # Uses $SHELL environment variable
       };

@@ -34,6 +34,7 @@
     ../../../common/nixos/programs/niri.nix
 
     ../../../common/nixos/virtualisation.nix
+    ../../../common/nixos/desktop-gui.nix
 
     ./disko.nix
 

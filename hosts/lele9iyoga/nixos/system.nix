@@ -102,10 +102,7 @@
       };
     };
 
-    # save and manage secrets and passwords
-    gnome.gnome-keyring.enable = true;
-
-    gvfs.enable = true;
+    # gnome-keyring and gvfs configured in desktop-gui.nix
 
     # CUPS
     printing.enable = true;
@@ -154,18 +151,7 @@
 
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-    uinput.enable = true; # needed by xRemap
-
-    bluetooth = {
-      enable = true;
-      powerOnBoot = true;
-      settings = {
-        General = {
-          Enable = "Source,Sink,Media,Socket";
-          Experimental = true;
-        };
-      };
-    };
+    # uinput and bluetooth configured in desktop-gui.nix
 
     # https://wiki.archlinux.org/title/GPGPU
     graphics = {
@@ -190,65 +176,10 @@
     keyboard.qmk.enable = true;
   };
 
-  xdg.portal = {
-    enable = true;
-    xdgOpenUsePortal = true;
-    wlr.enable = true;
-    config = {
-      common.default = [ "gtk" ];
-      hyprland.default = [
-        "gtk"
-        "hyprland"
-      ];
-      # needs to run the two following commands at restart
-      # dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-      # systemctl --user restart pipewire wireplumber xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk
-      sway.default = [
-        "gtk"
-        "wlr"
-        "luminous"
-      ];
-      niri.default = [
-        "gtk"
-        "gnome"
-      ];
-    };
-    extraPortals = [
-      pkgs.xdg-desktop-portal
-      pkgs.xdg-desktop-portal-gnome
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-hyprland
-      pkgs.xdg-desktop-portal-luminous
-      pkgs.xdg-desktop-portal-wlr
-    ];
-  };
+  # XDG portal, dbus, and PAM swaylock configured in desktop-gui.nix
+  # Audio/pipewire configuration in common/nixos/audio.nix
 
-  # audio
-  services.pipewire = {
-    enable = true;
-    audio.enable = true;
-    pulse.enable = true;
-    alsa = {
-      enable = true;
-      support32Bit = true;
-    };
-    jack.enable = false;
-  };
-  services.blueman = {
-    enable = true;
-  };
-
-  # xdg-desktop-portal works by exposing a series of D-Bus interfaces
-  # known as portals under a well-known name
-  # (org.freedesktop.portal.Desktop) and object path
-  # (/org/freedesktop/portal/desktop).
-  # The portal interfaces include APIs for file access, opening URIs,
-  # printing and others.
-  services.dbus.enable = true;
-
-  security = {
-    pam.services.swaylock = { };
-  };
+  services.blueman.enable = true;
 
 }
 

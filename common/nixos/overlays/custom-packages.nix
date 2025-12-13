@@ -59,7 +59,7 @@ let
     };
 
     # npmDepsHash for optional @img/sharp-* deps - only update if sharp version changes
-    npmDepsHash = "sha256-V0rjoKdXGRNNKRJqPvVIqCQpqgNCklPTVRExCCxbe8g=";
+    npmDepsHash = "sha256-a1i8N6LZYA3XJx7AqDDOoyO5pf+t9WZ6vBQVZkUbpxM=";
   };
 in
 {

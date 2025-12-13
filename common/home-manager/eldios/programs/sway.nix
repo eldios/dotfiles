@@ -153,6 +153,7 @@ in
       xdg-utils # for opening default programs when clicking links
       ydotool
       (pkgs.writeShellScriptBin "fix-wm" ''
+        set -euo pipefail
         ${pkgs.procps}/bin/pkill waybar && ${pkgs.swayfx}/bin/sway reload
       '') # EOF fix-wm script
     ];
