@@ -1,5 +1,6 @@
 {
   networking = {
+    useNetworkd = true; # Use systemd-networkd
     useDHCP = true; # OVH provides DHCP
     networkmanager.enable = false; # Server - use systemd-networkd
 
