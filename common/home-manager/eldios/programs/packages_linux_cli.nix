@@ -31,8 +31,6 @@
       ]
       ++ (with pkgs.unstable; [
         opencode
-        claude-code
-        gemini-cli
       ]);
   };
 } # EOF
