@@ -685,6 +685,21 @@
         "type": "github"
       }
     },
+    "nixos-facter-modules": {
+      "locked": {
+        "lastModified": 1765442039,
+        "narHash": "sha256-k3lYQ+A1F7aTz8HnlU++bd9t/x/NP2A4v9+x6opcVg0=",
+        "owner": "numtide",
+        "repo": "nixos-facter-modules",
+        "rev": "9dd775ee92de63f14edd021d59416e18ac2c00f1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "nixos-facter-modules",
+        "type": "github"
+      }
+    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1764080039,
@@ -948,6 +963,7 @@
         "disko": "disko",
         "home-manager": "home-manager",
         "mpc-hub": "mpc-hub",
+        "nixos-facter-modules": "nixos-facter-modules",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-darwin": "nixpkgs-darwin",
@@ -963,10 +979,10 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1764611805,
-        "narHash": "sha256-UXl+DPbeqdOyIMtMZbcPuP3+dO9IGRunAC9MKZKr+h8=",
+        "lastModified": 1765603752,
+        "narHash": "sha256-YhqfTmGniAafw0CSn6ivqrOEn1etUjoSzGDFyFibq0c=",
         "ref": "main",
-        "rev": "c590368481123f97de6a7825801e14139aacb3ec",
+        "rev": "2ea72ec05cf7b482e1881af1da6aa3f683dad84d",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/eldios/secrets.git"
