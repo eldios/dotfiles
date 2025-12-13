@@ -7,8 +7,6 @@
 # Get hash + convert to SRI (one-liner):
 #   V=2.0.67 && nix hash convert --hash-algo sha256 --to sri $(nix-prefetch-url --unpack "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-$V.tgz" 2>/dev/null)
 #
-# npmDepsHash rarely changes - only update if sharp deps change (build will fail with hash mismatch)
-#
 # === GEMINI-CLI UPDATE ===
 # Get latest version:
 #   curl -s https://api.github.com/repos/google-gemini/gemini-cli/releases/latest | jq -r .tag_name
@@ -57,9 +55,6 @@ let
       url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
       hash = "sha256-a1i8N6LZYA3XJx7AqDDOoyO5pf+t9WZ6vBQVZkUbpxM=";
     };
-
-    # npmDepsHash for optional @img/sharp-* deps - only update if sharp version changes
-    npmDepsHash = "sha256-a1i8N6LZYA3XJx7AqDDOoyO5pf+t9WZ6vBQVZkUbpxM=";
   };
 in
 {
