@@ -10,6 +10,7 @@
     ./programs/zellij.nix
 
     ./programs/zsh.nix
+    ./programs/atuin.nix
 
     ./programs/ssh.nix
 
