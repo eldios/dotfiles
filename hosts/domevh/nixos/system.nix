@@ -17,7 +17,7 @@
   services.qemuGuest.enable = true;
 
   # QEMU VMs don't support SMART - disable to prevent service failure
-  services.smartd.enable = false;
+  services.smartd.enable = lib.mkForce false;
 
   # Enable btrfs scrubbing
   services.btrfs.autoScrub = {
