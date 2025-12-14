@@ -7,7 +7,6 @@
     ./style/stylix.nix
 
     ./programs/nushell.nix
-    ./programs/atuin.nix
     ./programs/ssh-agents.nix
 
     # Terminal emulators
