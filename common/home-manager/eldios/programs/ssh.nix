@@ -14,6 +14,7 @@
     Host github.com
       User git
       IdentityFile ~/.ssh/id_ed25519
+      IdentitiesOnly no
 
     Host aur.archlinux.org
       User aur
