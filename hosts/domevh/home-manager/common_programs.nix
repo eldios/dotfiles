@@ -2,6 +2,7 @@
 {
   imports = [
     ../../../common/home-manager/eldios/common_programs_base.nix
+    ../../../common/home-manager/eldios/programs/packages_claude_code.nix
   ];
 }
 
