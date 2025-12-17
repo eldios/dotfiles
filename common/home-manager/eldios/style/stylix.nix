@@ -13,7 +13,7 @@ in
     # Disable overlays to avoid warning with home-manager.useGlobalPkgs
     overlays.enable = false;
 
-    image = "${themesBaseDir}/wp.jpg";
+    image = "${themesBaseDir}/wp.png";
     polarity = "dark";
 
     # Add base16 scheme if theme file doesn't exist
