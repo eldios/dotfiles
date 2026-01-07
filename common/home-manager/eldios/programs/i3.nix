@@ -10,8 +10,8 @@ let
   # Force X11 for Electron apps (override any Wayland env from other sessions)
   electronFlags = "--ozone-platform=x11";
 
-  # Terminal - using alacritty (ghostty has GTK issues)
-  terminal = "${pkgs.alacritty}/bin/alacritty";
+  # Terminal
+  terminal = "${pkgs.ghostty}/bin/ghostty";
 
   # Use the unified rofi scripts from rofi.nix
   quick_menu = "rofi-run";
@@ -84,6 +84,7 @@ in
 
     packages = with pkgs; [
       # Terminal
+      ghostty
       alacritty
 
       # Wallpaper and theming
@@ -220,6 +221,8 @@ in
       "100:class_g = 'i3lock'"
       "100:class_g = 'flameshot'"
       "100:class_g = 'Polybar'"
+      "95:class_g = 'ghostty' && focused"
+      "85:class_g = 'ghostty' && !focused"
       "95:class_g = 'Alacritty' && focused"
       "85:class_g = 'Alacritty' && !focused"
       "95:class_g = 'kitty' && focused"
@@ -786,6 +789,7 @@ in
       default_floating_border pixel 2
 
       # Specific window settings
+      for_window [class="ghostty"] border pixel 2
       for_window [class="Alacritty"] border pixel 2
       for_window [class="kitty"] border pixel 2
       for_window [urgent=latest] focus
