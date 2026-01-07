@@ -20,7 +20,7 @@
 self: super:
 let
   geminiCliOverride = oldAttrs: rec {
-    version = "0.17.1";
+    version = "0.23.0";
 
     src = super.fetchFromGitHub {
       owner = "google-gemini";
@@ -49,11 +49,11 @@ let
   };
 
   claudeCodeOverride = oldAttrs: rec {
-    version = "2.0.67";
+    version = "2.0.76";
 
     src = super.fetchzip {
       url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
-      hash = "sha256-a1i8N6LZYA3XJx7AqDDOoyO5pf+t9WZ6vBQVZkUbpxM=";
+      hash = "sha256-46IqiGJZrZM4vVcanZj/vY4uxFH3/4LxNA+Qb6iIHDk=";
     };
   };
 in
