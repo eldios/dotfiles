@@ -25,6 +25,7 @@
     kernelParams = [
       "nohibernate"
       "acpi_enforce_resources=lax"
+      "usbcore.autosuspend=-1" # disable USB autosuspend (prevents hub power-off)
       #"snd_intel_dspcfg.dsp_driver=1" # if 3 and 1 don't work move to Pulseaudio
     ];
 
