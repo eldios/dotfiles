@@ -169,8 +169,8 @@ in
     fadeSteps = [ 0.03 0.03 ];
 
     # Opacity (matching Hyprland: active 0.95, inactive 0.85)
-    activeOpacity = 0.95;
-    inactiveOpacity = 0.85;
+    activeOpacity = 1.00;
+    inactiveOpacity = 0.90;
 
     # Blur settings (matching Hyprland blur)
     settings = {
