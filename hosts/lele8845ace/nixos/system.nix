@@ -130,20 +130,11 @@
   # https://wiki.archlinux.org/title/GPGPU#ICD_loader_(libOpenCL.so)
   environment.etc."ld.so.conf.d/00-usrlib.conf".text = "/usr/lib";
 
-  environment.sessionVariables = {
-    GDK_BACKEND = "wayland";
-    MOZ_ENABLE_WAYLAND = "1";
-    NIXOS_OZONE_WL = "1";
-    T_QPA_PLATFORM = "wayland";
-    WLR_NO_HARDWARE_CURSORS = "1";
-  };
-
-  environment.variables = {
-    # If cursor is not visible, try to set this to "on".
-    XDG_CURRENT_DESKTOP = "Hyprland";
-    XDG_SESSION_TYPE = "wayland";
-    XDG_SESSION_DESKTOP = "Hyprland";
-  };
+  # NOTE: WM-specific env vars (GDK_BACKEND, QT_QPA_PLATFORM, NIXOS_OZONE_WL,
+  # XDG_CURRENT_DESKTOP, XDG_SESSION_TYPE, etc.) are now set per-WM:
+  # - Hyprland: common/home-manager/eldios/programs/hyprland.nix
+  # - i3:       common/home-manager/eldios/programs/i3.nix
+  # This allows switching between X11 (i3) and Wayland (Hyprland) without conflicts.
 
   hardware = {
     enableAllFirmware = true;
