@@ -501,10 +501,10 @@ in
         }
       ];
 
-      # Gaps (matching Hyprland: gaps_in = 5, gaps_out = 10)
+      # Gaps settings
       gaps = {
-        inner = 5;
-        outer = 10;
+        inner = 2;
+        outer = 3;
         smartBorders = "on";
         smartGaps = false; # Keep gaps even with single window (like Hyprland)
       };
