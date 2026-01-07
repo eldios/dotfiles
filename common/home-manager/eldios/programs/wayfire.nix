@@ -372,15 +372,6 @@ in
     };
   };
 
-  # Set up environment variables for Wayfire
-  home.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
-    MOZ_ENABLE_WAYLAND = "1";
-    QT_QPA_PLATFORM = "wayland";
-    XDG_CURRENT_DESKTOP = "Wayfire";
-    XDG_SESSION_TYPE = "wayland";
-    XDG_SESSION_DESKTOP = "Wayfire";
-    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
-    WAYLAND_DISPLAY = "wayland-1";
-  };
+  # Wayfire env vars are set via env_* in wayfire.ini [core] section
+  # Don't use home.sessionVariables - it persists to other sessions like i3
 }
