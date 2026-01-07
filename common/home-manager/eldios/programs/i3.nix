@@ -171,7 +171,7 @@ in
 
     # Opacity (matching Hyprland: active 0.95, inactive 0.85)
     activeOpacity = 1.00;
-    inactiveOpacity = 0.90;
+    inactiveOpacity = 0.95;
 
     # Blur settings (matching Hyprland blur)
     settings = {
@@ -731,6 +731,11 @@ in
         "${modifier}+Shift+equal" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+";
         "${modifier}+bracketleft" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
         "${modifier}+Shift+bracketleft" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-";
+
+        # Window opacity control (picom-trans)
+        "${modifier}+o" = "exec ${pkgs.picom}/bin/picom-trans -c -5";
+        "${modifier}+Shift+o" = "exec ${pkgs.picom}/bin/picom-trans -c +5";
+        "${modifier}+Ctrl+o" = "exec ${pkgs.picom}/bin/picom-trans -c 100";
       };
 
       # Bar configuration (use polybar or i3bar)
