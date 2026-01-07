@@ -184,11 +184,20 @@ in
       blur-background-frame = true;
       blur-background-fixed = false;
 
+      # Blur exclusions (Steam needs this to avoid refresh issues)
+      blur-background-exclude = [
+        "class_g = 'Steam'"
+        "class_g = 'steam'"
+        "class_g = 'steamwebhelper'"
+      ];
+
       # Corner rounding (matching Hyprland rounding = 10)
       corner-radius = 10;
       rounded-corners-exclude = [
         "class_g = 'i3bar'"
         "class_g = 'Polybar'"
+        "class_g = 'Steam'"
+        "class_g = 'steam'"
       ];
 
       # Shadow settings
@@ -201,6 +210,8 @@ in
         "class_g = 'i3-frame'"
         "class_g = 'Rofi'"
         "_GTK_FRAME_EXTENTS@:c"
+        "class_g = 'Steam'"
+        "class_g = 'steam'"
       ];
 
       # Dim inactive windows slightly
@@ -212,8 +223,13 @@ in
       detect-rounded-corners = true;
       detect-client-opacity = true;
       detect-transient = true;
-      use-damage = true;
       log-level = "warn";
+
+      # AMD GPU artifact fixes
+      use-damage = false;           # Full redraws instead of partial - fixes white bar artifacts
+      glx-no-stencil = true;        # Performance improvement for GLX backend
+      xrender-sync-fence = true;    # Helps AMD GPU synchronization
+      unredir-if-possible = false;  # Prevents flickering on window state changes
     };
 
     opacityRules = [
@@ -221,6 +237,11 @@ in
       "100:class_g = 'i3lock'"
       "100:class_g = 'flameshot'"
       "100:class_g = 'Polybar'"
+      # Steam - force 100% opacity to prevent refresh issues
+      "100:class_g = 'Steam'"
+      "100:class_g = 'steam'"
+      "100:class_g = 'steamwebhelper'"
+      # Terminals
       "95:class_g = 'ghostty' && focused"
       "85:class_g = 'ghostty' && !focused"
       "95:class_g = 'Alacritty' && focused"
