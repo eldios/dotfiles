@@ -16,22 +16,6 @@ in
     memoryPercent = 10;
   };
 
-  # Fix zram reconfiguration during nixos-rebuild switch
-  # Reset the zram device if it already exists before trying to reconfigure it
-  systemd.services."systemd-zram-setup@zram0" = {
-    serviceConfig = {
-      ExecStartPre = pkgs.writeShellScript "reset-zram0" ''
-        set -euo pipefail
-        if [[ -e /sys/block/zram0/reset ]]; then
-          # Ensure swap is off before reset
-          ${pkgs.util-linux}/bin/swapoff /dev/zram0 2>/dev/null || true
-          # Reset the device to allow reconfiguration
-          echo 1 > /sys/block/zram0/reset || true
-        fi
-      '';
-    };
-  };
-
   systemd.services.zfs-mount.enable = false;
   systemd.services.NetworkManager-wait-online.enable = false;
 
