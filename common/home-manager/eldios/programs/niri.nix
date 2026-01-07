@@ -737,9 +737,11 @@ in
 
     Service = {
       Type = "simple";
-      ExecStart = ''
+      ExecStart = pkgs.writeShellScript "niri-session-start" ''
         ${pkgs.systemd}/bin/systemctl --user import-environment
-        ${pkgs.bash}/bin/bash -c "${pkgs.xwayland}/bin/Xwayland -nolisten tcp & sleep 1 && exec ${pkgs.niri}/bin/niri"
+        ${pkgs.xwayland}/bin/Xwayland -nolisten tcp &
+        sleep 1
+        exec ${pkgs.niri}/bin/niri
       '';
       Restart = "on-failure";
       RestartSec = 1;
