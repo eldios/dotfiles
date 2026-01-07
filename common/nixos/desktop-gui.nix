@@ -60,14 +60,8 @@
   # Security - PAM services for screen lockers
   security.pam.services.swaylock = { };
 
-  # Common Wayland environment variables
-  environment.sessionVariables = {
-    GDK_BACKEND = lib.mkDefault "wayland";
-    MOZ_ENABLE_WAYLAND = lib.mkDefault "1";
-    NIXOS_OZONE_WL = lib.mkDefault "1";
-    T_QPA_PLATFORM = lib.mkDefault "wayland";
-    WLR_NO_HARDWARE_CURSORS = lib.mkDefault "1";
-  };
+  # Wayland env vars are set per-compositor (hyprland.nix, wayfire.nix, etc.)
+  # Don't set them globally - breaks X11 sessions like i3
 }
 
 # vim: set ts=2 sw=2 et ai list nu

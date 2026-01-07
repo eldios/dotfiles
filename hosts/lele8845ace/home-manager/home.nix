@@ -16,14 +16,17 @@
     file = { };
 
     sessionVariables = {
-      GDK_BACKEND = "wayland";
+      # Hardware-specific (AMD GPU)
       LIBVA_DRIVER_NAME = "radeonsi";
-      MOZ_ENABLE_WAYLAND = "1";
-      NIXOS_OZONE_WL = "1";
-      TERM = "xterm-256color";
-      T_QPA_PLATFORM = "wayland";
       VDPAU_DRIVER = "radeonsi";
-      WLR_NO_HARDWARE_CURSORS = "1";
+
+      # Terminal
+      TERM = "xterm-256color";
+
+      # NOTE: WM-specific vars (GDK_BACKEND, QT_QPA_PLATFORM, NIXOS_OZONE_WL,
+      # MOZ_ENABLE_WAYLAND, WLR_NO_HARDWARE_CURSORS) are set per-WM in:
+      # - hyprland.nix (Wayland)
+      # - i3.nix (X11)
     };
   }; # EOM home
 
