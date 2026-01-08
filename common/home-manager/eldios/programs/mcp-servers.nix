@@ -326,6 +326,36 @@ let
       env = { };
       envSecrets = { };
     };
+
+    linera-slack = {
+      port = 3025;
+      internalPort = 8000;
+      dockerfile = ''
+        FROM node:22-alpine AS node
+        RUN npm install -g supergateway
+        FROM mcp/slack AS slack
+        FROM node:22-alpine
+        COPY --from=node /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+        RUN ln -s /usr/local/lib/node_modules/supergateway/dist/index.js /usr/local/bin/supergateway && chmod +x /usr/local/bin/supergateway
+        COPY --from=slack /app /app
+        WORKDIR /app
+      '';
+      command = [
+        "supergateway"
+        "--stdio"
+        "node /app/dist/index.js"
+        "--port"
+        "8000"
+      ];
+      env = {
+        SLACK_BOT_TOKEN = "\${LINERA_SLACK_BOT_TOKEN}";
+        SLACK_TEAM_ID = "\${LINERA_SLACK_TEAM_ID}";
+      };
+      envSecrets = {
+        LINERA_SLACK_BOT_TOKEN = config.sops.placeholder."tokens/mcp/linera_slack_bot_token";
+        LINERA_SLACK_TEAM_ID = config.sops.placeholder."tokens/mcp/linera_slack_team_id";
+      };
+    };
   };
 
   # Helper to generate docker-compose service YAML
@@ -391,6 +421,31 @@ let
 
   mcphubContent = builtins.toJSON { mcpServers = mcphubServers; };
 
+  # Generate Gemini CLI settings.json
+  geminiSettings = {
+    mcpServers = mcphubServers;
+    security = {
+      auth = {
+        selectedType = "oauth-personal";
+      };
+    };
+    ui = {
+      showMemoryUsage = true;
+      showLineNumbers = true;
+      theme = "Default";
+    };
+    general = {
+      disableAutoUpdate = true;
+      vimMode = true;
+      previewFeatures = true;
+    };
+    tools = {
+      useRipgrep = true;
+    };
+  };
+
+  geminiSettingsContent = builtins.toJSON geminiSettings;
+
 in
 {
   # Generate docker-compose.yml
@@ -408,6 +463,11 @@ in
   # Generate mcphub servers.json for nvim
   xdg.configFile."mcphub/servers.json" = {
     text = mcphubContent;
+  };
+
+  # Generate Gemini CLI settings.json
+  home.file.".gemini/settings.json" = {
+    text = geminiSettingsContent;
   };
 
   # Ensure .mcp directory exists with proper permissions
