@@ -19,8 +19,61 @@ let
   file_menu = "rofi-filebrowser";
   window_menu = "rofi-window";
 
-  # Modern lockscreen with blur effect
-  lockscreen = "${pkgs.i3lock-color}/bin/i3lock-color -c 000000 --blur 5 --clock --indicator --time-str='%H:%M' --date-str='%a, %b %d'";
+  # Modern lockscreen with blur effect (using wrapper script to avoid i3 quoting issues)
+  # Uses Catppuccin Mocha colors for aesthetic consistency
+  # Pauses dunst notifications during lock to prevent info leakage
+  lockscreen-script = pkgs.writeShellScript "lockscreen" ''
+    # Pause notifications
+    ${pkgs.dunst}/bin/dunstctl set-paused true
+
+    # Lock screen
+    ${pkgs.i3lock-color}/bin/i3lock-color \
+      --blur=20 \
+      --clock \
+      --indicator \
+      --pass-media-keys \
+      --pass-volume-keys \
+      \
+      --inside-color=1e1e2e00 \
+      --ring-color=89b4faff \
+      --line-uses-inside \
+      --separator-color=00000000 \
+      \
+      --insidever-color=a6e3a1c0 \
+      --ringver-color=a6e3a1ff \
+      \
+      --insidewrong-color=f38ba8c0 \
+      --ringwrong-color=f38ba8ff \
+      \
+      --keyhl-color=f9e2afff \
+      --bshl-color=fab387ff \
+      \
+      --verif-color=cdd6f4ff \
+      --wrong-color=f38ba8ff \
+      --layout-color=cdd6f4ff \
+      \
+      --time-color=cdd6f4ff \
+      --time-str='%H:%M' \
+      --time-font='sans-serif:style=Bold' \
+      --time-size=72 \
+      \
+      --date-color=a6adc8ff \
+      --date-str='%A, %B %d' \
+      --date-font='sans-serif' \
+      --date-size=24 \
+      \
+      --verif-text='Verifying...' \
+      --wrong-text='Wrong!' \
+      --noinput-text='No Input' \
+      \
+      --radius=140 \
+      --ring-width=12 \
+      --nofork
+
+    # Resume notifications after unlock
+    ${pkgs.dunst}/bin/dunstctl set-paused false
+  '';
+  lockscreen = "${lockscreen-script}";
 
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
@@ -480,12 +533,7 @@ in
           always = true;
           notification = false;
         }
-        # Notification daemon
-        {
-          command = "${pkgs.dunst}/bin/dunst";
-          always = false;
-          notification = false;
-        }
+        # Notification daemon - managed by services.dunst below
         # Wallpaper with variety (fallback to feh if variety fails)
         {
           command = "${pkgs.variety}/bin/variety || ${pkgs.feh}/bin/feh --bg-fill --randomize ~/Pictures/Wallpapers/";
@@ -579,14 +627,6 @@ in
           { command = "floating enable"; criteria = { window_role = "dialog"; }; }
           { command = "floating enable"; criteria = { window_type = "dialog"; }; }
           { command = "floating enable"; criteria = { window_type = "menu"; }; }
-
-          # Assign apps to workspaces
-          { command = "move to workspace number 2"; criteria = { class = "firefox"; }; }
-          { command = "move to workspace number 2"; criteria = { class = "Firefox"; }; }
-          { command = "move to workspace number 3"; criteria = { class = "Code"; }; }
-          { command = "move to workspace number 4"; criteria = { class = "Slack"; }; }
-          { command = "move to workspace number 4"; criteria = { class = "discord"; }; }
-          { command = "move to workspace number 5"; criteria = { class = "Spotify"; }; }
         ];
       };
 
@@ -608,7 +648,7 @@ in
       };
 
       keybindings = {
-        # Workspaces with back-and-forth
+        # Workspaces
         "${modifier}+1" = "workspace number 1";
         "${modifier}+2" = "workspace number 2";
         "${modifier}+3" = "workspace number 3";
@@ -820,6 +860,72 @@ in
       for_window [urgent=latest] focus
     '';
   };
+
+  # Notification daemon - styled by stylix automatically
+  services.dunst = {
+    enable = true;
+    settings = {
+      global = {
+        # Geometry (using new syntax for dunst 1.12+)
+        width = 350;
+        height = "(0, 150)";  # Dynamic height, max 150
+        offset = "(20, 50)";  # New syntax: (x, y)
+        origin = "top-right";
+
+        # Appearance
+        frame_width = 2;
+        corner_radius = 10;
+        separator_height = 2;
+        padding = 12;
+        horizontal_padding = 12;
+        text_icon_padding = 12;
+
+        # Behavior
+        sort = "update";
+        idle_threshold = 120;
+
+        # Text (font handled by stylix)
+        line_height = 0;
+        markup = "full";
+        format = "<b>%s</b>\\n%b";
+        alignment = "left";
+        vertical_alignment = "center";
+        show_age_threshold = 60;
+        ellipsize = "middle";
+
+        # Icons
+        icon_position = "left";
+        min_icon_size = 32;
+        max_icon_size = 48;
+
+        # History
+        sticky_history = true;
+        history_length = 20;
+
+        # Misc
+        browser = "${pkgs.xdg-utils}/bin/xdg-open";
+        always_run_script = true;
+        mouse_left_click = "close_current";
+        mouse_middle_click = "do_action, close_current";
+        mouse_right_click = "close_all";
+      };
+
+      urgency_low = {
+        timeout = 5;
+      };
+
+      urgency_normal = {
+        timeout = 10;
+      };
+
+      urgency_critical = {
+        timeout = 0;  # Don't auto-close critical notifications
+      };
+    };
+  };
+
+  # Enable stylix theming for dunst
+  stylix.targets.dunst.enable = true;
 }
 
 # vim: set ts=2 sw=2 et ai list nu
