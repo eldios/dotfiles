@@ -54,6 +54,8 @@ in
       "tokens/mcp/ha_host" = { };
       "tokens/mcp/kagi_api_key" = { };
       "tokens/mcp/kagi_engine" = { };
+      "tokens/mcp/linera_slack_bot_token" = { };
+      "tokens/mcp/linera_slack_team_id" = { };
       "tokens/mcp/n8n_api_key" = { };
       "tokens/mcp/n8n_api_url" = { };
       "tokens/mcp/unifi_api_key" = { };
