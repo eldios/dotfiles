@@ -167,7 +167,7 @@ in
 
       # Notifications
       dunst
-      libnotify  # notify-send command
+      (lib.hiPrio pkgs.libnotify)
 
       # System tray and utilities
       networkmanagerapplet
