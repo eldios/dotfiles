@@ -167,6 +167,7 @@ in
 
       # Notifications
       dunst
+      libnotify  # notify-send command
 
       # System tray and utilities
       networkmanagerapplet
@@ -373,10 +374,8 @@ in
 
         enable-ipc = true;
 
-        tray-position = "right";
-        tray-padding = 2;
-
-        wm-restack = "i3";
+        # tray is handled by the tray module in modules-right
+        # wm-restack not needed when override-redirect = false
         override-redirect = false;
       };
 
@@ -384,7 +383,8 @@ in
       "bar/secondary" = {
         "inherit" = "bar/main";
         monitor = "HDMI-A-0";
-        tray-position = "none";
+        # Override modules-right WITHOUT tray (tray only on main bar)
+        modules-right = "filesystem pulseaudio memory cpu network";
       };
 
       "module/i3" = {
@@ -715,15 +715,15 @@ in
         "${modifier}+Shift+n" = "swap container with next";
         "${modifier}+Shift+p" = "swap container with prev";
 
+        # Workspace back and forth (quick switch)
+        "${modifier}+Tab" = "workspace back_and_forth";
+        "${modifier}+Shift+Tab" = "move container to workspace back_and_forth; workspace back_and_forth";
+
         # Monitor cycling
-        "${modifier}+Tab" = "focus output right";
-        "${modifier}+Shift+Tab" = "focus output left";
+        "${modifier}+grave" = "focus output right";
+        "${modifier}+Shift+grave" = "focus output left";
         "${modifier}+Ctrl+h" = "move workspace to output left";
         "${modifier}+Ctrl+l" = "move workspace to output right";
-
-        # Back and forth
-        "${modifier}+grave" = "workspace back_and_forth";
-        "${modifier}+Shift+grave" = "move container to workspace back_and_forth; workspace back_and_forth";
 
         # Applications
         "${modifier}+Return" = "exec ${terminal}";
@@ -857,7 +857,7 @@ in
       for_window [class="ghostty"] border pixel 2
       for_window [class="Alacritty"] border pixel 2
       for_window [class="kitty"] border pixel 2
-      for_window [urgent=latest] focus
+      # Urgent windows: polybar lights up, use Mod+u to focus manually
     '';
   };
 
