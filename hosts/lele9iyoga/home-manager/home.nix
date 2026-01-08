@@ -16,9 +16,11 @@
     file = { };
 
     sessionVariables = {
-      TERM = "xterm-256color";
-      NIXOS_OZONE_WL = "1";
+      # Hardware-specific (Intel GPU)
       LIBVA_DRIVER_NAME = "iHD";
+
+      # Terminal
+      TERM = "xterm-256color";
     };
   }; # EOM home
 
