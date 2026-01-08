@@ -79,7 +79,6 @@ in
 
       # Wayland-specific vars: unset/disable
       WLR_NO_HARDWARE_CURSORS = lib.mkForce "";
-      WAYLAND_DISPLAY = lib.mkForce "";
     };
 
     packages = with pkgs; [
