@@ -49,11 +49,11 @@ let
   };
 
   claudeCodeOverride = oldAttrs: rec {
-    version = "2.0.76";
+    version = "2.1.2";
 
     src = super.fetchzip {
       url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
-      hash = "sha256-46IqiGJZrZM4vVcanZj/vY4uxFH3/4LxNA+Qb6iIHDk=";
+      hash = "sha256-PpNXyZ3xoZ/4lCvtErltkdsL/1hDRyiicblvhykgROw=";
     };
   };
 in
