@@ -49,11 +49,13 @@ let
   };
 
   claudeCodeOverride = oldAttrs: rec {
-    version = "2.1.2";
+    version = "2.1.5";
 
     src = super.fetchzip {
       url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
-      hash = "sha256-PpNXyZ3xoZ/4lCvtErltkdsL/1hDRyiicblvhykgROw=";
+      # uncomment the below to force a pkg refresh and get the new hash
+      # hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      hash = "sha256-hJECxkGC+nkQ6YCZpSZxRbuHaeYQDs2q7L5SYKSFVFc=";
     };
   };
 in
