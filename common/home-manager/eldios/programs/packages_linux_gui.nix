@@ -115,6 +115,7 @@ in
         xclip
         xdotool
         zathura
+        zed-editor
         zoom-us
 
         # Handwriting and Notes
