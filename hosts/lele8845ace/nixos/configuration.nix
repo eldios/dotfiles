@@ -33,6 +33,8 @@
     ../../../common/nixos/programs/neovim.nix
     ../../../common/nixos/programs/niri.nix
 
+    ../../../common/nixos/programs/vr.nix
+
     ../../../common/nixos/virtualisation.nix
     ../../../common/nixos/desktop-gui.nix
 
