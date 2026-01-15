@@ -118,6 +118,10 @@
       extraCompatPackages = with pkgs; [
         proton-ge-bin
       ];
+      # Fix CEF GPU rendering issues on AMD with i3 workspace switching
+      package = pkgs.steam.override {
+        extraArgs = "-no-cef-sandbox -cef-disable-gpu";
+      };
     };
   };
 
