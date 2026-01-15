@@ -214,7 +214,7 @@ in
     enable = true;
     package = pkgs.picom;
 
-    backend = "glx";
+    backend = "egl";  # EGL works better than GLX on RDNA3 GPUs (fixes horizontal artifacts)
     vSync = true;
 
     # Fading (matching Hyprland animation style)
