@@ -221,6 +221,11 @@ in
     fade = true;
     fadeDelta = 5;
     fadeSteps = [ 0.03 0.03 ];
+    fadeExclude = [
+      "class_g = 'Steam'"
+      "class_g = 'steam'"
+      "class_g = 'steamwebhelper'"
+    ];
 
     # Opacity (matching Hyprland: active 0.95, inactive 0.85)
     activeOpacity = 1.00;
@@ -270,13 +275,37 @@ in
       # Dim inactive windows slightly
       inactive-dim = 0.05;
 
+      # Dim exclusions - Steam manages its own dimming
+      inactive-dim-exclude = [
+        "class_g = 'Steam'"
+        "class_g = 'steam'"
+        "class_g = 'steamwebhelper'"
+      ];
+
+      # Focus exclusions - prevents compositor refresh issues on focus change
+      focus-exclude = [
+        "class_g = 'Steam'"
+        "class_g = 'steam'"
+        "class_g = 'steamwebhelper'"
+      ];
+
       # Focus settings
       mark-wmwin-focused = true;
       mark-ovredir-focused = true;
       detect-rounded-corners = true;
       detect-client-opacity = true;
       detect-transient = true;
+      detect-client-leader = true;
       log-level = "warn";
+
+      # Window type specific settings - helps with Steam popups/menus
+      wintypes = {
+        tooltip = { fade = false; shadow = false; opacity = 1.0; focus = true; };
+        dock = { shadow = false; clip-shadow-above = true; };
+        dnd = { shadow = false; };
+        popup_menu = { opacity = 1.0; shadow = false; };
+        dropdown_menu = { opacity = 1.0; shadow = false; };
+      };
 
       # AMD GPU artifact fixes
       use-damage = false;           # Full redraws instead of partial - fixes white bar artifacts
