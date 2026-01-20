@@ -20,18 +20,22 @@
 self: super:
 let
   geminiCliOverride = oldAttrs: rec {
-    version = "0.23.0";
+    version = "0.24.5";
 
     src = super.fetchFromGitHub {
       owner = "google-gemini";
       repo = "gemini-cli";
       rev = "v${version}";
-      hash = "sha256-pJveHjguNl8J67zu6O867iM/JlXM9VTAokIQYHvxUYs=";
+      # uncomment the below to force a pkg refresh and get the new hash
+      # hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      hash = "sha256-lv3qqFSDz49CbeYftQJSo4D/hYyJyktoSrU0xF2aPtw=";
     };
 
     npmDeps = super.fetchNpmDeps {
       inherit src;
-      hash = "sha256-SVjUt8xoBtuZJa0mUfZCf/XXxc8OxDU7FG8ZYPTM3j4=";
+      # uncomment the below to force a pkg refresh and get the new hash
+      # hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      hash = "sha256-cjKJyOlrb0J6LuXSPas3w/mf+2kPoOCd566lkK95B2c=";
     };
 
     nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [
@@ -49,13 +53,13 @@ let
   };
 
   claudeCodeOverride = oldAttrs: rec {
-    version = "2.1.5";
+    version = "2.1.12";
 
     src = super.fetchzip {
       url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
       # uncomment the below to force a pkg refresh and get the new hash
       # hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      hash = "sha256-hJECxkGC+nkQ6YCZpSZxRbuHaeYQDs2q7L5SYKSFVFc=";
+      hash = "sha256-JX72YEM2fXY7qKVkuk+UFeef0OhBffljpFBjIECHMXw=";
     };
   };
 in
