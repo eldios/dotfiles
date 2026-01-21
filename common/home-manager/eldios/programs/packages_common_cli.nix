@@ -75,6 +75,7 @@
       kdash
       kind
       ktop
+      kubeconform
       kubectx
       kubelogin
       kubelogin-oidc
