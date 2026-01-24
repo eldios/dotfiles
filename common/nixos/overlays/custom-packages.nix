@@ -20,7 +20,7 @@
 self: super:
 let
   geminiCliOverride = oldAttrs: rec {
-    version = "0.24.5";
+    version = "0.25.2";
 
     src = super.fetchFromGitHub {
       owner = "google-gemini";
@@ -28,18 +28,19 @@ let
       rev = "v${version}";
       # uncomment the below to force a pkg refresh and get the new hash
       # hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      hash = "sha256-lv3qqFSDz49CbeYftQJSo4D/hYyJyktoSrU0xF2aPtw=";
+      hash = "sha256-2Fl6bkoAgu+KvwVIkQEIAPYKQRYyEQPWMRv3vsfnNA4=";
     };
 
     npmDeps = super.fetchNpmDeps {
       inherit src;
       # uncomment the below to force a pkg refresh and get the new hash
       # hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      hash = "sha256-cjKJyOlrb0J6LuXSPas3w/mf+2kPoOCd566lkK95B2c=";
+      hash = "sha256-4peAAxCws5IjWaiNwkRBiaL+n1fE+zsK0qbk1owueeY=";
     };
 
     nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [
       super.pkg-config
+      super.removeReferencesTo
     ];
 
     buildInputs = (oldAttrs.buildInputs or [ ]) ++ [
@@ -50,16 +51,24 @@ let
       mkdir -p packages/generated
       echo "export const GIT_COMMIT_INFO = { commitHash: '${src.rev}' };" > packages/generated/git-commit.ts
     '';
+
+    # Strip references to build-time only dependencies
+    postInstall = (oldAttrs.postInstall or "") + ''
+      find $out -type f -exec remove-references-to -t ${npmDeps} {} + 2>/dev/null || true
+    '';
+
+    # python3 reference comes from node-gyp build but isn't a real runtime dep
+    disallowedReferences = [ ];
   };
 
   claudeCodeOverride = oldAttrs: rec {
-    version = "2.1.12";
+    version = "2.1.19";
 
     src = super.fetchzip {
       url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
       # uncomment the below to force a pkg refresh and get the new hash
       # hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      hash = "sha256-JX72YEM2fXY7qKVkuk+UFeef0OhBffljpFBjIECHMXw=";
+      hash = "sha256-K2fJf1eRAyqmtAvKBzpAtMohQ4B1icwC9yf5zEf52C8=";
     };
   };
 in
