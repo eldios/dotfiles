@@ -20,7 +20,7 @@
 self: super:
 let
   geminiCliOverride = oldAttrs: rec {
-    version = "0.25.2";
+    version = "0.26.0";
 
     src = super.fetchFromGitHub {
       owner = "google-gemini";
@@ -28,14 +28,14 @@ let
       rev = "v${version}";
       # uncomment the below to force a pkg refresh and get the new hash
       # hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      hash = "sha256-2Fl6bkoAgu+KvwVIkQEIAPYKQRYyEQPWMRv3vsfnNA4=";
+      hash = "sha256-wvCSYr5BUS5gggTFHfG+SRvgAyRE63nYdaDwH98wurI=";
     };
 
     npmDeps = super.fetchNpmDeps {
       inherit src;
       # uncomment the below to force a pkg refresh and get the new hash
       # hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      hash = "sha256-4peAAxCws5IjWaiNwkRBiaL+n1fE+zsK0qbk1owueeY=";
+      hash = "sha256-nfmIt+wUelhz3KiW4/pp/dGE71f2jsPbxwpBRT8gtYc=";
     };
 
     nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [
@@ -59,16 +59,28 @@ let
 
     # python3 reference comes from node-gyp build but isn't a real runtime dep
     disallowedReferences = [ ];
+
+    # Override postPatch to fix the substitution for v0.26.0+
+    # Upstream changed from disableAutoUpdate to enableAutoUpdate
+    # Two substitutions to avoid matching enableAutoUpdateNotification:
+    # 1. enableAutoUpdate followed by comma (function argument)
+    # 2. enableAutoUpdate at end of line (condition expression)
+    postPatch = ''
+      sed -i 's/settings\.merged\.general\.enableAutoUpdate,/false,/g' \
+        packages/cli/src/utils/handleAutoUpdate.ts
+      sed -i 's/settings\.merged\.general\.enableAutoUpdate$/false/' \
+        packages/cli/src/utils/handleAutoUpdate.ts
+    '';
   };
 
   claudeCodeOverride = oldAttrs: rec {
-    version = "2.1.19";
+    version = "2.1.23";
 
     src = super.fetchzip {
       url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
       # uncomment the below to force a pkg refresh and get the new hash
       # hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      hash = "sha256-K2fJf1eRAyqmtAvKBzpAtMohQ4B1icwC9yf5zEf52C8=";
+      hash = "sha256-Cl/lwk1ffwrc+v1ncdShjeheNnkoocmXSDUDOCRHJgQ=";
     };
   };
 in
