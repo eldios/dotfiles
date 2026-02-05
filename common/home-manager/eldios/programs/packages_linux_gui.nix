@@ -143,6 +143,7 @@ in
         #pdfposter
 
         # 3D Printing
+        esphome
         freecad-wayland
         orca-slicer
         prusa-slicer
