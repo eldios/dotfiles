@@ -1,11 +1,4 @@
-# Overlay for custom package versions not available in nixpkgs
-#
-# === CLAUDE-CODE UPDATE ===
-# Get latest version (npm is authoritative, stable channel lags):
-#   curl -s https://registry.npmjs.org/@anthropic-ai/claude-code/latest | jq -r .version
-#
-# Get hash + convert to SRI (one-liner):
-#   V=2.0.67 && nix hash convert --hash-algo sha256 --to sri $(nix-prefetch-url --unpack "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-$V.tgz" 2>/dev/null)
+# Overlay for Gemini CLI version override
 #
 # === GEMINI-CLI UPDATE ===
 # Get latest version:
@@ -15,7 +8,7 @@
 #   nix-prefetch-github google-gemini gemini-cli --rev vVERSION
 #
 # Get npm hash (clone + prefetch):
-#   V=0.17.1 && cd /tmp && rm -rf gemini-cli && git clone --depth=1 -b v$V https://github.com/google-gemini/gemini-cli && cd gemini-cli && nix-shell -p prefetch-npm-deps --run "prefetch-npm-deps package-lock.json"
+#   V=0.27.0 && cd /tmp && rm -rf gemini-cli && git clone --depth=1 -b v$V https://github.com/google-gemini/gemini-cli && cd gemini-cli && nix-shell -p prefetch-npm-deps --run "prefetch-npm-deps package-lock.json"
 #
 self: super:
 let
@@ -72,24 +65,12 @@ let
         packages/cli/src/utils/handleAutoUpdate.ts
     '';
   };
-
-  claudeCodeOverride = oldAttrs: rec {
-    version = "2.1.32";
-
-    src = super.fetchzip {
-      url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
-      # uncomment the below to force a pkg refresh and get the new hash
-      # hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      hash = "sha256-oN+Pl/SpMpI4JiU+x73Z9lNYwaz2mJpYnc4ssAG+oAo=";
-    };
-  };
 in
 {
   gemini-cli = super.gemini-cli.overrideAttrs geminiCliOverride;
-  claude-code = super.claude-code.overrideAttrs claudeCodeOverride;
 
-  unstable = super.unstable // {
+  unstable = (super.unstable or { }) // {
     gemini-cli = super.unstable.gemini-cli.overrideAttrs geminiCliOverride;
-    claude-code = super.unstable.claude-code.overrideAttrs claudeCodeOverride;
   };
 }
+# vim: set ts=2 sw=2 et ai list nu
