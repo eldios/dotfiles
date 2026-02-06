@@ -60,7 +60,7 @@ in
         ll = "${pkgs.lsd}/bin/lsd -lh";
         l = "${pkgs.lsd}/bin/lsd -lhtra";
 
-        b = "${pkgs.gitbutler}/bin/but-cli";
+        b = "${pkgs.gitbutler}/bin/but";
         g = "${pkgs.git}/bin/git";
         lg = "${pkgs.lazygit}/bin/lazygit";
         lazg = "${pkgs.lazygit}/bin/lazygit";
