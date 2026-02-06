@@ -32,6 +32,7 @@
       doctl # Digital Ocean CLI tool
       dysk
       gitleaks
+      gitbutler
       (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
       infisical
       jira-cli-go
