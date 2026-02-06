@@ -64,7 +64,6 @@ in
         # GUI Applications
         appimage-run
         arandr
-        atop
         audacity
         barrier
         cameractrls
@@ -153,9 +152,6 @@ in
         obsidian # Assuming the override is handled or not needed for now
         rnote
 
-        # AI CLI tools
-        opencode
-        claude-code
       ])
       ++ [
         pcloud
