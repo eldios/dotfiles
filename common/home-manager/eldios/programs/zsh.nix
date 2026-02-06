@@ -10,7 +10,6 @@ in
       fastfetch
       fzf
       lsd
-      nnn
       thefuck
       zoxide
     ];

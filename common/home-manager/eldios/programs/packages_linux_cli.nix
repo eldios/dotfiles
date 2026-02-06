@@ -5,12 +5,7 @@
       with pkgs;
       [
         atop
-        barrier
-        dive
         docker-slim
-        gcal
-        graph-easy
-        guvcview
         iotop
         k3s
         lazydocker
@@ -21,13 +16,8 @@
         p7zip
         powertop
         quickemu
-        remmina
-        spice
         sshx
         tty-share
-        uqm
-        uvcdynctrl
-        vlc
       ]
       ++ (with pkgs.unstable; [
         opencode
