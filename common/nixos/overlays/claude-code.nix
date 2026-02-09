@@ -10,13 +10,13 @@
 self: super:
 let
   claudeCodeOverride = oldAttrs: rec {
-    version = "2.1.32";
+    version = "2.1.37";
 
     src = super.fetchzip {
       url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
       # uncomment the below to force a pkg refresh and get the new hash
       # hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      hash = "sha256-oN+Pl/SpMpI4JiU+x73Z9lNYwaz2mJpYnc4ssAG+oAo=";
+      hash = "sha256-ijyZCT4LEEtXWOBds8WzizcfED9hVgaJByygJ4P4Yss=";
     };
   };
 in
