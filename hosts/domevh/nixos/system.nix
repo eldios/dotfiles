@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   system = {
-    stateVersion = "25.05"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+    stateVersion = "25.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = false;
   };
 

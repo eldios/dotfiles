@@ -60,7 +60,7 @@ in
     qt5.qtwayland
     qt6.qmake
     qt6.qtwayland
-    rofi-wayland-unwrapped
+    rofi
     shotman
     slurp
     swaybg

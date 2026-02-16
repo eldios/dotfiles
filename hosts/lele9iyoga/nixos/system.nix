@@ -7,7 +7,7 @@
 
 {
   system = {
-    stateVersion = "25.05"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+    stateVersion = "25.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = true;
   };
 
@@ -26,10 +26,8 @@
       enable = true;
     };
 
-    # don’t shutdown when power button is short-pressed
-    logind.extraConfig = ''
-      HandlePowerKey=ignore
-    '';
+    # don't shutdown when power button is short-pressed
+    logind.settings.Login.HandlePowerKey = "ignore";
 
     # BEGIN - laptop related stuff
     thermald.enable = true;
@@ -71,6 +69,8 @@
 
     displayManager = {
       sddm.enable = false;
+      gdm.enable = true;
+      gdm.wayland = true;
 
       sessionPackages = with pkgs.unstable; [
         sway
@@ -83,11 +83,6 @@
       autorun = true;
 
       videoDrivers = [ "modesetting" ];
-
-      displayManager = {
-        gdm.enable = true;
-        gdm.wayland = true;
-      };
 
       windowManager = {
         i3 = {
