@@ -7,7 +7,7 @@ in
 {
   programs.rofi = {
     enable = true;
-    package = pkgs.rofi-wayland;
+    package = pkgs.rofi;
 
     # Use stylix for theming
     # Stylix will automatically apply the theme colors
@@ -118,19 +118,19 @@ in
   home.packages = with pkgs; [
     (writeShellScriptBin "rofi-run" ''
       set -euo pipefail
-      ${pkgs.rofi-wayland}/bin/rofi -show run ${common_opts} "$@"
+      ${pkgs.rofi}/bin/rofi -show run ${common_opts} "$@"
     '')
     (writeShellScriptBin "rofi-drun" ''
       set -euo pipefail
-      ${pkgs.rofi-wayland}/bin/rofi -show drun ${common_opts} "$@"
+      ${pkgs.rofi}/bin/rofi -show drun ${common_opts} "$@"
     '')
     (writeShellScriptBin "rofi-window" ''
       set -euo pipefail
-      ${pkgs.rofi-wayland}/bin/rofi -show window ${common_opts} "$@"
+      ${pkgs.rofi}/bin/rofi -show window ${common_opts} "$@"
     '')
     (writeShellScriptBin "rofi-filebrowser" ''
       set -euo pipefail
-      ${pkgs.rofi-wayland}/bin/rofi -show filebrowser ${common_opts} "$@"
+      ${pkgs.rofi}/bin/rofi -show filebrowser ${common_opts} "$@"
     '')
     # Additional dependency for better Rofi appearance
     papirus-icon-theme

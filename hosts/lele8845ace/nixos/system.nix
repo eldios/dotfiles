@@ -7,7 +7,7 @@
 
 {
   system = {
-    stateVersion = "25.05"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+    stateVersion = "25.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = true;
   };
 
@@ -35,9 +35,7 @@
     };
 
     # don't shutdown when power button is short-pressed
-    logind.extraConfig = ''
-      HandlePowerKey=ignore
-    '';
+    logind.settings.Login.HandlePowerKey = "ignore";
 
     # BEGIN - laptop related stuff
     thermald.enable = true;
@@ -66,6 +64,8 @@
 
     displayManager = {
       sddm.enable = false;
+      gdm.enable = true;
+      gdm.wayland = true;
 
       sessionPackages = with pkgs.unstable; [
         sway
@@ -78,11 +78,6 @@
       autorun = true;
 
       videoDrivers = [ "amdgpu" ];
-
-      displayManager = {
-        gdm.enable = true;
-        gdm.wayland = true;
-      };
 
       windowManager = {
         i3 = {
@@ -155,16 +150,12 @@
       extraPackages = with pkgs; [
         libvdpau-va-gl
         rocmPackages.clr.icd
-        vaapiVdpau
+        libva-vdpau-driver
       ];
     };
 
     amdgpu = {
-      amdvlk = {
-        enable = true;
-        support32Bit.enable = true;
-        supportExperimental.enable = true;
-      };
+      # amdvlk removed in 25.11 - RADV (Mesa) is now the default/recommended Vulkan driver
       opencl.enable = true;
       initrd.enable = true;
     };
