@@ -4,33 +4,6 @@
   pkgs,
   ...
 }:
-let
-  patchelfFixes = pkgs.patchelfUnstable.overrideAttrs (
-    _finalAttrs: _previousAttrs: {
-      src = pkgs.fetchFromGitHub {
-        owner = "Patryk27";
-        repo = "patchelf";
-        rev = "527926dd9d7f1468aa12f56afe6dcc976941fedb";
-        sha256 = "sha256-3I089F2kgGMidR4hntxz5CKzZh5xoiUwUsUwLFUEXqE=";
-      };
-    }
-  );
-  pcloud = pkgs.pcloud.overrideAttrs (
-    _finalAttrs: previousAttrs: {
-      nativeBuildInputs = previousAttrs.nativeBuildInputs ++ [ patchelfFixes ];
-    }
-  );
-  mailspring = pkgs.unstable.mailspring.overrideAttrs (
-    _finalAttrs: _previousAttrs: {
-      version = "1.16.0";
-      src = pkgs.unstable.fetchurl {
-        url = "https://github.com/Foundry376/Mailspring/releases/download/${_finalAttrs.version}/mailspring-${_finalAttrs.version}-amd64.deb";
-        hash = "sha256-iJ6VzwvNTIRqUq9OWNOWOSuLbqhx+Lqx584kuyIslyA=";
-      };
-    }
-  );
-
-in
 {
   services = {
     gpg-agent = {
@@ -132,6 +105,7 @@ in
         brave
         dbeaver-bin
         discord-canary
+        pcloud
         sonixd
         spotify
         tidal-hifi
@@ -151,11 +125,7 @@ in
         obsidian # Assuming the override is handled or not needed for now
         rnote
 
-      ])
-      ++ [
-        pcloud
-        mailspring
-      ];
+      ]);
   }; # EOM home
 }
 # vim: set ts=2 sw=2 et ai list nu
