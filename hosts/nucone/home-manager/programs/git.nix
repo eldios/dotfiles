@@ -4,7 +4,7 @@
   programs = {
 
     git = {
-      extraConfig = {
+      settings = {
         user = {
           signinkey = "64F87759366D72D60055C0BD3EDE14869955C119";
         };

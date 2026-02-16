@@ -25,27 +25,37 @@ in
       package = eldios_lazygit;
     }; # EOM lazygit
 
+    delta = {
+      enable = true;
+      enableGitIntegration = true;
+      options = {
+        navigate = true;
+        line-numbers = true;
+        light = false;
+      };
+    }; # EOM delta
+
     git = {
       enable = true;
       lfs.enable = true;
-      aliases = {
-        co = "checkout";
-        chp = "cherry-pick";
-        lol = "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all";
-        loll = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all";
-        ppt = "pull --prune --tags";
-        prettylog = "...";
-        rc = "repo clone";
-        st = "status";
-        w = "worktree";
-        wK = "worktree unlock";
-        wa = "worktree add";
-        wk = "worktree lock";
-        wl = "worktree list";
-        wm = "worktree move";
-        wr = "worktree remove";
-      };
-      extraConfig = {
+      settings = {
+        alias = {
+          co = "checkout";
+          chp = "cherry-pick";
+          lol = "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all";
+          loll = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all";
+          ppt = "pull --prune --tags";
+          prettylog = "...";
+          rc = "repo clone";
+          st = "status";
+          w = "worktree";
+          wK = "worktree unlock";
+          wa = "worktree add";
+          wk = "worktree lock";
+          wl = "worktree list";
+          wm = "worktree move";
+          wr = "worktree remove";
+        };
         advice = {
           skippedCherryPicks = false;
         };
@@ -84,14 +94,6 @@ in
         ".DS_Store"
         "*.pyc"
       ];
-      delta = {
-        enable = true;
-        options = {
-          navigate = true;
-          line-numbers = true;
-          light = false;
-        };
-      };
     }; # EOM git
 
   }; # EOM programs

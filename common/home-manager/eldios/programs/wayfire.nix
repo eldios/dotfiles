@@ -61,7 +61,7 @@ in
       qt5.qtwayland
       qt6.qmake
       qt6.qtwayland
-      rofi-wayland-unwrapped
+      rofi
       shotman
       slurp
       swaybg
@@ -100,11 +100,6 @@ in
       wayfire-plugins-extra
       wcm
       wf-shell
-      windecor
-      firedecor
-      wayfire-shadows
-      focus-request
-      wwp-switcher
     ];
 
     # Enable XWayland support

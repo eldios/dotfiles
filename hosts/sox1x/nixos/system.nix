@@ -3,7 +3,7 @@
 { pkgs, ... }:
 {
   system = {
-    stateVersion = "25.05"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+    stateVersion = "25.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = true;
   };
 
@@ -35,6 +35,8 @@
 
     displayManager = {
       defaultSession = "cinnamon";
+      gdm.enable = true;
+      gdm.wayland = true;
       sessionPackages = with pkgs; [
         sway
         hyprland
@@ -51,11 +53,6 @@
 
       desktopManager = {
         cinnamon.enable = true;
-      };
-
-      displayManager = {
-        gdm.enable = true;
-        gdm.wayland = true;
       };
     };
 
