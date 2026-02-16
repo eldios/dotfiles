@@ -65,7 +65,7 @@ in
         appimage-run
         arandr
         audacity
-        barrier
+        input-leap
         cameractrls
         cool-retro-term
         cryptomator
@@ -109,7 +109,7 @@ in
         vivaldi-ffmpeg-codecs
         vlc
         vorta
-        whatsapp-for-linux
+        wasistlos
         widevine-cdm
         xclip
         xdotool
@@ -121,7 +121,6 @@ in
         krita
         saber
         styluslabs-write-bin
-        write_stylus
         xournalpp
       ])
       ++ (with pkgs.unstable; [
