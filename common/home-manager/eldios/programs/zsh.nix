@@ -10,7 +10,7 @@ in
       fastfetch
       fzf
       lsd
-      thefuck
+      pay-respects
       zoxide
     ];
   }; # EOM ZSH deps
@@ -142,7 +142,7 @@ in
         zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
         source <(${pkgs.carapace}/bin/carapace _carapace zsh)
 
-        eval "$(${pkgs.thefuck}/bin/thefuck --alias)"
+        eval "$(${pkgs.pay-respects}/bin/pay-respects zsh --alias)"
         eval "$(${pkgs.zoxide}/bin/zoxide init zsh)"
 
         ${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}
