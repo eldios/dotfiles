@@ -27,6 +27,7 @@
     # Packages
     ./programs/packages_common_gui.nix
     ./programs/packages_linux_gui.nix
+    ./programs/packages_mailspring.nix
   ];
 }
 
