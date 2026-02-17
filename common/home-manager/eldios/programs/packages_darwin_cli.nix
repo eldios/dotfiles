@@ -3,8 +3,8 @@
 {
   home = {
     packages = with pkgs; [
-      kubectl
-      libiconv # dep for other stuff
+      kubectl # Kubernetes command-line tool
+      libiconv # character encoding conversion library (dep for other packages)
     ];
   };
 } # EOF
