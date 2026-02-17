@@ -3,7 +3,7 @@
 {
   home = {
     packages = with pkgs; [
-      virt-manager
+      virt-manager # virtual machine manager GUI
     ];
   };
 } # EOF
