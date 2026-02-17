@@ -13,7 +13,7 @@
 self: super:
 let
   geminiCliOverride = oldAttrs: rec {
-    version = "0.27.0";
+    version = "0.28.2";
 
     src = super.fetchFromGitHub {
       owner = "google-gemini";
@@ -21,14 +21,14 @@ let
       rev = "v${version}";
       # uncomment the below to force a pkg refresh and get the new hash
       # hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      hash = "sha256-ptx+aBlw6Koyv5NWZNXOunPJfedv1JwprG1SaRLwrGg=";
+      hash = "sha256-IOc4Y8U2J4Dpl0A5gfffAayiHKISlFiHU2qg61fR1Tw=";
     };
 
     npmDeps = super.fetchNpmDeps {
       inherit src;
       # uncomment the below to force a pkg refresh and get the new hash
       # hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      hash = "sha256-0bS3yl5EG2KyfBrw8SO1BfKwxb1f2LVsudeaQTb5/DQ=";
+      hash = "sha256-XfD+PmmeLsbb9rC7DCmqu08/+cXZpGewMN5olrHhH4M=";
     };
 
     nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [
