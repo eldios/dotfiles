@@ -94,11 +94,6 @@ in
         }
     )
 
-    ssh-agents -c -a ~/.ssh/id_ed25519 |
-      lines |
-      str replace --all --regex "(.*) export.*" "''\${1}" |
-      parse "{name}={value};" |
-      transpose -r | into record | load-env
   '';
 
   xdg.configFile."nushell/config.nu".text = ''
