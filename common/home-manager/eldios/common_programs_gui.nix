@@ -7,7 +7,7 @@
     ./style/stylix.nix
 
     ./programs/nushell.nix
-    ./programs/ssh-agents.nix
+    ./programs/keychain.nix
 
     # Terminal emulators
     ./programs/alacritty.nix
