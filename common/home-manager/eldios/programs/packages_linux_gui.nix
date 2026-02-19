@@ -11,6 +11,8 @@
       enable = true;
       enableSshSupport = false;
       enableZshIntegration = true;
+      defaultCacheTtl = 28800;
+      maxCacheTtl = 28800;
       extraConfig = ''
         #debug-pinentry
         #debug ipc
