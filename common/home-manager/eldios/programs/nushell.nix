@@ -128,11 +128,11 @@ in
     alias la = l -a
     alias lg = ${pkgs.lazygit}/bin/lazygit
     alias ll = l -l
-    alias nixU = sudo nix flake update $env.HOME/dotfiles and nixu # 'nix' assumed in PATH
-    alias nixUo = sudo nix flake update $env.HOME/dotfiles and nixuo # outside network - skip local cache
+    alias nixU = sudo -E nix flake update $env.HOME/dotfiles and nixu # 'nix' assumed in PATH
+    alias nixUo = sudo -E nix flake update $env.HOME/dotfiles and nixuo # outside network - skip local cache
     alias nixs = nix search nixpkgs # 'nix' assumed in PATH
-    alias nixu = sudo nixos-rebuild switch --flake $env.HOME/dotfiles # nixos-rebuild assumed in PATH
-    alias nixuo = sudo nixos-rebuild switch --flake $env.HOME/dotfiles --option substituters 'https://cache.nixos.org https://nix-community.cachix.org' # outside - skip local cache
+    alias nixu = sudo -E nixos-rebuild switch --flake $env.HOME/dotfiles # nixos-rebuild assumed in PATH
+    alias nixuo = sudo -E nixos-rebuild switch --flake $env.HOME/dotfiles --option substituters 'https://cache.nixos.org https://nix-community.cachix.org' # outside - skip local cache
     alias tf = ${pkgs.opentofu}/bin/tofu
     alias tfa = tf apply -auto-approve
     alias tfd = tf destroy -auto-approve
