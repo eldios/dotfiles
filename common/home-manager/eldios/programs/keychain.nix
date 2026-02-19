@@ -9,7 +9,6 @@
     enableNushellIntegration = true;
     extraFlags = [
       "--quiet"
-      "--clear"
       "--timeout"
       "480"
       "--confirm"
