@@ -14,8 +14,8 @@
       "zfs"
     ];
 
-    #kernelPackages = pkgs.linuxPackages_latest;
-    kernelPackages = pkgs.linuxPackages_6_16;
+    kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_6_16;
     kernelParams = [
       "nohibernate"
       "zfs.zfs_arc_max=6442856000"
