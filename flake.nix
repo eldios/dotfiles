@@ -49,13 +49,19 @@
     };
 
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
+
+    # AI tool overlays (auto-updated by maintainers)
+    claude-code-overlay.url = "github:ryoppippi/claude-code-overlay";
+    gemini-cli-nix.url = "github:nklmilojevic/gemini-cli-nix";
   };
 
   outputs =
     {
+      claude-code-overlay,
       darwin,
       dgop,
       disko,
+      gemini-cli-nix,
       home-manager,
       mpc-hub,
       nixos-facter-modules,
@@ -80,8 +86,10 @@
       # It includes inputs from other flakes (like home-manager, sops-nix) and nixpkgs instances.
       commonSpecialArgs = {
         inherit
+          claude-code-overlay
           dgop
           disko
+          gemini-cli-nix
           home-manager
           inputs
           mpc-hub
