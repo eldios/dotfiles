@@ -73,11 +73,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1771632278,
-        "narHash": "sha256-yu2llU2/ZT53ZLQUgCUp1XxbmKpHY9BAnee1EjqxCxo=",
+        "lastModified": 1771917557,
+        "narHash": "sha256-Tj37n4E2QoOgoXtrr6c0mTzasuTTn69x68c3QEyOmFk=",
         "owner": "ryoppippi",
         "repo": "claude-code-overlay",
-        "rev": "3791a1a1729333cafcc03e9e12acac8e142e3d09",
+        "rev": "640052f75727a4013c7b926c4cc14961d56c27de",
         "type": "github"
       },
       "original": {
@@ -277,11 +277,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1771535680,
-        "narHash": "sha256-0qVEAVwIwYyY9XEAiO0kv4CKh9YZ3k7FwfsBGFsNoRI=",
+        "lastModified": 1771908204,
+        "narHash": "sha256-hpBx0fBHUtGwpnEjMIykYVaABJdJbCvDVdolgqxVsQI=",
         "owner": "nklmilojevic",
         "repo": "gemini-cli-nix",
-        "rev": "f2f1bd9cfa78d61219c264013dac6f34b99604fd",
+        "rev": "78558ce8d4608cc72fa980b5764493fdc16709e8",
         "type": "github"
       },
       "original": {
