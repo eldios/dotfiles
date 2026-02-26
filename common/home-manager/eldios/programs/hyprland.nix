@@ -4,21 +4,13 @@
   ...
 }:
 let
-  # Preferred terminal emulator
-  #terminal = "${pkgs.kitty}/bin/kitty";
-  #terminal = "${pkgs.rio}/bin/rio";
-  # Current terminal
   terminal = "${pkgs.ghostty}/bin/ghostty";
 
-  # Use the unified rofi scripts from rofi.nix
-  # Rofi menu for running commands
-  quick_menu = "rofi-run";
-  # Rofi menu for launching applications (drun)
-  full_menu = "rofi-drun";
-  # Rofi menu for browsing files
-  file_menu = "rofi-filebrowser";
-  # Rofi menu for window selection
-  window_menu = "rofi-window";
+  # Walker application launcher for Wayland
+  quick_menu = "${pkgs.walker}/bin/walker -m runner";
+  full_menu = "${pkgs.walker}/bin/walker";
+  file_menu = "${pkgs.walker}/bin/walker -m finder";
+  window_menu = "${pkgs.walker}/bin/walker -m windows";
 
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
@@ -67,7 +59,6 @@ in
       qt5.qtwayland
       qt6.qmake
       qt6.qtwayland
-      rofi
       shotman
       slurp
       swaybg
@@ -124,7 +115,6 @@ in
         "XDG_SESSION_TYPE,wayland"
         "XDG_SESSION_DESKTOP,Hyprland"
         "ELECTRON_OZONE_PLATFORM_HINT,wayland"
-        "WAYLAND_DISPLAY,wayland-1"
       ];
 
       # Monitor configuration - sets up dual monitor layout
@@ -328,8 +318,8 @@ in
         ", XF86AudioRaiseVolume, exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
         ", XF86AudioLowerVolume, exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
         ", XF86AudioMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86MonBrightnessUp, exec, sudo ${pkgs.light}/bin/light -A 5"
-        ", XF86MonBrightnessDown, exec, sudo ${pkgs.light}/bin/light -U 5"
+        ", XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl set +5%"
+        ", XF86MonBrightnessDown, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 5%-"
         ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
         ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
         ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"

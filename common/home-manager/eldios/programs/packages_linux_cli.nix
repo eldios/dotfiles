@@ -16,6 +16,7 @@
         lazydocker # TUI for Docker management
 
         # Networking & Remote
+        impala # TUI for managing WiFi connections (iwd backend)
         mosh # mobile shell, robust SSH alternative
         networkmanager # network connection manager
         sshx # collaborative terminal sharing
