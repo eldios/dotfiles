@@ -1,15 +1,13 @@
 { pkgs, config, ... }:
 
 let
-  # Application definitions (matching your Sway/Hyprland configs)
   terminal = "${pkgs.ghostty}/bin/ghostty";
 
-  # Use the unified rofi scripts from rofi.nix
   fuzzel_menu = "${pkgs.fuzzel}/bin/fuzzel";
-  quick_menu = "rofi-run";
-  full_menu = "rofi-drun";
-  file_menu = "rofi-filebrowser";
-  window_menu = "rofi-window";
+  quick_menu = "${pkgs.walker}/bin/walker -m runner";
+  full_menu = "${pkgs.walker}/bin/walker";
+  file_menu = "${pkgs.walker}/bin/walker -m finder";
+  window_menu = "${pkgs.walker}/bin/walker -m windows";
 
   lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5";
   powermenu = "${pkgs.wlogout}/bin/wlogout";
@@ -53,19 +51,16 @@ in
     kitty
     lavalauncher
     libva-utils
-    light
     mako
     pinentry-bemenu
     polkit_gnome
     qt5.qtwayland
     qt6.qmake
     qt6.qtwayland
-    rofi
     shotman
     slurp
     swaybg
     swaylock-effects
-    swaynotificationcenter
     swww
     tofi
     udiskie
@@ -80,7 +75,6 @@ in
     wlr-randr
     wlroots
     wlsunset
-    wofi
     wshowkeys
     wtype
     xdg-desktop-portal
@@ -382,9 +376,6 @@ in
           // XWayland compatibility
           DISPLAY ":0"
 
-          // Ensure both displays are available
-          WAYLAND_DISPLAY "wayland-1"
-
           // Java applications
           _JAVA_AWT_WM_NONREPARENTING "1"
 
@@ -494,8 +485,8 @@ in
           XF86AudioRaiseVolume  allow-when-locked=true hotkey-overlay-title="Volume UP"              { spawn        "${pkgs.wireplumber}/bin/wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+"; }
           XF86AudioLowerVolume  allow-when-locked=true hotkey-overlay-title="Volume DOWN"            { spawn        "${pkgs.wireplumber}/bin/wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
           XF86AudioMute         allow-when-locked=true hotkey-overlay-title="Volume MUTE"            { spawn        "${pkgs.wireplumber}/bin/wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
-          XF86MonBrightnessUp   allow-when-locked=true hotkey-overlay-title="Screen Brightness UP"   { spawn "sudo" "${pkgs.light}/bin/light" "-A" "5"; }
-          XF86MonBrightnessDown allow-when-locked=true hotkey-overlay-title="Screen Brightness DOWN" { spawn "sudo" "${pkgs.light}/bin/light" "-U" "5"; }
+          XF86MonBrightnessUp   allow-when-locked=true hotkey-overlay-title="Screen Brightness UP"   { spawn "${pkgs.brightnessctl}/bin/brightnessctl" "set" "+5%"; }
+          XF86MonBrightnessDown allow-when-locked=true hotkey-overlay-title="Screen Brightness DOWN" { spawn "${pkgs.brightnessctl}/bin/brightnessctl" "set" "5%-"; }
           XF86AudioPlay         allow-when-locked=true hotkey-overlay-title="Media PLAY/PAUSE"       { spawn        "${pkgs.playerctl}/bin/playerctl" "play-pause"; }
           XF86AudioNext         allow-when-locked=true hotkey-overlay-title="Media NEXT"             { spawn        "${pkgs.playerctl}/bin/playerctl" "next"; }
           XF86AudioPrev         allow-when-locked=true hotkey-overlay-title="Media PREV"             { spawn        "${pkgs.playerctl}/bin/playerctl" "previous"; }
