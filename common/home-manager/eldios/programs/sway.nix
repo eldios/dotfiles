@@ -1,15 +1,14 @@
 { pkgs, ... }:
 
 let
-  # Use the unified rofi scripts from rofi.nix
-  quick_menu = "rofi-run";
-  full_menu = "rofi-drun";
-  file_menu = "rofi-filebrowser";
-  window_menu = "rofi-window";
+  # Walker application launcher for Wayland
+  quick_menu = "${pkgs.walker}/bin/walker -m runner";
+  full_menu = "${pkgs.walker}/bin/walker";
+  file_menu = "${pkgs.walker}/bin/walker -m finder";
+  window_menu = "${pkgs.walker}/bin/walker -m windows";
 
-  lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5"; # Enhanced lockscreen command
+  lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5";
 
-  # Define swaymsg commands separately for clarity and robust parsing
   swaymsg_dpms_off = ''${pkgs.swayfx}/bin/swaymsg "output * dpms off"'';
   swaymsg_dpms_on = ''${pkgs.swayfx}/bin/swaymsg "output * dpms on"'';
 
@@ -19,79 +18,8 @@ let
 
 in
 {
-  # BEGIN Sway confguration
-  xdg.configFile."swaync/config.json" = {
-    enable = true;
-    executable = true;
-    text = ''
-      {
-        "$schema": "/etc/xdg/swaync/configSchema.json",
-        "positionX": "right",
-        "positionY": "top",
-        "layer": "overlay",
-        "control-center-layer": "top",
-        "layer-shell": true,
-        "cssPriority": "application",
-        "control-center-margin-top": 0,
-        "control-center-margin-bottom": 0,
-        "control-center-margin-right": 0,
-        "control-center-margin-left": 0,
-        "notification-2fa-action": true,
-        "notification-inline-replies": false,
-        "notification-icon-size": 64,
-        "notification-body-image-height": 100,
-        "notification-body-image-width": 200,
-        "timeout": 10,
-        "timeout-low": 5,
-        "timeout-critical": 0,
-        "fit-to-screen": true,
-        "control-center-width": 500,
-        "control-center-height": 600,
-        "notification-window-width": 500,
-        "keyboard-shortcuts": true,
-        "image-visibility": "when-available",
-        "transition-time": 200,
-        "hide-on-clear": false,
-        "hide-on-action": true,
-        "script-fail-notify": true,
-        "scripts": {},
-        "notification-visibility": {},
-        "widgets": [
-          "inhibitors",
-          "title",
-          "dnd",
-          "notifications"
-        ],
-        "widget-config": {
-          "inhibitors": {
-            "text": "Inhibitors",
-            "button-text": "Clear All",
-            "clear-all-button": true
-          },
-          "title": {
-            "text": "Notifications",
-            "clear-all-button": true,
-            "button-text": "Clear All"
-          },
-          "dnd": {
-            "text": "Do Not Disturb"
-          },
-          "label": {
-            "max-lines": 5,
-            "text": "Label Text"
-          },
-          "mpris": {
-            "image-size": 96,
-            "image-radius": 12
-          }
-        }
-      }
-    '';
-  };
-
   home = {
     packages = with pkgs; [
-      # BEGIN Sway confguration
       adwaita-icon-theme
       adwaita-qt
       adwaita-qt6
@@ -104,7 +32,7 @@ in
       fuzzel # wayland clone of dmenu
       gammastep
       geoclue2
-      ghostty # Added as preferred terminal
+      ghostty
       glpaper
       gnome-themes-extra
       grim # screenshot functionality
@@ -116,19 +44,16 @@ in
       kitty
       lavalauncher # simple launcher panel for Wayland desktops
       libva-utils
-      light # set brightness
-      mako # notification system developed by swaywm maintainer
+      mako # Wayland notification daemon
       pinentry-bemenu
       polkit_gnome
       qt5.qtwayland
       qt6.qmake
       qt6.qtwayland
-      rofi
       shotman
       slurp # screenshot functionality
       swaybg
       swaylock-effects
-      swaynotificationcenter
       swayr
       swayrbar
       swww
@@ -145,7 +70,6 @@ in
       wlr-randr
       wlroots
       wlsunset
-      wofi
       wshowkeys
       wtype
       xdg-desktop-portal
@@ -155,7 +79,7 @@ in
       (pkgs.writeShellScriptBin "fix-wm" ''
         set -euo pipefail
         ${pkgs.procps}/bin/pkill waybar && ${pkgs.swayfx}/bin/sway reload
-      '') # EOF fix-wm script
+      '') # kills waybar and reloads sway config
     ];
   };
 
@@ -165,7 +89,6 @@ in
     systemd.enable = true;
     wrapperFeatures.gtk = true;
 
-    #package = pkgs.sway-unwrapped;
     package = pkgs.swayfx-unwrapped;
 
     checkConfig = false;
@@ -184,9 +107,6 @@ in
       # Chromium/Electron apps Wayland support
       export ELECTRON_OZONE_PLATFORM_HINT=wayland
       export CHROME_EXECUTABLE="${pkgs.chromium}/bin/chromium"
-
-      # Ensure Wayland display is set
-      export WAYLAND_DISPLAY=wayland-1
 
       # Set TERMINAL env var if other tools need it, sway's 'terminal' setting is primary for sway keybindings
       export TERMINAL="${pkgs.ghostty}/bin/ghostty"
@@ -244,9 +164,10 @@ in
 
       # Set default terminal to ghostty
       terminal = "${pkgs.ghostty}/bin/ghostty";
-      menu = "${pkgs.rofi}/bin/rofi"; # Assuming this is used with exec $menu
+      menu = "${pkgs.walker}/bin/walker";
 
       startup = [
+        { command = "${pkgs.mako}/bin/mako"; }
         { command = "${daynightscreen}"; }
         { command = "${pkgs.variety}/bin/variety"; }
         #{ command = "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar"; } # Start eww widgets
@@ -340,8 +261,8 @@ in
         "XF86AudioRaiseVolume" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
         "XF86AudioLowerVolume" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
         "XF86AudioMute" = "exec ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-        "XF86MonBrightnessDown" = "exec sudo ${pkgs.light}/bin/light -U 5";
-        "XF86MonBrightnessUp" = "exec sudo ${pkgs.light}/bin/light -A 5";
+        "XF86MonBrightnessDown" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 5%-";
+        "XF86MonBrightnessUp" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set +5%";
         "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
         "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl next";
         "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl previous";

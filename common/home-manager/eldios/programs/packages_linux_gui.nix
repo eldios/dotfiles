@@ -32,6 +32,8 @@
         # System & Desktop Utils
         appimage-run # run AppImage applications on NixOS
         arandr # visual X11 display arranger
+        brightnessctl # backlight and LED brightness control
+        mangowc # lightweight DWM-style Wayland compositor (wlroots)
         gcal # GNU calendar
         geoclue2 # geolocation service
         gromit-mpx # screen annotation tool
@@ -41,6 +43,7 @@
         redshift # screen color temperature adjuster
         resources # system resource monitor GUI
         unclutter # auto-hide mouse cursor when idle
+        walker # Wayland application launcher (GTK4, multi-purpose)
         xclip # X11 clipboard tool
         xdotool # X11 window automation tool
 
@@ -51,6 +54,7 @@
         easyeffects # audio effects processor for PipeWire
         pavucontrol # PulseAudio/PipeWire volume control
         pulseaudio # audio tools (pactl, etc.)
+        wiremix # TUI audio mixer for PipeWire
 
         # Web Browsers
         vivaldi # Chromium-based web browser
