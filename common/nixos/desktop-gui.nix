@@ -35,16 +35,15 @@
       ];
       niri.default = [
         "gtk"
-        "gnome"
+        "wlr"
       ];
     };
     extraPortals = [
       pkgs.xdg-desktop-portal
-      pkgs.xdg-desktop-portal-gnome
       pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-hyprland
       pkgs.xdg-desktop-portal-luminous
-      pkgs.xdg-desktop-portal-wlr
+      # xdg-desktop-portal-wlr added automatically by wlr.enable = true above
     ];
   };
 
