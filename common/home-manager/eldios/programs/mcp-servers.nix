@@ -5,116 +5,6 @@
 let
   # MCP Server definitions - single source of truth
   mcpServers = {
-    homeassistant = {
-      port = 3003;
-      internalPort = 8000;
-      dockerfile = ''
-        FROM python:3.12-alpine
-        RUN pip install --no-cache-dir mcp-proxy
-        RUN apk add --no-cache nodejs npm
-        RUN npm install -g supergateway
-        WORKDIR /app
-      '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "mcp-proxy --transport streamablehttp \${HA_HOST}/api/mcp"
-        "--port"
-        "8000"
-      ];
-      env = {
-        API_ACCESS_TOKEN = "\${HA_API_TOKEN}";
-      };
-      envSecrets = {
-        HA_HOST = config.sops.placeholder."tokens/mcp/ha_host";
-        HA_API_TOKEN = config.sops.placeholder."tokens/mcp/ha_api_token";
-      };
-    };
-
-    grafana = {
-      port = 3002;
-      internalPort = 8000;
-      dockerfile = ''
-        FROM node:22-alpine
-        RUN npm install -g supergateway @leval/mcp-grafana
-        WORKDIR /app
-      '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "mcp-grafana"
-        "--port"
-        "8000"
-      ];
-      env = {
-        GRAFANA_URL = "\${GRAFANA_URL}";
-        GRAFANA_SERVICE_ACCOUNT_TOKEN = "\${GRAFANA_TOKEN}";
-      };
-      envSecrets = {
-        GRAFANA_URL = config.sops.placeholder."tokens/mcp/grafana_url";
-        GRAFANA_TOKEN = config.sops.placeholder."tokens/mcp/grafana_token";
-      };
-    };
-
-    unifi = {
-      port = 3005;
-      internalPort = 8000;
-      dockerfile = ''
-        FROM node:22-alpine
-        RUN npm install -g supergateway
-        WORKDIR /app
-      '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "npx -y @thelord/unifi-mcp-server"
-        "--port"
-        "8000"
-      ];
-      env = {
-        UNIFI_GATEWAY_IP = "\${UNIFI_GATEWAY_IP}";
-        UNIFI_API_KEY = "\${UNIFI_API_KEY}";
-        UNIFI_PORT = "\${UNIFI_PORT}";
-        UNIFI_SITE = "\${UNIFI_SITE}";
-        UNIFI_VERIFY_SSL = "\${UNIFI_VERIFY_SSL}";
-      };
-      envSecrets = {
-        UNIFI_GATEWAY_IP = config.sops.placeholder."tokens/mcp/unifi_gateway_ip";
-        UNIFI_API_KEY = config.sops.placeholder."tokens/mcp/unifi_api_key";
-        UNIFI_PORT = config.sops.placeholder."tokens/mcp/unifi_api_port";
-        UNIFI_SITE = config.sops.placeholder."tokens/mcp/unifi_api_site";
-        UNIFI_VERIFY_SSL = config.sops.placeholder."tokens/mcp/unifi_api_verify_ssl";
-      };
-    };
-
-    n8n = {
-      port = 3006;
-      internalPort = 8000;
-      dockerfile = ''
-        FROM node:22-alpine
-        RUN npm install -g supergateway
-        WORKDIR /app
-      '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "npx -y n8n-mcp"
-        "--port"
-        "8000"
-      ];
-      env = {
-        MCP_MODE = "stdio";
-        LOG_LEVEL = "error";
-        DISABLE_CONSOLE_OUTPUT = "true";
-        N8N_API_URL = "\${N8N_API_URL}";
-        N8N_API_KEY = "\${N8N_API_KEY}";
-      };
-      envSecrets = {
-        N8N_API_URL = config.sops.placeholder."tokens/mcp/n8n_api_url";
-        N8N_API_KEY = config.sops.placeholder."tokens/mcp/n8n_api_key";
-      };
-    };
-
     context7 = {
       port = 3007;
       internalPort = 8000;
@@ -138,56 +28,6 @@ let
         CONTEXT7_API_KEY = config.sops.placeholder."tokens/mcp/context7_api_key";
         CONTEXT7_ENCRYPTION_KEY = config.sops.placeholder."tokens/mcp/context7_encryption_key";
       };
-    };
-
-    dockerhub = {
-      port = 3009;
-      internalPort = 8000;
-      dockerfile = ''
-        FROM node:22-alpine
-        RUN apk add --no-cache git
-        RUN npm install -g supergateway
-        RUN git clone --depth 1 https://github.com/docker/hub-mcp.git /app/hub-mcp && \
-            cd /app/hub-mcp && npm install && npm run build
-        WORKDIR /app/hub-mcp
-      '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "node /app/hub-mcp/dist/index.js --transport=stdio"
-        "--port"
-        "8000"
-      ];
-      env = {
-        HUB_PAT_TOKEN = "\${DOCKERHUB_TOKEN}";
-      };
-      envSecrets = {
-        DOCKERHUB_TOKEN = config.sops.placeholder."tokens/mcp/dockerhub_token";
-      };
-    };
-
-    memory = {
-      port = 3010;
-      internalPort = 8000;
-      dockerfile = ''
-        FROM node:22-alpine
-        RUN npm install -g supergateway
-        WORKDIR /app
-      '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "npx -y @modelcontextprotocol/server-memory"
-        "--port"
-        "8000"
-      ];
-      env = {
-        MEMORY_FILE_PATH = "/data/memory";
-      };
-      envSecrets = { };
-      volumes = [
-        "\${MCP_DATA_DIR}/memory:/data"
-      ];
     };
 
     github = {
@@ -219,28 +59,6 @@ let
       };
     };
 
-    filesystem = {
-      port = 3015;
-      internalPort = 8000;
-      dockerfile = ''
-        FROM node:22-alpine
-        RUN npm install -g supergateway
-        WORKDIR /app
-      '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "npx -y @modelcontextprotocol/server-filesystem /mnt/home"
-        "--port"
-        "8000"
-      ];
-      env = { };
-      envSecrets = { };
-      volumes = [
-        "\${HOME_DIR}:/mnt/home"
-      ];
-    };
-
     kagisearch = {
       port = 3018;
       internalPort = 8000;
@@ -266,125 +84,60 @@ let
       };
     };
 
-    kubernetes = {
-      port = 3019;
+    mutx = {
+      port = 3030;
       internalPort = 8000;
       dockerfile = ''
-        FROM node:22-alpine
-        RUN npm install -g supergateway
-        WORKDIR /app
+        FROM mutx-mcp
       '';
       command = [
-        "supergateway"
-        "--stdio"
-        "npx -y kubernetes-mcp-server"
-        "--port"
-        "8000"
+        "mutx-mcp"
+        "--mode"
+        "http"
+        "--bind"
+        "0.0.0.0:8000"
       ];
       env = { };
       envSecrets = { };
       volumes = [
-        "\${KUBE_CONFIG_DIR}:/root/.kube:ro"
+        "/tmp/mutx:/tmp/mutx"
       ];
-    };
-
-    opentofu = {
-      port = 3023;
-      internalPort = 8000;
-      dockerfile = ''
-        FROM node:22-alpine
-        RUN npm install -g supergateway
-        WORKDIR /app
-      '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "npx -y @opentofu/opentofu-mcp-server"
-        "--port"
-        "8000"
-      ];
-      env = { };
-      envSecrets = { };
-    };
-
-    playwright = {
-      port = 3024;
-      internalPort = 8000;
-      dockerfile = ''
-        FROM node:22-bookworm-slim
-        RUN npm install -g supergateway
-        RUN npx playwright install chromium --with-deps
-        WORKDIR /app
-      '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "npx -y @playwright/mcp@latest"
-        "--port"
-        "8000"
-      ];
-      env = { };
-      envSecrets = { };
-    };
-
-    linera-slack = {
-      port = 3025;
-      internalPort = 8000;
-      dockerfile = ''
-        FROM node:22-alpine AS node
-        RUN npm install -g supergateway
-        FROM mcp/slack AS slack
-        FROM node:22-alpine
-        COPY --from=node /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
-        RUN ln -s /usr/local/lib/node_modules/supergateway/dist/index.js /usr/local/bin/supergateway && chmod +x /usr/local/bin/supergateway
-        COPY --from=slack /app /app
-        WORKDIR /app
-      '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "node /app/dist/index.js"
-        "--port"
-        "8000"
-      ];
-      env = {
-        SLACK_BOT_TOKEN = "\${LINERA_SLACK_BOT_TOKEN}";
-        SLACK_TEAM_ID = "\${LINERA_SLACK_TEAM_ID}";
-      };
-      envSecrets = {
-        LINERA_SLACK_BOT_TOKEN = config.sops.placeholder."tokens/mcp/linera_slack_bot_token";
-        LINERA_SLACK_TEAM_ID = config.sops.placeholder."tokens/mcp/linera_slack_team_id";
-      };
     };
   };
 
   # Helper to generate docker-compose service YAML
   mkDockerService = name: cfg: ''
-    ${name}:
-      build:
-        context: .
-        dockerfile_inline: |
-  ${builtins.concatStringsSep "\n" (map (line: "        ${line}") (builtins.filter (x: builtins.isString x && x != "") (builtins.split "\n" cfg.dockerfile)))}
-      command: ${builtins.toJSON cfg.command}
-  ${
-    if cfg.env != { } then
-      ''
-            environment:
-        ${builtins.concatStringsSep "\n" (builtins.attrValues (builtins.mapAttrs (k: v: "      - ${k}=${v}") cfg.env))}''
-    else
-      ""
-  }
-  ${
-    if cfg ? volumes && cfg.volumes != [ ] then
-      ''
-            volumes:
-        ${builtins.concatStringsSep "\n" (map (v: "      - ${v}") cfg.volumes)}''
-    else
-      ""
-  }
-      ports:
-        - "${toString cfg.port}:${toString cfg.internalPort}"
-      restart: unless-stopped
+      ${name}:
+        build:
+          context: .
+          dockerfile_inline: |
+    ${builtins.concatStringsSep "\n" (
+      map (line: "        ${line}") (
+        builtins.filter (x: builtins.isString x && x != "") (builtins.split "\n" cfg.dockerfile)
+      )
+    )}
+        command: ${builtins.toJSON cfg.command}
+    ${
+      if cfg.env != { } then
+        ''
+              environment:
+          ${builtins.concatStringsSep "\n" (
+            builtins.attrValues (builtins.mapAttrs (k: v: "      - ${k}=${v}") cfg.env)
+          )}''
+      else
+        ""
+    }
+    ${
+      if cfg ? volumes && cfg.volumes != [ ] then
+        ''
+              volumes:
+          ${builtins.concatStringsSep "\n" (map (v: "      - ${v}") cfg.volumes)}''
+      else
+        ""
+    }
+        ports:
+          - "${toString cfg.port}:${toString cfg.internalPort}"
+        restart: unless-stopped
   '';
 
   # Generate complete docker-compose.yml content
@@ -395,11 +148,15 @@ let
     # Claude/Gemini/nvim connect via SSE at http://localhost:PORT/sse
 
     services:
-    ${builtins.concatStringsSep "\n" (builtins.attrValues (builtins.mapAttrs mkDockerService mcpServers))}
+    ${builtins.concatStringsSep "\n" (
+      builtins.attrValues (builtins.mapAttrs mkDockerService mcpServers)
+    )}
   '';
 
   # Generate .env content from all envSecrets
-  allEnvSecrets = builtins.foldl' (acc: cfg: acc // (cfg.envSecrets or { })) { } (builtins.attrValues mcpServers);
+  allEnvSecrets = builtins.foldl' (acc: cfg: acc // (cfg.envSecrets or { })) { } (
+    builtins.attrValues mcpServers
+  );
 
   envContent = ''
     # MCP Servers Environment Variables
@@ -411,7 +168,9 @@ let
     KUBE_CONFIG_DIR=/home/eldios/.kube
 
     # Server-specific secrets
-    ${builtins.concatStringsSep "\n" (builtins.attrValues (builtins.mapAttrs (k: v: "${k}=${toString v}") allEnvSecrets))}
+    ${builtins.concatStringsSep "\n" (
+      builtins.attrValues (builtins.mapAttrs (k: v: "${k}=${toString v}") allEnvSecrets)
+    )}
   '';
 
   # Generate mcphub servers.json for nvim
