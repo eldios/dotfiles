@@ -159,6 +159,7 @@
         # Desktop Customization
         anytype # knowledge management and wiki tool
         variety # automatic wallpaper changer
+        xdg-user-dirs # XDG user directory management (needed by variety)
 
         # 3D Printing & IoT
         esphome # ESP microcontroller firmware manager
