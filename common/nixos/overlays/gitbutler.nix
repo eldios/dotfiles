@@ -1,3 +1,7 @@
+# FIXME: broken package — gitbutler fails to build due to turbo 2.7.6 upstream issue.
+# The overlay is kept so the attribute exists (preventing eval errors) but the
+# package itself cannot be built until upstream fixes the turbo dependency.
+#
 # Overlay: GitButler from unstable channel
 #
 # Uses unstable's gitbutler as-is (currently 0.15.10).

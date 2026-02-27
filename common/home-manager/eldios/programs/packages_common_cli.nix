@@ -22,7 +22,8 @@
         act # run GitHub Actions locally
         entr # run commands when files change
         github-cli # GitHub from the terminal
-        gitbutler # visual Git client for branches
+        # FIXME: broken package — gitbutler fails to build due to turbo 2.7.6 upstream issue
+        # gitbutler # visual Git client for branches
         just # command runner (Makefile alternative)
         pkg-config # build helper for compiled libraries
         protobuf # protocol buffer compiler
