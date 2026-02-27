@@ -1,11 +1,11 @@
 { pkgs, ... }:
 
 let
-  # Walker application launcher for Wayland
-  quick_menu = "${pkgs.walker}/bin/walker -m runner";
-  full_menu = "${pkgs.walker}/bin/walker";
-  file_menu = "${pkgs.walker}/bin/walker -m finder";
-  window_menu = "${pkgs.walker}/bin/walker -m windows";
+  # Rofi application launcher
+  quick_menu = "rofi-run";
+  full_menu = "rofi-drun";
+  file_menu = "rofi-filebrowser";
+  window_menu = "rofi-window";
 
   lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5";
 
@@ -164,7 +164,7 @@ in
 
       # Set default terminal to ghostty
       terminal = "${pkgs.ghostty}/bin/ghostty";
-      menu = "${pkgs.walker}/bin/walker";
+      menu = "rofi-drun";
 
       startup = [
         { command = "${pkgs.mako}/bin/mako"; }
