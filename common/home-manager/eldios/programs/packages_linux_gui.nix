@@ -162,7 +162,8 @@
 
         # 3D Printing & IoT
         esphome # ESP microcontroller firmware manager
-        freecad-wayland # parametric 3D CAD modeler
+        # FIXME: broken package — freecad-wayland fails to build on current nixpkgs
+        # freecad-wayland # parametric 3D CAD modeler
         orca-slicer # 3D printer slicer
         prusa-slicer # 3D printer slicer (Prusa)
 
