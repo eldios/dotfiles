@@ -1,12 +1,14 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
-{
+let
   # Manage Variety's set_wallpaper script with swww support
   # This fixes the grey background issue when using swww-daemon (MangoWC, Hyprland, etc.)
   # Variety's default script only supports swaybg, not swww.
-  home.file.".config/variety/scripts/set_wallpaper" = {
-    executable = true;
-    text = ''
+  #
+  # NOTE: We use an activation script to COPY (not symlink) into ~/.config/variety/scripts/
+  # because Variety's prepare_config_folder() calls os.chmod() on its scripts at startup,
+  # which fails on read-only Nix store symlinks.
+  setWallpaperScript = pkgs.writeShellScript "set_wallpaper" ''
       #!/bin/bash
       # Variety set_wallpaper script - managed by home-manager
       # Added swww support for MangoWC/Hyprland/wlroots compositors
@@ -226,7 +228,11 @@
       fi
 
       exit 0
-    '';
-  };
+  '';
+in {
+  home.activation.varietyScripts = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "$HOME/.config/variety/scripts"
+    install -m 0755 ${setWallpaperScript} "$HOME/.config/variety/scripts/set_wallpaper"
+  '';
 }
 # vim: set ts=2 sw=2 et ai list nu
