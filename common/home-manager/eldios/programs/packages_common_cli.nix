@@ -27,6 +27,7 @@
         just # command runner (Makefile alternative)
         pkg-config # build helper for compiled libraries
         protobuf # protocol buffer compiler
+        nodePackages.sloc # source lines of code counter
         shellcheck # shell script linter
 
         # Cloud CLIs
