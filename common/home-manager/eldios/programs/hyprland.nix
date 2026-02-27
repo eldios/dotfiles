@@ -6,11 +6,11 @@
 let
   terminal = "${pkgs.ghostty}/bin/ghostty";
 
-  # Walker application launcher for Wayland
-  quick_menu = "${pkgs.walker}/bin/walker -m runner";
-  full_menu = "${pkgs.walker}/bin/walker";
-  file_menu = "${pkgs.walker}/bin/walker -m finder";
-  window_menu = "${pkgs.walker}/bin/walker -m windows";
+  # Rofi application launcher
+  quick_menu = "rofi-run";
+  full_menu = "rofi-drun";
+  file_menu = "rofi-filebrowser";
+  window_menu = "rofi-window";
 
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
@@ -101,7 +101,8 @@ in
         "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT" # Enhanced DBus environment
         "${pkgs.waybar}/bin/waybar" # Starts the Waybar status bar
         "${pkgs.mako}/bin/mako" # Starts the Mako notification daemon
-        "${pkgs.variety}/bin/variety" # Starts Variety for wallpaper management
+        "${pkgs.swww}/bin/swww-daemon" # Wallpaper daemon (used by Variety's set_wallpaper script)
+        "sleep 1 && ${pkgs.variety}/bin/variety" # Starts Variety for wallpaper management (after swww-daemon)
         # "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar" # Start Eww daemon and open the bar
       ];
 
@@ -193,6 +194,7 @@ in
       input = {
         # Input device settings (keyboard, mouse, touchpad)
         kb_layout = "us"; # Default keyboard layout
+        kb_options = "caps:escape"; # CapsLock -> Escape
         follow_mouse = 1; # Focus follows mouse movement (1 = normal, 2 = aggressive)
         touchpad = {
           natural_scroll = false;

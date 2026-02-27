@@ -3,11 +3,11 @@
 let
   terminal = "${pkgs.ghostty}/bin/ghostty";
 
-  # Walker application launcher for Wayland
-  quick_menu = "${pkgs.walker}/bin/walker -m runner";
-  full_menu = "${pkgs.walker}/bin/walker";
-  file_menu = "${pkgs.walker}/bin/walker -m finder";
-  window_menu = "${pkgs.walker}/bin/walker -m windows";
+  # Rofi application launcher
+  quick_menu = "rofi-run";
+  full_menu = "rofi-drun";
+  file_menu = "rofi-filebrowser";
+  window_menu = "rofi-window";
 
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
@@ -111,7 +111,7 @@ in
       env=ELECTRON_OZONE_PLATFORM_HINT,wayland
       env=SDL_VIDEODRIVER,wayland
       env=_JAVA_AWT_WM_NONREPARENTING,1
-      env=XCURSOR_SIZE,24
+      env=XCURSOR_SIZE,48
 
       # ===========================
       # Autostart
@@ -119,7 +119,10 @@ in
       exec-once=${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT
       exec-once=${pkgs.waybar}/bin/waybar
       exec-once=${pkgs.mako}/bin/mako
-      exec-once=${pkgs.variety}/bin/variety
+      # HiDPI scaling for laptop display
+      exec-once=sleep 0.5 && ${pkgs.wlr-randr}/bin/wlr-randr --output eDP-1 --scale 2
+      exec-once=${pkgs.swww}/bin/swww-daemon
+      exec-once=sleep 1 && ${pkgs.variety}/bin/variety
       exec-once=${daynightscreen}
       exec-once=${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
       exec-once=${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${pkgs.clipman}/bin/clipman store
@@ -147,7 +150,7 @@ in
       overlaycolor=${toMangoColor colors.base0A}
 
       # Cursor
-      cursor_size=24
+      cursor_size=48
 
       # ===========================
       # Visual Effects (scenefx)
@@ -252,7 +255,7 @@ in
       repeat_delay=600
       numlockon=0
       xkb_rules_layout=us
-      xkb_rules_options=
+      xkb_rules_options=caps:escape
 
       # Trackpad
       tap_to_click=1
@@ -354,7 +357,7 @@ in
       # ===========================
       # Layer Rules
       # ===========================
-      layerrule=layer_name:walker,animation_type_open:zoom,animation_type_close:fade
+      #layerrule=layer_name:walker,animation_type_open:zoom,animation_type_close:fade
       layerrule=layer_name:waybar,noanim:1
       layerrule=layer_name:notifications,noblur:1
 

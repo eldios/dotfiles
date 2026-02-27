@@ -7,9 +7,15 @@
     ../../../common/home-manager/eldios/programs/mango.nix
     ../../../common/home-manager/eldios/programs/sway.nix
     ../../../common/home-manager/eldios/programs/walker.nix
+    ../../../common/home-manager/eldios/programs/variety.nix
     ../../../common/home-manager/eldios/programs/waybar.nix
 
     ../../../common/home-manager/eldios/programs/wayfire.nix
+  ];
+
+  # HiDPI scaling for Hyprland on Yoga 9i
+  wayland.windowManager.hyprland.settings.monitor = [
+    ", preferred, auto, 2"
   ];
 
   dconf.settings = {
