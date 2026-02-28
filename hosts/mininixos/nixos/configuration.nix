@@ -39,7 +39,8 @@
 
     ../../../common/nixos/virtualisation.nix
 
-    ./hardware-configuration.nix
+    # hardware-configuration.nix kept but not imported (ZFS rollback safety)
+    ./disko.nix
 
     ./boot.nix
     ./system.nix
