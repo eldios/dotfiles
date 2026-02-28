@@ -73,11 +73,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1772147165,
-        "narHash": "sha256-ENw7gL60nDJAgMTuDCY9VNvf9bT8MhtXys9cpcL+doA=",
+        "lastModified": 1772252606,
+        "narHash": "sha256-SiIhFq4XbD3LmODQ2mTtakRBnjBn/KoSgAOId1cL1Ks=",
         "owner": "ryoppippi",
         "repo": "claude-code-overlay",
-        "rev": "2a16ca32074fd2d0c187003eae79fadb4ba147b7",
+        "rev": "b1ebf027412136bbbe4202741c3d48721644bc4b",
         "type": "github"
       },
       "original": {
@@ -277,11 +277,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1771988958,
-        "narHash": "sha256-ynEkWVA8m4zlBZlOM3D6y7E2aTSmVsHrDWQtFY7qqBQ=",
+        "lastModified": 1772238989,
+        "narHash": "sha256-dRstOXgip8b/k8nPIlBw9j1ji3KRO8UTAbmIIXPsYvg=",
         "owner": "nklmilojevic",
         "repo": "gemini-cli-nix",
-        "rev": "b0f3c2e042200cddabc7646689576443192e7c12",
+        "rev": "8f995d2e6a2e09f2c12acac24e78f64e9497c59b",
         "type": "github"
       },
       "original": {
@@ -476,11 +476,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1771903837,
-        "narHash": "sha256-sdaqdnsQCv3iifzxwB22tUwN/fSHoN7j2myFW5EIkGk=",
+        "lastModified": 1772047000,
+        "narHash": "sha256-7DaQVv4R97cii/Qdfy4tmDZMB2xxtyIvNGSwXBBhSmo=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "e764fc9a405871f1f6ca3d1394fb422e0a0c3951",
+        "rev": "1267bb4920d0fc06ea916734c11b0bf004bbe17e",
         "type": "github"
       },
       "original": {
