@@ -1,3 +1,10 @@
+# Boot configuration for mininixos (BTRFS + LUKS + Yubikey PBA)
+#
+# LUKS device "K" is declared by disko.nix (device path, allowDiscards).
+# This file adds Yubikey PBA settings on top via NixOS module merging.
+# Password fallback is keyslot 0 (set manually during LUKS format).
+# Yubikey challenge-response is keyslot 1 (added manually via luksAddKey).
+
 { pkgs, ... }:
 {
   boot = {
@@ -5,21 +12,16 @@
       "vm.swappiness" = 5;
     };
 
-    supportedFilesystems = [ "zfs" ];
+    supportedFilesystems = [ "btrfs" ];
 
-    # Use LTS kernel 6.12 for stable ZFS support
-    # 6.17 not yet supported by stable OpenZFS (only in 2.4.0-RC)
-    kernelPackages = pkgs.linuxPackages_6_12;
+    # BTRFS is in-kernel - no ZFS compat constraint, use latest kernel
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "nohibernate"
-      "zfs.zfs_arc_max=8589934592" # 8GB - host is mostly hypervisor
     ];
 
     initrd = {
-      supportedFilesystems = [
-        "zfs"
-        "btrfs"
-      ];
+      supportedFilesystems = [ "btrfs" ];
       kernelModules = [
         "uas"
         "usbcore"
@@ -30,8 +32,7 @@
         "nls_iso8859_1"
       ];
 
-      # Support for Yubikey PBA
-
+      # Yubikey PBA - merged with disko's LUKS device "K" declaration
       luks = {
         yubikeySupport = true;
         cryptoModules = [
@@ -55,17 +56,17 @@
         ];
 
         devices = {
+          # disko sets: device, allowDiscards
+          # we add: preLVM, yubikey
           "K" = {
-            device = "/dev/nvme0n1p2"; # << LUKS partition
             preLVM = true;
 
-            # insert this section only if you're using a YubiKey
             yubikey = {
               slot = 2;
-              twoFactor = false; # set to true to input password (2FA)
+              twoFactor = false; # Yubikey-only; password is separate LUKS keyslot
 
               storage = {
-                device = "/dev/nvme0n1p1"; # << SALT /boot partition
+                device = "/dev/nvme1n1p2"; # ESP on new 4TB disk (salt storage)
                 fsType = "vfat";
               };
             };
@@ -84,7 +85,6 @@
         device = "nodev";
         efiSupport = true;
         efiInstallAsRemovable = true;
-        zfsSupport = true;
         enableCryptodisk = true;
       };
     };

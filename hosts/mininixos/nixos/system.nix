@@ -7,16 +7,13 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-  virtualisation.docker.storageDriver = "zfs";
+  # BTRFS storage driver (matching lele8845ace pattern)
+  virtualisation.docker.storageDriver = "btrfs";
 
-  services = {
-    zfs = {
-      autoScrub = {
-        enable = true;
-        interval = "weekly";
-      };
-      trim.enable = true;
-    };
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "weekly";
+    fileSystems = [ "/" ]; # scrubs entire BTRFS filesystem including all subvolumes
   };
 
   # Compressed swap in RAM - safety net for OOM
@@ -26,22 +23,11 @@
     algorithm = "zstd";
   };
 
-  # TCP Offload Engine (TOE) is a technology used in modern NICs to move the
-  # processing of the TCP/IP stack from the system’s main CPU to the NIC.
-  # The processing overhead on the CPU increases with high-speed networks,
-  # such as 10 Gigabit Ethernet. Moving some or all of the functionality of
-  # the TCP/IP stack to the NIC helps in freeing the main CPU and improving
-  # the network throughput.
-  #systemd.services.disable-offload = {
-  #  description = "Disable network offloading";
-  #  after = [ "network.target" ];
-  #  wantedBy = [ "multi-user.target" ];
-  #  serviceConfig = {
-  #    Type = "oneshot";
-  #    RemainAfterExit = true;
-  #    ExecStart = "${pkgs.ethtool}/bin/ethtool -K eno1 gro off tso off gso off";
-  #  };
-  #};
+  # Disable CoW for VM disk images (qcow2/raw) - prevents write amplification
+  # chattr +C is per-file/directory, not a mount option
+  systemd.tmpfiles.rules = [
+    "h /vms - - - - +C"
+  ];
 }
 
 # vim: set ts=2 sw=2 et ai list nu
