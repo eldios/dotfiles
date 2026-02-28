@@ -23,6 +23,7 @@
         tty-share # share terminal over the web
 
         # Disk & Filesystem
+        efibootmgr # EFI boot manager - list/modify UEFI boot entries
         ncdu # disk usage analyzer with TUI
         ntfs3g # NTFS filesystem read/write support
         p7zip # 7-Zip archive tool
