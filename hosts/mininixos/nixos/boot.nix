@@ -58,7 +58,7 @@
         devices = {
           # disko sets: device, allowDiscards
           # we add: preLVM, yubikey
-          "K" = {
+          "M" = {
             preLVM = true;
 
             yubikey = {
