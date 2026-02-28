@@ -38,7 +38,7 @@
               size = "100%";
               content = {
                 type = "luks";
-                name = "K";
+                name = "M";
                 settings = {
                   allowDiscards = true;
                 };
