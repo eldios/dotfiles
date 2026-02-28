@@ -1,9 +1,9 @@
 # Boot configuration for mininixos (BTRFS + LUKS + Yubikey PBA)
 #
-# LUKS device "K" is declared by disko.nix (device path, allowDiscards).
+# LUKS device "M" is declared by disko.nix (device path, allowDiscards).
 # This file adds Yubikey PBA settings on top via NixOS module merging.
 # Password fallback is keyslot 0 (set manually during LUKS format).
-# Yubikey challenge-response is keyslot 1 (added manually via luksAddKey).
+# Yubikey challenge-response is keyslot 2 (added manually via luksAddKey).
 
 { pkgs, ... }:
 {
@@ -66,7 +66,7 @@
               twoFactor = false; # Yubikey-only; password is separate LUKS keyslot
 
               storage = {
-                device = "/dev/nvme1n1p2"; # ESP on new 4TB disk (salt storage)
+                device = "/dev/disk/by-partlabel/disk-nvme1-ESP";
                 fsType = "vfat";
               };
             };
