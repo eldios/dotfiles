@@ -69,7 +69,6 @@
 
       sessionPackages = with pkgs.unstable; [
         sway
-        hyprland
         mangowc
       ];
     };
