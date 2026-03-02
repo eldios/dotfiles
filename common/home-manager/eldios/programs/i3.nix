@@ -115,24 +115,9 @@ let
 in
 {
   home = {
-    # Force X11 environment for i3 - override system-wide Wayland defaults
-    sessionVariables = {
-      # Electron/Chromium: force X11
-      NIXOS_OZONE_WL = lib.mkForce "0";
-      ELECTRON_OZONE_PLATFORM_HINT = lib.mkForce "x11";
-
-      # GTK: force X11 backend
-      GDK_BACKEND = lib.mkForce "x11";
-
-      # Qt: force X11 (xcb) platform
-      QT_QPA_PLATFORM = lib.mkForce "xcb";
-
-      # Firefox: disable Wayland
-      MOZ_ENABLE_WAYLAND = lib.mkForce "0";
-
-      # Wayland-specific vars: unset/disable
-      WLR_NO_HARDWARE_CURSORS = lib.mkForce "";
-    };
+    # NOTE: X11 environment for i3 is set ONLY via dbus-update-activation-environment
+    # in i3's startup commands below. This ensures X11 vars are active only when i3
+    # is running, without poisoning Wayland sessions (Hyprland, Sway, MangoWC).
 
     packages = with pkgs; [
       # Terminal

@@ -204,11 +204,6 @@ in
         sensitivity = 0.5;
       };
 
-      gestures = {
-        workspace_swipe = true;
-        workspace_swipe_forever = true;
-      };
-
       misc = {
         disable_hyprland_logo = true; # Disables the Hyprland logo on startup
         disable_splash_rendering = true; # Disables the startup splash screen

@@ -310,14 +310,21 @@ in
       env=XCURSOR_SIZE,48
 
       # =====================================================================
+      # Monitor Rules
+      # =====================================================================
+      # Desktop (lele8845ace): HDMI-A-1 (left) + DP-2 ultrawide (right)
+      monitorrule=name:HDMI-A-1,width:2560,height:1440,refresh:143.972,x:0,y:0,scale:1
+      monitorrule=name:DP-2,width:3440,height:1440,refresh:144,x:2560,y:0,scale:1
+      # Laptop (eDP-1): HiDPI scale 2x
+      monitorrule=name:eDP-1,scale:2
+
+      # =====================================================================
       # Autostart
       # =====================================================================
       # Order matters: dbus env must be set first, then services that depend on it.
       exec-once=${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT
       exec-once=${pkgs.waybar}/bin/waybar
       exec-once=${pkgs.mako}/bin/mako
-      # HiDPI: scale laptop display to 2x (must wait for output to be ready)
-      exec-once=sleep 0.5 && ${pkgs.wlr-randr}/bin/wlr-randr --output eDP-1 --scale 2
       # Wallpaper: swww-daemon must start before Variety
       exec-once=${pkgs.swww}/bin/swww-daemon
       exec-once=sleep 1 && ${pkgs.variety}/bin/variety
