@@ -6,6 +6,11 @@
   ...
 }:
 {
+  home.sessionVariables = {
+    SSH_ASKPASS = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
+    SSH_ASKPASS_REQUIRE = "prefer";
+  };
+
   services = {
     gpg-agent = {
       enable = true;

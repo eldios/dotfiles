@@ -98,7 +98,7 @@ in
     settings = {
       # Commands to execute once on Hyprland startup
       exec-once = [
-        "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT" # Enhanced DBus environment
+        "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP GDK_BACKEND NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT" # Enhanced DBus environment
         "${pkgs.waybar}/bin/waybar" # Starts the Waybar status bar
         "${pkgs.mako}/bin/mako" # Starts the Mako notification daemon
         "${pkgs.swww}/bin/swww-daemon" # Wallpaper daemon (used by Variety's set_wallpaper script)
@@ -333,6 +333,9 @@ in
       ];
 
       windowrule = [
+        "float, class:^(lxqt-openssh-askpass)$"
+        "size 400 150, class:^(lxqt-openssh-askpass)$"
+        "center, class:^(lxqt-openssh-askpass)$"
         "float, title:^(pavucontrol)$"
         "float, title:^(nm-connection-editor)$"
         "float, title:^(org.gnome.Calculator)$"
