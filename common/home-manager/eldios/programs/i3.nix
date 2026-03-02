@@ -633,6 +633,10 @@ in
           # Chat/Communication (floating for quick access)
           { command = "floating enable, resize set 400 600"; criteria = { class = "telegram-desktop"; }; }
 
+          # SSH askpass
+          { command = "floating enable, resize set 400 150"; criteria = { class = "lxqt-openssh-askpass"; }; }
+          { command = "floating enable, resize set 400 150"; criteria = { class = "Lxqt-openssh-askpass"; }; }
+
           # Misc
           { command = "floating enable, border none"; criteria = { class = "screenkey"; }; }
           { command = "floating enable"; criteria = { window_role = "pop-up"; }; }

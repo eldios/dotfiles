@@ -350,7 +350,7 @@ in
       // See the binds section below for more spawn examples.
 
       // This line starts waybar, a commonly used bar for Wayland compositors.
-      spawn-at-startup "${pkgs.dbus}/bin/dbus-update-activation-environment" "--systemd" "SSH_AUTH_SOCK" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "DISPLAY"
+      spawn-at-startup "${pkgs.dbus}/bin/dbus-update-activation-environment" "--systemd" "SSH_AUTH_SOCK" "WAYLAND_DISPLAY" "DISPLAY" "XDG_CURRENT_DESKTOP" "XDG_SESSION_TYPE" "XDG_SESSION_DESKTOP" "GDK_BACKEND" "NIXOS_OZONE_WL" "ELECTRON_OZONE_PLATFORM_HINT"
       spawn-at-startup "${pkgs.polkit_gnome}libexec/polkit-gnome-authentication-agent-1"
       spawn-at-startup "${pkgs.xwayland-satellite}/bin/xwayland-satellite"
       spawn-at-startup "${pkgs.waybar}/bin/waybar"
@@ -429,6 +429,14 @@ in
 
           // Use this instead if you want them visible on third-party screenshot tools.
           // block-out-from "screencast"
+      }
+
+      // SSH askpass dialog - small centered float
+      window-rule {
+          match app-id=r#"^lxqt-openssh-askpass$"#
+          open-floating true
+          default-column-width { fixed 400; }
+          default-window-height { fixed 150; }
       }
 
       // Example: enable rounded corners for all windows.
@@ -676,6 +684,7 @@ in
       Description = "Set Niri session environment variables for Wayland and XWayland";
       PartOf = [ "graphical-session.target" ];
       After = [ "graphical-session-pre.target" ];
+      ConditionEnvironment = "XDG_CURRENT_DESKTOP=niri";
     };
 
     Service = {
@@ -707,7 +716,9 @@ in
           XDG_CURRENT_DESKTOP \
           XDG_SESSION_DESKTOP \
           XDG_SESSION_TYPE \
-          NIXOS_OZONE_WL
+          GDK_BACKEND \
+          NIXOS_OZONE_WL \
+          ELECTRON_OZONE_PLATFORM_HINT
       '';
       RemainAfterExit = true;
     };
@@ -719,11 +730,13 @@ in
 
   # This systemd service ensures that Niri is started with the correct
   # environment, including the SSH agent and XWayland.
+  # ConditionEnvironment prevents it from starting under other compositors
   systemd.user.services.niri-session = {
     Unit = {
       Description = "Niri Wayland Compositor";
       BindsTo = [ "graphical-session.target" ];
       After = [ "graphical-session-pre.target" ];
+      ConditionEnvironment = "XDG_CURRENT_DESKTOP=niri";
     };
 
     Service = {
