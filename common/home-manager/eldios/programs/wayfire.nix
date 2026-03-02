@@ -149,7 +149,7 @@ in
       # Autostart applications
       autostart = {
         # DBus environment
-        dbus_env = "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT";
+        dbus_env = "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP GDK_BACKEND NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT";
 
         # Start Waybar
         waybar = "${pkgs.waybar}/bin/waybar";
@@ -182,6 +182,7 @@ in
 
       # Window rules
       "window-rules" = {
+        "lxqt-openssh-askpass" = "floating";
         "pavucontrol" = "floating";
         "nm-connection-editor" = "floating";
         "org.gnome.Calculator" = "floating";

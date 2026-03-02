@@ -110,7 +110,7 @@ in
 
       # Set TERMINAL env var if other tools need it, sway's 'terminal' setting is primary for sway keybindings
       export TERMINAL="${pkgs.ghostty}/bin/ghostty"
-      ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT
+      ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP GDK_BACKEND NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT
     '';
 
     extraConfig = ''
@@ -133,6 +133,7 @@ in
       default_floating_border pixel 2
 
       # Window rules from Hyprland
+      for_window [app_id="^lxqt-openssh-askpass$"] floating enable, resize set 400 150
       for_window [title="^pavucontrol$"] floating enable
       for_window [app_id="^nm-connection-editor$"] floating enable
       for_window [app_id="^org.gnome.Calculator$"] floating enable

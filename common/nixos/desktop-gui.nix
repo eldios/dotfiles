@@ -56,6 +56,11 @@
   # GVfs for file manager support
   services.gvfs.enable = lib.mkDefault true;
 
+  # SSH askpass - Wayland-compatible confirmation dialog for ssh-agent
+  # OpenSSH 10.x sanitizes the agent environment, so SSH_ASKPASS must be
+  # set system-wide via programs.ssh.askPassword (not just session vars)
+  programs.ssh.askPassword = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
+
   # Security - PAM services for screen lockers
   security.pam.services.swaylock = { };
 

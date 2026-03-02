@@ -322,7 +322,7 @@ in
       # Autostart
       # =====================================================================
       # Order matters: dbus env must be set first, then services that depend on it.
-      exec-once=${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT
+      exec-once=${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP GDK_BACKEND NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT
       exec-once=${pkgs.waybar}/bin/waybar
       exec-once=${pkgs.mako}/bin/mako
       # Wallpaper: swww-daemon must start before Variety
@@ -566,6 +566,7 @@ in
       # Match by appid (Wayland) or title. Use `wev` or `mmsg -b` to find appids.
 
       # --- Float these apps (dialogs, settings, small utilities) ---
+      windowrule=isfloating:1,width:400,height:150,appid:lxqt-openssh-askpass
       windowrule=isfloating:1,appid:pavucontrol
       windowrule=isfloating:1,appid:nm-connection-editor
       windowrule=isfloating:1,appid:org.gnome.Calculator
@@ -867,10 +868,13 @@ in
         ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd \
           SSH_AUTH_SOCK \
           WAYLAND_DISPLAY \
+          DISPLAY \
           XDG_CURRENT_DESKTOP \
           XDG_SESSION_DESKTOP \
           XDG_SESSION_TYPE \
-          NIXOS_OZONE_WL
+          GDK_BACKEND \
+          NIXOS_OZONE_WL \
+          ELECTRON_OZONE_PLATFORM_HINT
       '';
       RemainAfterExit = true;
     };
