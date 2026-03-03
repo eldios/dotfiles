@@ -3,7 +3,7 @@
 let
   terminal = "${pkgs.ghostty}/bin/ghostty";
 
-  # Rofi application launcher
+  # Application launcher (rofi)
   quick_menu = "rofi-run";
   full_menu = "rofi-drun";
   file_menu = "rofi-filebrowser";
