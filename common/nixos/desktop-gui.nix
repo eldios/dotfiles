@@ -61,6 +61,9 @@
   # set system-wide via programs.ssh.askPassword (not just session vars)
   programs.ssh.askPassword = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
 
+  # UPower for battery/power monitoring (used by ironbar, etc.)
+  services.upower.enable = lib.mkDefault true;
+
   # Security - PAM services for screen lockers
   security.pam.services.swaylock = { };
 
