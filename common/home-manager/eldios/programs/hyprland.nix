@@ -6,11 +6,19 @@
 let
   terminal = "${pkgs.ghostty}/bin/ghostty";
 
-  # Rofi application launcher
+  # Application launcher (rofi)
   quick_menu = "rofi-run";
   full_menu = "rofi-drun";
   file_menu = "rofi-filebrowser";
   window_menu = "rofi-window";
+
+  # Bar selection: "waybar", "ironbar"
+  # Change this to switch status bars
+  barChoice = "waybar";
+  barCmd = {
+    waybar = "${pkgs.waybar}/bin/waybar";
+    ironbar = "${pkgs.ironbar}/bin/ironbar";
+  }.${barChoice};
 
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
@@ -99,7 +107,7 @@ in
       # Commands to execute once on Hyprland startup
       exec-once = [
         "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP GDK_BACKEND NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT" # Enhanced DBus environment
-        "${pkgs.waybar}/bin/waybar" # Starts the Waybar status bar
+        "${barCmd}" # Status bar (change barChoice in let block to switch)
         "${pkgs.mako}/bin/mako" # Starts the Mako notification daemon
         "${pkgs.swww}/bin/swww-daemon" # Wallpaper daemon (used by Variety's set_wallpaper script)
         "sleep 1 && ${pkgs.variety}/bin/variety" # Starts Variety for wallpaper management (after swww-daemon)
@@ -336,6 +344,12 @@ in
         "float, class:^(lxqt-openssh-askpass)$"
         "size 400 150, class:^(lxqt-openssh-askpass)$"
         "center, class:^(lxqt-openssh-askpass)$"
+        "float, class:^(ssh-askpass)$"
+        "size 400 150, class:^(ssh-askpass)$"
+        "center, class:^(ssh-askpass)$"
+        "float, title:^(OpenSSH)(.*)$"
+        "size 400 150, title:^(OpenSSH)(.*)$"
+        "center, title:^(OpenSSH)(.*)$"
         "float, title:^(pavucontrol)$"
         "float, title:^(nm-connection-editor)$"
         "float, title:^(org.gnome.Calculator)$"
@@ -344,6 +358,11 @@ in
         "float, title:^(Picture-in-Picture)$"
         "float, class:^(screenkey)$"
         "noborder, class:^(screenkey)$"
+      ];
+
+      layerrule = [
+        "noanim, waybar"
+        "noanim, ironbar"
       ];
 
       workspace = [ ];
