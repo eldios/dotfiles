@@ -6,6 +6,7 @@
     ../../../common/home-manager/eldios/programs/mako.nix
     ../../../common/home-manager/eldios/programs/mango.nix
     ../../../common/home-manager/eldios/programs/sway.nix
+    ../../../common/home-manager/eldios/programs/ironbar.nix
     ../../../common/home-manager/eldios/programs/walker.nix
     ../../../common/home-manager/eldios/programs/variety.nix
     ../../../common/home-manager/eldios/programs/waybar.nix
