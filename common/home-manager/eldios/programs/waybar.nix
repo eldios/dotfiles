@@ -87,14 +87,45 @@ in
           background-color: #${config.lib.stylix.colors.base0A};
       }
 
-      #clock, #battery, #cpu, #memory, #network, #pulseaudio, #tray, #custom-menu, #custom-seperator-left, #custom-seperator-right, #custom-gammastep, #custom-currentplayer, #custom-player, #idle_inhibitor, #backlight, #disk {
+      #clock, #battery, #cpu, #memory, #network, #pulseaudio, #tray, #bluetooth, #custom-menu, #custom-seperator-left, #custom-seperator-right, #custom-gammastep, #custom-currentplayer, #custom-player, #idle_inhibitor, #backlight, #disk {
           padding: 0 10px;
           margin: 3px 0px;
           color: #${config.lib.stylix.colors.base05};
       }
 
+      #custom-menu {
+          color: #${config.lib.stylix.colors.base0D};
+          font-size: 16px;
+          padding: 0 10px 0 6px;
+      }
+
       #clock {
           color: #${config.lib.stylix.colors.base0E};
+          font-weight: bold;
+      }
+
+      #custom-currentplayer, #custom-player {
+          color: #${config.lib.stylix.colors.base0B};
+      }
+
+      #pulseaudio {
+          color: #${config.lib.stylix.colors.base0C};
+      }
+
+      #pulseaudio.muted {
+          color: #${config.lib.stylix.colors.base03};
+      }
+
+      #bluetooth {
+          color: #${config.lib.stylix.colors.base0D};
+      }
+
+      #bluetooth.disabled, #bluetooth.off {
+          color: #${config.lib.stylix.colors.base03};
+      }
+
+      #network.disconnected {
+          color: #${config.lib.stylix.colors.base0F};
       }
 
       #battery.charging, #battery.plugged {
@@ -105,15 +136,19 @@ in
           background-color: #${config.lib.stylix.colors.base08};
           color: #${config.lib.stylix.colors.base00};
           border-radius: 4px;
-          margin: 2px 2px;
+          padding: 0 10px;
       }
 
-      #pulseaudio.muted {
-          color: #${config.lib.stylix.colors.base03};
+      #idle_inhibitor {
+          color: #${config.lib.stylix.colors.base04};
       }
 
-      #network.disconnected {
-          color: #${config.lib.stylix.colors.base0F};
+      #idle_inhibitor.activated {
+          color: #${config.lib.stylix.colors.base0A};
+      }
+
+      #backlight {
+          color: #${config.lib.stylix.colors.base0A};
       }
 
       tooltip {
@@ -150,13 +185,17 @@ in
         ];
 
         modules-center = [
-          "pulseaudio"
+          "custom/currentplayer"
+          "custom/player"
           "clock"
           "cava"
         ];
 
         modules-right = [
+          "idle_inhibitor"
+          "pulseaudio"
           "tray"
+          "bluetooth"
           "network"
           "disk"
           "battery"
@@ -225,6 +264,12 @@ in
           onclick = "";
         };
 
+        "hyprland/window" = {
+          format = "{}";
+          max-length = 50;
+          separate-outputs = true;
+        };
+
         "sway/window" = {
           max-length = 25;
           format = "{title}";
@@ -235,6 +280,19 @@ in
         "workspaces" = {
           disable-scroll = true;
           all-outputs = true;
+        };
+
+        bluetooth = {
+          format = "󰂯";
+          format-connected = "󰂱 {device_alias}";
+          format-connected-battery = "󰂱 {device_battery_percentage}%";
+          format-disabled = "󰂲";
+          format-off = "󰂲";
+          tooltip-format = "{controller_alias}\t{status}";
+          tooltip-format-connected = "{controller_alias}\t{status}\n\n{num_connections} connected\n\n{device_enumerate}";
+          tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
+          tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_battery_percentage}%";
+          on-click = "${pkgs.blueman}/bin/blueman-manager";
         };
 
         cpu = {
