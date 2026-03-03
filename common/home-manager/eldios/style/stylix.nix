@@ -25,6 +25,7 @@ in
       ghostty.enable = true;
       gtk.enable = true;
       hyprland.enable = true;
+      hyprpaper.enable = lib.mkForce false; # let variety + swww manage wallpapers
       kitty.enable = true;
       rofi.enable = true;
       sway.enable = true;
