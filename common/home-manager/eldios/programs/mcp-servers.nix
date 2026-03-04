@@ -88,7 +88,7 @@ let
       port = 3030;
       internalPort = 8000;
       dockerfile = ''
-        FROM mutx-mcp
+        FROM ghcr.io/mutx-net/mcp
       '';
       command = [
         "mutx-mcp"
@@ -101,6 +101,39 @@ let
       envSecrets = { };
       volumes = [
         "/tmp/mutx:/tmp/mutx"
+      ];
+    };
+
+    anytype = {
+      port = 3001;
+      internalPort = 8000;
+      dockerfile = ''
+        FROM node:22-alpine AS node
+        RUN npm install -g supergateway
+        FROM ghcr.io/anyproto/anytype-mcp:latest AS anytype
+        FROM node:22-alpine
+        RUN apk add --no-cache tini
+        COPY --from=node /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+        RUN ln -s /usr/local/lib/node_modules/supergateway/dist/index.js /usr/local/bin/supergateway && chmod +x /usr/local/bin/supergateway
+        COPY --from=anytype /app /app
+        WORKDIR /app
+      '';
+      command = [
+        "supergateway"
+        "--stdio"
+        "node /app/bin/cli.mjs run"
+        "--port"
+        "8000"
+      ];
+      env = {
+        ANYTYPE_API_BASE_URL = "http://host.docker.internal:31009";
+        OPENAPI_MCP_HEADERS = "\${ANYTYPE_HEADERS}";
+      };
+      envSecrets = {
+        ANYTYPE_HEADERS = config.sops.placeholder."tokens/mcp/anytype_headers";
+      };
+      extraHosts = [
+        "host.docker.internal:host-gateway"
       ];
     };
   };
@@ -132,6 +165,14 @@ let
         ''
               volumes:
           ${builtins.concatStringsSep "\n" (map (v: "      - ${v}") cfg.volumes)}''
+      else
+        ""
+    }
+    ${
+      if cfg ? extraHosts && cfg.extraHosts != [ ] then
+        ''
+              extra_hosts:
+          ${builtins.concatStringsSep "\n" (map (h: "      - \"${h}\"") cfg.extraHosts)}''
       else
         ""
     }
