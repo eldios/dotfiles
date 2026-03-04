@@ -107,6 +107,7 @@ let
     anytype = {
       port = 3001;
       internalPort = 8000;
+      networkMode = "host";
       dockerfile = ''
         FROM node:22-alpine AS node
         RUN npm install -g supergateway
@@ -123,18 +124,15 @@ let
         "--stdio"
         "node /app/bin/cli.mjs run"
         "--port"
-        "8000"
+        "3001"
       ];
       env = {
-        ANYTYPE_API_BASE_URL = "http://host.docker.internal:31009";
+        ANYTYPE_API_BASE_URL = "http://127.0.0.1:31009";
         OPENAPI_MCP_HEADERS = "\${ANYTYPE_HEADERS}";
       };
       envSecrets = {
         ANYTYPE_HEADERS = config.sops.placeholder."tokens/mcp/anytype_headers";
       };
-      extraHosts = [
-        "host.docker.internal:host-gateway"
-      ];
     };
   };
 
@@ -169,15 +167,21 @@ let
         ""
     }
     ${
-      if cfg ? extraHosts && cfg.extraHosts != [ ] then
-        ''
-              extra_hosts:
-          ${builtins.concatStringsSep "\n" (map (h: "      - \"${h}\"") cfg.extraHosts)}''
+      if cfg ? networkMode && cfg.networkMode != "" then
+        "    network_mode: \"${cfg.networkMode}\""
       else
-        ""
+        ''
+          ${
+          if cfg ? extraHosts && cfg.extraHosts != [ ] then
+            ''
+              extra_hosts:
+            ${builtins.concatStringsSep "\n" (map (h: "      - \"${h}\"") cfg.extraHosts)}''
+          else
+            ""
+        }
+              ports:
+                - "${toString cfg.port}:${toString cfg.internalPort}"''
     }
-        ports:
-          - "${toString cfg.port}:${toString cfg.internalPort}"
         restart: unless-stopped
   '';
 
