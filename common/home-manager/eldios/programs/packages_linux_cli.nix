@@ -33,6 +33,7 @@
       ]
       ++ (with pkgs.unstable; [
         # AI Tools
+        ollama
         opencode # AI coding assistant TUI
       ]);
   };
