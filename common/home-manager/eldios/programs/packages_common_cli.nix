@@ -30,7 +30,7 @@
       protobuf # protocol buffer compiler
       nodePackages.sloc # source lines of code counter
       shellcheck # shell script linter
-      toolboox # Tool for containerized command line environments on Linux
+      # toolboox # Tool for containerized command line environments on Linux
 
       # Cloud CLIs
       awscli2 # Amazon Web Services CLI
