@@ -33,7 +33,8 @@
       ]
       ++ (with pkgs.unstable; [
         # AI Tools
-        ollama
+        llama-cpp-rocm
+        ollama-rocm
         opencode # AI coding assistant TUI
       ]);
   };
