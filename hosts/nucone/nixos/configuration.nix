@@ -1,10 +1,11 @@
-{ inputs, nixpkgs, nixpkgs-unstable, nixos-hardware, home-manager, claude-code-overlay, gemini-cli-nix, ... }:
+{ inputs, nixpkgs, nixpkgs-unstable, nixos-hardware, home-manager, claude-code-overlay, codex-cli-nix, gemini-cli-nix, ... }:
 
 {
   # Apply overlays here to avoid warning with home-manager.useGlobalPkgs
   nixpkgs.overlays = [
     (import ../../../common/nixos/overlays/unstable-packages.nix { inherit nixpkgs-unstable; })
     claude-code-overlay.overlays.default
+    codex-cli-nix.overlays.default
     gemini-cli-nix.overlays.default
     (import ../../../common/nixos/overlays/gitbutler.nix)
   ];
