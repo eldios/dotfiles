@@ -54,6 +54,7 @@
     ./network.nix
     ./users.nix
     ./printing.nix
+    ./gpu.nix
     ./ollama.nix
 
     home-manager.nixosModules.home-manager
