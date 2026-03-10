@@ -12,10 +12,6 @@
       brlaser
       brgenml1lpr
       brgenml1cupswrapper
-
-      # the actual model is MFC-9330 CDW but this should still work
-      mfcl8690cdwlpr
-      mfcl8690cdwcupswrapper
     ];
   };
 
@@ -47,4 +43,3 @@
 }
 
 # vim: set ts=2 sw=2 et ai list nu
-
