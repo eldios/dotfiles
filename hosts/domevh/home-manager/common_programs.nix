@@ -2,8 +2,8 @@
 {
   imports = [
     ../../../common/home-manager/eldios/common_programs_base.nix
-    ../../../common/home-manager/eldios/programs/packages_claude_code.nix
-    ../../../common/home-manager/eldios/programs/packages_codex.nix
+    # AI tools
+    ../../../common/home-manager/eldios/programs/packages_ai_tools.nix
   ];
 }
 
