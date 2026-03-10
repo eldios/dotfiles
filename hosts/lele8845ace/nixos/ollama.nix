@@ -15,11 +15,6 @@
       OLLAMA_NUM_PARALLEL = "1";
       OLLAMA_KEEP_ALIVE = "5m"; # unload models after 5min idle to free VRAM
     };
-
-    loadModels = [
-      "nomic-embed-text"
-      "qwen2.5:14b"
-    ];
   };
 
   # Cap system memory usage so desktop/games stay responsive
