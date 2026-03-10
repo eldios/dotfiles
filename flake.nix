@@ -52,12 +52,14 @@
 
     # AI tool overlays (auto-updated by maintainers)
     claude-code-overlay.url = "github:ryoppippi/claude-code-overlay";
+    codex-cli-nix.url = "github:sadjow/codex-cli-nix";
     gemini-cli-nix.url = "github:nklmilojevic/gemini-cli-nix";
   };
 
   outputs =
     {
       claude-code-overlay,
+      codex-cli-nix,
       darwin,
       dgop,
       disko,
@@ -87,6 +89,7 @@
       commonSpecialArgs = {
         inherit
           claude-code-overlay
+          codex-cli-nix
           dgop
           disko
           gemini-cli-nix

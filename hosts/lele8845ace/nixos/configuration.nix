@@ -5,6 +5,7 @@
   nixos-hardware,
   home-manager,
   claude-code-overlay,
+  codex-cli-nix,
   gemini-cli-nix,
   ...
 }:
@@ -13,6 +14,7 @@
   nixpkgs.overlays = [
     (import ../../../common/nixos/overlays/unstable-packages.nix { inherit nixpkgs-unstable; })
     claude-code-overlay.overlays.default
+    codex-cli-nix.overlays.default
     gemini-cli-nix.overlays.default
     (import ../../../common/nixos/overlays/gitbutler.nix)
   ];
