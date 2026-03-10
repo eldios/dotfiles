@@ -54,6 +54,7 @@
     claude-code-overlay.url = "github:ryoppippi/claude-code-overlay";
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";
     gemini-cli-nix.url = "github:nklmilojevic/gemini-cli-nix";
+    gws-cli.url = "github:googleworkspace/cli";
   };
 
   outputs =
@@ -64,6 +65,7 @@
       dgop,
       disko,
       gemini-cli-nix,
+      gws-cli,
       home-manager,
       mpc-hub,
       nixos-facter-modules,
@@ -93,6 +95,7 @@
           dgop
           disko
           gemini-cli-nix
+          gws-cli
           home-manager
           inputs
           mpc-hub
