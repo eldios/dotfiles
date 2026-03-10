@@ -7,6 +7,7 @@
   claude-code-overlay,
   codex-cli-nix,
   gemini-cli-nix,
+  gws-cli,
   ...
 }:
 
@@ -17,6 +18,7 @@
     claude-code-overlay.overlays.default
     codex-cli-nix.overlays.default
     gemini-cli-nix.overlays.default
+    (import ../../../common/nixos/overlays/gws-cli.nix { inherit gws-cli; })
     (import ../../../common/nixos/overlays/gitbutler.nix)
   ];
 
@@ -47,6 +49,8 @@
     ./boot.nix
     ./system.nix
     ./network.nix
+    ./gpu.nix
+    ./ollama.nix
     ./data-storage.nix
     ./libvirt-vms.nix
 

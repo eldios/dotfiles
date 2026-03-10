@@ -1,4 +1,4 @@
-{ inputs, nixpkgs, nixpkgs-unstable, nixos-hardware, home-manager, claude-code-overlay, codex-cli-nix, gemini-cli-nix, ... }:
+{ inputs, nixpkgs, nixpkgs-unstable, nixos-hardware, home-manager, claude-code-overlay, codex-cli-nix, gemini-cli-nix, gws-cli, ... }:
 
 {
   # Apply overlays here to avoid warning with home-manager.useGlobalPkgs
@@ -7,6 +7,7 @@
     claude-code-overlay.overlays.default
     codex-cli-nix.overlays.default
     gemini-cli-nix.overlays.default
+    (import ../../../common/nixos/overlays/gws-cli.nix { inherit gws-cli; })
     (import ../../../common/nixos/overlays/gitbutler.nix)
   ];
 
