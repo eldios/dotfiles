@@ -5,6 +5,7 @@
 
     # AI tools
     ../../../common/home-manager/eldios/programs/packages_claude_code.nix
+    ../../../common/home-manager/eldios/programs/packages_codex.nix
     ../../../common/home-manager/eldios/programs/packages_gemini_cli.nix
   ];
 }
