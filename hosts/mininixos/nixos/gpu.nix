@@ -1,5 +1,5 @@
 # AMD GPU configuration for mininixos (headless server)
-# RX 9700 XT AI PRO 32GB (RDNA 4, Navi 48) + Raphael iGPU
+# Radeon AI PRO R9700 32GB (RDNA 4, Navi 48, 1002:7551) + Raphael iGPU (1002:164e)
 
 { pkgs, ... }:
 {
