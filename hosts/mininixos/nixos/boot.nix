@@ -18,6 +18,7 @@
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "nohibernate"
+      "amdgpu.runpm=0" # disable runtime PM — headless server, GPU must stay awake for Ollama
     ];
 
     initrd = {
