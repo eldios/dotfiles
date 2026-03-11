@@ -26,21 +26,6 @@
     };
   };
 
-  systemd.services = {
-    # Umbrel VM
-    "libvirt-vm-umbrel" = {
-      description = "Libvirt VM: Umbrel";
-      after = [ "libvirtd.service" ];
-      wantedBy = [ "multi-user.target" ];
-
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = "yes";
-        ExecStart = "${pkgs.bash}/bin/bash -c \"state=$(${pkgs.libvirt}/bin/virsh domstate Umbrel 2>/dev/null || echo 'shut off'); [[ $state == 'shut off' ]] && ${pkgs.libvirt}/bin/virsh start Umbrel || exit 0\"";
-        ExecStop = "${pkgs.libvirt}/bin/virsh shutdown Umbrel";
-      };
-    };
-
     # HomeAssistant VM
     "libvirt-vm-homeassistant" = {
       description = "Libvirt VM: HomeAssistant";
@@ -52,20 +37,6 @@
         RemainAfterExit = "yes";
         ExecStart = "${pkgs.bash}/bin/bash -c \"state=$(${pkgs.libvirt}/bin/virsh domstate HomeAssistant 2>/dev/null || echo 'shut off'); [[ $state == 'shut off' ]] && ${pkgs.libvirt}/bin/virsh start HomeAssistant || exit 0\"";
         ExecStop = "${pkgs.libvirt}/bin/virsh shutdown HomeAssistant";
-      };
-    };
-
-    # bsdino VM
-    "libvirt-vm-bsdino" = {
-      description = "Libvirt VM: bsdino";
-      after = [ "libvirtd.service" ];
-      wantedBy = [ "multi-user.target" ];
-
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = "yes";
-        ExecStart = "${pkgs.bash}/bin/bash -c \"state=$(${pkgs.libvirt}/bin/virsh domstate bsdino 2>/dev/null || echo 'shut off'); [[ $state == 'shut off' ]] && ${pkgs.libvirt}/bin/virsh start bsdino || exit 0\"";
-        ExecStop = "${pkgs.libvirt}/bin/virsh shutdown bsdino";
       };
     };
 
