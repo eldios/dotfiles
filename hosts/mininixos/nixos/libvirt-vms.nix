@@ -26,6 +26,7 @@
     };
   };
 
+  systemd.services = {
     # HomeAssistant VM
     "libvirt-vm-homeassistant" = {
       description = "Libvirt VM: HomeAssistant";
