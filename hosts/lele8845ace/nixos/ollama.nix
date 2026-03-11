@@ -9,7 +9,7 @@
     host = "0.0.0.0";
     openFirewall = true;
 
-    pkg = pkgs.unstable.ollama;
+    package = pkgs.unstable.ollama;
 
     environmentVariables = {
       # Keep resource usage low — this machine runs desktop UI and Steam
