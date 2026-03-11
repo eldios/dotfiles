@@ -9,7 +9,7 @@
     host = "0.0.0.0";
     openFirewall = true;
 
-    pkg = pkgs.unstable.ollama;
+    package = pkgs.unstable.ollama;
 
     # Radeon AI PRO R9700 (RDNA 4, Navi 48, 1002:7551) = gfx1201
     # ROCm 6.4 has experimental gfx12 support — override if auto-detection fails
