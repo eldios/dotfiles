@@ -1,7 +1,7 @@
 # Ollama LLM server for lele8845ace (desktop/gaming workstation)
 # Resource-limited to avoid starving UI and games of RAM/VRAM
 
-{ ... }:
+{ pkgs, ... }:
 {
   services.ollama = {
     enable = true;
@@ -9,7 +9,7 @@
     host = "0.0.0.0";
     openFirewall = true;
 
-    package = pkgs.unstable.ollama;
+    package = pkgs.unstable.ollama-rocm;
 
     environmentVariables = {
       # Keep resource usage low — this machine runs desktop UI and Steam
