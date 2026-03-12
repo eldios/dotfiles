@@ -14,7 +14,7 @@
       ports = [ "9443:9443" ];
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock"
-        "/data/containers/portainer:/data"
+        "/srv/containers/portainer:/data"
       ];
       extraOptions = [
         "--label=traefik.enable=true"
