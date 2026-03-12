@@ -10,10 +10,16 @@
   # BTRFS storage driver (matching lele8845ace pattern)
   virtualisation.docker.storageDriver = "btrfs";
 
+  # Docker data on dedicated 1.8TB disk
+  virtualisation.docker.daemon.settings = {
+    data-root = "/srv/docker";
+  };
+
   services.btrfs.autoScrub = {
     enable = true;
     interval = "weekly";
     fileSystems = [ "/" ]; # scrubs entire BTRFS filesystem including all subvolumes
+    # /srv/docker scrub is in srv-storage.nix
   };
 
   # Compressed swap in RAM - safety net for OOM
