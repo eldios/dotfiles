@@ -26,10 +26,9 @@ let
   lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5";
   # Command to launch Mailspring email client
   mail = "mailspring --password-store=\"gnome-libsecret\"";
-  # Flameshot command for selecting an area to screenshot and copy to clipboard
-  screenshot_select = "flameshot gui -c";
-  # Flameshot command for taking a full-screen screenshot (GUI mode)
-  screenshot_full = "flameshot gui";
+  # Screenshots using grimblast (Hyprland-native, grim+slurp wrapper)
+  screenshot_select = "${pkgs.grimblast}/bin/grimblast copy area";
+  screenshot_full = "${pkgs.grimblast}/bin/grimblast copysave screen ~/Pictures/Screenshots/$(date +%F_%T).png";
 in
 {
   home = {
@@ -40,7 +39,7 @@ in
       bemenu
       catppuccin-gtk
       catppuccin-kvantum
-      clipman
+      cliphist
       dconf
       dracula-theme
       eww
@@ -112,6 +111,7 @@ in
         "${pkgs.swww}/bin/swww-daemon" # Wallpaper daemon (used by Variety's set_wallpaper script)
         "sleep 1 && ${pkgs.variety}/bin/variety" # Starts Variety for wallpaper management (after swww-daemon)
         # "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar" # Start Eww daemon and open the bar
+        "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store" # Clipboard history daemon (text + images)
       ];
 
       # Environment variables for Wayland compatibility
@@ -212,6 +212,11 @@ in
         sensitivity = 0.5;
       };
 
+      gestures = {
+        workspace_swipe = true; # Swipe 3 fingers to change workspace on touchpad
+        workspace_swipe_fingers = 3;
+      };
+
       misc = {
         disable_hyprland_logo = true; # Disables the Hyprland logo on startup
         disable_splash_rendering = true; # Disables the startup splash screen
@@ -220,9 +225,15 @@ in
         animate_manual_resizes = true; # Animate window resizes done manually
         animate_mouse_windowdragging = true; # Animate windows when dragged with mouse
         enable_swallow = true; # Enable window swallowing (e.g., terminal swallows child processes like image viewers)
+        # swallow_regex = "^(ghostty|kitty)$"; # When opening a GUI app from terminal, terminal hides and reappears on close
       };
 
       "$mod" = "SUPER"; # Defines the Super (Windows/Command) key as the primary modifier
+
+      binds = {
+        workspace_back_and_forth = true; # Press same workspace key again to go back (i3-style)
+        allow_workspace_cycles = true; # Allow workspace cycling with previous dispatcher
+      };
 
       bind = [
         # Window management
@@ -233,7 +244,7 @@ in
 
         # Dwindle layout controls
         "$mod, p, pseudo" # Toggle pseudo-tiling (fixed size windows)
-        "$mod SHIFT, t, pin" # Toggle pseudo-tiling (fixed size windows)
+        "$mod SHIFT, t, pin" # Pin floating window: stays visible across all workspaces (great for PiP/notes)
 
         "$mod, i, cyclenext" # Cycle window focus
         "$mod, o, cyclenext, prev" # Cycle window focus
@@ -307,10 +318,37 @@ in
         "$mod, minus, togglespecialworkspace, scratchpad"
         "$mod SHIFT, minus, movetoworkspace, special:scratchpad"
 
+        # Previous workspace (quick jump back)
+        "$mod, BackSpace, workspace, previous"
+
+        # Urgent window focus (jump to window requesting attention)
+        "$mod, z, focusurgentorlast"
+
+        # Center floating window on screen
+        "$mod, c, centerwindow"
+
+        # Clipboard history (rofi picker, supports text + images)
+        "$mod, v, exec, ${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi}/bin/rofi -dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy"
+
+        # Window grouping (tabbed windows like i3)
+        "$mod, g, togglegroup" # Create/dissolve a group from active window
+        "$mod CTRL, Tab, changegroupactive, f" # Cycle forward through tabs in group
+        "$mod CTRL SHIFT, Tab, changegroupactive, b" # Cycle backward through tabs in group
+        "$mod SHIFT, g, lockactivegroup, toggle" # Lock group to prevent accidental changes
+        "$mod CTRL, h, moveintogroup, l" # Move window into group on the left
+        "$mod CTRL, j, moveintogroup, d" # Move window into group below
+        "$mod CTRL, k, moveintogroup, u" # Move window into group above
+        "$mod CTRL, l, moveintogroup, r" # Move window into group on the right
+        "$mod CTRL SHIFT, h, moveoutofgroup" # Move window out of its group
+
         # Reload
         "$mod SHIFT, R, forcerendererreload"
         "$mod SHIFT CTRL, R, exec, ${pkgs.hyprland}/bin/hyprctl reload"
       ];
+
+      # Global keybinds: passed to apps even when they're not focused (e.g. push-to-talk)
+      # Uses dbus protocol, app must support org.freedesktop.portal.GlobalShortcuts
+      # Example: bindglobal = [ "$mod, F5, pass, class:^(discord)$" ]; # passes key to Discord for push-to-talk
 
       bindm = [
         "$mod, mouse:272, movewindow"
