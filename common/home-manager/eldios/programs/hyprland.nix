@@ -15,10 +15,12 @@ let
   # Bar selection: "waybar", "ironbar"
   # Change this to switch status bars
   barChoice = "waybar";
-  barCmd = {
-    waybar = "${pkgs.waybar}/bin/waybar";
-    ironbar = "${pkgs.ironbar}/bin/ironbar";
-  }.${barChoice};
+  barCmd =
+    {
+      waybar = "${pkgs.waybar}/bin/waybar";
+      ironbar = "${pkgs.ironbar}/bin/ironbar";
+    }
+    .${barChoice};
 
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
@@ -210,11 +212,6 @@ in
           drag_lock = true;
         };
         sensitivity = 0.5;
-      };
-
-      gestures = {
-        workspace_swipe = true; # Swipe 3 fingers to change workspace on touchpad
-        workspace_swipe_fingers = 3;
       };
 
       misc = {
