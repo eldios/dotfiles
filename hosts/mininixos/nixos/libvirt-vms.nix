@@ -41,17 +41,17 @@
       };
     };
 
-    # kla VM (Arch Linux - OpenClaw)
-    "libvirt-vm-kla" = {
-      description = "Libvirt VM: kla";
+    # nex VM (Arch Linux - OpenClaw)
+    "libvirt-vm-nex" = {
+      description = "Libvirt VM: nex";
       after = [ "libvirtd.service" ];
       wantedBy = [ "multi-user.target" ];
 
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = "yes";
-        ExecStart = "${pkgs.bash}/bin/bash -c \"state=$(${pkgs.libvirt}/bin/virsh domstate kla 2>/dev/null || echo 'shut off'); [[ $state == 'shut off' ]] && ${pkgs.libvirt}/bin/virsh start kla || exit 0\"";
-        ExecStop = "${pkgs.libvirt}/bin/virsh shutdown kla";
+        ExecStart = "${pkgs.bash}/bin/bash -c \"state=$(${pkgs.libvirt}/bin/virsh domstate nex 2>/dev/null || echo 'shut off'); [[ $state == 'shut off' ]] && ${pkgs.libvirt}/bin/virsh start nex || exit 0\"";
+        ExecStop = "${pkgs.libvirt}/bin/virsh shutdown nex";
       };
     };
   };
