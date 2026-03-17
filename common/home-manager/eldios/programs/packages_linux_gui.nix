@@ -69,7 +69,7 @@
         # Communication
         signal-desktop # encrypted messaging app
         slack # team communication platform
-        telegram-desktop # messaging app
+        #telegram-desktop # messaging app
         zoom-us # video conferencing
 
         # Media Players
