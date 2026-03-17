@@ -1,4 +1,4 @@
-{ inputs, nixpkgs, nixpkgs-unstable, nixos-hardware, home-manager, claude-code-overlay, codex-cli-nix, gemini-cli-nix, gws-cli, ... }:
+{ inputs, nixpkgs, nixpkgs-unstable, nixos-hardware, home-manager, claude-code-overlay, codex-cli-nix, gemini-cli-nix, gws-cli, llm-agents-nix, opencode-nix, ... }:
 
 {
   # Apply overlays here to avoid warning with home-manager.useGlobalPkgs
@@ -7,6 +7,8 @@
     claude-code-overlay.overlays.default
     codex-cli-nix.overlays.default
     gemini-cli-nix.overlays.default
+    opencode-nix.overlays.default
+    (import ../../../common/nixos/overlays/crush.nix { inherit llm-agents-nix; })
     (import ../../../common/nixos/overlays/gws-cli.nix { inherit gws-cli; })
     (import ../../../common/nixos/overlays/gitbutler.nix)
   ];
