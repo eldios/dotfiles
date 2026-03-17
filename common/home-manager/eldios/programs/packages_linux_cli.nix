@@ -35,7 +35,6 @@
         # AI Tools
         llama-cpp-rocm
         ollama-rocm
-        opencode # AI coding assistant TUI
       ]);
   };
 } # EOF
