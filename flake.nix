@@ -54,6 +54,8 @@
     claude-code-overlay.url = "github:ryoppippi/claude-code-overlay";
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";
     gemini-cli-nix.url = "github:nklmilojevic/gemini-cli-nix";
+    opencode-nix.url = "github:dan-online/opencode-nix";
+    llm-agents-nix.url = "github:numtide/llm-agents.nix"; # for crush (charmbracelet)
     gws-cli.url = "github:googleworkspace/cli";
   };
 
@@ -66,6 +68,8 @@
       disko,
       gemini-cli-nix,
       gws-cli,
+      llm-agents-nix,
+      opencode-nix,
       home-manager,
       mpc-hub,
       nixos-facter-modules,
@@ -97,6 +101,8 @@
           gemini-cli-nix
           gws-cli
           home-manager
+          llm-agents-nix
+          opencode-nix
           inputs
           mpc-hub
           nixos-facter-modules
