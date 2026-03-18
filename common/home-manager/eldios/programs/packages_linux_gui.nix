@@ -146,7 +146,6 @@
 
         # Password Management
         bitwarden-cli # password manager CLI
-        bitwarden-desktop # password manager GUI
         bitwarden-menu # password manager dmenu/rofi integration
 
         # Media & Music
