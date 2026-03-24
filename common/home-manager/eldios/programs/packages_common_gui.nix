@@ -14,6 +14,7 @@
 
         # Media & Video
         ffmpeg # multimedia processing toolkit
+        sox # audio processing tool (used for Claude voice)
         imagemagick # image manipulation toolkit
         jellyfin-media-player # Jellyfin media client
         yewtube # YouTube player for terminal
