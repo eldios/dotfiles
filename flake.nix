@@ -129,11 +129,21 @@
         ];
       };
 
-      # Lele's Yoga9i
-      nixosConfigurations.lele9iyoga = nixpkgs.lib.nixosSystem {
+      # Lele's Yoga9i (old - disk moved to L13 Yoga Gen 3)
+      #nixosConfigurations.lele9iyoga = nixpkgs.lib.nixosSystem {
+      #  specialArgs = commonSpecialArgs;
+      #  modules = [
+      #    ./hosts/lele9iyoga/nixos/configuration.nix
+      #    disko.nixosModules.disko
+      #    sops-nix.nixosModules.sops
+      #  ];
+      #};
+
+      # Lele's ThinkPad L13 Yoga Gen 3 (AMD Ryzen 7 PRO 5875U)
+      nixosConfigurations.lelel13yoga = nixpkgs.lib.nixosSystem {
         specialArgs = commonSpecialArgs;
         modules = [
-          ./hosts/lele9iyoga/nixos/configuration.nix
+          ./hosts/lelel13yoga/nixos/configuration.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
         ];
