@@ -67,9 +67,11 @@
         widevine-cdm # DRM content decryption module
 
         # Communication
+        ayugram-desktop # Telegram alt client
         signal-desktop # encrypted messaging app
         slack # team communication platform
         #telegram-desktop # messaging app
+        zapzap # WhatsApp alt client
         zoom-us # video conferencing
 
         # Media Players
