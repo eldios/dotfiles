@@ -88,19 +88,15 @@ let
       port = 3030;
       internalPort = 8000;
       dockerfile = ''
-        FROM ghcr.io/mutx-net/mcp
+        FROM ghcr.io/mutx-net/mutx-link
       '';
-      command = [
-        "mutx-mcp"
-        "--mode"
-        "http"
-        "--bind"
-        "0.0.0.0:8000"
-      ];
-      env = { };
+      command = [ "mutx-link" "serve" "--mode" "http" "--bind" "0.0.0.0:8000" ];
+      env = {
+        MUTX_SOCKET_DIR = "/run/mutx";
+      };
       envSecrets = { };
       volumes = [
-        "/tmp/mutx:/tmp/mutx"
+        "\${XDG_RUNTIME_DIR}/mutx:/run/mutx"
       ];
     };
 
