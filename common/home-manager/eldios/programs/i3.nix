@@ -195,8 +195,11 @@ in
   };
 
   # Modern picom with blur (matching Hyprland decoration settings)
+  # Disabled by default — picom is X11-only and crash-loops on Wayland.
+  # i3 startup explicitly runs `systemctl --user restart picom`, so it
+  # works correctly when i3 is the active session.
   services.picom = {
-    enable = true;
+    enable = lib.mkDefault false;
     package = pkgs.picom;
 
     backend = "egl";  # EGL works better than GLX on RDNA3 GPUs (fixes horizontal artifacts)
