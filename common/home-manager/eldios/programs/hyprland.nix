@@ -203,33 +203,34 @@ in
 
       input = {
         # Input device settings (keyboard, mouse, touchpad)
+        follow_mouse = 1; # Focus follows mouse movement (1 = normal, 2 = aggressive)
         kb_layout = "us"; # Default keyboard layout
         kb_options = "caps:escape"; # CapsLock -> Escape
-        follow_mouse = 1; # Focus follows mouse movement (1 = normal, 2 = aggressive)
+        sensitivity = 0.5;
         touchpad = {
           natural_scroll = false;
           disable_while_typing = true;
           drag_lock = true;
         };
-        sensitivity = 0.5;
       };
 
       misc = {
-        disable_hyprland_logo = true; # Disables the Hyprland logo on startup
-        disable_splash_rendering = true; # Disables the startup splash screen
-        mouse_move_enables_dpms = true; # Mouse movement wakes displays from DPMS
-        key_press_enables_dpms = true; # Key press wakes displays from DPMS
         animate_manual_resizes = true; # Animate window resizes done manually
         animate_mouse_windowdragging = true; # Animate windows when dragged with mouse
+        disable_hyprland_logo = true; # Disables the Hyprland logo on startup
+        disable_splash_rendering = true; # Disables the startup splash screen
         enable_swallow = true; # Enable window swallowing (e.g., terminal swallows child processes like image viewers)
+        key_press_enables_dpms = true; # Key press wakes displays from DPMS
+        mouse_move_enables_dpms = true; # Mouse movement wakes displays from DPMS
         # swallow_regex = "^(ghostty|kitty)$"; # When opening a GUI app from terminal, terminal hides and reappears on close
+        vfr = true; # enable Variable Frame rate
       };
 
       "$mod" = "SUPER"; # Defines the Super (Windows/Command) key as the primary modifier
 
       binds = {
-        workspace_back_and_forth = true; # Press same workspace key again to go back (i3-style)
         allow_workspace_cycles = true; # Allow workspace cycling with previous dispatcher
+        workspace_back_and_forth = true; # Press same workspace key again to go back (i3-style)
       };
 
       bind = [
