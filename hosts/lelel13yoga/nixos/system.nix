@@ -123,6 +123,21 @@
     powertop.enable = true;
   };
 
+  # Unload/reload mt7921e WiFi module around S3 suspend to avoid
+  # firmware timeout error -110 on resume.
+  systemd.services."wifi-suspend-fix" = {
+    description = "Unload mt7921e before sleep, reload on resume";
+    wantedBy = [ "sleep.target" ];
+    before = [ "sleep.target" ];
+    unitConfig.StopWhenUnneeded = true;
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.kmod}/bin/modprobe -r mt7921e";
+      ExecStop = "${pkgs.kmod}/bin/modprobe mt7921e";
+    };
+  };
+
   # https://wiki.archlinux.org/title/GPGPU#ICD_loader_(libOpenCL.so)
   environment.etc."ld.so.conf.d/00-usrlib.conf".text = "/usr/lib";
 

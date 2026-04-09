@@ -17,6 +17,14 @@
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "nohibernate"
+      # Passive P-state: avoids aggressive freq transitions that interact
+      # with TSC desync on this SoC. Replaces nixos-hardware common-cpu-amd-pstate.
+      "amd_pstate=passive"
+      # Use S3 deep sleep: s2idle is broken on Barcelo (fails to resume),
+      # especially combined with max_cstate=1 which blocks the deep C-states
+      # s2idle needs. mt7921e WiFi error -110 on S3 resume is handled by
+      # systemd suspend hook that unloads/reloads the module.
+      "mem_sleep_default=deep"
     ];
 
     initrd = {

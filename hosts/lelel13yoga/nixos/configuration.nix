@@ -28,7 +28,7 @@
   imports = [
     # select hardware from https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
     nixos-hardware.nixosModules.common-cpu-amd
-    nixos-hardware.nixosModules.common-cpu-amd-pstate
+    # nixos-hardware.nixosModules.common-cpu-amd-pstate  # removed: sets amd_pstate=active which worsens TSC desync hangs; passive mode set in boot.nix
     nixos-hardware.nixosModules.common-gpu-amd
     nixos-hardware.nixosModules.common-pc-laptop-ssd
 
