@@ -54,7 +54,6 @@
     ./system.nix
     ./network.nix
     ./gpu.nix
-    ./ollama.nix
     ./data-storage.nix
     ./srv-storage.nix
     ./libvirt-vms.nix
