@@ -24,6 +24,7 @@
     (import ../../../common/nixos/overlays/crush.nix { inherit llm-agents-nix; })
     (import ../../../common/nixos/overlays/gws-cli.nix { inherit gws-cli; })
     (import ../../../common/nixos/overlays/gitbutler.nix)
+    (import ../../../common/nixos/overlays/pi-coding-agent.nix)
   ];
 
   imports = [
