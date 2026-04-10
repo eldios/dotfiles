@@ -8,6 +8,7 @@
     pkgs.gemini-cli  # Google Gemini (via gemini-cli-nix flake)
     pkgs.gws         # Google Workspace CLI (via gws-cli overlay)
     pkgs.opencode    # OpenCode (via opencode-nix flake)
+    pkgs.pi-coding-agent # Pi (via local overlay from npm registry)
   ];
 }
 # vim: set ts=2 sw=2 et ai list nu
