@@ -17,13 +17,17 @@
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "nohibernate"
+      # Workaround Ryzen 5000U (Cezanne/Barcelo) TSC desync + mt7921e PCIe
+      # instability: without this, deep C-states cause TSC warp between CPUs
+      # and mt7921e chip reset loops (driver own failed).
+      "processor.max_cstate=1"
       # Passive P-state: avoids aggressive freq transitions that interact
       # with TSC desync on this SoC. Replaces nixos-hardware common-cpu-amd-pstate.
       "amd_pstate=passive"
-      # Use S3 deep sleep: s2idle is broken on Barcelo (fails to resume),
-      # especially combined with max_cstate=1 which blocks the deep C-states
-      # s2idle needs. mt7921e WiFi error -110 on S3 resume is handled by
-      # systemd suspend hook that unloads/reloads the module.
+      # S3 deep sleep instead of s2idle: s2idle requires deep C-states to work
+      # but max_cstate=1 blocks them, causing freeze on resume. S3 is hardware
+      # suspend managed by firmware and works with max_cstate=1. mt7921e WiFi
+      # unloaded before suspend via systemd hook in system.nix.
       "mem_sleep_default=deep"
     ];
 
