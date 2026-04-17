@@ -41,10 +41,14 @@
 
     ../../../common/nixos/users.nix
     ../../../common/nixos/system.nix
+    ../../../common/nixos/audio.nix
+    ../../../common/nixos/desktop-gui.nix
 
     ../../../common/nixos/nix-cache.nix
 
     ../../../common/nixos/programs/neovim.nix
+    ../../../common/nixos/programs/hyprland.nix
+    ../../../common/nixos/programs/niri.nix
 
     ../../../common/nixos/virtualisation.nix
 
