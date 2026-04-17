@@ -1,6 +1,6 @@
 # `hardware.opengl.driSupport32Bit' has been renamed to `hardware.graphics.enable32Bit'.
 # `hardware.opengl.enable' has been renamed to `hardware.graphics.enable'.
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   system = {
     stateVersion = "25.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
@@ -11,11 +11,28 @@
 
   services = {
     xserver = {
+      enable = true;
+      autorun = true;
+
       xkb = {
         layout = "us"; #"it"
         variant = "";
       };
+
+      videoDrivers = [
+        "nvidia"
+      ];
+
+      desktopManager = {
+        cinnamon.enable = true;
+      };
     };
+
+    # Gnome (latest) available alongside Cinnamon — user picks at GDM login
+    desktopManager.gnome.enable = true;
+
+    # Cinnamon-friendly defaults
+    cinnamon.apps.enable = true;
 
     zfs = {
       autoScrub.enable = true;
@@ -43,19 +60,6 @@
       ];
     };
 
-    xserver = {
-      enable = true;
-      autorun = true;
-
-      videoDrivers = [
-        "nvidia"
-      ];
-
-      desktopManager = {
-        cinnamon.enable = true;
-      };
-    };
-
     # CUPS
     printing.enable = true;
     # needed by CUPS for auto-discovery
@@ -64,7 +68,43 @@
       nssmdns4 = true;
       openFirewall = true;
     };
+
+    blueman.enable = true;
   };
+
+  # dconf is used by both Cinnamon and Gnome for settings persistence
+  programs.dconf.enable = true;
+
+  # Trim Gnome default bloat (keeps Gnome lean when user picks it at GDM)
+  environment.gnome.excludePackages = with pkgs; [
+    epiphany
+    geary
+    gnome-contacts
+    gnome-maps
+    gnome-music
+    gnome-tour
+    gnome-weather
+    gnome-connections
+  ];
+
+  environment.systemPackages = with pkgs; [
+    # Cinnamon extras
+    cinnamon-common
+    nemo-with-extensions
+    file-roller
+
+    # Gnome extras (available when logged into Gnome session)
+    gnome-tweaks
+    gnome-extension-manager
+    gnomeExtensions.appindicator
+    gnomeExtensions.dash-to-dock
+    gnomeExtensions.clipboard-indicator
+  ];
+
+  # Cinnamon and Gnome both define NIX_GSETTINGS_OVERRIDES_DIR. They can't
+  # coexist — force empty so both sessions fall back to upstream gsettings
+  # defaults (no NixOS-specific overrides, but both DEs boot cleanly).
+  environment.sessionVariables.NIX_GSETTINGS_OVERRIDES_DIR = lib.mkForce "";
 
   powerManagement = {
     enable = true;
@@ -74,17 +114,6 @@
 
   hardware = {
     enableAllFirmware = true;
-
-    bluetooth = {
-      enable = true;
-      powerOnBoot = true;
-      settings = {
-        General = {
-          Enable = "Source,Sink,Media,Socket";
-          Experimental = true;
-        };
-      };
-    };
 
     graphics = {
       enable = true;
@@ -111,9 +140,9 @@
 
       # Use the NVidia open source kernel module (not to be confused with the
       # independent third-party "nouveau" open source driver).
-      # Support is limited to the Turing and later architectures. Full list of 
-      # supported GPUs is at: 
-      # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+      # Support is limited to the Turing and later architectures. Full list of
+      # supported GPUs is at:
+      # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
       # Only available from driver 515.43.04+
       # Currently alpha-quality/buggy, so false is currently the recommended setting.
       open = false;
@@ -127,46 +156,9 @@
     };
   };
 
-  xdg.portal = {
-    enable = true;
-    #wlr.enable = true;
-    # gtk portal needed to make gtk apps happy
-    config.common.default = "*";
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-wlr
-      pkgs.xdg-desktop-portal-hyprland
-    ];
-  };
-
-  # audio
-  services.pulseaudio.enable = false;
-
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    pulse.enable = true;
-    wireplumber = {
-      enable = true;
-      configPackages = [ ];
-    };
-  };
-  services.blueman = {
-    enable = true;
-  };
-
-  # xdg-desktop-portal works by exposing a series of D-Bus interfaces
-  # known as portals under a well-known name
-  # (org.freedesktop.portal.Desktop) and object path
-  # (/org/freedesktop/portal/desktop).
-  # The portal interfaces include APIs for file access, opening URIs,
-  # printing and others.
-  services.dbus.enable = true;
-
-  security = {
-    pam.services.swaylock = { };
-  };
-
+  # Bluetooth, XDG portal, D-Bus, gnome-keyring, gvfs, upower, swaylock PAM, ssh askpass
+  # are provided by common/nixos/desktop-gui.nix.
+  # Audio (pipewire + audiophile rules) is provided by common/nixos/audio.nix.
 }
 
 # vim: set ts=2 sw=2 et ai list nu
