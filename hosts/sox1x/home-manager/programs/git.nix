@@ -1,5 +1,11 @@
-{ ... }:
+{ config, ... }:
 {
+  # Nix configuration for user-level commands
+  nix = {
+    extraOptions = ''
+      !include ${config.sops.secrets."tokens/github/nix".path}
+    '';
+  };
 
   programs = {
 

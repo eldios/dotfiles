@@ -2,6 +2,9 @@
 {
   imports = [
     ../../../common/home-manager/eldios/common_programs_gui.nix
+
+    # AI tools
+    ../../../common/home-manager/eldios/programs/packages_ai_tools.nix
   ];
 }
 
