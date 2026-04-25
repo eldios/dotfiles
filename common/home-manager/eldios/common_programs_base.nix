@@ -7,7 +7,7 @@
 
     ./programs/neovim.nix
     ./programs/mcp-servers.nix
-    ./programs/zellij.nix
+    #./programs/zellij.nix
 
     ./programs/zsh.nix
     ./programs/atuin.nix
