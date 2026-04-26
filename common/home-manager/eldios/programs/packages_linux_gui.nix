@@ -154,6 +154,7 @@
         sonixd # Subsonic/Jellyfin music client
         spotify # music streaming service
         tidal-hifi # TIDAL music streaming client
+        qbz # Qobuz native app
 
         # Cloud Storage
         pcloud # pCloud storage client
