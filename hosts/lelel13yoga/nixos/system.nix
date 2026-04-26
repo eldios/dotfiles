@@ -25,8 +25,8 @@
       enable = true;
       settings = {
         battery = {
-          governor = "powersave";
-          turbo = "never";
+          governor = "schedutil";
+          turbo = "auto";
         };
         charger = {
           governor = "performance";

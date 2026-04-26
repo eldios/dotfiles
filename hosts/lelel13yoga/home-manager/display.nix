@@ -25,6 +25,17 @@
     ", preferred, auto, 1"
   ];
 
+  # Barcelo iGPU (Radeon 660M) struggles with heavy compositor effects on
+  # battery. Disable blur, drop opacity, lighten rounding. Common config
+  # in common/home-manager/eldios/programs/hyprland.nix is tuned for
+  # discrete-GPU desktops; lib.mkForce overrides those values here.
+  wayland.windowManager.hyprland.settings.decoration = lib.mkForce {
+    rounding = 4;
+    blur.enabled = false;
+    active_opacity = 1.0;
+    inactive_opacity = 1.0;
+  };
+
   dconf.settings = {
     "org/virt-manager/virt-manager/connections" = {
       autoconnect = [ "qemu:///system" ];
