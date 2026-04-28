@@ -68,8 +68,9 @@
 
     firewall = {
       enable = true;
-      # allowedTCPPorts = [ ... ];
-      # allowedUDPPorts = [ ... ];
+      allowedTCPPorts = [
+        8095 # Music Assistant web UI (raggiunto da traefik su docker bridge)
+      ];
       checkReversePath = false;
       trustedInterfaces = [ "br0" "br50" ];
     };
