@@ -151,6 +151,7 @@
         bitwarden-menu # password manager dmenu/rofi integration
 
         # Media & Music
+        feishin # multi-app open source music player
         sonixd # Subsonic/Jellyfin music client
         spotify # music streaming service
         tidal-hifi # TIDAL music streaming client
