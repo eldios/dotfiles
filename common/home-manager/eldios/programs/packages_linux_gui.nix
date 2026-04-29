@@ -142,9 +142,7 @@
 
         # Communication
         beeper # unified messaging (all chats in one app)
-        discord-canary # chat platform (canary build)
         vesktop # Discord client with Vencord fixes
-        wasistlos # WhatsApp desktop client
 
         # Password Management
         bitwarden-cli # password manager CLI
