@@ -49,7 +49,6 @@ dotfiles/
 | `wotah` | VM | Testing |
 | `nucone` | Server | Home |
 | `sox1x` | Server | Remote |
-| `fsn-c*` | Cluster | K8s |
 
 ## Docs
 
