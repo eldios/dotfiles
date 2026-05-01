@@ -64,6 +64,17 @@ in
         };
         tag = {
           gpgsign = true;
+          forceSignAnnotated = true;
+        };
+        push = {
+          default = "simple";
+          gpgSign = "if-asked";
+        };
+        rebase = {
+          gpgSign = true;
+        };
+        merge = {
+          verifySignatures = false;
         };
         format = {
           signoff = true;
@@ -78,9 +89,6 @@ in
         };
         color = {
           ui = true;
-        };
-        push = {
-          default = "simple";
         };
         pull = {
           ff = "only";
