@@ -43,7 +43,6 @@
           "rng"
           "encrypted_keys"
 
-          "aes_generic"
           "blowfish"
           "twofish"
           "serpent"
