@@ -6,6 +6,7 @@
       docker-buildx
       k0sctl
       k3s
+      kata-runtime
       kind
       kind
       kubectx
@@ -41,6 +42,13 @@
         log-opts = {
           max-size = "50m";
           max-file = "3";
+        };
+        # Kata Containers OCI runtime — alternative to runc for stronger isolation.
+        # Use per-container via `runtime: kata` in compose. Default stays runc.
+        runtimes = {
+          kata = {
+            path = "${pkgs.kata-runtime}/bin/kata-runtime";
+          };
         };
       };
     };
