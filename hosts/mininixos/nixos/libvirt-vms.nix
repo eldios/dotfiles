@@ -17,7 +17,9 @@
         "/srv/containers/portainer:/data"
       ];
       extraOptions = [
+        "--network=proxy"
         "--label=traefik.enable=true"
+        "--label=traefik.docker.network=proxy"
         "--label=traefik.http.services.portainer.loadbalancer.server.port=9000"
         "--label=traefik.http.routers.portainer.rule=Host(`portainer.casa.lele.rip`)"
         "--label=traefik.http.routers.portainer.tls=true"
