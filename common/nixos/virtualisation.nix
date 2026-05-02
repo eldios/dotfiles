@@ -36,6 +36,13 @@
         enable = true;
         dates = "weekly";
       };
+      daemon.settings = {
+        log-driver = "local";
+        log-opts = {
+          max-size = "50m";
+          max-file = "3";
+        };
+      };
     };
 
     libvirtd = {
