@@ -156,7 +156,19 @@
         qbz # Qobuz native app
 
         # Cloud Storage
-        pcloud # pCloud storage client
+        # pCloud client wrapped with libglvnd + opengl-driver in LD_LIBRARY_PATH
+        # so the embedded Chromium/CEF login webview can initialize EGL.
+        (pkgs.symlinkJoin {
+          name = "pcloud-glvnd";
+          paths = [ pkgs.pcloud ];
+          nativeBuildInputs = [ pkgs.makeBinaryWrapper ];
+          postBuild = ''
+            rm $out/bin/pcloud
+            makeWrapper ${pkgs.pcloud}/app/pcloud $out/bin/pcloud \
+              --prefix LD_LIBRARY_PATH : ${pkgs.lib.makeLibraryPath [ pkgs.libglvnd ]}:/run/opengl-driver/lib \
+              --set XDG_DATA_DIRS "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}:${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
+          '';
+        })
 
         # Dev Tools
         dbeaver-bin # database management GUI
