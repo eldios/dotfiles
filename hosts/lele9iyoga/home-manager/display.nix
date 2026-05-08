@@ -21,10 +21,8 @@
   services.picom.enable = lib.mkForce false;
 
   # HiDPI scaling for Hyprland on Yoga 9i (2880x1800, 14").
-  # Hyprland: higher scale = larger UI. 2 too small, 2.5 too big,
-  # 2.25 is the sweet spot (~12.5% bigger than the original 2x).
   wayland.windowManager.hyprland.settings.monitor = [
-    ", preferred, auto, 2.25"
+    ", preferred, auto, 2"
   ];
 
   # Cursor sized for scale 2.5: GTK/Qt/Wayland clients pick up the
