@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
   imports = [
     ../../../common/home-manager/eldios/programs/eww.nix
@@ -26,6 +26,16 @@
   wayland.windowManager.hyprland.settings.monitor = [
     ", preferred, auto, 2.5"
   ];
+
+  # Cursor sized for scale 2.5: GTK/Qt/Wayland clients pick up the
+  # home-manager pointerCursor; XCURSOR_SIZE covers XWayland apps.
+  home.pointerCursor = {
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Classic";
+    size = 48;
+    gtk.enable = true;
+    x11.enable = true;
+  };
 
   dconf.settings = {
     "org/virt-manager/virt-manager/connections" = {

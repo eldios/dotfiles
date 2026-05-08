@@ -11,6 +11,10 @@
     autoUpgrade.enable = true;
   };
 
+  # 25.11 user creation backend: faster, no passwd file flapping on
+  # rebuild. Drop-in replacement for the default useradd/groupadd path.
+  services.userborn.enable = true;
+
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   # HOME - Italy - Rome
@@ -51,8 +55,6 @@
         interval = "weekly";
       };
     };
-
-    cloudflared.enable = true;
 
     libinput = {
       enable = true;
@@ -132,9 +134,6 @@
     cpuFreqGovernor = "powersave";
     powertop.enable = true;
   };
-
-  # https://wiki.archlinux.org/title/GPGPU#ICD_loader_(libOpenCL.so)
-  environment.etc."ld.so.conf.d/00-usrlib.conf".text = "/usr/lib";
 
   environment.sessionVariables = {
     LIBVA_DRIVER_NAME = "iHD";
