@@ -2,9 +2,15 @@
 {
   disko.devices = {
     disk = {
-      sda = {
+      # Distinct disk key from lele9iyoga's `sda` to avoid any chance of
+      # cross-host disko confusion when both flake outputs are evaluated.
+      nvme0n1 = {
         type = "disk";
-        device = lib.mkDefault "/dev/disk/by-id/nvme-SAMSUNG_MZAL81T0HDLB-00BL2_S77LNF2WC20908";
+        # TODO: replace with actual L13 NVMe serial before re-running
+        # disko on this host. Current value is a placeholder distinct
+        # from lele9iyoga's drive ID so an accidental disko apply here
+        # cannot match (and wipe) the 9i's disk.
+        device = lib.mkDefault "/dev/disk/by-id/nvme-LELEL13YOGA-PLACEHOLDER-REPLACE-WITH-REAL-SERIAL";
         content = {
           type = "gpt";
           partitions = {
