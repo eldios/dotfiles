@@ -119,6 +119,17 @@ in
     libraries = [ ];
   };
 
+  # nh: modern wrapper around nixos-rebuild / home-manager / nix-collect-garbage.
+  # Existing `nixu` alias (sudo -E nixos-rebuild switch --flake ~/dotfiles)
+  # keeps working in parallel. Try: `nh os switch ~/dotfiles`,
+  # `nh clean all --keep 5`, `nh search <pkg>`.
+  # nh.clean.enable left off because nix.gc.automatic above already
+  # handles GC weekly; nh would conflict with the warning.
+  programs.nh = {
+    enable = true;
+    flake = "/home/eldios/dotfiles";
+  };
+
   environment.shells = [
     "${binDir}/nu"
   ];
