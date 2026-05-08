@@ -22,7 +22,7 @@
 
   # HiDPI scaling for Hyprland on Yoga 9i (2880x1800, 14").
   wayland.windowManager.hyprland.settings.monitor = [
-    ", preferred, auto, 2"
+    ", preferred, auto, 1.75"
   ];
 
   # Cursor sized for scale 2.5: GTK/Qt/Wayland clients pick up the
