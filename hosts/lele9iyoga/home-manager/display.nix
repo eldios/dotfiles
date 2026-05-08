@@ -21,8 +21,10 @@
   services.picom.enable = lib.mkForce false;
 
   # HiDPI scaling for Hyprland on Yoga 9i (2880x1800, 14").
+  # Hyprland rejected 1.75 (non-integer pixel mapping) and suggested
+  # 1.8 — that's what gives a clean transformedSize on this panel.
   wayland.windowManager.hyprland.settings.monitor = [
-    ", preferred, auto, 1.75"
+    ", preferred, auto, 1.8"
   ];
 
   # Cursor sized for scale 2.5: GTK/Qt/Wayland clients pick up the
