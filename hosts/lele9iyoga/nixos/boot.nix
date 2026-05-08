@@ -20,6 +20,10 @@
     ];
 
     initrd = {
+      # systemd-based initrd: cleaner LUKS unlock UI, faster boot,
+      # enables future systemd-cryptenroll/TPM2 unlock paths.
+      systemd.enable = true;
+
       supportedFilesystems = [ "btrfs" ];
       kernelModules = [ ];
       availableKernelModules = [
@@ -47,7 +51,6 @@
         enable = true;
         device = "nodev";
         efiSupport = true;
-        zfsSupport = true;
         enableCryptodisk = true;
         configurationLimit = 14;
       };
