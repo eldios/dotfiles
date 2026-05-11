@@ -1,10 +1,13 @@
 {
+  lib,
   pkgs,
   config,
   ...
-}:
-let
+}: let
   terminal = "${pkgs.ghostty}/bin/ghostty";
+  colors = config.lib.stylix.colors;
+  activeBorder = "rgba(${colors.base0D}aa)";
+  inactiveBorder = "rgba(${colors.base03}aa)";
 
   # Application launcher (rofi)
   quick_menu = "rofi-run";
@@ -20,7 +23,9 @@ let
       waybar = "${pkgs.waybar}/bin/waybar";
       ironbar = "${pkgs.ironbar}/bin/ironbar";
     }
-    .${barChoice};
+    .${
+      barChoice
+    };
 
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
@@ -31,8 +36,7 @@ let
   # Screenshots using grimblast (Hyprland-native, grim+slurp wrapper)
   screenshot_select = "${pkgs.grimblast}/bin/grimblast copy area";
   screenshot_full = "${pkgs.grimblast}/bin/grimblast copysave screen ~/Pictures/Screenshots/$(date +%F_%T).png";
-in
-{
+in {
   home = {
     packages = with pkgs; [
       adwaita-icon-theme
@@ -82,6 +86,7 @@ in
       wdisplays
       wev
       wl-clipboard
+      wl-clip-persist
       wl-gammactl
       wl-screenrec
       wlogout
@@ -113,6 +118,7 @@ in
         "${pkgs.swww}/bin/swww-daemon" # Wallpaper daemon (used by Variety's set_wallpaper script)
         "sleep 1 && ${pkgs.variety}/bin/variety" # Starts Variety for wallpaper management (after swww-daemon)
         # "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar" # Start Eww daemon and open the bar
+        "${pkgs.wl-clip-persist}/bin/wl-clip-persist --clipboard regular" # Keep clipboard contents after source apps exit
         "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store" # Clipboard history daemon (text + images)
       ];
 
@@ -129,7 +135,7 @@ in
       ];
 
       # Monitor configuration - sets up dual monitor layout
-      monitor = [ ];
+      monitor = [];
 
       general = {
         layout = "dwindle"; # Use dwindle layout (binary tree) instead of master-stack
@@ -137,22 +143,57 @@ in
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
+        "col.active_border" = lib.mkDefault activeBorder;
+        "col.inactive_border" = lib.mkDefault inactiveBorder;
+        allow_tearing = false;
         no_focus_fallback = true; # Prevents focus from falling back to desktop if no window is focusable
       };
 
       # Settings for the dwindle layout
       dwindle = {
-        pseudotile = false; # Enable pseudotiling on dwindle
+        pseudotile = true; # Enable pseudotiling on dwindle
         preserve_split = true; # Preserves split direction when opening new windows
         #no_gaps_when_only = false; # Keep gaps when there's only one window
-        force_split = 0; # 0 = split follows mouse, 1 = always split to the left/top, 2 = always to the right/bottom
+        force_split = 2; # Open new splits predictably on the right/bottom
         use_active_for_splits = true; # Use the active window as the split target
         default_split_ratio = 1.0; # Default split ratio (0.1 - 1.9)
+      };
+
+      group = {
+        "col.border_active" = lib.mkDefault activeBorder;
+        "col.border_inactive" = lib.mkDefault inactiveBorder;
+        "col.border_locked_active" = lib.mkDefault "-1";
+        "col.border_locked_inactive" = lib.mkDefault "-1";
+
+        groupbar = {
+          font_size = lib.mkDefault 12;
+          font_family = lib.mkDefault config.stylix.fonts.monospace.name;
+          font_weight_active = lib.mkDefault "ultraheavy";
+          font_weight_inactive = lib.mkDefault "normal";
+          indicator_height = lib.mkDefault 0;
+          indicator_gap = lib.mkDefault 5;
+          height = lib.mkDefault 22;
+          gaps_in = lib.mkDefault 5;
+          gaps_out = lib.mkDefault 0;
+          text_color = lib.mkDefault "rgb(${colors.base05})";
+          text_color_inactive = lib.mkDefault "rgba(${colors.base04}cc)";
+          "col.active" = lib.mkDefault "rgba(${colors.base02}aa)";
+          "col.inactive" = lib.mkDefault "rgba(${colors.base01}88)";
+          gradients = lib.mkDefault true;
+          gradient_rounding = lib.mkDefault 0;
+          gradient_round_only_edges = lib.mkDefault false;
+        };
       };
 
       decoration = {
         # Window decorations (blur, opacity, etc.)
         rounding = 10; # Corner rounding radius for windows
+        shadow = {
+          enabled = lib.mkDefault true;
+          range = lib.mkDefault 4;
+          render_power = lib.mkDefault 3;
+          color = lib.mkDefault "rgba(00000066)";
+        };
         blur = {
           # Blur settings for transparent windows
           enabled = true;
@@ -171,33 +212,31 @@ in
         # Animation settings for window transitions, workspaces, etc.
         enabled = true;
 
-        # Custom bezier curve for fade animations
         bezier = [
-          "fadeBezier, 0.1, 0.9, 0.1, 1" # Elegant fade effect
+          "easeOutQuint,0.23,1,0.32,1"
+          "linear,0,0,1,1"
+          "almostLinear,0.5,0.5,0.75,1.0"
+          "quick,0.15,0,0.1,1"
         ];
 
-        # Detailed animation configurations, all set to use fade
         animation = [
-          # Windows - fade only
-          "windows, 1, 6, fadeBezier"
-          "windowsOut, 1, 6, fadeBezier"
-          "windowsMove, 1, 5, fadeBezier"
-
-          # Fading effects
-          "fade, 1, 8, fadeBezier"
-          "fadeOut, 1, 5, fadeBezier"
-          "fadeIn, 1, 5, fadeBezier"
-          "fadeDim, 1, 4, fadeBezier"
-
-          # Borders
-          "border, 1, 10, fadeBezier"
-
-          # Workspace transitions - fade only
-          "workspaces, 1, 7, fadeBezier"
-          "specialWorkspace, 1, 6, fadeBezier"
-
-          # Layers
-          "layers, 1, 8, fadeBezier"
+          "global, 1, 10, default"
+          "border, 1, 5.39, easeOutQuint"
+          "windows, 1, 4.79, easeOutQuint"
+          "windowsIn, 1, 4.1, easeOutQuint, popin 87%"
+          "windowsOut, 1, 1.49, linear, popin 87%"
+          "windowsMove, 1, 5, easeOutQuint"
+          "fadeIn, 1, 1.73, almostLinear"
+          "fadeOut, 1, 1.46, almostLinear"
+          "fade, 1, 3.03, quick"
+          "fadeDim, 1, 4, quick"
+          "layers, 1, 3.81, easeOutQuint"
+          "layersIn, 1, 4, easeOutQuint, fade"
+          "layersOut, 1, 1.5, linear, fade"
+          "fadeLayersIn, 1, 1.79, almostLinear"
+          "fadeLayersOut, 1, 1.39, almostLinear"
+          "workspaces, 1, 5, easeOutQuint"
+          "specialWorkspace, 1, 4, easeOutQuint, slidevert"
         ];
       };
 
@@ -206,11 +245,16 @@ in
         follow_mouse = 1; # Focus follows mouse movement (1 = normal, 2 = aggressive)
         kb_layout = "us"; # Default keyboard layout
         kb_options = "caps:escape"; # CapsLock -> Escape
+        repeat_rate = 40;
+        repeat_delay = 250;
+        numlock_by_default = true;
         sensitivity = 0.5;
         touchpad = {
           natural_scroll = false;
           disable_while_typing = true;
           drag_lock = true;
+          scroll_factor = 0.4;
+          clickfinger_behavior = true;
         };
       };
 
@@ -219,11 +263,20 @@ in
         animate_mouse_windowdragging = true; # Animate windows when dragged with mouse
         disable_hyprland_logo = true; # Disables the Hyprland logo on startup
         disable_splash_rendering = true; # Disables the startup splash screen
+        disable_scale_notification = true;
         enable_swallow = true; # Enable window swallowing (e.g., terminal swallows child processes like image viewers)
+        focus_on_activate = true;
         key_press_enables_dpms = true; # Key press wakes displays from DPMS
         mouse_move_enables_dpms = true; # Mouse movement wakes displays from DPMS
+        allow_session_lock_restore = true;
+        anr_missed_pings = 3;
         # swallow_regex = "^(ghostty|kitty)$"; # When opening a GUI app from terminal, terminal hides and reappears on close
         vfr = true; # enable Variable Frame rate
+      };
+
+      cursor = {
+        hide_on_key_press = true;
+        warp_on_change_workspace = 1;
       };
 
       "$mod" = "SUPER"; # Defines the Super (Windows/Command) key as the primary modifier
@@ -231,6 +284,7 @@ in
       binds = {
         allow_workspace_cycles = true; # Allow workspace cycling with previous dispatcher
         workspace_back_and_forth = true; # Press same workspace key again to go back (i3-style)
+        hide_special_on_workspace_change = true;
       };
 
       bind = [
@@ -258,12 +312,15 @@ in
         "$mod SHIFT, E, exec, ${file_menu}"
         "$mod SHIFT, W, exec, ${window_menu}"
         "$mod, Return, exec, ${terminal}"
+        "$mod, Space, exec, ${pkgs.walker}/bin/walker"
+        "$mod CTRL, E, exec, ${pkgs.walker}/bin/walker -m symbols"
         "$mod SHIFT, M, exec, ${mail}"
 
         # System controls
         "$mod CTRL SHIFT, Q, exec, ${powermenu}"
         #"$mod CTRL SHIFT, Q, exit"
         "$mod CTRL, Q, exec, ${lockscreen}"
+        "$mod, Escape, exec, ${powermenu}"
 
         # Eww bar toggle
         "$mod SHIFT CTRL, B, exec, ~/.config/eww/scripts/toggle-bar-mode.sh"
@@ -271,6 +328,7 @@ in
         # Screenshots
         "$mod SHIFT, S, exec, ${screenshot_select}"
         "$mod SHIFT, A, exec, ${screenshot_full}"
+        "$mod, Print, exec, ${pkgs.procps}/bin/pkill hyprpicker || ${pkgs.hyprpicker}/bin/hyprpicker -a"
 
         # Focus
         "$mod, Tab, focusmonitor, +1"
@@ -338,6 +396,23 @@ in
         "$mod CTRL, k, moveintogroup, u" # Move window into group above
         "$mod CTRL, l, moveintogroup, r" # Move window into group on the right
         "$mod CTRL SHIFT, h, moveoutofgroup" # Move window out of its group
+        "$mod ALT, Tab, changegroupactive, f"
+        "$mod ALT SHIFT, Tab, changegroupactive, b"
+        "$mod ALT, 1, changegroupactive, 1"
+        "$mod ALT, 2, changegroupactive, 2"
+        "$mod ALT, 3, changegroupactive, 3"
+        "$mod ALT, 4, changegroupactive, 4"
+        "$mod ALT, 5, changegroupactive, 5"
+
+        # Omarchy-inspired monitor/workspace helpers
+        "$mod CTRL, F, fullscreenstate, 0 2"
+        "$mod SHIFT ALT, Left, movecurrentworkspacetomonitor, l"
+        "$mod SHIFT ALT, Right, movecurrentworkspacetomonitor, r"
+        "$mod SHIFT ALT, Up, movecurrentworkspacetomonitor, u"
+        "$mod SHIFT ALT, Down, movecurrentworkspacetomonitor, d"
+        "$mod CTRL, A, exec, ${pkgs.pavucontrol}/bin/pavucontrol"
+        "$mod CTRL, B, exec, ${pkgs.blueman}/bin/blueman-manager"
+        "$mod CTRL, T, exec, ${terminal} -e ${pkgs.btop}/bin/btop"
 
         # Reload
         "$mod SHIFT, R, forcerendererreload"
@@ -392,8 +467,14 @@ in
         "float, title:^(org.gnome.Nautilus)$"
         "float, title:^(org.gnome.Settings)$"
         "float, title:^(Picture-in-Picture)$"
+        "pin, title:^(Picture-in-Picture)$"
         "float, class:^(screenkey)$"
         "noborder, class:^(screenkey)$"
+        "float, class:^(blueman-manager)$"
+        "float, class:^(thunar)$"
+        "float, class:^(pcmanfm)$"
+        "float, class:^(org.gnome.FileRoller)$"
+        "float, class:^(xdg-desktop-portal-gtk)$"
       ];
 
       layerrule = [
@@ -401,7 +482,9 @@ in
         "noanim, ironbar"
       ];
 
-      workspace = [ ];
+      workspace = [];
     };
   };
-} # EOF
+}
+# EOF
+
