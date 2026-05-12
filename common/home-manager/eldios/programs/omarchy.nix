@@ -149,6 +149,18 @@ let
     # Upstream uses `uwsm-app -- waybar` which we shim. Use absolute waybar path
     # and `-f` (not `-x`) since Nix wraps the binary as `.waybar-wrapped` and
     # `-x` would never match. SIGTERM first (graceful), then setsid spawn.
+    # Atomic install of current/theme/hyprland.conf into a stable file under
+    # ~/.config/hypr/, then reload. We source the stable file (omarchy-theme.conf)
+    # from hyprland.conf because sourcing current/theme/hyprland.conf directly
+    # triggers a transient "source= globbing error: found no match" notification
+    # during omarchy-theme-set's `rm -rf current && mv next current` window.
+    "omarchy-restart-hyprctl" = pkgs.writeShellScript "omarchy-restart-hyprctl" ''
+      src="$HOME/.config/omarchy/current/theme/hyprland.conf"
+      dst="$HOME/.config/hypr/omarchy-theme.conf"
+      [[ -f "$src" ]] && ${pkgs.coreutils}/bin/install -m 0644 "$src" "$dst" 2>/dev/null || true
+      ${pkgs.hyprland}/bin/hyprctl reload >/dev/null 2>&1 || true
+    '';
+
     "omarchy-restart-waybar" = pkgs.writeShellScript "omarchy-restart-waybar" ''
       # Match "/bin/waybar" (the binary path), not just "waybar" (would match
       # our own script `omarchy-restart-waybar` and kill self mid-execution).
