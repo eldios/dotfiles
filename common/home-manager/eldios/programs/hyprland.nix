@@ -492,10 +492,9 @@ in {
         "float, class:^(xdg-desktop-portal-gtk)$"
       ];
 
-      layerrule = [
-        "noanim, waybar"
-        "noanim, ironbar"
-      ];
+      # layerrule = [ ];  # Hyprland 0.54.3 dropped legacy `noanim` keyword;
+      # re-add when status bar layer animations need taming.
+      layerrule = [ ];
 
       workspace = [];
     };
