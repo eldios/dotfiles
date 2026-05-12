@@ -1,6 +1,8 @@
-{ pkgs, config, ... }:
-
-let
+{
+  pkgs,
+  config,
+  ...
+}: let
   # Dependencies
   cat = "${pkgs.coreutils}/bin/cat";
   cut = "${pkgs.coreutils}/bin/cut";
@@ -22,142 +24,153 @@ let
   # It takes a module name and a set of attributes (text, tooltip, alt, class, percentage)
   # and creates a shell script that outputs these attributes in the JSON format Waybar expects.
   # The 'pre' argument allows prepending shell commands to calculate values before generating JSON.
-  jsonOutput = name: { pre ? "", text ? "", tooltip ? "", alt ? "", class ? "", percentage ? "" }: "${pkgs.writeShellScriptBin "waybar-${name}" ''
-      set -euo pipefail # Exit on error, unbound variable, or pipe failure
-      ${pre} # Execute any preliminary commands passed via the 'pre' argument
-      ${jq} -cn \
-      --arg text "${text}" \
-      --arg tooltip "${tooltip}" \
-      --arg alt "${alt}" \
-      --arg class "${class}" \
-      --arg percentage "${percentage}" \
-      '{text:$text,tooltip:$tooltip,alt:$alt,class:$class,percentage:$percentage}'
-    ''}/bin/waybar-${name}";
-in
-{
+  jsonOutput = name: {
+    pre ? "",
+    text ? "",
+    tooltip ? "",
+    alt ? "",
+    class ? "",
+    percentage ? "",
+  }: "${pkgs.writeShellScriptBin "waybar-${name}" ''
+    set -euo pipefail # Exit on error, unbound variable, or pipe failure
+    ${pre} # Execute any preliminary commands passed via the 'pre' argument
+    ${jq} -cn \
+    --arg text "${text}" \
+    --arg tooltip "${tooltip}" \
+    --arg alt "${alt}" \
+    --arg class "${class}" \
+    --arg percentage "${percentage}" \
+    '{text:$text,tooltip:$tooltip,alt:$alt,class:$class,percentage:$percentage}'
+  ''}/bin/waybar-${name}";
+in {
   programs.waybar = {
     enable = true;
     systemd.enable = false;
 
     style = ''
+      @import "../omarchy/current/theme/waybar.css";
+
       * {
-          font-family: "${config.stylix.fonts.monospace.name}", FontAwesome;
-          font-size: ${builtins.toString config.stylix.fonts.sizes.applications}px;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        color: @foreground;
+        font-family: "JetBrainsMono Nerd Font", "DejaVu Sans Mono", FontAwesome, sans-serif;
+        font-size: 12px;
+        min-height: 0;
       }
 
       window#waybar {
-          background-color: #${config.lib.stylix.colors.base00};
-          color: #${config.lib.stylix.colors.base05};
-          border-radius: 12px;
-          margin-top: 8px;
-          margin-bottom: 4px;
-          border: 1px solid #${config.lib.stylix.colors.base02};
-          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+        background-color: alpha(@background, 0.92);
+        border-bottom: 1px solid alpha(@foreground, 0.12);
+        color: @foreground;
+      }
+
+      .modules-left {
+        margin-left: 8px;
+      }
+
+      .modules-right {
+        margin-right: 8px;
       }
 
       #workspaces {
-          margin: 0 4px;
+        margin: 0 4px;
       }
 
       #workspaces button {
-          padding: 0px 6px;
-          margin: 0 2px;
-          color: #${config.lib.stylix.colors.base04};
-          background-color: transparent;
-          border-radius: 6px;
-          transition: all 0.3s ease;
+        all: initial;
+        color: alpha(@foreground, 0.55);
+        margin: 0 1.5px;
+        min-width: 9px;
+        padding: 0 6px;
       }
 
-      #workspaces button.active {
-          color: #${config.lib.stylix.colors.base0B};
-          background-color: #${config.lib.stylix.colors.base01};
-          border: 1px solid #${config.lib.stylix.colors.base0B};
-      }
-
+      #workspaces button.active,
       #workspaces button.focused {
-          color: #${config.lib.stylix.colors.base0D};
-          background-color: #${config.lib.stylix.colors.base02};
+        background-color: alpha(@accent, 0.14);
+        color: @accent;
+      }
+
+      #workspaces button.empty {
+        opacity: 0.45;
       }
 
       #workspaces button.urgent {
-          color: #${config.lib.stylix.colors.base00};
-          background-color: #${config.lib.stylix.colors.base0A};
+        background-color: @accent;
+        color: @background;
       }
 
-      #clock, #battery, #cpu, #memory, #network, #pulseaudio, #tray, #bluetooth, #custom-menu, #custom-seperator-left, #custom-seperator-right, #custom-gammastep, #custom-currentplayer, #custom-player, #idle_inhibitor, #backlight, #disk {
-          padding: 0 10px;
-          margin: 3px 0px;
-          color: #${config.lib.stylix.colors.base05};
+      #clock,
+      #battery,
+      #cpu,
+      #memory,
+      #network,
+      #pulseaudio,
+      #tray,
+      #bluetooth,
+      #custom-menu,
+      #custom-seperator-left,
+      #custom-seperator-right,
+      #custom-gammastep,
+      #custom-currentplayer,
+      #custom-player,
+      #idle_inhibitor,
+      #backlight,
+      #disk,
+      #cava {
+        color: @foreground;
+        margin: 0 7px;
+        min-width: 12px;
       }
 
       #custom-menu {
-          color: #${config.lib.stylix.colors.base0D};
-          font-size: 16px;
-          padding: 0 10px 0 6px;
+        color: @accent;
+        font-size: 16px;
+        margin-left: 0;
+        margin-right: 9px;
       }
 
+      #custom-currentplayer,
+      #custom-player,
       #clock {
-          color: #${config.lib.stylix.colors.base0E};
-          font-weight: bold;
+        color: @accent;
       }
 
-      #custom-currentplayer, #custom-player {
-          color: #${config.lib.stylix.colors.base0B};
-      }
-
-      #pulseaudio {
-          color: #${config.lib.stylix.colors.base0C};
-      }
-
-      #pulseaudio.muted {
-          color: #${config.lib.stylix.colors.base03};
-      }
-
-      #bluetooth {
-          color: #${config.lib.stylix.colors.base0D};
-      }
-
-      #bluetooth.disabled, #bluetooth.off {
-          color: #${config.lib.stylix.colors.base03};
-      }
-
+      #pulseaudio.muted,
+      #bluetooth.disabled,
+      #bluetooth.off,
       #network.disconnected {
-          color: #${config.lib.stylix.colors.base0F};
-      }
-
-      #battery.charging, #battery.plugged {
-          color: #${config.lib.stylix.colors.base0C};
+        color: alpha(@foreground, 0.35);
       }
 
       #battery.critical:not(.charging) {
-          background-color: #${config.lib.stylix.colors.base08};
-          color: #${config.lib.stylix.colors.base00};
-          border-radius: 4px;
-          padding: 0 10px;
+        background-color: @accent;
+        color: @background;
+        padding: 0 8px;
       }
 
       #idle_inhibitor {
-          color: #${config.lib.stylix.colors.base04};
+        color: alpha(@foreground, 0.55);
       }
 
-      #idle_inhibitor.activated {
-          color: #${config.lib.stylix.colors.base0A};
-      }
-
+      #idle_inhibitor.activated,
       #backlight {
-          color: #${config.lib.stylix.colors.base0A};
+        color: @accent;
+      }
+
+      #tray {
+        margin-right: 16px;
       }
 
       tooltip {
-          background-color: #${config.lib.stylix.colors.base01};
-          color: #${config.lib.stylix.colors.base05};
-          border: 1px solid #${config.lib.stylix.colors.base03};
-          border-radius: 8px;
-          padding: 8px;
+        background-color: @background;
+        border: 1px solid alpha(@foreground, 0.2);
+        padding: 2px;
       }
 
       tooltip label {
-          color: #${config.lib.stylix.colors.base05};
+        color: @foreground;
       }
     '';
 
@@ -229,7 +242,7 @@ in
           waves = false;
           noise_reduction = 0.77;
           input_delay = 2;
-          format-icons = [ " " "▂" "▃" "▄" "▅" "▆" "▇" "█" ];
+          format-icons = [" " "▂" "▃" "▄" "▅" "▆" "▇" "█"];
         };
 
         pulseaudio = {
@@ -239,7 +252,7 @@ in
             headphone = "󰋋";
             headset = "󰋎";
             portable = "";
-            default = [ "󰋋" "󰋋" "󰋋" ];
+            default = ["󰋋" "󰋋" "󰋋"];
           };
           on-click = pavucontrol;
         };
@@ -255,7 +268,7 @@ in
         battery = {
           bat = "BAT0";
           interval = 10;
-          format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
+          format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
           format = "{icon} {capacity}%";
           format-charging = "󰂄 {capacity}%";
           onclick = "";
@@ -328,7 +341,7 @@ in
 
         disk = {
           interval = 60;
-          format = "󰋊 {percentage}%";
+          format = "󰋊 {percentage_used}%";
           tooltip = "Disk Usage: {used} / {total}";
           path = "/";
         };
@@ -353,7 +366,7 @@ in
             text = "";
             tooltip = ''$(${cat} /etc/os-release | ${grep} PRETTY_NAME | ${cut} -d '"' -f2)'';
           };
-          #on-click-left = "";
+          on-click-left = "omarchy-menu";
           #on-click-right = "";
         };
 
@@ -410,7 +423,7 @@ in
             tooltip = "$player ($count available)";
             text = "$more";
           };
-          format = "{icon}{}";
+          format = "{icon}{text}";
           format-icons = {
             "No player active" = " ";
             "Celluloid" = "󰎁 ";

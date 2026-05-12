@@ -14,6 +14,8 @@
     ./programs/ghostty.nix
     ./programs/kitty.nix
     ./programs/niri.nix
+    ./programs/omarchy.nix
+    ./programs/omarchy-runtime.nix
     ./programs/rio.nix
     ./programs/rofi.nix
     ./programs/tmux.nix
@@ -30,5 +32,4 @@
     ./programs/packages_mailspring.nix
   ];
 }
-
 # vim: set ts=2 sw=2 et ai list nu

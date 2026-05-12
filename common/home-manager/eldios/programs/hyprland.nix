@@ -9,11 +9,12 @@
   activeBorder = "rgba(${colors.base0D}aa)";
   inactiveBorder = "rgba(${colors.base03}aa)";
 
-  # Application launcher (rofi)
-  quick_menu = "rofi-run";
-  full_menu = "rofi-drun";
-  file_menu = "rofi-filebrowser";
-  window_menu = "rofi-window";
+  # Application launchers use Walker, matching the Omarchy runtime menu stack.
+  quick_menu = "/etc/profiles/per-user/eldios/bin/omarchy-launch-run";
+  full_menu = "/etc/profiles/per-user/eldios/bin/omarchy-launch-apps";
+  file_menu = "/etc/profiles/per-user/eldios/bin/omarchy-launch-files";
+  window_menu = "/etc/profiles/per-user/eldios/bin/omarchy-launch-windows";
+  omarchyMenu = "/etc/profiles/per-user/eldios/bin/omarchy-menu";
 
   # Bar selection: "waybar", "ironbar"
   # Change this to switch status bars
@@ -50,7 +51,6 @@ in {
       dracula-theme
       eww
       fuseiso
-      fuzzel
       gammastep
       geoclue2
       glpaper
@@ -108,6 +108,9 @@ in {
     package = pkgs.hyprland;
     xwayland.enable = true;
     systemd.enable = true;
+    extraConfig = ''
+      source = ${config.home.homeDirectory}/.config/omarchy/current/theme/hyprland.conf
+    '';
 
     settings = {
       # Commands to execute once on Hyprland startup
@@ -116,7 +119,7 @@ in {
         "${barCmd}" # Status bar (change barChoice in let block to switch)
         "${pkgs.mako}/bin/mako" # Starts the Mako notification daemon
         "${pkgs.swww}/bin/swww-daemon" # Wallpaper daemon (used by Variety's set_wallpaper script)
-        "sleep 1 && ${pkgs.variety}/bin/variety" # Starts Variety for wallpaper management (after swww-daemon)
+        "sleep 1 && ${pkgs.swww}/bin/swww img ~/.config/omarchy/current/background --transition-type fade"
         # "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar" # Start Eww daemon and open the bar
         "${pkgs.wl-clip-persist}/bin/wl-clip-persist --clipboard regular" # Keep clipboard contents after source apps exit
         "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store" # Clipboard history daemon (text + images)
@@ -312,8 +315,9 @@ in {
         "$mod SHIFT, E, exec, ${file_menu}"
         "$mod SHIFT, W, exec, ${window_menu}"
         "$mod, Return, exec, ${terminal}"
-        "$mod, Space, exec, ${pkgs.walker}/bin/walker"
-        "$mod CTRL, E, exec, ${pkgs.walker}/bin/walker -m symbols"
+        "$mod, Space, exec, ${full_menu}"
+        "$mod ALT, Space, exec, ${omarchyMenu}"
+        "$mod CTRL, E, exec, /etc/profiles/per-user/eldios/bin/omarchy-launch-walker -m symbols"
         "$mod SHIFT, M, exec, ${mail}"
 
         # System controls
@@ -383,8 +387,8 @@ in {
         # Center floating window on screen
         "$mod, c, centerwindow"
 
-        # Clipboard history (rofi picker, supports text + images)
-        "$mod, v, exec, ${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi}/bin/rofi -dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy"
+        # Clipboard history
+        "$mod, v, exec, /etc/profiles/per-user/eldios/bin/omarchy-launch-walker -m clipboard"
 
         # Window grouping (tabbed windows like i3)
         "$mod, g, togglegroup" # Create/dissolve a group from active window
@@ -452,6 +456,11 @@ in {
       ];
 
       windowrule = [
+        # Omarchy presentation terminal (interactive installs/updates).
+        "float, class:^(org\.omarchy\.terminal)$"
+        "size 1120 720, class:^(org\.omarchy\.terminal)$"
+        "center, class:^(org\.omarchy\.terminal)$"
+
         "float, class:^(lxqt-openssh-askpass)$"
         "size 400 150, class:^(lxqt-openssh-askpass)$"
         "center, class:^(lxqt-openssh-askpass)$"

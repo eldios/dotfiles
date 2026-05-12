@@ -1,74 +1,16 @@
-{ config, lib, pkgs, ... }:
-
-let
-  # Access Stylix colors
-  colors = config.lib.stylix.colors;
-in
 {
-  services.mako = {
-    enable = true;
+  config,
+  pkgs,
+  ...
+}: {
+  home.packages = [pkgs.mako];
 
-    # Main settings
-    settings = {
-      # Appearance
-      font = lib.mkForce "${config.stylix.fonts.sansSerif.name} 11";
-      width = 400;
-      height = 150;
-      margin = "10,20";
-      padding = "15";
-      border-size = 2;
-      border-radius = 8;
-      icon-path = "${pkgs.papirus-icon-theme}/share/icons/Papirus-Dark";
-      max-icon-size = 48;
+  services.mako.enable = false;
 
-      # Colors with Stylix integration
-      background-color = lib.mkForce "#${colors.base00}DD"; # Base background with transparency
-      text-color = lib.mkForce "#${colors.base05}FF"; # Base text color
-      border-color = lib.mkForce "#${colors.base0D}FF"; # Accent color for border
-      progress-color = lib.mkForce "over #${colors.base0B}FF"; # Progress bar color
-
-      # Position and behavior
-      layer = "overlay"; # Show on top of fullscreen windows
-      anchor = "top-right"; # Position in the top-right corner
-      default-timeout = 7000; # Force timeout in milliseconds
-      ignore-timeout = false; # Respect notification's requested timeout
-      max-visible = 5; # Maximum number of visible notifications
-      sort = "-time"; # Sort by time, newest first
-
-      # Format
-      markup = true; # Enable Pango markup
-      actions = true; # Enable actions
-
-      # Grouping
-      #group-by = [ "app-name" "category" ]; # Group notifications by app and category
-
-      # Interaction
-      on-button-left = "invoke-default-action";
-      on-button-middle = "dismiss-all";
-      on-button-right = "dismiss";
-      on-touch = "dismiss";
-
-      # Critical notifications - red border, longer timeout
-      "urgency=critical" = {
-        border-color = lib.mkForce "#${colors.base08}FF";
-        default-timeout = lib.mkForce 10000;
-      };
-
-      # Low urgency - more subtle
-      "urgency=low" = {
-        border-color = lib.mkForce "#${colors.base03}FF";
-        default-timeout = lib.mkForce 5000;
-      };
-
-      # Notifications with images - more space
-      "actionable" = {
-        border-color = lib.mkForce "#${colors.base0E}FF";
-      };
-
-      # Media player notifications
-      "category=mpris" = {
-        default-timeout = lib.mkForce 3000;
-      };
-    };
-  };
+  # Upstream omarchy pattern: only include the current theme's mako.ini, which
+  # itself includes core.ini via template-generated content. Themes can opt out
+  # of inheriting core (matches upstream behavior bit-for-bit).
+  xdg.configFile."mako/config".text = ''
+    include=${config.home.homeDirectory}/.config/omarchy/current/theme/mako.ini
+  '';
 }
