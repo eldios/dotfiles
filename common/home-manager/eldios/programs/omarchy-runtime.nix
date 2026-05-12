@@ -41,6 +41,15 @@
     # If still missing (no current theme yet), drop an empty file to silence
     # Hyprland's source= globbing notification at startup.
     [ -f "$HOME/.config/hypr/omarchy-theme.conf" ] || : > "$HOME/.config/hypr/omarchy-theme.conf"
+
+    # Ensure terminal configs always exist under current/theme/ — themes that
+    # ship neither colors.toml nor terminal files would otherwise leave them
+    # missing, breaking our terminal HM modules that include them unconditionally.
+    if [ -d "$HOME/.config/omarchy/current/theme" ]; then
+      for f in ghostty.conf alacritty.toml kitty.conf; do
+        [ -f "$HOME/.config/omarchy/current/theme/$f" ] || : > "$HOME/.config/omarchy/current/theme/$f"
+      done
+    fi
   '';
 in {
   home.file = {
