@@ -214,6 +214,25 @@ let
     "omarchy-launch-windows" = pkgs.writeShellScript "omarchy-launch-windows" ''
       exec omarchy-launch-walker -m windows "$@"
     '';
+
+    # Toggle no_dim + no_blur on the active Hyprland window. setprop has no
+    # native toggle for these props, so we keep state per-window-address in
+    # XDG_RUNTIME_DIR and flip set/unset on each invocation.
+    "omarchy-window-undim-blur-toggle" = pkgs.writeShellScript "omarchy-window-undim-blur-toggle" ''
+      set -euo pipefail
+      addr="$(${pkgs.hyprland}/bin/hyprctl activewindow -j | ${pkgs.jq}/bin/jq -r '.address')"
+      [[ -n "$addr" && "$addr" != "null" ]] || exit 0
+      state_dir="''${XDG_RUNTIME_DIR:-/tmp}/omarchy-undim-blur"
+      ${pkgs.coreutils}/bin/mkdir -p "$state_dir"
+      flag="$state_dir/''${addr#0x}"
+      if [[ -f "$flag" ]]; then
+        ${pkgs.hyprland}/bin/hyprctl --batch "dispatch setprop $addr no_dim unset; dispatch setprop $addr no_blur unset" >/dev/null
+        ${pkgs.coreutils}/bin/rm -f "$flag"
+      else
+        ${pkgs.hyprland}/bin/hyprctl --batch "dispatch setprop $addr no_dim 1; dispatch setprop $addr no_blur 1" >/dev/null
+        : > "$flag"
+      fi
+    '';
   };
 
   # Arch-specific commands the upstream scripts/menu may invoke. Shimmed to
@@ -294,6 +313,15 @@ in
     # from omarchy-menu without touching the upstream script.
     ".config/omarchy/extensions/menu.sh".source =
       ../../../omarchy/extensions/menu.sh;
+
+    # Theme-set hooks: run after every `omarchy-theme-set`. Used to fill in
+    # config gaps (e.g. themes that ship neither colors.toml nor terminal
+    # configs leave current/theme/ghostty.conf missing, which our terminal
+    # modules include unconditionally).
+    ".config/omarchy/hooks/theme-set.d/00-ensure-terminal-configs.sh" = {
+      source = ../../../omarchy/hooks/theme-set.d/00-ensure-terminal-configs.sh;
+      executable = true;
+    };
   };
 
   home.sessionVariables = {

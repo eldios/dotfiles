@@ -393,9 +393,9 @@ in {
         "$mod, F, fullscreen"
         "$mod SHIFT, Space, togglefloating"
 
-        # Toggle nodim + noblur on the active window. Persists for window lifetime.
-        # Run once: dim/blur disabled. Run again: restored. Useful for video/PiP.
-        "$mod ALT, B, exec, hyprctl --batch \"setprop active nodim toggle; setprop active noblur toggle\""
+        # Toggle no_dim + no_blur on the active window (persists for window
+        # lifetime). State tracked per-window-address in XDG_RUNTIME_DIR.
+        "$mod ALT, B, exec, omarchy-window-undim-blur-toggle"
 
         # Dwindle layout controls
         "$mod, p, pseudo" # Toggle pseudo-tiling (fixed size windows)
