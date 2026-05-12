@@ -114,6 +114,98 @@ in {
     systemd.enable = true;
     extraConfig = ''
       source = ${config.home.homeDirectory}/.config/hypr/omarchy-theme.conf
+
+      # Window rules in block syntax (Hyprland 0.54.3+ removed the legacy
+      # `windowrule = float, class:...` form). Each block requires a unique
+      # `name` as the first directive and one property per line.
+
+      # Omarchy presentation terminal (interactive installs/updates).
+      windowrule {
+        name = float-omarchy-terminal
+        match:class = ^(org\.omarchy\.terminal)$
+        float = yes
+        size = 1120 720
+        center = 1
+      }
+
+      windowrule {
+        name = float-ssh-askpass
+        match:class = ^(lxqt-openssh-askpass|ssh-askpass)$
+        float = yes
+        size = 400 150
+        center = 1
+      }
+
+      windowrule {
+        name = float-openssh-title
+        match:title = ^(OpenSSH)(.*)$
+        float = yes
+        size = 400 150
+        center = 1
+      }
+
+      windowrule {
+        name = float-pavucontrol
+        match:title = ^(pavucontrol)$
+        float = yes
+      }
+      windowrule {
+        name = float-nm-connection-editor
+        match:title = ^(nm-connection-editor)$
+        float = yes
+      }
+      windowrule {
+        name = float-gnome-calculator
+        match:title = ^(org\.gnome\.Calculator)$
+        float = yes
+      }
+      windowrule {
+        name = float-gnome-nautilus
+        match:title = ^(org\.gnome\.Nautilus)$
+        float = yes
+      }
+      windowrule {
+        name = float-gnome-settings
+        match:title = ^(org\.gnome\.Settings)$
+        float = yes
+      }
+      windowrule {
+        name = float-pip
+        match:title = ^(Picture-in-Picture)$
+        float = yes
+        pin = yes
+      }
+      windowrule {
+        name = float-screenkey
+        match:class = ^(screenkey)$
+        float = yes
+        border_size = 0
+      }
+      windowrule {
+        name = float-blueman
+        match:class = ^(blueman-manager)$
+        float = yes
+      }
+      windowrule {
+        name = float-thunar
+        match:class = ^(thunar)$
+        float = yes
+      }
+      windowrule {
+        name = float-pcmanfm
+        match:class = ^(pcmanfm)$
+        float = yes
+      }
+      windowrule {
+        name = float-file-roller
+        match:class = ^(org\.gnome\.FileRoller)$
+        float = yes
+      }
+      windowrule {
+        name = float-portal-gtk
+        match:class = ^(xdg-desktop-portal-gtk)$
+        float = yes
+      }
     '';
 
     settings = {
@@ -461,36 +553,10 @@ in {
         "$mod SHIFT ALT, j, resizeactive, 0 100"
       ];
 
-      windowrule = [
-        # Omarchy presentation terminal (interactive installs/updates).
-        "float, class:^(org\.omarchy\.terminal)$"
-        "size 1120 720, class:^(org\.omarchy\.terminal)$"
-        "center, class:^(org\.omarchy\.terminal)$"
-
-        "float, class:^(lxqt-openssh-askpass)$"
-        "size 400 150, class:^(lxqt-openssh-askpass)$"
-        "center, class:^(lxqt-openssh-askpass)$"
-        "float, class:^(ssh-askpass)$"
-        "size 400 150, class:^(ssh-askpass)$"
-        "center, class:^(ssh-askpass)$"
-        "float, title:^(OpenSSH)(.*)$"
-        "size 400 150, title:^(OpenSSH)(.*)$"
-        "center, title:^(OpenSSH)(.*)$"
-        "float, title:^(pavucontrol)$"
-        "float, title:^(nm-connection-editor)$"
-        "float, title:^(org.gnome.Calculator)$"
-        "float, title:^(org.gnome.Nautilus)$"
-        "float, title:^(org.gnome.Settings)$"
-        "float, title:^(Picture-in-Picture)$"
-        "pin, title:^(Picture-in-Picture)$"
-        "float, class:^(screenkey)$"
-        "noborder, class:^(screenkey)$"
-        "float, class:^(blueman-manager)$"
-        "float, class:^(thunar)$"
-        "float, class:^(pcmanfm)$"
-        "float, class:^(org.gnome.FileRoller)$"
-        "float, class:^(xdg-desktop-portal-gtk)$"
-      ];
+      # windowrule rules are emitted via extraConfig below (block syntax).
+      # Hyprland 0.54.3 dropped the legacy `windowrule = float, class:...`
+      # single-line form that the HM module renders by default.
+      windowrule = [ ];
 
       # layerrule = [ ];  # Hyprland 0.54.3 dropped legacy `noanim` keyword;
       # re-add when status bar layer animations need taming.
