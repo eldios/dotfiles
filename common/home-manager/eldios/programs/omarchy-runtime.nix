@@ -19,8 +19,9 @@
 
     user_themes="$HOME/.config/omarchy/themes"
 
-    # Bootstrap a theme on first run; hyprland.conf sources current/theme/hyprland.conf
-    # directly, so theme-set + hyprctl reload propagates border colors atomically.
+    # Bootstrap a theme on first run; hyprland.conf sources a stable
+    # omarchy-theme.conf that the omarchy-restart-hyprctl override atomically
+    # refreshes from current/theme/hyprland.conf on every theme switch.
     if [ ! -f "$HOME/.config/omarchy/current/theme.name" ] || [ ! -d "$HOME/.config/omarchy/current/theme" ]; then
       if [ -d "$user_themes/${defaultTheme}" ]; then
         OMARCHY_THEME_SKIP_BACKGROUND=1 omarchy-theme-set "${defaultTheme}" || true
@@ -30,6 +31,16 @@
       current_theme="$(cat "$HOME/.config/omarchy/current/theme.name" 2>/dev/null || true)"
       [ -n "$current_theme" ] && OMARCHY_THEME_SKIP_BACKGROUND=1 omarchy-theme-set "$current_theme" || true
     fi
+
+    # Seed omarchy-theme.conf so hyprland.conf's `source =` line always resolves,
+    # even before the first omarchy-theme-set runs.
+    if [ -f "$HOME/.config/omarchy/current/theme/hyprland.conf" ] \
+      && [ ! -f "$HOME/.config/hypr/omarchy-theme.conf" ]; then
+      install -m 0644 "$HOME/.config/omarchy/current/theme/hyprland.conf" "$HOME/.config/hypr/omarchy-theme.conf" || true
+    fi
+    # If still missing (no current theme yet), drop an empty file to silence
+    # Hyprland's source= globbing notification at startup.
+    [ -f "$HOME/.config/hypr/omarchy-theme.conf" ] || : > "$HOME/.config/hypr/omarchy-theme.conf"
   '';
 in {
   home.file = {
