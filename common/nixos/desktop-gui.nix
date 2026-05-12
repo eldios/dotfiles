@@ -41,8 +41,8 @@
     extraPortals = [
       pkgs.xdg-desktop-portal
       pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-hyprland
       pkgs.xdg-desktop-portal-luminous
+      # xdg-desktop-portal-hyprland provided by programs.hyprland.portalPackage
       # xdg-desktop-portal-wlr added automatically by wlr.enable = true above
     ];
   };

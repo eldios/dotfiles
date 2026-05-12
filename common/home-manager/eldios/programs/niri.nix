@@ -1,13 +1,14 @@
-{ pkgs, config, ... }:
+{ pkgs, config, inputs, ... }:
 
 let
+  walkerPkg = inputs.walker.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
   terminal = "${pkgs.ghostty}/bin/ghostty";
 
-  fuzzel_menu = "${pkgs.fuzzel}/bin/fuzzel";
-  quick_menu = "${pkgs.walker}/bin/walker -m runner";
-  full_menu = "${pkgs.walker}/bin/walker";
-  file_menu = "${pkgs.walker}/bin/walker -m finder";
-  window_menu = "${pkgs.walker}/bin/walker -m windows";
+  quick_menu = "${walkerPkg}/bin/walker -m runner";
+  full_menu = "${walkerPkg}/bin/walker";
+  file_menu = "${walkerPkg}/bin/walker -m finder";
+  window_menu = "${walkerPkg}/bin/walker -m windows";
 
   lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5";
   powermenu = "${pkgs.wlogout}/bin/wlogout";
@@ -39,7 +40,6 @@ in
     dracula-theme
     eww
     fuseiso
-    fuzzel
     gammastep
     geoclue2
     ghostty
@@ -439,6 +439,14 @@ in
           default-window-height { fixed 150; }
       }
 
+      // Omarchy presentation terminal (interactive installs/updates).
+      window-rule {
+          match app-id=r#"^org\.omarchy\.terminal$"#
+          open-floating true
+          default-column-width { fixed 1120; }
+          default-window-height { fixed 720; }
+      }
+
       // Example: enable rounded corners for all windows.
       // (This example rule is commented out with a "/-" in front.)
       window-rule {
@@ -478,7 +486,6 @@ in
           Mod+Shift+D hotkey-overlay-title="Open Rofi menu" { spawn "${quick_menu}"; }
           Mod+Shift+E hotkey-overlay-title="Open Rofi menu" { spawn "${file_menu}"; }
           Mod+Shift+W hotkey-overlay-title="Open Window menu" { spawn "${window_menu}"; }
-          Mod+Ctrl+D  hotkey-overlay-title="Open Fuzzel menu" { spawn "${fuzzel_menu}"; }
 
           Mod+Ctrl+Q        hotkey-overlay-title="Lock screen" { spawn "${lockscreen}"; }
           Mod+Ctrl+Shift+Q  hotkey-overlay-title="Logout" { spawn "${powermenu}"; }

@@ -50,6 +50,17 @@
 
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
 
+    # Omarchy launcher stack (Walker GTK frontend + Elephant provider daemon)
+    walker.url = "github:abenz1267/walker/v2.16.2";
+    elephant.url = "github:abenz1267/elephant";
+
+    # Upstream omarchy repo — source of vendored scripts/themes/configs.
+    # We pull bin/, default/, config/ as-is and override only Nix-specific bits.
+    omarchy = {
+      url = "github:basecamp/omarchy";
+      flake = false;
+    };
+
     # AI tool overlays (auto-updated by maintainers)
     claude-code-overlay.url = "github:ryoppippi/claude-code-overlay";
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";

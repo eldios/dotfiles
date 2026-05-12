@@ -1,19 +1,16 @@
 # common/home-manager/eldios/style/stylix.nix
-{ lib, pkgs, ... }:
-
-let
-  # Assuming this stylix.nix is in common/home-manager/eldios/style/
-  # and themes are in common/themes/
-  themesBaseDir = ../../../themes; # Relative path to the 'themes' directory
-in
 {
+  lib,
+  pkgs,
+  ...
+}: {
   stylix = {
     enable = true;
     autoEnable = true;
     # Disable overlays to avoid warning with home-manager.useGlobalPkgs
     overlays.enable = false;
 
-    image = "${themesBaseDir}/wp.png";
+    image = ../../../themes/wp.png;
     polarity = "dark";
 
     # Add base16 scheme if theme file doesn't exist
@@ -24,17 +21,17 @@ in
       alacritty.enable = true;
       ghostty.enable = true;
       gtk.enable = true;
-      hyprland.enable = true;
+      hyprland.enable = lib.mkForce false;
       hyprpaper.enable = lib.mkForce false; # let variety + swww manage wallpapers
       kitty.enable = true;
       rofi.enable = true;
       sway.enable = true;
-      waybar.enable = true;
+      waybar.enable = lib.mkForce false;
       wezterm.enable = true;
 
       firefox = {
         enable = true;
-        profileNames = [ "eldios" ];
+        profileNames = ["eldios"];
       };
     };
   };

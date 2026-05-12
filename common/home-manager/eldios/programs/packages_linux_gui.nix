@@ -49,7 +49,6 @@
         resources # system resource monitor GUI
         ticktick # TickTick ToDo desktop app
         unclutter # auto-hide mouse cursor when idle
-        walker # Wayland application launcher (GTK4, multi-purpose)
         xclip # X11 clipboard tool
         xdotool # X11 window automation tool
 
