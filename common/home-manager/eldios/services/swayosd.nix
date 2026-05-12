@@ -11,6 +11,8 @@
       Description = "swayosd OSD daemon";
       After = [ "graphical-session.target" ];
       PartOf = [ "graphical-session.target" ];
+      # Wayland-only client; skip in i3/X11 sessions.
+      ConditionEnvironment = "XDG_SESSION_TYPE=wayland";
     };
     Service = {
       Type = "simple";

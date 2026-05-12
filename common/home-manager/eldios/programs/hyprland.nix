@@ -393,6 +393,10 @@ in {
         "$mod, F, fullscreen"
         "$mod SHIFT, Space, togglefloating"
 
+        # Toggle nodim + noblur on the active window. Persists for window lifetime.
+        # Run once: dim/blur disabled. Run again: restored. Useful for video/PiP.
+        "$mod ALT, B, exec, hyprctl --batch \"setprop active nodim toggle; setprop active noblur toggle\""
+
         # Dwindle layout controls
         "$mod, p, pseudo" # Toggle pseudo-tiling (fixed size windows)
         "$mod SHIFT, t, pin" # Pin floating window: stays visible across all workspaces (great for PiP/notes)
