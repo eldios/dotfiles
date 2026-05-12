@@ -1,15 +1,19 @@
+{ config, ... }:
 {
-
   programs = {
 
     alacritty = {
       enable = true;
 
       settings = {
-        # INFO: Alacritty colors are managed by Stylix.
-        # No hardcoded 'colors' block was present here. If one were added, it should be commented out.
-
-        general.live_config_reload = true;
+        # Colors imported from the current omarchy theme. Updated atomically
+        # by `omarchy-theme-set` on every switch; alacritty live-reloads.
+        general = {
+          live_config_reload = true;
+          import = [
+            "${config.home.homeDirectory}/.config/omarchy/current/theme/alacritty.toml"
+          ];
+        };
 
         window = {
           padding.x = 0;
