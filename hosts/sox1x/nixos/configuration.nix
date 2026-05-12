@@ -49,6 +49,7 @@
     ../../../common/nixos/programs/neovim.nix
     ../../../common/nixos/programs/hyprland.nix
     ../../../common/nixos/programs/niri.nix
+    ../../../common/nixos/programs/walker.nix
 
     ../../../common/nixos/virtualisation.nix
 
