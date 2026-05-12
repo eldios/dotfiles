@@ -6,6 +6,8 @@
 
     ./style/stylix.nix
 
+    ./services/swayosd.nix
+
     ./programs/nushell.nix
     ./programs/keychain.nix
 

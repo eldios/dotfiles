@@ -97,7 +97,9 @@ in {
       wshowkeys
       wtype
       xdg-desktop-portal
-      xdg-desktop-portal-hyprland
+      # xdg-desktop-portal-hyprland provided system-wide via
+      # programs.hyprland.portalPackage (nixpkgs-unstable); adding it here
+      # would pull a second copy and conflict on hyprland-share-picker.
       xdg-utils
       ydotool
     ];
@@ -105,7 +107,9 @@ in {
 
   wayland.windowManager.hyprland = {
     enable = true;
-    package = pkgs.hyprland;
+    # Match common/nixos/programs/hyprland.nix (nixpkgs-unstable, ~v0.54.3+)
+    # so HM-injected config targets the same Hyprland version the session runs.
+    package = pkgs.unstable.hyprland;
     xwayland.enable = true;
     systemd.enable = true;
     extraConfig = ''
@@ -435,11 +439,13 @@ in {
       # Add resize bindings with keyboard
       binde = [
         # Volume and media controls
-        ", XF86AudioRaiseVolume, exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86AudioMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl set +5%"
-        ", XF86MonBrightnessDown, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 5%-"
+        # swayosd-client wraps the underlying tool and pops an on-screen overlay.
+        ", XF86AudioRaiseVolume, exec, ${pkgs.swayosd}/bin/swayosd-client --output-volume raise"
+        ", XF86AudioLowerVolume, exec, ${pkgs.swayosd}/bin/swayosd-client --output-volume lower"
+        ", XF86AudioMute,        exec, ${pkgs.swayosd}/bin/swayosd-client --output-volume mute-toggle"
+        ", XF86AudioMicMute,     exec, ${pkgs.swayosd}/bin/swayosd-client --input-volume mute-toggle"
+        ", XF86MonBrightnessUp,   exec, ${pkgs.swayosd}/bin/swayosd-client --brightness raise"
+        ", XF86MonBrightnessDown, exec, ${pkgs.swayosd}/bin/swayosd-client --brightness lower"
         ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
         ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
         ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"

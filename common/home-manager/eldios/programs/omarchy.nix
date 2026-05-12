@@ -161,6 +161,17 @@ let
       ${pkgs.hyprland}/bin/hyprctl reload >/dev/null 2>&1 || true
     '';
 
+    # No-op if swayosd-server unit doesn't exist (we don't ship swayosd).
+    # Upstream's script unconditionally enables the unit and prints errors.
+    "omarchy-restart-swayosd" = pkgs.writeShellScript "omarchy-restart-swayosd" ''
+      ${pkgs.systemd}/bin/systemctl --user list-unit-files swayosd-server.service >/dev/null 2>&1 || exit 0
+      ${pkgs.systemd}/bin/systemctl --user daemon-reload
+      ${pkgs.systemd}/bin/systemctl --user stop swayosd-server.service 2>/dev/null || true
+      ${pkgs.procps}/bin/pkill -f swayosd-server 2>/dev/null || true
+      ${pkgs.systemd}/bin/systemctl --user reset-failed swayosd-server.service 2>/dev/null || true
+      ${pkgs.systemd}/bin/systemctl --user enable --now swayosd-server.service 2>/dev/null || true
+    '';
+
     "omarchy-restart-waybar" = pkgs.writeShellScript "omarchy-restart-waybar" ''
       # Match "/bin/waybar" (the binary path), not just "waybar" (would match
       # our own script `omarchy-restart-waybar` and kill self mid-execution).
