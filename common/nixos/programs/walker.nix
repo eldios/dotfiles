@@ -56,6 +56,9 @@ in
     wantedBy = [ "graphical-session.target" ];
     after = [ "graphical-session.target" ];
     partOf = [ "graphical-session.target" ];
+    # Only on Wayland sessions (walker/elephant are wlr-layer-shell clients
+    # that crash-loop on X11). i3 fallback session stays clean.
+    unitConfig.ConditionEnvironment = "XDG_SESSION_TYPE=wayland";
     serviceConfig = {
       Type = "simple";
       ExecStart = "${elephantCombined}/bin/elephant";
@@ -75,6 +78,7 @@ in
     wantedBy = [ "graphical-session.target" ];
     after = [ "graphical-session.target" "elephant.service" ];
     partOf = [ "graphical-session.target" ];
+    unitConfig.ConditionEnvironment = "XDG_SESSION_TYPE=wayland";
     serviceConfig = {
       Type = "simple";
       ExecStart = "${walkerPkg}/bin/walker --gapplication-service";
