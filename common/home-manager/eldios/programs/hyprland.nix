@@ -109,7 +109,7 @@ in {
     xwayland.enable = true;
     systemd.enable = true;
     extraConfig = ''
-      source = ${config.home.homeDirectory}/.config/omarchy/current/theme/hyprland.conf
+      source = ${config.home.homeDirectory}/.config/hypr/omarchy-theme.conf
     '';
 
     settings = {
