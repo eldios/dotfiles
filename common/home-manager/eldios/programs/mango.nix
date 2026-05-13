@@ -12,7 +12,7 @@ let
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
   # Screen locker
-  lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5";
+  lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock";
   # Mail client
   mail = "mailspring --password-store='gnome-libsecret'";
 

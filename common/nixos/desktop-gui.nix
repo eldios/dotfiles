@@ -66,6 +66,7 @@
 
   # Security - PAM services for screen lockers
   security.pam.services.swaylock = { };
+  security.pam.services.hyprlock = { };
 
   # Wayland env vars are set per-compositor (hyprland.nix, wayfire.nix, etc.)
   # Don't set them globally - breaks X11 sessions like i3
