@@ -7,7 +7,7 @@ let
   file_menu = "rofi-filebrowser";
   window_menu = "rofi-window";
 
-  lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5";
+  lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock";
 
   swaymsg_dpms_off = ''${pkgs.swayfx}/bin/swaymsg "output * dpms off"'';
   swaymsg_dpms_on = ''${pkgs.swayfx}/bin/swaymsg "output * dpms on"'';

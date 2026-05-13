@@ -30,8 +30,6 @@
 
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
-  # Screen locker command using swaylock-effects with a blur effect
-  lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5";
   # Command to launch Mailspring email client
   mail = "mailspring --password-store=\"gnome-libsecret\"";
   # Screenshots using grimblast (Hyprland-native, grim+slurp wrapper)
@@ -75,7 +73,6 @@ in {
       shotman
       slurp
       swaybg
-      swaylock-effects
       swayr
       swayrbar
       swww
@@ -209,6 +206,10 @@ in {
     '';
 
     settings = {
+      # Suppress the on-screen red error overlay for non-fatal config errors
+      # (e.g. missing `source` targets like omarchy themes without hyprlock.conf).
+      debug.suppress_errors = true;
+
       # Commands to execute once on Hyprland startup
       exec-once = [
         "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP GDK_BACKEND NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT" # Enhanced DBus environment
@@ -423,7 +424,7 @@ in {
         # System controls
         "$mod CTRL SHIFT, Q, exec, ${powermenu}"
         #"$mod CTRL SHIFT, Q, exit"
-        "$mod CTRL, Q, exec, ${lockscreen}"
+        # Lock binding ($mod CTRL, Q) lives in ./hyprlock.nix (opt-in).
         "$mod, Escape, exec, ${powermenu}"
 
         # Eww bar toggle

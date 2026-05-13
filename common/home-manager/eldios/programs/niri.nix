@@ -10,7 +10,7 @@ let
   file_menu = "${walkerPkg}/bin/walker -m finder";
   window_menu = "${walkerPkg}/bin/walker -m windows";
 
-  lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5";
+  lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock";
   powermenu = "${pkgs.wlogout}/bin/wlogout";
   mail = "mailspring --password-store='gnome-libsecret'";
 

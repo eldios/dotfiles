@@ -19,8 +19,8 @@ let
 
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
-  # Screen locker command using swaylock-effects with a blur effect
-  lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock --effect-blur 7x5";
+  # Screen locker command using swaylock-effects
+  lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock";
   # Command to launch Mailspring email client
   mail = "mailspring --password-store=\"gnome-libsecret\"";
   # Flameshot command for selecting an area to screenshot and copy to clipboard
