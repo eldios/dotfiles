@@ -130,7 +130,41 @@ let
         ANYTYPE_HEADERS = config.sops.placeholder."tokens/mcp/anytype_headers";
       };
     };
+
+    plaud = {
+      port = 3050;
+      internalPort = 8000;
+      refs = [
+        "https://support.plaud.ai/hc/en-us/articles/57751078986265-Plaud-MCP"
+        "https://docs.plaud.ai/documentation/plaud_app/mcp"
+      ];
+      dockerfile = ''
+        FROM node:22-alpine
+        RUN npm install -g supergateway
+        WORKDIR /app
+      '';
+      command = [
+        "supergateway"
+        "--stdio"
+        "npx -y @plaud-ai/mcp@latest"
+        "--port"
+        "8000"
+      ];
+      env = { };
+      envSecrets = { };
+      volumes = [
+        "\${HOME_DIR}/.plaud:/root/.plaud"
+      ];
+    };
   };
+
+  # Optional YAML comment block emitted before a service (for upstream docs links)
+  mkRefsComment =
+    cfg:
+    if cfg ? refs && cfg.refs != [ ] then
+      (builtins.concatStringsSep "\n" (map (u: "  # ${u}") cfg.refs)) + "\n"
+    else
+      "";
 
   # Helper to generate docker-compose service YAML
   mkDockerService = name: cfg: ''
@@ -190,7 +224,9 @@ let
 
     services:
     ${builtins.concatStringsSep "\n" (
-      builtins.attrValues (builtins.mapAttrs mkDockerService mcpServers)
+      builtins.attrValues (
+        builtins.mapAttrs (name: cfg: mkRefsComment cfg + mkDockerService name cfg) mcpServers
+      )
     )}
   '';
 
