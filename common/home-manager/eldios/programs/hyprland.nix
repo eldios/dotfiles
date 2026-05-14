@@ -203,6 +203,18 @@ in {
         match:class = ^(xdg-desktop-portal-gtk)$
         float = yes
       }
+
+      # Strip every decoration effect from fullscreen windows. Re-evaluates on
+      # every fullscreen state change.
+      windowrule {
+        name = fullscreen-no-effects
+        match:fullscreen = 1
+        no_blur = 1
+        no_dim = 1
+        no_shadow = 1
+        rounding = 0
+        opaque = 1
+      }
     '';
 
     settings = {
