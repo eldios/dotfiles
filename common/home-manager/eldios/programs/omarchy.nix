@@ -215,9 +215,10 @@ let
       exec omarchy-launch-walker -m windows "$@"
     '';
 
-    # Toggle no_dim + no_blur on the active Hyprland window. setprop has no
-    # native toggle for these props, so we keep state per-window-address in
-    # XDG_RUNTIME_DIR and flip set/unset on each invocation.
+    # Toggle no_dim + no_blur on the active Hyprland window. State per-window
+    # address lives in XDG_RUNTIME_DIR — flip set/unset on each invocation.
+    # NOTE: setprop window selectors require the `address:` prefix; passing the
+    # raw `0x...` falls through to class-regex matching and silently no-ops.
     "omarchy-window-undim-blur-toggle" = pkgs.writeShellScript "omarchy-window-undim-blur-toggle" ''
       set -euo pipefail
       addr="$(${pkgs.hyprland}/bin/hyprctl activewindow -j | ${pkgs.jq}/bin/jq -r '.address')"
@@ -226,10 +227,10 @@ let
       ${pkgs.coreutils}/bin/mkdir -p "$state_dir"
       flag="$state_dir/''${addr#0x}"
       if [[ -f "$flag" ]]; then
-        ${pkgs.hyprland}/bin/hyprctl --batch "dispatch setprop $addr no_dim unset; dispatch setprop $addr no_blur unset" >/dev/null
+        ${pkgs.hyprland}/bin/hyprctl --batch "dispatch setprop address:$addr no_dim unset ; dispatch setprop address:$addr no_blur unset" >/dev/null
         ${pkgs.coreutils}/bin/rm -f "$flag"
       else
-        ${pkgs.hyprland}/bin/hyprctl --batch "dispatch setprop $addr no_dim 1; dispatch setprop $addr no_blur 1" >/dev/null
+        ${pkgs.hyprland}/bin/hyprctl --batch "dispatch setprop address:$addr no_dim 1 ; dispatch setprop address:$addr no_blur 1" >/dev/null
         : > "$flag"
       fi
     '';

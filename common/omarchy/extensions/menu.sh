@@ -3,6 +3,73 @@
 # - Drops Arch-only entries (Install / Remove / Update) from the main menu
 # - Replaces upstream's bare theme switcher with a richer Theme submenu that
 #   keeps Install/Update/Remove of THEMES (not packages, those are Nix-managed)
+# - Overrides theme Install so cloned repos are NOT auto-activated; the user
+#   must vet the cloned code before invoking Choose to apply it.
+
+# Clone a theme repo into ~/.config/omarchy/themes/<name> WITHOUT activating it.
+# Upstream omarchy-theme-install ends with `omarchy-theme-set`, which is the
+# threat: a third-party repo gets executed (mako on-button-left, waybar custom
+# modules, hyprland exec, ...) before the user has a chance to read the code.
+omarchy_theme_install_safe() {
+  local THEMES_DIR="$HOME/.config/omarchy/themes"
+  local REPO_URL REPO_PATH THEME_NAME THEME_PATH
+
+  if [[ -z ${1:-} ]]; then
+    REPO_URL=$(gum input --placeholder="Git repo URL (https or git@host:org/repo.git)" --header="Theme repo URL")
+  else
+    REPO_URL="$1"
+  fi
+  [[ -z $REPO_URL ]] && { echo "No URL provided." >&2; return 1; }
+
+  REPO_PATH="$REPO_URL"
+  [[ $REPO_PATH != *"://"* && $REPO_PATH == *:*/* ]] && REPO_PATH="${REPO_PATH#*:}"
+  THEME_NAME=$(basename "$REPO_PATH" .git | sed -E 's/^omarchy-//; s/-theme$//' | tr '[:upper:]' '[:lower:]')
+  THEME_PATH="$THEMES_DIR/$THEME_NAME"
+
+  if [[ -d $THEME_PATH ]]; then
+    echo "Theme directory already exists: $THEME_PATH" >&2
+    echo "Remove it first via the 'Remove Theme' menu, then retry." >&2
+    return 1
+  fi
+
+  mkdir -p "$THEMES_DIR"
+  if ! git clone "$REPO_URL" "$THEME_PATH"; then
+    echo "git clone failed." >&2
+    return 1
+  fi
+
+  echo
+  printf '\e[1;33m=== Cloned but NOT activated ===\e[0m\n'
+  printf '  Path:   %s\n' "$THEME_PATH"
+  printf '  Remote: %s\n' "$REPO_URL"
+  echo
+
+  # Surface anything that could execute on theme apply, to make the manual
+  # review easier. This is a heuristic preview, not a security guarantee.
+  printf '\e[1;36mActive-content surface to review:\e[0m\n'
+  (
+    cd "$THEME_PATH" || exit 0
+    find . -path ./.git -prune -o -type f \
+      \( -name '*.sh' -o -name '*.bash' -o -name '*.zsh' -o -name '*.fish' \
+         -o -name '*.py' -o -name '*.lua' \) -print 2>/dev/null \
+      | sed 's|^\./|  script: |'
+    grep -lE '^[^#]*\bexec(-once)?\b' hyprland.conf hyprlock.conf 2>/dev/null \
+      | sed 's|^|  hypr-exec: |'
+    grep -lE '^[^#]*\bon-(button|notified|action)\b.*=' mako.ini 2>/dev/null \
+      | sed 's|^|  mako-exec: |'
+    grep -rlE '@import\s+url\(\s*["'\'']?https?://' \
+         --include='*.css' . 2>/dev/null \
+      | sed 's|^\./|  external-css: |'
+  ) | sort -u
+
+  echo
+  printf '\e[1;32mNext steps:\e[0m\n'
+  printf '  1. Review the code: \e[1m%s\e[0m\n' "$THEME_PATH"
+  printf '  2. When satisfied, activate it via: Theme > Choose\n'
+  printf '     (or: omarchy-theme-set %s)\n' "$THEME_NAME"
+  printf '  3. To abort, remove via: Theme > Remove Theme\n'
+}
+export -f omarchy_theme_install_safe
 
 show_main_menu() {
   go_to_menu "$(menu "Go" "󰀻  Apps\n󰧑  Learn\n󱓞  Trigger\n  Style\n  Setup\n  About\n  System")"
@@ -24,7 +91,7 @@ show_theme_menu() {
       notify-send "Themes URL copied" "https://manuals.omamix.org/2/the-omarchy-manual/90/extra-themes" -t 3000
       ;;
     *Install*)
-      omarchy-launch-floating-terminal-with-presentation omarchy-theme-install
+      omarchy-launch-floating-terminal-with-presentation omarchy_theme_install_safe
       ;;
     *Update*)
       omarchy-launch-floating-terminal-with-presentation omarchy-theme-update
