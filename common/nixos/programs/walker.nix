@@ -40,6 +40,28 @@ let
         --suffix PATH : /run/current-system/sw/bin:/etc/profiles/per-user/eldios/bin:/run/wrappers/bin
     '';
   };
+
+  # elephant is Type=simple, so `After=elephant.service` only waits for the
+  # process to exec — not for its IPC socket to accept connections. Walker
+  # racing into that window tries to auto-spawn elephant; if that fails it
+  # exits with "Please install elephant.", triggering a Restart=always storm
+  # whose overlapping instances collide on the dev.benz.walker bus name.
+  # Also gate on the Wayland socket so walker never starts compositor-less
+  # (would exit "Lost connection to Wayland compositor").
+  waitForWalkerDeps = pkgs.writeShellScript "wait-for-walker-deps" ''
+    rt="''${XDG_RUNTIME_DIR}"
+    wl="$rt/''${WAYLAND_DISPLAY:-wayland-1}"
+    sock="$rt/elephant/elephant.sock"
+    i=0
+    while [ "$i" -lt 100 ]; do
+      [ -S "$wl" ] && [ -S "$sock" ] && exit 0
+      ${pkgs.coreutils}/bin/sleep 0.1
+      i=$((i + 1))
+    done
+    # Fall through after ~10s: walker can still spawn elephant itself now
+    # that the binary is on its PATH (see `path` below).
+    exit 0
+  '';
 in
 {
   environment.systemPackages = [
@@ -67,6 +89,11 @@ in
     };
     environment = {
       ELEPHANT_PROVIDER_DIR = "${elephantCombined}/lib/elephant/providers";
+      # The `runner` provider stat()s every $PATH entry; the systemd-default
+      # user PATH appends nonexistent <store>/sbin dirs, spamming "stat ...:
+      # no such file or directory". Pin a clean PATH of real launchable dirs
+      # (the elephant wrapper still prefixes its own helper tools on top).
+      PATH = "/run/current-system/sw/bin:/etc/profiles/per-user/eldios/bin:/run/wrappers/bin";
     };
   };
 
@@ -77,10 +104,15 @@ in
     description = "Walker launcher daemon (GApplication service)";
     wantedBy = [ "graphical-session.target" ];
     after = [ "graphical-session.target" "elephant.service" ];
+    wants = [ "elephant.service" ];
     partOf = [ "graphical-session.target" ];
     unitConfig.ConditionEnvironment = "XDG_SESSION_TYPE=wayland";
+    # Walker auto-spawns elephant when its socket isn't reachable; without the
+    # binary on PATH that fallback fails with "Please install elephant.".
+    path = [ elephantCombined ];
     serviceConfig = {
       Type = "simple";
+      ExecStartPre = "${waitForWalkerDeps}";
       ExecStart = "${walkerPkg}/bin/walker --gapplication-service";
       Restart = "always";
       RestartSec = 2;
