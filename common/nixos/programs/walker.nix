@@ -93,7 +93,9 @@ in
       # user PATH appends nonexistent <store>/sbin dirs, spamming "stat ...:
       # no such file or directory". Pin a clean PATH of real launchable dirs
       # (the elephant wrapper still prefixes its own helper tools on top).
-      PATH = "/run/current-system/sw/bin:/etc/profiles/per-user/eldios/bin:/run/wrappers/bin";
+      # mkForce: NixOS' systemd-user module defines environment.PATH itself
+      # at the same priority, so a plain assignment is a conflicting def.
+      PATH = lib.mkForce "/run/current-system/sw/bin:/etc/profiles/per-user/eldios/bin:/run/wrappers/bin";
     };
   };
 
