@@ -9,6 +9,7 @@
     pkgs.gws         # Google Workspace CLI (via gws-cli overlay)
     pkgs.opencode    # OpenCode (via opencode-nix flake)
     pkgs.pi-coding-agent # Pi (via local overlay from npm registry)
+    pkgs.ollama      # CPU build, used as a client (OLLAMA_HOST -> mininixos over Tailscale); no ROCm
   ];
 }
 # vim: set ts=2 sw=2 et ai list nu
