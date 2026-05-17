@@ -29,6 +29,7 @@
       pkg-config # build helper for compiled libraries
       protobuf # protocol buffer compiler
       nodePackages.sloc # source lines of code counter
+      semgrep # static analysis code tool
       shellcheck # shell script linter
       # toolboox # Tool for containerized command line environments on Linux
 
