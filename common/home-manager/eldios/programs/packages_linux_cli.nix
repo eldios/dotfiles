@@ -30,12 +30,7 @@
 
         # Virtualization
         quickemu # quick QEMU VM manager
-      ]
-      ++ (with pkgs.unstable; [
-        # AI Tools
-        llama-cpp-rocm
-        ollama-rocm
-      ]);
+      ];
   };
 } # EOF
 # vim: set ts=2 sw=2 et ai list nu
