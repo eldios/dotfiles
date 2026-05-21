@@ -133,6 +133,9 @@
         # Virtualization
         quickgui # QuickEmu GUI frontend for VMs
 
+        # VPN
+        wgnord # NordVPN NordLynx/WireGuard CLI client
+
         # Games
         ivan # Iter Vehemens ad Necem (roguelike)
         uqm # The Ur-Quan Masters (Star Control II)
@@ -191,6 +194,9 @@
         appflowy # open-source Notion alternative
         obsidian # knowledge base and note-taking
         rnote # vector drawing and handwriting app
+
+        # VPN
+        proton-vpn # ProtonVPN official GUI client
       ]);
   }; # EOM home
 }
