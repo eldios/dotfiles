@@ -134,6 +134,7 @@
         quickgui # QuickEmu GUI frontend for VMs
 
         # Games
+        ivan # Iter Vehemens ad Necem (roguelike)
         uqm # The Ur-Quan Masters (Star Control II)
       ])
       ++ (with pkgs.unstable; [
