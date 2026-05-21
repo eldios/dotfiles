@@ -136,8 +136,32 @@
         # VPN
         wgnord # NordVPN NordLynx/WireGuard CLI client
 
-        # Games
-        ivan # Iter Vehemens ad Necem (roguelike)
+        # Games — roguelikes
+        angband # classic infinite-depth roguelike
+        brogue-ce # Brogue Community Edition (minimalist roguelike)
+        cataclysm-dda # Cataclysm: Dark Days Ahead (survival roguelike)
+        crawlTiles # Dungeon Crawl Stone Soup (tiles)
+        harmonist # stealth roguelike
+        hyperrogue # roguelike on the hyperbolic plane
+        ivan # Iter Vehemens ad Necem
+        meritous # atmospheric dungeon crawler
+        nethack # the classic roguelike
+        shattered-pixel-dungeon # modern roguelike
+        tome4 # Tales of Maj'Eyal
+
+        # Games — open-ended / colony sim
+        dwarf-fortress # colony sim (free classic edition)
+        lincity_ng # city/economy sim
+        openttd # Transport Tycoon Deluxe
+        simutrans # transport simulation
+        the-powder-toy # physics sandbox
+        widelands # Settlers-like economy RTS
+
+        # Games — space / exploration
+        endless-sky # open-world space trading and combat
+        freeorion # 4X space strategy
+        naev # space trading and combat
+        pioneer # Elite-like space sim
         uqm # The Ur-Quan Masters (Star Control II)
       ])
       ++ (with pkgs.unstable; [
