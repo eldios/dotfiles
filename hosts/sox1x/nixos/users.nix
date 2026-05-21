@@ -41,6 +41,10 @@ in
 
   users.users.eldios = {
     hashedPasswordFile = config.sops.secrets."passwords/sox1x/eldios".path;
+
+    extraGroups = [
+      "networkmanager" # manage NM connections (ProtonVPN kill switch via polkit)
+    ];
   };
 }
 

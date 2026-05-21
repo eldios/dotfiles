@@ -19,6 +19,7 @@ in
     hashedPasswordFile = config.sops.secrets."passwords/lele8845ace/eldios".path;
 
     extraGroups = [
+      "networkmanager" # manage NM connections (ProtonVPN kill switch via polkit)
       "input" # needed by xRemap
       "uinput" # needed by xRemap
     ];
