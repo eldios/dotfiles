@@ -87,10 +87,18 @@ let
     mutx = {
       port = 3030;
       internalPort = 8000;
+      user = "1000:1000";
       dockerfile = ''
         FROM ghcr.io/mutx-net/mutx-link
       '';
-      command = [ "mutx-link" "serve" "--mode" "http" "--bind" "0.0.0.0:8000" ];
+      command = [
+        "mutx-link"
+        "serve"
+        "--mode"
+        "http"
+        "--bind"
+        "0.0.0.0:8000"
+      ];
       env = {
         MUTX_SOCKET_DIR = "/run/mutx";
       };
@@ -178,6 +186,7 @@ let
       )
     )}
         command: ${builtins.toJSON cfg.command}
+    ${if cfg ? user && cfg.user != "" then "    user: \"${cfg.user}\"" else ""}
     ${
       if cfg.env != { } then
         ''
@@ -202,13 +211,13 @@ let
       else
         ''
           ${
-          if cfg ? extraHosts && cfg.extraHosts != [ ] then
-            ''
-              extra_hosts:
-            ${builtins.concatStringsSep "\n" (map (h: "      - \"${h}\"") cfg.extraHosts)}''
-          else
-            ""
-        }
+            if cfg ? extraHosts && cfg.extraHosts != [ ] then
+              ''
+                  extra_hosts:
+                ${builtins.concatStringsSep "\n" (map (h: "      - \"${h}\"") cfg.extraHosts)}''
+            else
+              ""
+          }
               ports:
                 - "${toString cfg.port}:${toString cfg.internalPort}"''
     }
