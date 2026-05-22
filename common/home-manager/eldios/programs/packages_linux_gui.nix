@@ -160,7 +160,6 @@
         # Games — space / exploration
         endless-sky # open-world space trading and combat
         freeorion # 4X space strategy
-        naev # space trading and combat
         pioneer # Elite-like space sim
         uqm # The Ur-Quan Masters (Star Control II)
       ])
