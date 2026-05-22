@@ -67,9 +67,11 @@
       };
     };
 
-    # WirePlumber configuration to make sinks follow the source sample rate
-    # This allows automatic sample rate switching based on content
-    extraConfig.pipewire."51-alsa-disable-suspension" = {
+    # Device rules: keep DACs from suspending and let them follow the graph
+    # sample rate. These are WirePlumber rules and MUST go through
+    # wireplumber.extraConfig (loaded via the WirePlumber config search path).
+    # WirePlumber 0.5 does not read monitor.alsa.rules from pipewire.conf.d.
+    wireplumber.extraConfig."51-alsa-disable-suspension" = {
       "monitor.alsa.rules" = [
         {
           matches = [
