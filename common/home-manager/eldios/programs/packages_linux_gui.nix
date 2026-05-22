@@ -151,7 +151,7 @@
 
         # Games — open-ended / colony sim
         dwarf-fortress # colony sim (free classic edition)
-        lincity_ng # city/economy sim
+        lincity-ng # city/economy sim
         openttd # Transport Tycoon Deluxe
         simutrans # transport simulation
         the-powder-toy # physics sandbox
