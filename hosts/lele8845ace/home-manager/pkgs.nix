@@ -7,7 +7,7 @@
     packages = (
       with pkgs.unstable;
       [
-        #davinci-resolve-studio
+        davinci-resolve-studio
       ]
     );
   };
