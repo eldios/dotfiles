@@ -68,170 +68,174 @@
     opencode-nix.url = "github:dan-online/opencode-nix";
     llm-agents-nix.url = "github:numtide/llm-agents.nix"; # for crush (charmbracelet)
     gws-cli.url = "github:googleworkspace/cli";
+
+    # Zen Browser — community flake (per https://wiki.nixos.org/wiki/Zen_Browser)
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs =
-    {
-      claude-code-overlay,
-      codex-cli-nix,
-      darwin,
-      dgop,
-      disko,
-      gemini-cli-nix,
-      gws-cli,
-      llm-agents-nix,
-      opencode-nix,
-      home-manager,
-      mpc-hub,
-      nixos-facter-modules,
-      nixos-hardware,
-      nixpkgs,
-      nixpkgs-darwin,
-      nixpkgs-unstable,
-      sops-nix,
-      stylix,
-      xremap,
-      ...
-    }@inputs:
-    let
-      forAllSystems = nixpkgs.lib.genAttrs [
-        "aarch64-darwin"
-        "aarch64-linux"
-        "x86_64-linux"
-      ];
+  outputs = {
+    claude-code-overlay,
+    codex-cli-nix,
+    darwin,
+    dgop,
+    disko,
+    gemini-cli-nix,
+    gws-cli,
+    llm-agents-nix,
+    opencode-nix,
+    home-manager,
+    mpc-hub,
+    nixos-facter-modules,
+    nixos-hardware,
+    nixpkgs,
+    nixpkgs-darwin,
+    nixpkgs-unstable,
+    sops-nix,
+    stylix,
+    xremap,
+    zen-browser,
+    ...
+  } @ inputs: let
+    forAllSystems = nixpkgs.lib.genAttrs [
+      "aarch64-darwin"
+      "aarch64-linux"
+      "x86_64-linux"
+    ];
 
-      # commonSpecialArgs: A set of common arguments passed to all system configurations.
-      # This helps avoid repetition and ensures consistency across different hosts.
-      # It includes inputs from other flakes (like home-manager, sops-nix) and nixpkgs instances.
-      commonSpecialArgs = {
-        inherit
-          claude-code-overlay
-          codex-cli-nix
-          dgop
-          disko
-          gemini-cli-nix
-          gws-cli
-          home-manager
-          llm-agents-nix
-          opencode-nix
-          inputs
-          mpc-hub
-          nixos-facter-modules
-          nixos-hardware
-          nixpkgs
-          nixpkgs-darwin
-          nixpkgs-unstable
-          sops-nix
-          stylix
-          xremap
-          ;
-      };
-
-      # nixosConfigurations: Defines the NixOS system configurations for various hosts.
-      # Each entry (e.g., lele8845ace) represents a distinct machine and imports
-      # its specific hardware and software configuration modules.
-      # Lele's AMD 8845 AceMagic NUC
-      nixosConfigurations.lele8845ace = nixpkgs.lib.nixosSystem {
-        specialArgs = commonSpecialArgs;
-        modules = [
-          ./hosts/lele8845ace/nixos/configuration.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-        ];
-      };
-
-      # Lele's Yoga9i (Intel) — back in service alongside L13 Yoga Gen 3.
-      nixosConfigurations.lele9iyoga = nixpkgs.lib.nixosSystem {
-        specialArgs = commonSpecialArgs;
-        modules = [
-          ./hosts/lele9iyoga/nixos/configuration.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-        ];
-      };
-
-      # Lele's ThinkPad L13 Yoga Gen 3 (AMD Ryzen 7 PRO 5875U)
-      nixosConfigurations.lelel13yoga = nixpkgs.lib.nixosSystem {
-        specialArgs = commonSpecialArgs;
-        modules = [
-          ./hosts/lelel13yoga/nixos/configuration.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-        ];
-      };
-
-      # Minis NUC
-      nixosConfigurations.mininixos = nixpkgs.lib.nixosSystem {
-        specialArgs = commonSpecialArgs;
-        modules = [
-          ./hosts/mininixos/nixos/configuration.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-        ];
-      };
-
-      # intel NUC
-      nixosConfigurations.nucone = nixpkgs.lib.nixosSystem {
-        specialArgs = commonSpecialArgs;
-        modules = [
-          ./hosts/nucone/nixos/configuration.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-        ];
-      };
-
-      # MiniPC NUC
-      nixosConfigurations.kube-casa1 = nixpkgs.lib.nixosSystem {
-        specialArgs = commonSpecialArgs;
-        modules = [
-          ./hosts/kube-casa1/nixos/configuration.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-        ];
-      };
-
-      # SOX1 Xtreme Gen2
-      nixosConfigurations.sox1x = nixpkgs.lib.nixosSystem {
-        specialArgs = commonSpecialArgs;
-        modules = [
-          ./hosts/sox1x/nixos/configuration.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-        ];
-      };
-
-      # OVH Milan dev sandbox
-      nixosConfigurations.domevh = nixpkgs.lib.nixosSystem {
-        specialArgs = commonSpecialArgs;
-        modules = [
-          ./hosts/domevh/nixos/configuration.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-          nixos-facter-modules.nixosModules.facter
-          { facter.reportPath = "${inputs.secrets}/facter/domevh.json"; }
-        ];
-      };
-
-      # darwinConfigurations: Defines macOS system configurations using nix-darwin.
-      # Similar structure to nixosConfigurations, but for Apple systems.
-      # Currently empty, but structured for future macOS hosts.
-      darwinConfigurations = { };
-
-      # homeConfigurations: Defines user-specific environments using Home Manager.
-      # These can be applied on top of NixOS or darwin configurations, or even standalone.
-      # Allows managing dotfiles, user packages, and services.
-      # Currently empty, but structured for future user profiles not tied to a specific host system configuration.
-      homeConfigurations = { };
-
-    in
-    {
-      # Return all the configurations
-      nixosConfigurations = nixosConfigurations; # All defined NixOS systems
-      darwinConfigurations = darwinConfigurations; # All defined macOS systems
-      homeConfigurations = homeConfigurations; # All defined Home Manager user profiles
-
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+    # commonSpecialArgs: A set of common arguments passed to all system configurations.
+    # This helps avoid repetition and ensures consistency across different hosts.
+    # It includes inputs from other flakes (like home-manager, sops-nix) and nixpkgs instances.
+    commonSpecialArgs = {
+      inherit
+        claude-code-overlay
+        codex-cli-nix
+        dgop
+        disko
+        gemini-cli-nix
+        gws-cli
+        home-manager
+        llm-agents-nix
+        opencode-nix
+        inputs
+        mpc-hub
+        nixos-facter-modules
+        nixos-hardware
+        nixpkgs
+        nixpkgs-darwin
+        nixpkgs-unstable
+        sops-nix
+        stylix
+        xremap
+        zen-browser
+        ;
     };
-}
 
+    # nixosConfigurations: Defines the NixOS system configurations for various hosts.
+    # Each entry (e.g., lele8845ace) represents a distinct machine and imports
+    # its specific hardware and software configuration modules.
+    # Lele's AMD 8845 AceMagic NUC
+    nixosConfigurations.lele8845ace = nixpkgs.lib.nixosSystem {
+      specialArgs = commonSpecialArgs;
+      modules = [
+        ./hosts/lele8845ace/nixos/configuration.nix
+        disko.nixosModules.disko
+        sops-nix.nixosModules.sops
+      ];
+    };
+
+    # Lele's Yoga9i (Intel) — back in service alongside L13 Yoga Gen 3.
+    nixosConfigurations.lele9iyoga = nixpkgs.lib.nixosSystem {
+      specialArgs = commonSpecialArgs;
+      modules = [
+        ./hosts/lele9iyoga/nixos/configuration.nix
+        disko.nixosModules.disko
+        sops-nix.nixosModules.sops
+      ];
+    };
+
+    # Lele's ThinkPad L13 Yoga Gen 3 (AMD Ryzen 7 PRO 5875U)
+    nixosConfigurations.lelel13yoga = nixpkgs.lib.nixosSystem {
+      specialArgs = commonSpecialArgs;
+      modules = [
+        ./hosts/lelel13yoga/nixos/configuration.nix
+        disko.nixosModules.disko
+        sops-nix.nixosModules.sops
+      ];
+    };
+
+    # Minis NUC
+    nixosConfigurations.mininixos = nixpkgs.lib.nixosSystem {
+      specialArgs = commonSpecialArgs;
+      modules = [
+        ./hosts/mininixos/nixos/configuration.nix
+        disko.nixosModules.disko
+        sops-nix.nixosModules.sops
+      ];
+    };
+
+    # intel NUC
+    nixosConfigurations.nucone = nixpkgs.lib.nixosSystem {
+      specialArgs = commonSpecialArgs;
+      modules = [
+        ./hosts/nucone/nixos/configuration.nix
+        disko.nixosModules.disko
+        sops-nix.nixosModules.sops
+      ];
+    };
+
+    # MiniPC NUC
+    nixosConfigurations.kube-casa1 = nixpkgs.lib.nixosSystem {
+      specialArgs = commonSpecialArgs;
+      modules = [
+        ./hosts/kube-casa1/nixos/configuration.nix
+        disko.nixosModules.disko
+        sops-nix.nixosModules.sops
+      ];
+    };
+
+    # SOX1 Xtreme Gen2
+    nixosConfigurations.sox1x = nixpkgs.lib.nixosSystem {
+      specialArgs = commonSpecialArgs;
+      modules = [
+        ./hosts/sox1x/nixos/configuration.nix
+        disko.nixosModules.disko
+        sops-nix.nixosModules.sops
+      ];
+    };
+
+    # OVH Milan dev sandbox
+    nixosConfigurations.domevh = nixpkgs.lib.nixosSystem {
+      specialArgs = commonSpecialArgs;
+      modules = [
+        ./hosts/domevh/nixos/configuration.nix
+        disko.nixosModules.disko
+        sops-nix.nixosModules.sops
+        nixos-facter-modules.nixosModules.facter
+        {facter.reportPath = "${inputs.secrets}/facter/domevh.json";}
+      ];
+    };
+
+    # darwinConfigurations: Defines macOS system configurations using nix-darwin.
+    # Similar structure to nixosConfigurations, but for Apple systems.
+    # Currently empty, but structured for future macOS hosts.
+    darwinConfigurations = {};
+
+    # homeConfigurations: Defines user-specific environments using Home Manager.
+    # These can be applied on top of NixOS or darwin configurations, or even standalone.
+    # Allows managing dotfiles, user packages, and services.
+    # Currently empty, but structured for future user profiles not tied to a specific host system configuration.
+    homeConfigurations = {};
+  in {
+    # Return all the configurations
+    nixosConfigurations = nixosConfigurations; # All defined NixOS systems
+    darwinConfigurations = darwinConfigurations; # All defined macOS systems
+    homeConfigurations = homeConfigurations; # All defined Home Manager user profiles
+
+    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+  };
+}
 # vim: set nu li sw=2 ts=2 expandtab
+

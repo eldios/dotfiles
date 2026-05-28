@@ -10,18 +10,19 @@
   gws-cli,
   llm-agents-nix,
   opencode-nix,
+  zen-browser,
   ...
-}:
-{
+}: {
   # Apply overlays here to avoid warning with home-manager.useGlobalPkgs
   nixpkgs.overlays = [
-    (import ../../../common/nixos/overlays/unstable-packages.nix { inherit nixpkgs-unstable; })
+    (import ../../../common/nixos/overlays/unstable-packages.nix {inherit nixpkgs-unstable;})
     claude-code-overlay.overlays.default
     codex-cli-nix.overlays.default
     gemini-cli-nix.overlays.default
     opencode-nix.overlays.default
-    (import ../../../common/nixos/overlays/crush.nix { inherit llm-agents-nix; })
-    (import ../../../common/nixos/overlays/gws-cli.nix { inherit gws-cli; })
+    (import ../../../common/nixos/overlays/crush.nix {inherit llm-agents-nix;})
+    (import ../../../common/nixos/overlays/gws-cli.nix {inherit gws-cli;})
+    (import ../../../common/nixos/overlays/zen-browser.nix {inherit zen-browser;})
     (import ../../../common/nixos/overlays/gitbutler.nix)
     (import ../../../common/nixos/overlays/pi-coding-agent.nix)
   ];
@@ -83,5 +84,5 @@
     }
   ];
 }
-
 # vim: set ts=2 sw=2 et ai list nu
+
