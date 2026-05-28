@@ -1,36 +1,36 @@
 # Packages for Linux-specific command-line interface tools.
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   home = {
-    packages =
-      with pkgs;
-      [
-        # System Monitoring
-        atop # advanced system and process monitor
-        iotop # I/O usage monitor per process
-        powertop # power consumption analyzer
+    packages = with pkgs; [
+      # System Monitoring
+      atop # advanced system and process monitor
+      iotop # I/O usage monitor per process
+      powertop # power consumption analyzer
+      zenith # top/htop style monitor with zoomable charts (cpu/net/disk)
 
-        # Containers & Kubernetes
-        docker-slim # optimize and shrink Docker images
-        k3s # lightweight Kubernetes distribution
-        lazydocker # TUI for Docker management
+      # Containers & Kubernetes
+      docker-slim # optimize and shrink Docker images
+      k3s # lightweight Kubernetes distribution
+      lazydocker # TUI for Docker management
 
-        # Networking & Remote
-        impala # TUI for managing WiFi connections (iwd backend)
-        mosh # mobile shell, robust SSH alternative
-        networkmanager # network connection manager
-        sshx # collaborative terminal sharing
-        tty-share # share terminal over the web
+      # Networking & Remote
+      impala # TUI for managing WiFi connections (iwd backend)
+      mosh # mobile shell, robust SSH alternative
+      networkmanager # network connection manager
+      sshx # collaborative terminal sharing
+      tty-share # share terminal over the web
 
-        # Disk & Filesystem
-        efibootmgr # EFI boot manager - list/modify UEFI boot entries
-        ncdu # disk usage analyzer with TUI
-        ntfs3g # NTFS filesystem read/write support
-        p7zip # 7-Zip archive tool
+      # Disk & Filesystem
+      efibootmgr # EFI boot manager - list/modify UEFI boot entries
+      ncdu # disk usage analyzer with TUI
+      ntfs3g # NTFS filesystem read/write support
+      p7zip # 7-Zip archive tool
 
-        # Virtualization
-        quickemu # quick QEMU VM manager
-      ];
+      # Virtualization
+      quickemu # quick QEMU VM manager
+    ];
   };
-} # EOF
+}
+# EOF
 # vim: set ts=2 sw=2 et ai list nu
+
