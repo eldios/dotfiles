@@ -1,7 +1,8 @@
 # Packages for Linux-specific graphical user interface tools.
 # This includes applications, theming, and services like gpg-agent.
 # NOTE: kitty is installed via programs.kitty.enable in kitty.nix
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   home.sessionVariables = {
     SSH_ASKPASS = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
     SSH_ASKPASS_REQUIRE = "prefer";
@@ -70,6 +71,7 @@
         #telegram-desktop # messaging app
         zapzap # WhatsApp alt client
         zoom-us # video conferencing
+        zulip # self-hosted IM app
 
         # Media Players
         mpv # lightweight media player
@@ -185,12 +187,12 @@
         # so the embedded Chromium/CEF login webview can initialize EGL.
         (pkgs.symlinkJoin {
           name = "pcloud-glvnd";
-          paths = [pkgs.pcloud];
-          nativeBuildInputs = [pkgs.makeBinaryWrapper];
+          paths = [ pkgs.pcloud ];
+          nativeBuildInputs = [ pkgs.makeBinaryWrapper ];
           postBuild = ''
             rm $out/bin/pcloud
             makeWrapper ${pkgs.pcloud}/app/pcloud $out/bin/pcloud \
-              --prefix LD_LIBRARY_PATH : ${pkgs.lib.makeLibraryPath [pkgs.libglvnd]}:/run/opengl-driver/lib \
+              --prefix LD_LIBRARY_PATH : ${pkgs.lib.makeLibraryPath [ pkgs.libglvnd ]}:/run/opengl-driver/lib \
               --set XDG_DATA_DIRS "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}:${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
           '';
         })
@@ -222,4 +224,3 @@
   }; # EOM home
 }
 # vim: set ts=2 sw=2 et ai list nu
-
