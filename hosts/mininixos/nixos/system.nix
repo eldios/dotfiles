@@ -15,6 +15,10 @@
     data-root = "/srv/docker";
   };
 
+  # dockerd must wait for its data-root + app-data mounts before starting,
+  # else the btrfs storage driver initialises against an unmounted path.
+  systemd.services.docker.unitConfig.RequiresMountsFor = "/srv/docker /srv/containers";
+
   services.btrfs.autoScrub = {
     enable = true;
     interval = "weekly";
