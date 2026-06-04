@@ -3,7 +3,7 @@ let
   mdNum       = "3";
   mdDevice    = "md${mdNum}";
   mdName      = "${config.networking.hostName}:${mdNum}";
-  mdRaidUuid  = "60a81529:6c62153b:1eeae1a0:afa34d8e";
+  mdRaidUuid  = "ae116574:026183e0:036dab17:305da7ad";
   luksName    = "Kdata";
   luksKeyFile = "/root/data.key";
   mountPoint  = "/data";
@@ -17,7 +17,7 @@ in
 
   # Systemd service to assemble RAID post-boot
   systemd.services."mdadm-assemble-${mdDevice}" = {
-    description = "Assemble mdadm RAID array /dev/${mdDevice} (RAID6)";
+    description = "Assemble mdadm RAID array /dev/${mdDevice} (RAID5)";
     after       = [ "local-fs-pre.target" ];
     before      = [ "systemd-cryptsetup@${luksName}.service" ];
     wantedBy    = [ "multi-user.target" ];
@@ -51,6 +51,9 @@ in
       "x-systemd.requires=systemd-cryptsetup@${luksName}.service" # Wait for decryption
     ];
   };
+
+  # Scrub /data weekly
+  services.btrfs.autoScrub.fileSystems = [ "/data" ];
 }
 
 # vim: set ts=2 sw=2 et ai list nu
