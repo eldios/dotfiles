@@ -57,6 +57,7 @@
     ./gpu.nix
     ./data-storage.nix
     ./srv-storage.nix
+    ./archive-storage.nix
     ./libvirt-vms.nix
     ./borg-backup.nix
 
