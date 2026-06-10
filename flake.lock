@@ -529,11 +529,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1781115013,
-        "narHash": "sha256-3BopHqMvh26sKim6rumZBY568VrISCWtRgqDuLGR/H0=",
+        "lastModified": 1781124985,
+        "narHash": "sha256-hIaUkf6qalGk2xxNEkBMP2m2aPBq+qXvUPOIwwEDySI=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "fcbbf5484ab2c733e886ef4fa91e8da1c8c028f5",
+        "rev": "d899b01766784bcc9a141ee13bad6dc689d47c37",
         "type": "github"
       },
       "original": {
@@ -553,11 +553,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1781071048,
-        "narHash": "sha256-x+I/CbXlM6pieeCQV/43l4VYr9tORn2ap0hiHa9JiiY=",
+        "lastModified": 1781128597,
+        "narHash": "sha256-D2OjUM6Zoly9k2/2ErhqTxjdzykyaOYyi3h/r+0WPHQ=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "6f4945d637942c06390d0fd765c8981874020157",
+        "rev": "ca51e92a8a2cc8bb8bc993b9b3ad29fa11216471",
         "type": "github"
       },
       "original": {
@@ -961,10 +961,10 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1778679008,
-        "narHash": "sha256-WaDlkhjAOTrzH4lb77XFnCGTYpyyl4VTU9wNEdqwowk=",
+        "lastModified": 1781130916,
+        "narHash": "sha256-MHwsuuawGSN0kPxlHDiwvDlNsEnFm6a78QhqXvqyvMc=",
         "ref": "main",
-        "rev": "ab05742228fb589bf491b43500c7af79fe1473a7",
+        "rev": "3b831947c8a7e7c6ae5b7aa572fef74d708a3360",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/eldios/secrets.git"
