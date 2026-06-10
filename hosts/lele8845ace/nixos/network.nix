@@ -27,6 +27,13 @@
     interfaces = {
       br0 = {
         useDHCP = true;
+        # Static IP: stable address for Clevis/Tang (also reused in initrd).
+        ipv4.addresses = [
+          {
+            address = "192.168.155.40";
+            prefixLength = 21;
+          }
+        ];
       };
     };
 

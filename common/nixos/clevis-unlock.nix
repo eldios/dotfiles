@@ -8,32 +8,44 @@
 #
 # Generic: resolves the JWE by hostname and the LUKS device name from the
 # host's own initrd.luks config. Self-activates only once the JWE exists in
-# the secrets input (so it is a no-op before `nix flake update secrets`).
+# the secrets input (no-op before `nix flake update secrets`).
 #
-# Fallbacks if Tang is unreachable (blackout, off-network): the passphrase
-# (keyslot 0) and the Yubikey FIDO2 keyslots remain.
+# Networking is STATIC in initrd (eno0 reuses br0's static address). DHCP/DNS
+# proved too volatile — leases and `.lan` records drift, so the boot couldn't
+# reliably reach the peer Tang. The JWE targets are the peers' static IPs.
+#
+# Fallbacks if Tang is unreachable (blackout, off-network): the Yubikey FIDO2
+# keyslots (crypttabExtraOpts below) and the passphrase (keyslot 0) remain.
 { config, inputs, lib, ... }:
 let
   host = config.networking.hostName;
   jweFile = "${inputs.secrets}/clevis/${host}.jwe";
-  luksDevices = lib.attrNames config.boot.initrd.luks.devices;
+  # Root LUKS mapper name per host. Hardcoded (not read from
+  # boot.initrd.luks.devices) to avoid a recursion: this module also writes
+  # crypttabExtraOpts into that same option.
+  luksName = {
+    mininixos = "M";
+    lele8845ace = "data";
+  }.${host};
+  br0addr = lib.head config.networking.interfaces.br0.ipv4.addresses;
 in
-lib.mkIf (builtins.pathExists jweFile && luksDevices != [ ]) {
+lib.mkIf (builtins.pathExists jweFile) {
   boot.initrd.clevis = {
     enable = true;
     useTang = true;
-    devices.${lib.head luksDevices}.secretFile = jweFile;
+    devices.${luksName}.secretFile = jweFile;
   };
 
-  # initrd networking so Clevis can reach the peer Tang. eno0 via DHCP — the
-  # UniFi reservation pins each host's address; the bridge br0 only exists in
-  # stage 2, so in initrd we talk to the raw NIC.
+  # Yubikey FIDO2 fallback at boot (touch+PIN), offered if Clevis can't reach Tang.
+  boot.initrd.luks.devices.${luksName}.crypttabExtraOpts = [ "fido2-device=auto" ];
+
+  # initrd networking: static IP on eno0 (the bridge br0 only exists in stage 2).
   boot.initrd.availableKernelModules = [ "r8169" ];
   boot.initrd.systemd.network = {
     enable = true;
     networks."10-eno0" = {
       matchConfig.Name = "eno0";
-      networkConfig.DHCP = "ipv4";
+      address = [ "${br0addr.address}/${toString br0addr.prefixLength}" ];
     };
   };
 }
