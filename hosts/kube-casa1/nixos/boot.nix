@@ -25,9 +25,7 @@
         "nls_iso8859_1"
       ];
 
-      # Support for Yubikey PBA
       luks = {
-        yubikeySupport = true;
         cryptoModules = [
           "aes"
           "xts"
@@ -51,16 +49,6 @@
           "nixK" = {
             device = "/dev/sda2"; # << LUKS partition
             preLVM = true;
-
-            yubikey = {
-              slot = 2;
-              twoFactor = false; # set to true to input password (2FA)
-
-              storage = {
-                device = "/dev/sda1"; # << SALT /boot partition
-                fsType = "vfat";
-              };
-            };
           };
         };
       };

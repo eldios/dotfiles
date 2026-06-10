@@ -24,8 +24,8 @@ in
         lua-language-server
         nil # Nix LSP
         nodejs
-        nodePackages.typescript
-        nodePackages.typescript-language-server
+        typescript
+        typescript-language-server
         pyright
         tree-sitter
         # Golang
@@ -661,8 +661,6 @@ in
       ];
 
       extraConfig = '''';
-
-      extraLuaConfig = '''';
     }; # EOM neovim
 
   }; # EOM programs

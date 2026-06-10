@@ -65,7 +65,7 @@ in
       slurp
       swaybg
       swaylock-effects
-      swww
+      awww
       tofi
       udiskie
       wayland
@@ -325,8 +325,8 @@ in
       exec-once=${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP GDK_BACKEND NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT
       exec-once=${pkgs.waybar}/bin/waybar
       exec-once=${pkgs.mako}/bin/mako
-      # Wallpaper: swww-daemon must start before Variety
-      exec-once=${pkgs.swww}/bin/swww-daemon
+      # Wallpaper: awww-daemon must start before Variety
+      exec-once=${pkgs.awww}/bin/awww-daemon
       exec-once=sleep 1 && ${pkgs.variety}/bin/variety
       # Night light (Lucca, Italy coordinates)
       exec-once=${daynightscreen}

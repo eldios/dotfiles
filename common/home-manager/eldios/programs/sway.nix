@@ -56,7 +56,7 @@ in
       swaylock-effects
       swayr
       swayrbar
-      swww
+      awww
       tofi
       udiskie
       wayland

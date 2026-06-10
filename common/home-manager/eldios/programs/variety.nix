@@ -1,9 +1,9 @@
 { pkgs, lib, ... }:
 
 let
-  # Manage Variety's set_wallpaper script with swww support
-  # This fixes the grey background issue when using swww-daemon (MangoWC, Hyprland, etc.)
-  # Variety's default script only supports swaybg, not swww.
+  # Manage Variety's set_wallpaper script with awww support
+  # This fixes the grey background issue when using awww-daemon (MangoWC, Hyprland, etc.)
+  # Variety's default script only supports swaybg, not awww.
   #
   # NOTE: We use an activation script to COPY (not symlink) into ~/.config/variety/scripts/
   # because Variety's prepare_config_folder() calls os.chmod() on its scripts at startup,
@@ -11,7 +11,7 @@ let
   setWallpaperScript = pkgs.writeShellScript "set_wallpaper" ''
       #!/bin/bash
       # Variety set_wallpaper script - managed by home-manager
-      # Added swww support for MangoWC/Hyprland/wlroots compositors
+      # Added awww support for MangoWC/Hyprland/wlroots compositors
       #
       # PARAMETERS:
       # $1: Absolute path to the wallpaper image (after effects)
@@ -175,11 +175,11 @@ let
       fi
 
       # =====================================================================
-      # swww support (for MangoWC, Hyprland, and other wlroots compositors)
+      # awww support (for MangoWC, Hyprland, and other wlroots compositors)
       # Must come BEFORE swaybg fallback since both may be installed
       # =====================================================================
-      if command -v ${pkgs.swww}/bin/swww >/dev/null 2>&1 && ${pkgs.swww}/bin/swww query >/dev/null 2>&1; then
-        ${pkgs.swww}/bin/swww img "$WP" \
+      if command -v ${pkgs.awww}/bin/awww >/dev/null 2>&1 && ${pkgs.awww}/bin/awww query >/dev/null 2>&1; then
+        ${pkgs.awww}/bin/awww img "$WP" \
           --transition-type fade \
           --transition-duration 1 \
           --transition-fps 60

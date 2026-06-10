@@ -9,7 +9,6 @@ in
   # Enable Eww program
   programs.eww = {
     enable = true;
-    configDir = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/eww";
     package = pkgs.eww;
   };
 
