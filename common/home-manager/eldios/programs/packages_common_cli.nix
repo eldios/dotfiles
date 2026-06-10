@@ -28,7 +28,7 @@
       just # command runner (Makefile alternative)
       pkg-config # build helper for compiled libraries
       protobuf # protocol buffer compiler
-      nodePackages.sloc # source lines of code counter
+      sloc # source lines of code counter
       semgrep # static analysis code tool
       shellcheck # shell script linter
       # toolboox # Tool for containerized command line environments on Linux
@@ -68,7 +68,6 @@
       k0sctl # k0s Kubernetes distribution manager
       k8sgpt # AI-powered Kubernetes diagnostics
       k9s # TUI for Kubernetes clusters
-      kdash # TUI dashboard for Kubernetes
       kind # Kubernetes in Docker for local testing
       ktop # top-like TUI for Kubernetes nodes
       kubeconform # Kubernetes manifest validator
@@ -122,8 +121,7 @@
       nix-prefetch-git # prefetch Git repos for Nix
       nix-prefetch-github # prefetch GitHub repos for Nix
       nix-tree # visualize Nix store dependencies
-      nixfmt-rfc-style # Nix code formatter (RFC style)
-      nodePackages.node2nix # convert npm packages to Nix
+      nixfmt # Nix code formatter (RFC style)
       prefetch-npm-deps # prefetch npm dependencies for Nix
 
       # Charm.sh CLI Utils

@@ -7,8 +7,6 @@ let
   });
 in
 {
-  environment.variables.EDITOR = "${pkgs.neovim}/bin/nvim";
-
   programs = {
 
     neovim = {

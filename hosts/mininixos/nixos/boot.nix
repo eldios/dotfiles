@@ -1,9 +1,9 @@
-# Boot configuration for mininixos (BTRFS + LUKS + Yubikey PBA)
+# Boot configuration for mininixos (BTRFS + LUKS)
 #
 # LUKS device "M" is declared by disko.nix (device path, allowDiscards).
-# This file adds Yubikey PBA settings on top via NixOS module merging.
-# Password fallback is keyslot 0 (set manually during LUKS format).
-# Yubikey challenge-response is keyslot 2 (added manually via luksAddKey).
+# systemd stage 1 unlocks it with the passphrase in LUKS keyslot 0. Keyslot 2
+# still holds the legacy Yubikey challenge-response secret (unused by systemd
+# stage 1); re-enroll the key with `systemd-cryptenroll --fido2-device=auto`.
 
 { pkgs, ... }:
 {
@@ -33,9 +33,7 @@
         "nls_iso8859_1"
       ];
 
-      # Yubikey PBA - merged with disko's LUKS device "K" declaration
       luks = {
-        yubikeySupport = true;
         cryptoModules = [
           "aes"
           "xts"
@@ -57,19 +55,8 @@
 
         devices = {
           # disko sets: device, allowDiscards
-          # we add: preLVM, yubikey
           "M" = {
             preLVM = true;
-
-            yubikey = {
-              slot = 2;
-              twoFactor = false; # Yubikey-only; password is separate LUKS keyslot
-
-              storage = {
-                device = "/dev/disk/by-partlabel/disk-nvme1-ESP";
-                fsType = "vfat";
-              };
-            };
           };
         };
       };

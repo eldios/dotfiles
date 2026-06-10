@@ -180,9 +180,9 @@ let
       ${pkgs.util-linux}/bin/setsid ${pkgs.waybar}/bin/waybar >/dev/null 2>&1 &
     '';
 
-    # Upstream uses swaybg exclusively; we prefer swww (transitions, daemon-based)
-    # if swww-daemon is up — fall back to swaybg otherwise. Matches our setup
-    # where variety + swww manage wallpapers.
+    # Upstream uses swaybg exclusively; we prefer awww (transitions, daemon-based)
+    # if awww-daemon is up — fall back to swaybg otherwise. Matches our setup
+    # where variety + awww manage wallpapers.
     "omarchy-theme-bg-set" = pkgs.writeShellScript "omarchy-theme-bg-set" ''
       set -euo pipefail
       [[ -n "''${1:-}" ]] || { echo "Usage: omarchy-theme-bg-set <path-to-image>" >&2; exit 1; }
@@ -193,8 +193,8 @@ let
       ${pkgs.coreutils}/bin/mkdir -p "$(${pkgs.coreutils}/bin/dirname "$link")"
       ${pkgs.coreutils}/bin/ln -nsf "$background" "$link"
 
-      if ${pkgs.procps}/bin/pgrep -x swww-daemon >/dev/null 2>&1; then
-        ${pkgs.swww}/bin/swww img "$link" --transition-type fade >/dev/null 2>&1 || true
+      if ${pkgs.procps}/bin/pgrep -x awww-daemon >/dev/null 2>&1; then
+        ${pkgs.awww}/bin/awww img "$link" --transition-type fade >/dev/null 2>&1 || true
       else
         ${pkgs.procps}/bin/pkill -x swaybg >/dev/null 2>&1 || true
         ${pkgs.util-linux}/bin/setsid ${pkgs.swaybg}/bin/swaybg -i "$link" -m fill >/dev/null 2>&1 &

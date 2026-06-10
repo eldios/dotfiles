@@ -68,7 +68,7 @@ in
       swaylock-effects
       swayr
       swayrbar
-      swww
+      awww
       tofi
       udiskie
       wayland
@@ -342,10 +342,10 @@ in
         command_mute = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
 
         binding_brightness_up = "XF86MonBrightnessUp";
-        command_brightness_up = "sudo ${pkgs.light}/bin/light -A 5";
+        command_brightness_up = "sudo ${pkgs.brightnessctl}/bin/brightnessctl set +5%";
 
         binding_brightness_down = "XF86MonBrightnessDown";
-        command_brightness_down = "sudo ${pkgs.light}/bin/light -U 5";
+        command_brightness_down = "sudo ${pkgs.brightnessctl}/bin/brightnessctl set 5%-";
 
         binding_play_pause = "XF86AudioPlay";
         command_play_pause = "${pkgs.playerctl}/bin/playerctl play-pause";

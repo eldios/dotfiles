@@ -75,7 +75,7 @@ in {
       swaybg
       swayr
       swayrbar
-      swww
+      awww
       tofi
       udiskie
       wayland
@@ -227,8 +227,8 @@ in {
         "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP GDK_BACKEND NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT" # Enhanced DBus environment
         "${barCmd}" # Status bar (change barChoice in let block to switch)
         "${pkgs.mako}/bin/mako" # Starts the Mako notification daemon
-        "${pkgs.swww}/bin/swww-daemon" # Wallpaper daemon (used by Variety's set_wallpaper script)
-        "sleep 1 && ${pkgs.swww}/bin/swww img ~/.config/omarchy/current/background --transition-type fade"
+        "${pkgs.awww}/bin/awww-daemon" # Wallpaper daemon (used by Variety's set_wallpaper script)
+        "sleep 1 && ${pkgs.awww}/bin/awww img ~/.config/omarchy/current/background --transition-type fade"
         # "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar" # Start Eww daemon and open the bar
         "${pkgs.wl-clip-persist}/bin/wl-clip-persist --clipboard regular" # Keep clipboard contents after source apps exit
         "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store" # Clipboard history daemon (text + images)

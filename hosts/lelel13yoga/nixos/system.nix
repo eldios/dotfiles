@@ -60,7 +60,6 @@
     displayManager = {
       sddm.enable = false;
       gdm.enable = true;
-      gdm.wayland = true;
 
       sessionPackages = with pkgs.unstable; [
         sway
@@ -104,7 +103,7 @@
   environment.systemPackages = (
     with pkgs;
     [
-      protonvpn-gui
+      proton-vpn
     ]
   );
 
