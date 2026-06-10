@@ -33,7 +33,8 @@
         "wlr"
         "luminous"
       ];
-      niri.default = [
+      # mkForce: the niri module sets its own portal default ("gnome;gtk") in 26.05
+      niri.default = lib.mkForce [
         "gtk"
         "wlr"
       ];

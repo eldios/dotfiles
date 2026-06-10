@@ -182,8 +182,8 @@ in
       nerd-fonts.jetbrains-mono
 
       # File manager
-      xfce.thunar
-      xfce.thunar-volman
+      thunar
+      thunar-volman
 
       # Brightness control
       brightnessctl
@@ -577,7 +577,7 @@ in
         }
         # Clipboard manager
         {
-          command = "${pkgs.clipit}/bin/clipit";
+          command = "${pkgs.copyq}/bin/copyq";
           always = false;
           notification = false;
         }
@@ -754,7 +754,7 @@ in
         "${modifier}+Shift+w" = "exec ${window_menu}";
         "${modifier}+Shift+m" = "exec ${mail}";
         "${modifier}+b" = "exec firefox";
-        "${modifier}+Shift+f" = "exec ${pkgs.xfce.thunar}/bin/thunar";
+        "${modifier}+Shift+f" = "exec ${pkgs.thunar}/bin/thunar";
 
         # Screenshots
         "${modifier}+Shift+s" = "exec ${screenshot_select}";

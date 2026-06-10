@@ -53,7 +53,6 @@
     displayManager = {
       defaultSession = "cinnamon";
       gdm.enable = true;
-      gdm.wayland = true;
       sessionPackages = with pkgs; [
         sway
         hyprland

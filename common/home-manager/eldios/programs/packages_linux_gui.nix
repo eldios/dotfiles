@@ -71,7 +71,6 @@
         #telegram-desktop # messaging app
         zapzap # WhatsApp alt client
         zoom-us # video conferencing
-        zulip # self-hosted IM app
 
         # Media Players
         mpv # lightweight media player

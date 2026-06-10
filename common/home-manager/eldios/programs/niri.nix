@@ -61,7 +61,7 @@ in
     slurp
     swaybg
     swaylock-effects
-    swww
+    awww
     tofi
     udiskie
     wayland
