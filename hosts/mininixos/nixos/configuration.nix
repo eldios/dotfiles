@@ -48,6 +48,8 @@
 
     ../../../common/nixos/virtualisation.nix
 
+    ../../../common/nixos/tang-server.nix
+
     # hardware-configuration.nix kept but not imported (ZFS rollback safety)
     ./disko.nix
 
