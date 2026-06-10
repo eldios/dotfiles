@@ -49,6 +49,7 @@
     ../../../common/nixos/virtualisation.nix
 
     ../../../common/nixos/tang-server.nix
+    ../../../common/nixos/clevis-unlock.nix
 
     # hardware-configuration.nix kept but not imported (ZFS rollback safety)
     ./disko.nix

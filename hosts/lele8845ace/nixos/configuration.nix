@@ -55,6 +55,7 @@
     ../../../common/nixos/virtualisation.nix
     ../../../common/nixos/desktop-gui.nix
     ../../../common/nixos/tang-server.nix
+    ../../../common/nixos/clevis-unlock.nix
 
     ./disko.nix
 
