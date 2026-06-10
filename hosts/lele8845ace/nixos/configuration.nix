@@ -54,6 +54,7 @@
 
     ../../../common/nixos/virtualisation.nix
     ../../../common/nixos/desktop-gui.nix
+    ../../../common/nixos/tang-server.nix
 
     ./disko.nix
 
