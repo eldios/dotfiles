@@ -16,7 +16,7 @@
 #
 # Fallbacks if Tang is unreachable (blackout, off-network): the Yubikey FIDO2
 # keyslots (crypttabExtraOpts below) and the passphrase (keyslot 0) remain.
-{ config, inputs, lib, ... }:
+{ config, inputs, lib, pkgs, ... }:
 let
   host = config.networking.hostName;
   jweFile = "${inputs.secrets}/clevis/${host}.jwe";
@@ -67,6 +67,22 @@ lib.mkIf (builtins.pathExists jweFile) {
     networks."10-eno0" = {
       matchConfig.Name = "eno0";
       address = [ "${br0addr.address}/${toString br0addr.prefixLength}" ];
+    };
+  };
+
+  # The initrd address above leaks into stage 2: eno0 is a pure br0 slave there,
+  # but nothing strips the leftover IP, which then shadows br0's LAN route — the
+  # kernel routes replies out the raw slave, ARP never resolves, and peer Tang
+  # traffic dies silently (this broke clevis on BOTH hosts, in both directions).
+  # Flush eno0's IPv4 once stage-2 networking has set up the bridge.
+  systemd.services.flush-eno0-stray-addr = {
+    after = [ "network-addresses-eno0.service" "br0-netdev.service" ];
+    before = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "-${pkgs.iproute2}/bin/ip -4 addr flush dev eno0";
     };
   };
 }
