@@ -19,6 +19,10 @@
       # it claims eno0 with a standalone "Wired connection 1", leaving br0
       # slave-less and DOWN (no LAN/.40, no VM bridging). wlan0 stays NM-managed.
       unmanaged = [ "eno0" "br0" ];
+      # Pin public resolvers: the UniFi gateway handed out via DHCP does not
+      # serve DNS, leaving the host unable to resolve anything (same fix as
+      # mininixos).
+      insertNameservers = [ "1.1.1.1" "9.9.9.9" ];
     };
 
     bridges = {
