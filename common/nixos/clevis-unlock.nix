@@ -42,11 +42,12 @@ lib.mkIf (builtins.pathExists jweFile) {
   # 30s is ample when Tang is reachable; past that we want the manual fallbacks.
   boot.initrd.systemd.services."cryptsetup-clevis-${luksName}".serviceConfig.TimeoutStartSec = 30;
 
-  # Yubikey FIDO2 = manual fallback after Clevis. The keyslots/tokens are already
-  # enrolled on the device; they use a client PIN, so the USB-enumeration race of
-  # nixpkgs#265367 (a no-PIN-only bug) does not apply — the PIN prompt gives the
-  # token time to appear. Boot order: Clevis (auto) -> Yubikey (touch+PIN) -> passphrase.
-  boot.initrd.luks.devices.${luksName}.crypttabExtraOpts = [ "fido2-device=auto" ];
+  # Yubikey FIDO2 = manual fallback after Clevis. token-timeout=300 gives a 5-min
+  # window to insert and touch the key (e.g. someone walking up to the box) before
+  # falling through to the passphrase. No-PIN (touch-only) tokens are detected in
+  # initrd thanks to boot.initrd.systemd.fido2 (default-on), which ships the
+  # 60-fido-id.rules udev rule that fixed nixpkgs#265367. Order: Clevis -> Yubikey -> passphrase.
+  boot.initrd.luks.devices.${luksName}.crypttabExtraOpts = [ "fido2-device=auto" "token-timeout=300" ];
 
   # initrd networking: static IP on eno0 (the bridge br0 only exists in stage 2).
   boot.initrd.availableKernelModules = [ "r8169" ];
