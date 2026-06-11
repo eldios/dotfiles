@@ -36,13 +36,20 @@ lib.mkIf (builtins.pathExists jweFile) {
     devices.${luksName}.secretFile = jweFile;
   };
 
-  # Yubikey FIDO2 fallback at boot (touch+PIN), offered if Clevis can't reach Tang.
-  boot.initrd.luks.devices.${luksName}.crypttabExtraOpts = [ "fido2-device=auto" ];
+  # NOTE: no FIDO2 at boot. systemd-cryptenroll's --fido2-with-client-pin=false
+  # is broken in initrd (nixpkgs#265367: USB enumerates after cryptsetup starts,
+  # token not seen, 30s timeout) and its failure sent the initrd into a restart
+  # loop. The Yubikey keyslots stay in LUKS for manual/stage-2 use; at boot the
+  # fallback is Clevis (auto, network) then the passphrase.
 
   # initrd networking: static IP on eno0 (the bridge br0 only exists in stage 2).
   boot.initrd.availableKernelModules = [ "r8169" ];
   boot.initrd.systemd.network = {
     enable = true;
+    wait-online = {
+      enable = true;
+      anyInterface = true;
+    };
     networks."10-eno0" = {
       matchConfig.Name = "eno0";
       address = [ "${br0addr.address}/${toString br0addr.prefixLength}" ];
