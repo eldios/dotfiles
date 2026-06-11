@@ -46,11 +46,13 @@ lib.mkIf (builtins.pathExists jweFile) {
 
   # Yubikey FIDO2 = manual fallback after Clevis. No-PIN (touch-only) tokens are
   # detected in initrd via boot.initrd.systemd.fido2 (default-on; ships
-  # 60-fido-id.rules / fido_id, which fixed nixpkgs#265367). The token wait is
-  # left at its ~30s default ON PURPOSE: a longer token-timeout needs a matching
-  # device-timeout, else the unit's ~90s device job aborts the unlock before any
-  # Yubikey/passphrase prompt appears (drops to emergency). Order: Clevis -> Yubikey -> passphrase.
-  boot.initrd.luks.devices.${luksName}.crypttabExtraOpts = [ "fido2-device=auto" ];
+  # 60-fido-id.rules / fido_id, which fixed nixpkgs#265367). First match wins:
+  # a good Clevis keyfile unlocks without ever touching the token.
+  # tries=0: keep cycling Yubikey/passphrase prompts forever instead of failing
+  # into emergency after 3 unanswered attempts — a remote box must sit at the
+  # prompt waiting for a human, not collapse. (Password query timeout is already
+  # indefinite by default; the FIDO2 token wait stays at its 30s default.)
+  boot.initrd.luks.devices.${luksName}.crypttabExtraOpts = [ "fido2-device=auto" "tries=0" ];
 
   # Let the initrd emergency shell actually start (default refuses: root is
   # locked, so a failed unlock leaves a dead console). Pre-unlock the disk is
