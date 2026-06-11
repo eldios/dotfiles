@@ -36,11 +36,17 @@ lib.mkIf (builtins.pathExists jweFile) {
     devices.${luksName}.secretFile = jweFile;
   };
 
-  # NOTE: no FIDO2 at boot. systemd-cryptenroll's --fido2-with-client-pin=false
-  # is broken in initrd (nixpkgs#265367: USB enumerates after cryptsetup starts,
-  # token not seen, 30s timeout) and its failure sent the initrd into a restart
-  # loop. The Yubikey keyslots stay in LUKS for manual/stage-2 use; at boot the
-  # fallback is Clevis (auto, network) then the passphrase.
+  # Cap the Clevis attempt. cryptsetup@<dev> is ordered *after* this service, so
+  # a hung Tang fetch (peer offline / flaky LAN) blocks the Yubikey and
+  # passphrase prompts until it gives up — which is the 10-minute stall we hit.
+  # 30s is ample when Tang is reachable; past that we want the manual fallbacks.
+  boot.initrd.systemd.services."cryptsetup-clevis-${luksName}".serviceConfig.TimeoutStartSec = 30;
+
+  # Yubikey FIDO2 = manual fallback after Clevis. The keyslots/tokens are already
+  # enrolled on the device; they use a client PIN, so the USB-enumeration race of
+  # nixpkgs#265367 (a no-PIN-only bug) does not apply — the PIN prompt gives the
+  # token time to appear. Boot order: Clevis (auto) -> Yubikey (touch+PIN) -> passphrase.
+  boot.initrd.luks.devices.${luksName}.crypttabExtraOpts = [ "fido2-device=auto" ];
 
   # initrd networking: static IP on eno0 (the bridge br0 only exists in stage 2).
   boot.initrd.availableKernelModules = [ "r8169" ];
