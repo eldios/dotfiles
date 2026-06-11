@@ -16,6 +16,9 @@
     networkmanager = {
       enable = true;
       unmanaged = [ "eno0" "eno0.50" "br0" "br50" ];
+      # Pin public resolvers: MagicDNS here is flaky and the UniFi gateway
+      # doesn't serve DNS, so without these the box can't resolve anything.
+      insertNameservers = [ "1.1.1.1" "9.9.9.9" ];
     };
 
     interfaces = {
