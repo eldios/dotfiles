@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   # Rename interfaces based on MAC address to predictable names
   systemd.network.links = {
@@ -76,6 +77,22 @@
       ];
       checkReversePath = false;
       trustedInterfaces = [ "br0" "br50" ];
+    };
+  };
+
+  # eno0 is a pure br0 slave. The initrd clevis network (see clevis-unlock.nix)
+  # assigns this host's static LAN IP to eno0 to reach Tang at boot; because NM
+  # leaves eno0/br0 unmanaged, the scripted stage-2 network never strips it, so
+  # the address lingers on eno0 and shadows br0's LAN route — Tang and the LAN
+  # become unreachable. Drop eno0's stray IPv4 once its address unit has run.
+  systemd.services.flush-eno0-stray-addr = {
+    after = [ "network-addresses-eno0.service" ];
+    before = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "-${pkgs.iproute2}/bin/ip -4 addr flush dev eno0";
     };
   };
 }
