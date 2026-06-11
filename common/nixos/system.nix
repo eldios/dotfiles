@@ -182,6 +182,7 @@ in
     sops
     ssh-to-age
     xxd
+    yubikey-manager # `ykman` — FIDO2/PIV/OATH/OTP management (PIN, reset, info)
     yubikey-personalization
 
     # WAYLAND + SWAY
@@ -207,6 +208,7 @@ in
     qmk_hid
     vial
     via
+    yubikey-personalization # udev rules for non-root Yubikey (FIDO2/OTP) access
   ];
 
   security = {
