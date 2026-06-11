@@ -15,7 +15,10 @@
     usePredictableInterfaceNames = false; # We handle naming via systemd.network.links
     networkmanager = {
       enable = true;
-      unmanaged = [ ];
+      # eno0/br0 are owned by the scripted bridge below. Left to NetworkManager
+      # it claims eno0 with a standalone "Wired connection 1", leaving br0
+      # slave-less and DOWN (no LAN/.40, no VM bridging). wlan0 stays NM-managed.
+      unmanaged = [ "eno0" "br0" ];
     };
 
     bridges = {
