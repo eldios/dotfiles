@@ -7,10 +7,11 @@ let
   # via the OpenSSH `command="borg serve --restrict-to-path …",restrict`
   # option, so the key cannot be used for anything else.
   #
-  # The public key for each client is pulled at activation time from the
-  # sops-encrypted per-host secret file. Rotating the keypair only requires
-  # editing the corresponding <host>.yaml in the secrets repo — no change
-  # in this file.
+  # Each client's public key is pulled at activation from the shared,
+  # server-readable borg.yaml in the secrets repo. It lives there (not in the
+  # per-host <host>.yaml, which also holds private material this backup server
+  # must not be able to read) so mininixos can decrypt it. Rotating a client
+  # key is a single-file edit to borg.yaml.
   clients = [ "lele8845ace" "lele9iyoga" ];
 
   secretFor   = host: "borg/clients/${host}/pubkey";
@@ -33,11 +34,8 @@ in
   sops.secrets = lib.listToAttrs (map (host: {
     name  = secretFor host;
     value = {
-      sopsFile = "${secretsPath}/${host}.yaml";
-      key      = "keys/ssh/eldios/borg_backup/public";
-      # The public key itself is not sensitive, but keeping it under sops
-      # means the dotfiles repo stays free of host-specific material and
-      # rotation is a single-file change in the secrets repo.
+      sopsFile = "${secretsPath}/borg.yaml";
+      key      = "clients/${host}/pubkey";
     };
   }) clients);
 
