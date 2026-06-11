@@ -27,6 +27,7 @@ let
     mininixos = "M";
     lele8845ace = "data";
   }.${host};
+  luksDevice = config.boot.initrd.luks.devices.${luksName}.device;
   br0addr = lib.head config.networking.interfaces.br0.ipv4.addresses;
 in
 lib.mkIf (builtins.pathExists jweFile) {
@@ -46,13 +47,45 @@ lib.mkIf (builtins.pathExists jweFile) {
 
   # Yubikey FIDO2 = manual fallback after Clevis. No-PIN (touch-only) tokens are
   # detected in initrd via boot.initrd.systemd.fido2 (default-on; ships
-  # 60-fido-id.rules / fido_id, which fixed nixpkgs#265367). First match wins:
-  # a good Clevis keyfile unlocks without ever touching the token.
+  # 60-fido-id.rules / fido_id, which fixed nixpkgs#265367).
   # tries=0: keep cycling Yubikey/passphrase prompts forever instead of failing
   # into emergency after 3 unanswered attempts — a remote box must sit at the
   # prompt waiting for a human, not collapse. (Password query timeout is already
   # indefinite by default; the FIDO2 token wait stays at its 30s default.)
   boot.initrd.luks.devices.${luksName}.crypttabExtraOpts = [ "fido2-device=auto" "tries=0" ];
+
+  # fido2-device= REPURPOSES crypttab's key-file column: it becomes the FIDO2
+  # HMAC input (or is ignored for LUKS2 metadata enrollments) and is never
+  # tried against the keyslots — see crypttab(5). So with FIDO2 enabled,
+  # systemd-cryptsetup@ never uses the Clevis-fetched key, and every boot fell
+  # through to the token prompt. Open the volume ourselves with that key first:
+  # when Clevis delivered, systemd-cryptsetup@ finds the volume active and
+  # exits without prompting; when it didn't, the FIDO2/passphrase prompts run
+  # as usual. First match wins: Clevis (auto) -> Yubikey (touch) -> passphrase.
+  boot.initrd.systemd.extraBin.cryptsetup = "${pkgs.cryptsetup}/bin/cryptsetup";
+  boot.initrd.systemd.services."clevis-open-${luksName}" = {
+    wantedBy = [ "systemd-cryptsetup@${luksName}.service" ];
+    wants = [ "cryptsetup-clevis-${luksName}.service" ];
+    after = [ "cryptsetup-clevis-${luksName}.service" ];
+    before = [
+      "systemd-cryptsetup@${luksName}.service"
+      "initrd-switch-root.target"
+      "shutdown.target"
+    ];
+    conflicts = [ "initrd-switch-root.target" "shutdown.target" ];
+    unitConfig.DefaultDependencies = "no";
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      key=/clevis-${luksName}/decrypted
+      [ -s "$key" ] || exit 0
+      cryptsetup open --key-file="$key" ${luksDevice} ${luksName} \
+        || echo "clevis key did not open ${luksName}; falling back to FIDO2/passphrase" >&2
+      exit 0
+    '';
+  };
 
   # Let the initrd emergency shell actually start (default refuses: root is
   # locked, so a failed unlock leaves a dead console). Pre-unlock the disk is
