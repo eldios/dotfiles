@@ -37,10 +37,12 @@ lib.mkIf (builtins.pathExists jweFile) {
   };
 
   # Cap the Clevis attempt. cryptsetup@<dev> is ordered *after* this service, so
-  # a hung Tang fetch (peer offline / flaky LAN) blocks the Yubikey and
-  # passphrase prompts until it gives up — which is the 10-minute stall we hit.
-  # 30s is ample when Tang is reachable; past that we want the manual fallbacks.
-  boot.initrd.systemd.services."cryptsetup-clevis-${luksName}".serviceConfig.TimeoutStartSec = 30;
+  # a hung Tang fetch (peer offline) blocks the Yubikey and passphrase prompts
+  # until it gives up — which was a 10-minute stall by default. 120s, not less:
+  # the switch holds the port in STP learning for ~15-30s after the initrd
+  # brings the link up, and a 30s cap killed the fetch right as Tang answered
+  # (the service stop also unmounts the ramfs, discarding the fetched key).
+  boot.initrd.systemd.services."cryptsetup-clevis-${luksName}".serviceConfig.TimeoutStartSec = 120;
 
   # Yubikey FIDO2 = manual fallback after Clevis. No-PIN (touch-only) tokens are
   # detected in initrd via boot.initrd.systemd.fido2 (default-on; ships
