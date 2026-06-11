@@ -50,6 +50,12 @@ lib.mkIf (builtins.pathExists jweFile) {
   # Yubikey/passphrase prompt appears (drops to emergency). Order: Clevis -> Yubikey -> passphrase.
   boot.initrd.luks.devices.${luksName}.crypttabExtraOpts = [ "fido2-device=auto" ];
 
+  # Let the initrd emergency shell actually start (default refuses: root is
+  # locked, so a failed unlock leaves a dead console). Pre-unlock the disk is
+  # still encrypted, so a console shell exposes nothing the attacker doesn't
+  # already have; a usable rescue shell is what lets us debug failed unlocks.
+  boot.initrd.systemd.emergencyAccess = true;
+
   # initrd networking: static IP on eno0 (the bridge br0 only exists in stage 2).
   boot.initrd.availableKernelModules = [ "r8169" ];
   boot.initrd.systemd.network = {
