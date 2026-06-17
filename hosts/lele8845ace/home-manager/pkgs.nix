@@ -8,6 +8,7 @@
       with pkgs.unstable;
       [
         davinci-resolve-studio
+        kdePackages.kdenlive
       ]
     );
   };
