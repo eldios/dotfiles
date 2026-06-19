@@ -152,6 +152,7 @@ in
     nix-tree
     pinentry-curses # required by GPG
     python3
+    restic
     ripgrep
     screen
     smartmontools
