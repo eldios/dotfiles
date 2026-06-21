@@ -14,8 +14,9 @@
 
     supportedFilesystems = [ "btrfs" ];
 
-    # BTRFS is in-kernel - no ZFS compat constraint, use latest kernel
-    kernelPackages = pkgs.linuxPackages_latest;
+    # Pin the stable kernel: linuxPackages_latest (7.0.x) hit a btrfs
+    # transaction-commit stall that hard-froze the host (2026-06-22).
+    kernelPackages = pkgs.linuxPackages;
     kernelParams = [
       "nohibernate"
       "amdgpu.runpm=0" # disable runtime PM — headless server, GPU must stay awake for Ollama

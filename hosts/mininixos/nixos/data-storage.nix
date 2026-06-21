@@ -46,7 +46,6 @@ in
     options = [
       "compress=zstd:3"
       "noatime"
-      "autodefrag"
       "nofail" # Don't fail boot if mount fails
       "x-systemd.requires=systemd-cryptsetup@${luksName}.service" # Wait for decryption
     ];
