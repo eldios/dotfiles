@@ -16,6 +16,8 @@
         ffmpeg # multimedia processing toolkit
         sox # audio processing tool (used for Claude voice)
         imagemagick # image manipulation toolkit
+        immich-go # bulk uploads client for Immich
+        immichframe # use Immich as a digital frame
         jellyfin-media-player # Jellyfin media client
         yewtube # YouTube player for terminal
         yt-dlp # video downloader from websites
