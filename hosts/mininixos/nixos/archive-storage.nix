@@ -20,7 +20,12 @@
       "compress=zstd:3"
       "noatime"
       "nodiratime"
+      # space_cache v2: con v1 il mount di questo raid1 quasi pieno sfora i 90s
+      "space_cache=v2"
       "nofail"
+      # 90s di default non bastano (10TB meccanici, ~98% pieno): senza questo,
+      # nofail lascia /archive smontato in silenzio dopo un mount lento al boot
+      "x-systemd.mount-timeout=300"
       # raid1 multi-device: elenca entrambe le meta cosi il mount assembla
       # senza dipendere da un btrfs device scan precedente
       "device=/dev/mapper/Karchive"
