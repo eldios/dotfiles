@@ -14,9 +14,10 @@
 
     supportedFilesystems = [ "btrfs" ];
 
-    # Pin the stable kernel: linuxPackages_latest (7.0.x) hit a btrfs
-    # transaction-commit stall that hard-froze the host (2026-06-22).
-    kernelPackages = pkgs.linuxPackages;
+    # Must track linuxPackages_latest: the stable series (6.18) fails to
+    # assemble the /data RAID5 (md rejects a valid superblock, -EINVAL).
+    # Freeze risk is handled via autodefrag removal + watchdog instead.
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "nohibernate"
       "amdgpu.runpm=0" # disable runtime PM — headless server, GPU must stay awake for Ollama
