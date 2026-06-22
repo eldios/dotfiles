@@ -15,9 +15,11 @@
     data-root = "/srv/docker";
   };
 
-  # dockerd must wait for its data-root + app-data mounts before starting,
-  # else the btrfs storage driver initialises against an unmounted path.
-  systemd.services.docker.unitConfig.RequiresMountsFor = "/srv/docker /srv/containers";
+  # dockerd must wait for its data-root AND every bind-mount source before
+  # starting, else a container binds an unmounted path: postgres ran initdb
+  # on an empty /data while the RAID was still assembling, shadowing the real
+  # Immich DB (2026-06-22). /data added to prevent a repeat.
+  systemd.services.docker.unitConfig.RequiresMountsFor = "/srv/docker /srv/containers /data";
 
   # Hardware watchdog: auto-reboot if the host hard-freezes (a btrfs commit
   # stall wedged it 2026-06-22 and needed a manual power-cycle). /dev/watchdog exists.
