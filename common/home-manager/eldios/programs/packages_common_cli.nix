@@ -11,10 +11,13 @@
       go # Go programming language
       nodejs # JavaScript runtime
       nodenv # Node.js version manager
-      python3 # Python 3 interpreter
       rustc # Rust compiler
       rustfmt # Rust code formatter
       uv # fast Python package manager
+
+      # Python3 related packages
+      python3 # Python 3 interpreter
+      python3Packages.pytest # Python testing suite
 
       # Dev & Build Tools
       act # run GitHub Actions locally
