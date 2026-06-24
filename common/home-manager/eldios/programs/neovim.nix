@@ -148,7 +148,7 @@ in
   # this file is automatically loaded by LazyVim
   xdg.configFile."nvim/lua/config/autocmds.lua".text = '''';
   # MCPHub servers configuration is now managed by mcp-servers.nix
-  # which generates ~/.config/mcphub/servers.json with SSE URLs
+  # which generates ~/.config/mcphub/servers.json with MCP URLs
   # pointing to the shared docker-compose MCP servers
 
   # Blink.cmp configuration for manual-only completion
