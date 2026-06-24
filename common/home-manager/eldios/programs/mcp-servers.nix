@@ -4,6 +4,19 @@
 }:
 let
   streamableHttpPath = "/mcp";
+  mutxHealthcheckRequest = builtins.toJSON {
+    jsonrpc = "2.0";
+    id = 1;
+    method = "initialize";
+    params = {
+      protocolVersion = "2025-03-26";
+      capabilities = { };
+      clientInfo = {
+        name = "docker-healthcheck";
+        version = "1";
+      };
+    };
+  };
 
   # SSE output from a single stdio MCP process crashes when multiple clients
   # connect concurrently. Use stateful Streamable HTTP for stdio MCP servers
@@ -108,6 +121,7 @@ let
     mutx = {
       port = 3030;
       internalPort = 8000;
+      mcpPath = streamableHttpPath;
       user = "1000:1000";
       dockerfile = ''
         FROM ghcr.io/mutx-net/mutx-link
@@ -127,6 +141,16 @@ let
       volumes = [
         "\${XDG_RUNTIME_DIR}/mutx:/run/mutx"
       ];
+      healthcheck = {
+        test = [
+          "CMD-SHELL"
+          "wget -q -T 3 -O - --header 'Accept: application/json, text/event-stream' --header 'Content-Type: application/json' --post-data '${mutxHealthcheckRequest}' http://127.0.0.1:8000/mcp >/dev/null"
+        ];
+        interval = "30s";
+        timeout = "3s";
+        retries = 3;
+        start_period = "5s";
+      };
     };
 
     anytype = {
@@ -245,6 +269,17 @@ let
           }
               ports:
                 - "${toString cfg.port}:${toString cfg.internalPort}"''
+    }
+    ${
+      if cfg ? healthcheck then
+        "    healthcheck:\n"
+        + "      test: ${builtins.toJSON cfg.healthcheck.test}\n"
+        + "      interval: ${cfg.healthcheck.interval}\n"
+        + "      timeout: ${cfg.healthcheck.timeout}\n"
+        + "      retries: ${toString cfg.healthcheck.retries}\n"
+        + "      start_period: ${cfg.healthcheck.start_period}"
+      else
+        ""
     }
         restart: unless-stopped
   '';
