@@ -3,9 +3,10 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   stylix = {
-    enable = true;
+    enable = false;
     autoEnable = true;
     # Disable overlays to avoid warning with home-manager.useGlobalPkgs
     overlays.enable = false;
@@ -36,7 +37,7 @@
 
       firefox = {
         enable = true;
-        profileNames = ["eldios"];
+        profileNames = [ "eldios" ];
       };
     };
   };
