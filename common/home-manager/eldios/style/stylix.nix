@@ -24,6 +24,9 @@
       ghostty.enable = false;
       kitty.enable = false;
       gtk.enable = false;
+      # qt off: forces QT_STYLE_OVERRIDE=kvantum, which crashes the Qt6
+      # hyprland-share-picker (broken screen sharing). Theming via omarchy.
+      qt.enable = false;
       rofi.enable = false;
       sway.enable = false;
       wezterm.enable = false;
