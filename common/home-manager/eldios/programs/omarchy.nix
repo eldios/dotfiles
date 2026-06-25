@@ -342,6 +342,9 @@ in
       for f in state hypr.conf waybar.css; do
         [ -e "$d/$f" ] || $DRY_RUN_CMD touch "$d/$f"
       done
+      # waybar includes this as config: it must be valid JSON, and the seed
+      # must match the bar's default look (top, 32px, no margin).
+      [ -e "$d/waybar-config.json" ] || echo '{ "position": "top", "height": 32, "margin-top": 0, "margin-bottom": 0, "margin-left": 0, "margin-right": 0 }' >"$d/waybar-config.json"
     '';
 
   home.sessionVariables = {

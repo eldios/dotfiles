@@ -240,12 +240,36 @@ show_aes_shadow_menu() {
 }
 
 # Replaces upstream's waybar position menu (omarchy-style-waybar-position is not
-# packaged here, and our waybar config is Nix-managed). Single Waybar submenu.
+# packaged here, and our waybar config is Nix-managed). One Waybar submenu with
+# nested Position and Bar-style sub-submenus, both via omarchy-aesthetic-set.
 show_waybar_position_menu() {
-  case $(menu "Waybar" "󰍜  Maximized\n󰍜  Floating\n  Default (theme)") in
+  case $(menu "Waybar" "󰍜  Position\n󰘇  Bar style\n  Default (theme)") in
+  *Position*) show_waybar_pos_submenu ;;
+  *"Bar style"*) show_waybar_bar_submenu ;;
+  *Default*)
+    omarchy-aesthetic-set waybar default
+    omarchy-aesthetic-set waybar_position default
+    ;;
+  *) show_style_menu ;;
+  esac
+}
+
+show_waybar_pos_submenu() {
+  case $(menu "Waybar position" "󰁝  Top\n󰁅  Bottom\n󰁍  Left\n󰁔  Right\n  Default (theme)") in
+  *Top*) omarchy-aesthetic-set waybar_position top ;;
+  *Bottom*) omarchy-aesthetic-set waybar_position bottom ;;
+  *Left*) omarchy-aesthetic-set waybar_position left ;;
+  *Right*) omarchy-aesthetic-set waybar_position right ;;
+  *Default*) omarchy-aesthetic-set waybar_position default ;;
+  *) show_waybar_position_menu ;;
+  esac
+}
+
+show_waybar_bar_submenu() {
+  case $(menu "Waybar bar style" "󰊓  Maximized\n󰘇  Floating\n  Default (theme)") in
   *Maximized*) omarchy-aesthetic-set waybar maximized ;;
   *Floating*) omarchy-aesthetic-set waybar floating ;;
   *Default*) omarchy-aesthetic-set waybar default ;;
-  *) show_style_menu ;;
+  *) show_waybar_position_menu ;;
   esac
 }

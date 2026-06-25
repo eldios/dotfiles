@@ -178,12 +178,10 @@ in {
       primary = {
         mode = "dock";
         layer = "top";
-        height = 32;
-        margin-top = 0;
-        margin-left = 0;
-        margin-right = 0;
-        margin-bottom = 0;
-        position = "top";
+        # position / height / width / margin are NOT set here: they live in the
+        # override include below so omarchy-aesthetic-set can change them at
+        # runtime (a waybar include cannot override keys set in the main file).
+        include = [ "${config.home.homeDirectory}/.config/omarchy/overrides/waybar-config.json" ];
 
         modules-left = [
           "custom/menu"

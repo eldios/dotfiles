@@ -9,15 +9,16 @@ DIR="${OMARCHY_OVERRIDES_DIR:-$HOME/.config/omarchy/overrides}"
 STATE="$DIR/state"
 HYPR="$DIR/hypr.conf"
 WAYBAR="$DIR/waybar.css"
+WAYBARCFG="$DIR/waybar-config.json"
 mkdir -p "$DIR"
 : >>"$STATE"
 
 key="${1:-}"
 val="${2:-default}"
 case "$key" in
-  rounding | opacity | blur | animations | gaps | shadow | waybar) ;;
+  rounding | opacity | blur | animations | gaps | shadow | waybar | waybar_position) ;;
   *)
-    echo "Usage: omarchy-aesthetic-set <rounding|opacity|blur|animations|gaps|shadow|waybar> <value|default>" >&2
+    echo "Usage: omarchy-aesthetic-set <rounding|opacity|blur|animations|gaps|shadow|waybar|waybar_position> <value|default>" >&2
     exit 1
     ;;
 esac
@@ -60,18 +61,46 @@ gen_hypr() {
   return 0
 }
 
+# CSS override: corner radius only. The float gap (margin) is set in the config
+# include below, which is the reliable way to inset the bar across GTK versions.
 gen_waybar() {
   case "$(get waybar)" in
-    maximized) printf 'window#waybar {\n  margin: 0;\n  border-radius: 0;\n}\n' >"$WAYBAR" ;;
-    floating) printf 'window#waybar {\n  margin: 6px 8px 0 8px;\n  border-radius: 10px;\n}\n' >"$WAYBAR" ;;
+    floating) printf 'window#waybar {\n  border-radius: 10px;\n}\n' >"$WAYBAR" ;;
+    maximized) printf 'window#waybar {\n  border-radius: 0;\n}\n' >"$WAYBAR" ;;
     *) : >"$WAYBAR" ;;
   esac
 }
 
-old_waybar="$(cat "$WAYBAR" 2>/dev/null || true)"
+# Config include: bar position/size and float margin. waybar's main config does
+# NOT set these (an include cannot override the main file), so this file is the
+# only source -> no conflict. Default = top, height 32, no margin (current look).
+gen_waybar_config() {
+  local pos shape dim mt ml mr
+  pos="$(get waybar_position)"
+  [ -z "$pos" ] && pos=top
+  shape="$(get waybar)"
+  case "$pos" in
+    left | right) dim='"width": 28' ;;
+    *) dim='"height": 32' ;;
+  esac
+  if [ "$shape" = floating ]; then
+    mt=6
+    ml=8
+    mr=8
+  else
+    mt=0
+    ml=0
+    mr=0
+  fi
+  printf '{ "position": "%s", %s, "margin-top": %s, "margin-bottom": 0, "margin-left": %s, "margin-right": %s }\n' \
+    "$pos" "$dim" "$mt" "$ml" "$mr" >"$WAYBARCFG"
+}
+
+old_waybar="$(cat "$WAYBAR" "$WAYBARCFG" 2>/dev/null || true)"
 gen_hypr
 gen_waybar
-new_waybar="$(cat "$WAYBAR" 2>/dev/null || true)"
+gen_waybar_config
+new_waybar="$(cat "$WAYBAR" "$WAYBARCFG" 2>/dev/null || true)"
 
 if [ "${OMARCHY_AESTHETIC_NO_RELOAD:-0}" != "1" ]; then
   command -v hyprctl >/dev/null 2>&1 && hyprctl reload >/dev/null 2>&1 || true
