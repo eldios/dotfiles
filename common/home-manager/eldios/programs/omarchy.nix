@@ -106,6 +106,11 @@ let
   # Override upstream scripts that need Nix-specific adaptations.
   # These override the vendored copy by being installed last in $out/bin.
   overrides = {
+    # Generator behind the menu's Aesthetics overrides.
+    "omarchy-aesthetic-set" =
+      pkgs.writeShellScript "omarchy-aesthetic-set"
+        (builtins.readFile ../../../omarchy/bin/omarchy-aesthetic-set);
+
     # Upstream pgrep's for `elephant`; Nix wraps it as `.elephant-wrapped`,
     # so we go through systemctl to avoid spawning orphan daemons.
     "omarchy-launch-walker" = pkgs.writeShellScript "omarchy-launch-walker" ''
@@ -327,6 +332,17 @@ in
       executable = true;
     };
   };
+
+  # Override layer for omarchy-aesthetic-set: writable, not Nix-managed, so the
+  # hypr `source` and waybar `@import` never reference a missing file.
+  home.activation.omarchyAestheticOverrides =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      d="$HOME/.config/omarchy/overrides"
+      $DRY_RUN_CMD mkdir -p "$d"
+      for f in state hypr.conf waybar.css; do
+        [ -e "$d/$f" ] || $DRY_RUN_CMD touch "$d/$f"
+      done
+    '';
 
   home.sessionVariables = {
     OMARCHY_PATH = "${homeDir}/.local/share/omarchy";
