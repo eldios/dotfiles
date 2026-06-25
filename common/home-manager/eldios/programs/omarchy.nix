@@ -33,6 +33,9 @@ let
     # Launchers
     "omarchy-launch-browser"
     "omarchy-launch-editor"
+    # omarchy-launch-editor execs this for TUI editors ($EDITOR=nvim);
+    # without it every "edit config" menu entry silently does nothing.
+    "omarchy-launch-tui"
     "omarchy-launch-webapp"
     "omarchy-launch-or-focus"
     "omarchy-launch-or-focus-tui"
@@ -315,12 +318,12 @@ in
     ".config/omarchy/extensions/menu.sh".source =
       ../../../omarchy/extensions/menu.sh;
 
-    # Theme-set hooks: run after every `omarchy-theme-set`. Used to fill in
-    # config gaps (e.g. themes that ship neither colors.toml nor terminal
-    # configs leave current/theme/ghostty.conf missing, which our terminal
-    # modules include unconditionally).
-    ".config/omarchy/hooks/theme-set.d/00-ensure-terminal-configs.sh" = {
-      source = ../../../omarchy/hooks/theme-set.d/00-ensure-terminal-configs.sh;
+    # Theme-set hooks: run after every `omarchy-theme-set`. Fill in config
+    # gaps so incomplete upstream themes (which often omit waybar.css,
+    # walker.css, terminal configs, etc.) don't break the modules that
+    # include those files unconditionally.
+    ".config/omarchy/hooks/theme-set.d/00-ensure-theme-files.sh" = {
+      source = ../../../omarchy/hooks/theme-set.d/00-ensure-theme-files.sh;
       executable = true;
     };
   };
