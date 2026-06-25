@@ -12,8 +12,6 @@
     ../../../common/home-manager/eldios/programs/walker.nix
     ../../../common/home-manager/eldios/programs/variety.nix
     ../../../common/home-manager/eldios/programs/waybar.nix
-
-    ../../../common/home-manager/eldios/programs/wayfire.nix
   ];
 
   dconf.settings = {
