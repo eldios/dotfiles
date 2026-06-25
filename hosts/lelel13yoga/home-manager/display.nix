@@ -11,8 +11,6 @@
     ../../../common/home-manager/eldios/programs/walker.nix
     ../../../common/home-manager/eldios/programs/variety.nix
     ../../../common/home-manager/eldios/programs/waybar.nix
-
-    ../../../common/home-manager/eldios/programs/wayfire.nix
   ];
 
   # Hyprland is the primary session on this host; picom (X11 compositor)
