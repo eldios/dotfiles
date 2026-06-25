@@ -164,14 +164,13 @@ show_setup_menu() {
 # Quick high-impact aesthetic overrides. Default = enforce the theme's choice.
 # Backed by omarchy-aesthetic-set; the full config still lives in the nix modules.
 show_aesthetics_menu() {
-  case $(menu "Aesthetics" "  Rounding\n  Transparency\n  Blur\n  Animations\n  Gaps\n  Shadow\n󰍜  Waybar\n  Default (all)") in
+  case $(menu "Aesthetics" "  Rounding\n  Transparency\n  Blur\n  Animations\n  Gaps\n  Shadow\n  Default (all)") in
   *Rounding*) show_aes_rounding_menu ;;
   *Transparency*) show_aes_opacity_menu ;;
   *Blur*) show_aes_blur_menu ;;
   *Animations*) show_aes_anim_menu ;;
   *Gaps*) show_aes_gaps_menu ;;
   *Shadow*) show_aes_shadow_menu ;;
-  *Waybar*) show_aes_waybar_menu ;;
   *"Default (all)"*)
     for k in rounding opacity blur animations gaps shadow waybar; do
       omarchy-aesthetic-set "$k" default
@@ -240,11 +239,13 @@ show_aes_shadow_menu() {
   esac
 }
 
-show_aes_waybar_menu() {
+# Replaces upstream's waybar position menu (omarchy-style-waybar-position is not
+# packaged here, and our waybar config is Nix-managed). Single Waybar submenu.
+show_waybar_position_menu() {
   case $(menu "Waybar" "󰍜  Maximized\n󰍜  Floating\n  Default (theme)") in
   *Maximized*) omarchy-aesthetic-set waybar maximized ;;
   *Floating*) omarchy-aesthetic-set waybar floating ;;
   *Default*) omarchy-aesthetic-set waybar default ;;
-  *) show_aesthetics_menu ;;
+  *) show_style_menu ;;
   esac
 }
