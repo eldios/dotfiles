@@ -120,3 +120,43 @@ show_theme_menu() {
       ;;
   esac
 }
+
+# Drop the "edit hypr config" entries: our hyprland config is Nix-managed and
+# read-only (~/.config/hypr/*.conf are store symlinks), and the upstream
+# entries point at ~/.config/hypr/*.lua paths that don't exist here. The real
+# config lives in the dotfiles repo, so we expose a "Dotfiles" entry instead.
+
+# Style menu without the "Hyprland" (looknfeel) editor entry.
+show_style_menu() {
+  case $(menu "Style" "󰸌  Theme\n󰟵  Unlock\n  Font\n  Background\n󰍜  Waybar\n󰘇  Corners\n󱄄  Screensaver\n  About") in
+  *Theme*) show_theme_menu ;;
+  *Unlock*) omarchy-launch-walker -m menus:omarchyunlocks --width 800 --minheight 400 ;;
+  *Font*) show_font_menu ;;
+  *Background*) show_background_menu ;;
+  *Corners*) show_style_corners_menu ;;
+  *Waybar*) show_waybar_position_menu ;;
+  *Screensaver*) show_screensaver_menu ;;
+  *About*) show_about_menu ;;
+  *) show_main_menu ;;
+  esac
+}
+
+# Setup menu without the hypr config editors (Monitors/Keybindings/Input);
+# "Dotfiles" opens the source repo in $EDITOR instead.
+show_setup_menu() {
+  local options="  Audio\n  Wifi\n󰂯  Bluetooth\n󱐋  Power Profile\n  System Sleep\n󰊢  Dotfiles\n  Defaults\n󰱔  DNS\n  Security\n  Config"
+
+  case $(menu "Setup" "$options") in
+  *Audio*) omarchy-launch-audio ;;
+  *Wifi*) omarchy-launch-wifi ;;
+  *Bluetooth*) omarchy-launch-bluetooth ;;
+  *Power*) show_setup_power_menu ;;
+  *System*) show_setup_system_menu ;;
+  *Dotfiles*) omarchy-launch-editor "$HOME/dotfiles" ;;
+  *Defaults*) show_setup_default_menu ;;
+  *DNS*) present_terminal omarchy-setup-dns ;;
+  *Security*) show_setup_security_menu ;;
+  *Config*) show_setup_config_menu ;;
+  *) show_main_menu ;;
+  esac
+}
