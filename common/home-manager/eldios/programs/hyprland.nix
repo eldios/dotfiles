@@ -111,6 +111,9 @@ in {
     systemd.enable = true;
     extraConfig = ''
       source = ${config.home.homeDirectory}/.config/hypr/omarchy-theme.conf
+      # User aesthetic overrides (omarchy-aesthetic-set); sourced after the
+      # theme so it wins, but only for keys the user explicitly overrode.
+      source = ${config.home.homeDirectory}/.config/omarchy/overrides/hypr.conf
 
       # Window rules in block syntax (Hyprland 0.54.3+ removed the legacy
       # `windowrule = float, class:...` form). Each block requires a unique
