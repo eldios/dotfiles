@@ -90,7 +90,7 @@
   security.pam.services.swaylock = { };
   security.pam.services.hyprlock = { };
 
-  # Wayland env vars are set per-compositor (hyprland.nix, wayfire.nix, etc.)
+  # Wayland env vars are set per-compositor (hyprland.nix, niri.nix, etc.)
   # Don't set them globally - breaks X11 sessions like i3
 }
 

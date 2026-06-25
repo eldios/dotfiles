@@ -25,7 +25,6 @@
     (import ../../../common/nixos/overlays/zen-browser.nix {inherit zen-browser;})
     (import ../../../common/nixos/overlays/gitbutler.nix)
     (import ../../../common/nixos/overlays/pi-coding-agent.nix)
-    (import ../../../common/nixos/overlays/doctest-pkgconfig-fix.nix)
   ];
 
   imports = [
