@@ -55,7 +55,9 @@ gen_hypr() {
       printf 'general {\n  gaps_in = %s\n  gaps_out = %s\n}\n' "${gaps%,*}" "${gaps#*,}"
     fi
     [ -n "$anim" ] && printf 'animations {\n  enabled = %s\n}\n' "$anim"
+    true # keep the group's status 0 even when the last guard is false
   } >"$HYPR"
+  return 0
 }
 
 gen_waybar() {
@@ -77,3 +79,7 @@ if [ "${OMARCHY_AESTHETIC_NO_RELOAD:-0}" != "1" ]; then
     omarchy-restart-waybar || true
   fi
 fi
+
+# Work above completes regardless of the last conditional's status; the script
+# is a success at this point, so don't leak a non-zero exit (set -e callers).
+exit 0
