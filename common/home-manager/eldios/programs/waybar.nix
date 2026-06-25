@@ -49,11 +49,11 @@ in {
 
     style = ''
       @import "../omarchy/current/theme/waybar.css";
+      @import "../omarchy/overrides/waybar.css";
 
       * {
         background-color: transparent;
         border: none;
-        border-radius: 0;
         color: @foreground;
         font-family: "JetBrainsMono Nerd Font", "DejaVu Sans Mono", FontAwesome, sans-serif;
         font-size: 12px;
