@@ -128,12 +128,12 @@ show_theme_menu() {
 
 # Style menu without the "Hyprland" (looknfeel) editor entry.
 show_style_menu() {
-  case $(menu "Style" "󰸌  Theme\n󰟵  Unlock\n  Font\n  Background\n󰍜  Waybar\n󰘇  Corners\n󱄄  Screensaver\n  About") in
+  case $(menu "Style" "󰸌  Theme\n󰟵  Unlock\n  Font\n  Background\n󰍜  Waybar\n  Aesthetics\n󱄄  Screensaver\n  About") in
   *Theme*) show_theme_menu ;;
   *Unlock*) omarchy-launch-walker -m menus:omarchyunlocks --width 800 --minheight 400 ;;
   *Font*) show_font_menu ;;
   *Background*) show_background_menu ;;
-  *Corners*) show_style_corners_menu ;;
+  *Aesthetics*) show_aesthetics_menu ;;
   *Waybar*) show_waybar_position_menu ;;
   *Screensaver*) show_screensaver_menu ;;
   *About*) show_about_menu ;;
@@ -158,5 +158,93 @@ show_setup_menu() {
   *Security*) show_setup_security_menu ;;
   *Config*) show_setup_config_menu ;;
   *) show_main_menu ;;
+  esac
+}
+
+# Quick high-impact aesthetic overrides. Default = enforce the theme's choice.
+# Backed by omarchy-aesthetic-set; the full config still lives in the nix modules.
+show_aesthetics_menu() {
+  case $(menu "Aesthetics" "  Rounding\n  Transparency\n  Blur\n  Animations\n  Gaps\n  Shadow\n󰍜  Waybar\n  Default (all)") in
+  *Rounding*) show_aes_rounding_menu ;;
+  *Transparency*) show_aes_opacity_menu ;;
+  *Blur*) show_aes_blur_menu ;;
+  *Animations*) show_aes_anim_menu ;;
+  *Gaps*) show_aes_gaps_menu ;;
+  *Shadow*) show_aes_shadow_menu ;;
+  *Waybar*) show_aes_waybar_menu ;;
+  *"Default (all)"*)
+    for k in rounding opacity blur animations gaps shadow waybar; do
+      omarchy-aesthetic-set "$k" default
+    done
+    ;;
+  *) show_style_menu ;;
+  esac
+}
+
+show_aes_rounding_menu() {
+  case $(menu "Rounding" "  Sharp (0)\n  Small (6)\n  Medium (10)\n  Large (16)\n  Default (theme)") in
+  *Sharp*) omarchy-aesthetic-set rounding 0 ;;
+  *Small*) omarchy-aesthetic-set rounding 6 ;;
+  *Medium*) omarchy-aesthetic-set rounding 10 ;;
+  *Large*) omarchy-aesthetic-set rounding 16 ;;
+  *Default*) omarchy-aesthetic-set rounding default ;;
+  *) show_aesthetics_menu ;;
+  esac
+}
+
+show_aes_opacity_menu() {
+  case $(menu "Transparency" "  Opaque\n  Light\n  Medium\n  Default (theme)") in
+  *Opaque*) omarchy-aesthetic-set opacity 1.0,1.0 ;;
+  *Light*) omarchy-aesthetic-set opacity 0.97,0.92 ;;
+  *Medium*) omarchy-aesthetic-set opacity 0.92,0.85 ;;
+  *Default*) omarchy-aesthetic-set opacity default ;;
+  *) show_aesthetics_menu ;;
+  esac
+}
+
+show_aes_blur_menu() {
+  case $(menu "Blur" "  On\n  Off\n  Default (theme)") in
+  *On*) omarchy-aesthetic-set blur true ;;
+  *Off*) omarchy-aesthetic-set blur false ;;
+  *Default*) omarchy-aesthetic-set blur default ;;
+  *) show_aesthetics_menu ;;
+  esac
+}
+
+show_aes_anim_menu() {
+  case $(menu "Animations" "  On\n  Off\n  Default (theme)") in
+  *On*) omarchy-aesthetic-set animations true ;;
+  *Off*) omarchy-aesthetic-set animations false ;;
+  *Default*) omarchy-aesthetic-set animations default ;;
+  *) show_aesthetics_menu ;;
+  esac
+}
+
+show_aes_gaps_menu() {
+  case $(menu "Gaps" "  None\n  Small\n  Medium\n  Large\n  Default (theme)") in
+  *None*) omarchy-aesthetic-set gaps 0,0 ;;
+  *Small*) omarchy-aesthetic-set gaps 2,4 ;;
+  *Medium*) omarchy-aesthetic-set gaps 4,8 ;;
+  *Large*) omarchy-aesthetic-set gaps 8,16 ;;
+  *Default*) omarchy-aesthetic-set gaps default ;;
+  *) show_aesthetics_menu ;;
+  esac
+}
+
+show_aes_shadow_menu() {
+  case $(menu "Shadow" "  On\n  Off\n  Default (theme)") in
+  *On*) omarchy-aesthetic-set shadow true ;;
+  *Off*) omarchy-aesthetic-set shadow false ;;
+  *Default*) omarchy-aesthetic-set shadow default ;;
+  *) show_aesthetics_menu ;;
+  esac
+}
+
+show_aes_waybar_menu() {
+  case $(menu "Waybar" "󰍜  Maximized\n󰍜  Floating\n  Default (theme)") in
+  *Maximized*) omarchy-aesthetic-set waybar maximized ;;
+  *Floating*) omarchy-aesthetic-set waybar floating ;;
+  *Default*) omarchy-aesthetic-set waybar default ;;
+  *) show_aesthetics_menu ;;
   esac
 }
