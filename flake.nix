@@ -9,6 +9,9 @@
     };
 
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    # Gemini CLI OAuth currently trips over Node 22/26.3 TLS/gaxios behavior.
+    # Pin a known non-EOL Node 26.4.0 nixpkgs revision only for that wrapper.
+    nixpkgs-nodejs-gemini.url = "github:NixOS/nixpkgs/d2b1d30e061d4bed4615295b3a226e3807a7f5e4";
     nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
 
     darwin = {
@@ -238,4 +241,3 @@
   };
 }
 # vim: set nu li sw=2 ts=2 expandtab
-
