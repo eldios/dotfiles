@@ -473,11 +473,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1781752656,
-        "narHash": "sha256-Qi64QnSYgll8ysyR648MibWqNdWmRHKFGIAVrsLdoK8=",
+        "lastModified": 1782420380,
+        "narHash": "sha256-4T6RkxY+TcxqwL/p72LngCLMFPHvovr7ImrwYPIgnb0=",
         "owner": "nklmilojevic",
         "repo": "gemini-cli-nix",
-        "rev": "0d2ecb19ce5fde03e43eeefe89d4a170b9af8a78",
+        "rev": "6d5058328fa62bf5e6d822b47b1697c53938fee8",
         "type": "github"
       },
       "original": {
@@ -662,6 +662,22 @@
       "original": {
         "owner": "nix-community",
         "repo": "nixpkgs.lib",
+        "type": "github"
+      }
+    },
+    "nixpkgs-nodejs-gemini": {
+      "locked": {
+        "lastModified": 1782378024,
+        "narHash": "sha256-0D3CTE0wF5a4VmT71Nv3y/KFEd8m2sndDet7XiVsMBQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "d2b1d30e061d4bed4615295b3a226e3807a7f5e4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "d2b1d30e061d4bed4615295b3a226e3807a7f5e4",
         "type": "github"
       }
     },
@@ -947,6 +963,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_9",
         "nixpkgs-darwin": "nixpkgs-darwin",
+        "nixpkgs-nodejs-gemini": "nixpkgs-nodejs-gemini",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "omarchy": "omarchy",
         "opencode-nix": "opencode-nix",
