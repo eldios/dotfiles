@@ -326,7 +326,10 @@ let
 
   mcphubContent = builtins.toJSON { mcpServers = mcphubServers; };
 
-  # Generate Gemini CLI settings.json
+  # Gemini CLI system-defaults layer (immutable, read-only via Nix store).
+  # gemini-cli writes runtime auth/login state to ~/.gemini/settings.json, so
+  # that user-settings file must stay writable and unmanaged. This base layer
+  # provides MCP servers + UI/general defaults; user settings override it.
   geminiSettings = {
     mcpServers = mcphubServers;
     security = {
@@ -340,7 +343,7 @@ let
       theme = "Default";
     };
     general = {
-      disableAutoUpdate = true;
+      enableAutoUpdate = false;
       vimMode = true;
       previewFeatures = true;
     };
@@ -370,10 +373,18 @@ in
     text = mcphubContent;
   };
 
-  # Generate Gemini CLI settings.json
-  home.file.".gemini/settings.json" = {
+  # Gemini CLI system-defaults: managed, read-only base layer. ~/.gemini/settings.json
+  # is intentionally left unmanaged so gemini-cli can persist auth/login state.
+  xdg.configFile."gemini-cli/system-defaults.json" = {
     text = geminiSettingsContent;
   };
+
+  # Point gemini-cli at the Nix-managed system-defaults file (overrides the
+  # built-in /etc/gemini-cli/system-defaults.json path, which we cannot write
+  # from home-manager). Verified in bundle: getSystemDefaultsPath() honors this.
+  home.sessionVariables.GEMINI_CLI_SYSTEM_DEFAULTS_PATH =
+    "${config.xdg.configHome}/gemini-cli/system-defaults.json";
+  home.sessionVariables.GEMINI_CLI_SYSTEM_SETTINGS_PATH = "${config.xdg.configHome}/gemini-cli/settings.json";
 
   # Ensure .mcp directory exists with proper permissions
   home.file.".mcp/.keep" = {
