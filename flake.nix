@@ -67,6 +67,7 @@
     opencode-nix.url = "github:dan-online/opencode-nix";
     llm-agents-nix.url = "github:numtide/llm-agents.nix"; # for crush (charmbracelet)
     gws-cli.url = "github:googleworkspace/cli";
+    herdr.url = "github:ogulcancelik/herdr"; # agent multiplexer for AI CLIs (uses its own nixpkgs-unstable)
 
     # Zen Browser — community flake (per https://wiki.nixos.org/wiki/Zen_Browser)
     zen-browser = {
@@ -82,6 +83,7 @@
     dgop,
     disko,
     gws-cli,
+    herdr,
     llm-agents-nix,
     opencode-nix,
     home-manager,
@@ -113,6 +115,7 @@
         dgop
         disko
         gws-cli
+        herdr
         home-manager
         llm-agents-nix
         opencode-nix
