@@ -6,6 +6,7 @@
     pkgs.codex # OpenAI (via codex-cli-nix flake)
     pkgs.crush # Charmbracelet (via llm-agents-nix/crush overlay)
     pkgs.gws # Google Workspace CLI (via gws-cli overlay)
+    pkgs.herdr # agent multiplexer for AI CLIs (via herdr flake overlay)
     pkgs.opencode # OpenCode (via opencode-nix flake)
     pkgs.pi-coding-agent # Pi (via local overlay from npm registry)
     pkgs.ollama # CPU build, used as a client (OLLAMA_HOST -> mininixos over Tailscale); no ROCm
