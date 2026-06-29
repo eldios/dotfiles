@@ -109,6 +109,9 @@ in {
     package = pkgs.unstable.hyprland;
     xwayland.enable = true;
     systemd.enable = true;
+    # Keep hyprlang generation: extraConfig below and the omarchy theme files it
+    # sources are hyprlang, which a "lua" configType cannot consume.
+    configType = "hyprlang";
     extraConfig = ''
       source = ${config.home.homeDirectory}/.config/hypr/omarchy-theme.conf
       # User aesthetic overrides (omarchy-aesthetic-set); sourced after the
