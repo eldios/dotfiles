@@ -1,8 +1,4 @@
-{
-  config,
-  ...
-}:
-let
+{config, ...}: let
   streamableHttpPath = "/mcp";
   mutxHealthcheckRequest = builtins.toJSON {
     jsonrpc = "2.0";
@@ -10,7 +6,7 @@ let
     method = "initialize";
     params = {
       protocolVersion = "2025-03-26";
-      capabilities = { };
+      capabilities = {};
       clientInfo = {
         name = "docker-healthcheck";
         version = "1";
@@ -20,7 +16,7 @@ let
 
   # SSE output from a single stdio MCP process crashes when multiple clients
   # connect concurrently. Use stateful Streamable HTTP for stdio MCP servers
-  # shared by Codex, Claude, Gemini, nvim, and other clients.
+  # shared by Codex, Claude, nvim, and other clients.
   streamableHttpArgs = [
     "--outputTransport"
     "streamableHttp"
@@ -42,14 +38,15 @@ let
         RUN npm install -g supergateway
         WORKDIR /app
       '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "npx -y @upstash/context7-mcp"
-        "--port"
-        "8000"
-      ]
-      ++ streamableHttpArgs;
+      command =
+        [
+          "supergateway"
+          "--stdio"
+          "npx -y @upstash/context7-mcp"
+          "--port"
+          "8000"
+        ]
+        ++ streamableHttpArgs;
       env = {
         CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
         CLIENT_IP_ENCRYPTION_KEY = "\${CONTEXT7_ENCRYPTION_KEY}";
@@ -75,14 +72,15 @@ let
         COPY --from=github /server/github-mcp-server /usr/local/bin/github-mcp-server
         WORKDIR /app
       '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "/usr/local/bin/github-mcp-server stdio"
-        "--port"
-        "8000"
-      ]
-      ++ streamableHttpArgs;
+      command =
+        [
+          "supergateway"
+          "--stdio"
+          "/usr/local/bin/github-mcp-server stdio"
+          "--port"
+          "8000"
+        ]
+        ++ streamableHttpArgs;
       env = {
         GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_TOKEN}";
       };
@@ -100,14 +98,15 @@ let
         RUN npm install -g supergateway
         WORKDIR /app
       '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "npx -y kagi-mcp"
-        "--port"
-        "8000"
-      ]
-      ++ streamableHttpArgs;
+      command =
+        [
+          "supergateway"
+          "--stdio"
+          "npx -y kagi-mcp"
+          "--port"
+          "8000"
+        ]
+        ++ streamableHttpArgs;
       env = {
         KAGI_SUMMARIZER_ENGINE = "\${KAGI_ENGINE}";
         KAGI_API_KEY = "\${KAGI_API_KEY}";
@@ -137,7 +136,7 @@ let
       env = {
         MUTX_SOCKET_DIR = "/run/mutx";
       };
-      envSecrets = { };
+      envSecrets = {};
       volumes = [
         "\${XDG_RUNTIME_DIR}/mutx:/run/mutx"
       ];
@@ -169,14 +168,15 @@ let
         COPY --from=anytype /app /app
         WORKDIR /app
       '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "node /app/bin/cli.mjs run"
-        "--port"
-        "3001"
-      ]
-      ++ streamableHttpArgs;
+      command =
+        [
+          "supergateway"
+          "--stdio"
+          "node /app/bin/cli.mjs run"
+          "--port"
+          "3001"
+        ]
+        ++ streamableHttpArgs;
       env = {
         ANYTYPE_API_BASE_URL = "http://127.0.0.1:31009";
         OPENAPI_MCP_HEADERS = "\${ANYTYPE_HEADERS}";
@@ -199,16 +199,17 @@ let
         RUN npm install -g supergateway
         WORKDIR /app
       '';
-      command = [
-        "supergateway"
-        "--stdio"
-        "npx -y @plaud-ai/mcp@latest"
-        "--port"
-        "8000"
-      ]
-      ++ streamableHttpArgs;
-      env = { };
-      envSecrets = { };
+      command =
+        [
+          "supergateway"
+          "--stdio"
+          "npx -y @plaud-ai/mcp@latest"
+          "--port"
+          "8000"
+        ]
+        ++ streamableHttpArgs;
+      env = {};
+      envSecrets = {};
       volumes = [
         "\${HOME_DIR}/.plaud:/root/.plaud"
       ];
@@ -216,12 +217,10 @@ let
   };
 
   # Optional YAML comment block emitted before a service (for upstream docs links)
-  mkRefsComment =
-    cfg:
-    if cfg ? refs && cfg.refs != [ ] then
-      (builtins.concatStringsSep "\n" (map (u: "  # ${u}") cfg.refs)) + "\n"
-    else
-      "";
+  mkRefsComment = cfg:
+    if cfg ? refs && cfg.refs != []
+    then (builtins.concatStringsSep "\n" (map (u: "  # ${u}") cfg.refs)) + "\n"
+    else "";
 
   # Helper to generate docker-compose service YAML
   mkDockerService = name: cfg: ''
@@ -235,51 +234,51 @@ let
       )
     )}
         command: ${builtins.toJSON cfg.command}
-    ${if cfg ? user && cfg.user != "" then "    user: \"${cfg.user}\"" else ""}
     ${
-      if cfg.env != { } then
-        ''
-              environment:
-          ${builtins.concatStringsSep "\n" (
-            builtins.attrValues (builtins.mapAttrs (k: v: "      - ${k}=${v}") cfg.env)
-          )}''
-      else
-        ""
+      if cfg ? user && cfg.user != ""
+      then "    user: \"${cfg.user}\""
+      else ""
     }
     ${
-      if cfg ? volumes && cfg.volumes != [ ] then
-        ''
-              volumes:
-          ${builtins.concatStringsSep "\n" (map (v: "      - ${v}") cfg.volumes)}''
-      else
-        ""
+      if cfg.env != {}
+      then ''
+            environment:
+        ${builtins.concatStringsSep "\n" (
+          builtins.attrValues (builtins.mapAttrs (k: v: "      - ${k}=${v}") cfg.env)
+        )}''
+      else ""
     }
     ${
-      if cfg ? networkMode && cfg.networkMode != "" then
-        "    network_mode: \"${cfg.networkMode}\""
-      else
-        ''
-          ${
-            if cfg ? extraHosts && cfg.extraHosts != [ ] then
-              ''
-                  extra_hosts:
-                ${builtins.concatStringsSep "\n" (map (h: "      - \"${h}\"") cfg.extraHosts)}''
-            else
-              ""
-          }
-              ports:
-                - "${toString cfg.port}:${toString cfg.internalPort}"''
+      if cfg ? volumes && cfg.volumes != []
+      then ''
+            volumes:
+        ${builtins.concatStringsSep "\n" (map (v: "      - ${v}") cfg.volumes)}''
+      else ""
     }
     ${
-      if cfg ? healthcheck then
+      if cfg ? networkMode && cfg.networkMode != ""
+      then "    network_mode: \"${cfg.networkMode}\""
+      else ''
+        ${
+          if cfg ? extraHosts && cfg.extraHosts != []
+          then ''
+              extra_hosts:
+            ${builtins.concatStringsSep "\n" (map (h: "      - \"${h}\"") cfg.extraHosts)}''
+          else ""
+        }
+            ports:
+              - "${toString cfg.port}:${toString cfg.internalPort}"''
+    }
+    ${
+      if cfg ? healthcheck
+      then
         "    healthcheck:\n"
         + "      test: ${builtins.toJSON cfg.healthcheck.test}\n"
         + "      interval: ${cfg.healthcheck.interval}\n"
         + "      timeout: ${cfg.healthcheck.timeout}\n"
         + "      retries: ${toString cfg.healthcheck.retries}\n"
         + "      start_period: ${cfg.healthcheck.start_period}"
-      else
-        ""
+      else ""
     }
         restart: unless-stopped
   '';
@@ -300,7 +299,7 @@ let
   '';
 
   # Generate .env content from all envSecrets
-  allEnvSecrets = builtins.foldl' (acc: cfg: acc // (cfg.envSecrets or { })) { } (
+  allEnvSecrets = builtins.foldl' (acc: cfg: acc // (cfg.envSecrets or {})) {} (
     builtins.attrValues mcpServers
   );
 
@@ -320,42 +319,14 @@ let
   '';
 
   # Generate mcphub servers.json for nvim
-  mcphubServers = builtins.mapAttrs (name: cfg: {
-    url = "http://localhost:${toString cfg.port}${cfg.mcpPath or "/sse"}";
-  }) mcpServers;
+  mcphubServers =
+    builtins.mapAttrs (name: cfg: {
+      url = "http://localhost:${toString cfg.port}${cfg.mcpPath or "/sse"}";
+    })
+    mcpServers;
 
-  mcphubContent = builtins.toJSON { mcpServers = mcphubServers; };
-
-  # Gemini CLI system-defaults layer (immutable, read-only via Nix store).
-  # gemini-cli writes runtime auth/login state to ~/.gemini/settings.json, so
-  # that user-settings file must stay writable and unmanaged. This base layer
-  # provides MCP servers + UI/general defaults; user settings override it.
-  geminiSettings = {
-    mcpServers = mcphubServers;
-    security = {
-      auth = {
-        selectedType = "oauth-personal";
-      };
-    };
-    ui = {
-      showMemoryUsage = true;
-      showLineNumbers = true;
-      theme = "Default";
-    };
-    general = {
-      enableAutoUpdate = false;
-      vimMode = true;
-      previewFeatures = true;
-    };
-    tools = {
-      useRipgrep = true;
-    };
-  };
-
-  geminiSettingsContent = builtins.toJSON geminiSettings;
-
-in
-{
+  mcphubContent = builtins.toJSON {mcpServers = mcphubServers;};
+in {
   # Generate docker-compose.yml
   home.file.".mcp/docker-compose.yml" = {
     text = dockerComposeContent;
@@ -373,22 +344,10 @@ in
     text = mcphubContent;
   };
 
-  # Gemini CLI system-defaults: managed, read-only base layer. ~/.gemini/settings.json
-  # is intentionally left unmanaged so gemini-cli can persist auth/login state.
-  xdg.configFile."gemini-cli/system-defaults.json" = {
-    text = geminiSettingsContent;
-  };
-
-  # Point gemini-cli at the Nix-managed system-defaults file (overrides the
-  # built-in /etc/gemini-cli/system-defaults.json path, which we cannot write
-  # from home-manager). Verified in bundle: getSystemDefaultsPath() honors this.
-  home.sessionVariables.GEMINI_CLI_SYSTEM_DEFAULTS_PATH =
-    "${config.xdg.configHome}/gemini-cli/system-defaults.json";
-  home.sessionVariables.GEMINI_CLI_SYSTEM_SETTINGS_PATH = "${config.xdg.configHome}/gemini-cli/settings.json";
-
   # Ensure .mcp directory exists with proper permissions
   home.file.".mcp/.keep" = {
     text = "";
   };
 }
 # vim: set ts=2 sw=2 et ai list nu
+
