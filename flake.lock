@@ -397,24 +397,6 @@
         "type": "github"
       }
     },
-    "flake-utils_2": {
-      "inputs": {
-        "systems": "systems_3"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "flake-utils_3": {
       "inputs": {
         "systems": "systems_4"
@@ -464,25 +446,6 @@
       "original": {
         "owner": "SenchoPens",
         "repo": "fromYaml",
-        "type": "github"
-      }
-    },
-    "gemini-cli-nix": {
-      "inputs": {
-        "flake-utils": "flake-utils_2",
-        "nixpkgs": "nixpkgs_4"
-      },
-      "locked": {
-        "lastModified": 1782420380,
-        "narHash": "sha256-4T6RkxY+TcxqwL/p72LngCLMFPHvovr7ImrwYPIgnb0=",
-        "owner": "nklmilojevic",
-        "repo": "gemini-cli-nix",
-        "rev": "6d5058328fa62bf5e6d822b47b1697c53938fee8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nklmilojevic",
-        "repo": "gemini-cli-nix",
         "type": "github"
       }
     },
@@ -665,22 +628,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-nodejs-gemini": {
-      "locked": {
-        "lastModified": 1782378024,
-        "narHash": "sha256-0D3CTE0wF5a4VmT71Nv3y/KFEd8m2sndDet7XiVsMBQ=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "d2b1d30e061d4bed4615295b3a226e3807a7f5e4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "d2b1d30e061d4bed4615295b3a226e3807a7f5e4",
-        "type": "github"
-      }
-    },
     "nixpkgs-unstable": {
       "locked": {
         "lastModified": 1781577229,
@@ -789,22 +736,6 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_4": {
-      "locked": {
-        "lastModified": 1771207753,
-        "narHash": "sha256-b9uG8yN50DRQ6A7JdZBfzq718ryYrlmGgqkRm9OOwCE=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "d1c15b7d5806069da59e819999d70e1cec0760bf",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -954,7 +885,6 @@
         "dgop": "dgop",
         "disko": "disko",
         "elephant": "elephant",
-        "gemini-cli-nix": "gemini-cli-nix",
         "gws-cli": "gws-cli",
         "home-manager": "home-manager",
         "llm-agents-nix": "llm-agents-nix",
@@ -963,7 +893,6 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_9",
         "nixpkgs-darwin": "nixpkgs-darwin",
-        "nixpkgs-nodejs-gemini": "nixpkgs-nodejs-gemini",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "omarchy": "omarchy",
         "opencode-nix": "opencode-nix",
@@ -1072,21 +1001,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default-linux",
-        "type": "github"
-      }
-    },
-    "systems_3": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
         "type": "github"
       }
     },
