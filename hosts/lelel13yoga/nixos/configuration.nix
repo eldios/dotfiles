@@ -7,6 +7,7 @@
   claude-code-overlay,
   codex-cli-nix,
   gws-cli,
+  herdr,
   llm-agents-nix,
   opencode-nix,
   zen-browser,
@@ -19,6 +20,7 @@
     claude-code-overlay.overlays.default
     codex-cli-nix.overlays.default
     opencode-nix.overlays.default
+    herdr.overlays.default
     (import ../../../common/nixos/overlays/crush.nix {inherit llm-agents-nix;})
     (import ../../../common/nixos/overlays/gws-cli.nix {inherit gws-cli;})
     (import ../../../common/nixos/overlays/zen-browser.nix {inherit zen-browser;})
