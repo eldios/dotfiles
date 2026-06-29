@@ -12,7 +12,6 @@ let
 
   lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock";
   powermenu = "${pkgs.wlogout}/bin/wlogout";
-  mail = "mailspring --password-store='gnome-libsecret'";
 
   # Screenshot tools
   screenshot_select = "${pkgs.grimblast}/bin/grimblast --notify copy area";
@@ -479,7 +478,6 @@ in
 
           // Suggested binds for running programs: terminal, app launcher, screen locker.
           Mod+Return  hotkey-overlay-title="Open a Terminal" { spawn "${terminal}"; }
-          Mod+Shift+M hotkey-overlay-title="Open Mail client" { spawn "${mail}"; }
 
           // Launchers - Use full paths and ensure XWayland compatibility
           Mod+D       hotkey-overlay-title="Open Rofi menu" { spawn "${full_menu}"; }

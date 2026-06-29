@@ -180,7 +180,6 @@ in
 
       keybindings = {
         "${modifier}+Return" = "exec ${terminal}";
-        "${modifier}+Shift+m" = "exec mailspring --password-store='gnome-libsecret'";
 
         "${modifier}+d" = "exec ${full_menu}";
         "${modifier}+Shift+d" = "exec ${quick_menu}";
