@@ -96,6 +96,7 @@
       inetutils # classic network tools (ftp, telnet, etc.)
       magic-wormhole-rs # secure file transfer between devices
       mtr # network diagnostic (traceroute + ping)
+      netbird # WireGuard-based mesh VPN client
       portal # secure peer-to-peer file transfer
       sipcalc # IP subnet calculator
       socat # multipurpose network relay tool
