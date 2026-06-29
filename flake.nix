@@ -9,9 +9,6 @@
     };
 
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    # Gemini CLI OAuth currently trips over Node 22/26.3 TLS/gaxios behavior.
-    # Pin a known non-EOL Node 26.4.0 nixpkgs revision only for that wrapper.
-    nixpkgs-nodejs-gemini.url = "github:NixOS/nixpkgs/d2b1d30e061d4bed4615295b3a226e3807a7f5e4";
     nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
 
     darwin = {
@@ -67,7 +64,6 @@
     # AI tool overlays (auto-updated by maintainers)
     claude-code-overlay.url = "github:ryoppippi/claude-code-overlay";
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";
-    gemini-cli-nix.url = "github:nklmilojevic/gemini-cli-nix";
     opencode-nix.url = "github:dan-online/opencode-nix";
     llm-agents-nix.url = "github:numtide/llm-agents.nix"; # for crush (charmbracelet)
     gws-cli.url = "github:googleworkspace/cli";
@@ -85,7 +81,6 @@
     darwin,
     dgop,
     disko,
-    gemini-cli-nix,
     gws-cli,
     llm-agents-nix,
     opencode-nix,
@@ -117,7 +112,6 @@
         codex-cli-nix
         dgop
         disko
-        gemini-cli-nix
         gws-cli
         home-manager
         llm-agents-nix
@@ -241,3 +235,4 @@
   };
 }
 # vim: set nu li sw=2 ts=2 expandtab
+
