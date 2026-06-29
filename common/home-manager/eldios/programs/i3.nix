@@ -13,6 +13,9 @@ let
   # Terminal
   terminal = "${pkgs.ghostty}/bin/ghostty";
 
+  # Default browser (bare command, resolved from PATH like the rest of the WM)
+  browser = "vivaldi";
+
   # Use the unified rofi scripts from rofi.nix
   quick_menu = "rofi-run";
   full_menu = "rofi-drun";
@@ -753,7 +756,7 @@ in
         "${modifier}+Shift+e" = "exec ${file_menu}";
         "${modifier}+Shift+w" = "exec ${window_menu}";
         "${modifier}+Shift+m" = "exec ${mail}";
-        "${modifier}+b" = "exec firefox";
+        "${modifier}+b" = "exec ${browser}";
         "${modifier}+Shift+f" = "exec ${pkgs.thunar}/bin/thunar";
 
         # Screenshots
