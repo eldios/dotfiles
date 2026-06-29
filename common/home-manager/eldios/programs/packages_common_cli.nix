@@ -26,6 +26,7 @@
       distroshelf # GUI for Distrobox Containers
       entr # run commands when files change
       github-cli # GitHub from the terminal
+      herdr # agent multiplexer for AI coding agents (via herdr flake overlay)
       # FIXME: broken package — gitbutler fails to build due to turbo 2.7.6 upstream issue
       # gitbutler # visual Git client for branches
       just # command runner (Makefile alternative)
