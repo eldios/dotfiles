@@ -17,7 +17,7 @@
     # Trust the NCPS signing key
     # Get key with: curl https://nix-cache.casa.lele.rip/pubkey
     trusted-public-keys = [
-      "nix-cache.casa.lele.rip:pXEMvYrY/AgTKBw7A1d4DZi8YRbjBby3eMxnmEo3Aqs="
+      "nix-cache.casa.lele.rip:MIX0pJiXpRwrpCmg4sV804gXPkohMs2+EroVLSOqHKg="
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "walker.cachix.org-1:fG8q+uAaMqhsMxWjwvk0IMb4mFPFLqHjuvfwQxE4oJM="
