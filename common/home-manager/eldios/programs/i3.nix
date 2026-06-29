@@ -81,9 +81,6 @@ let
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
 
-  # Mailspring email client
-  mail = "mailspring --password-store=\"gnome-libsecret\"";
-
   # Screenshots
   screenshot_select = "flameshot gui -c";
   screenshot_full = "flameshot gui";
@@ -755,7 +752,6 @@ in
         "${modifier}+Shift+d" = "exec ${quick_menu}";
         "${modifier}+Shift+e" = "exec ${file_menu}";
         "${modifier}+Shift+w" = "exec ${window_menu}";
-        "${modifier}+Shift+m" = "exec ${mail}";
         "${modifier}+b" = "exec ${browser}";
         "${modifier}+Shift+f" = "exec ${pkgs.thunar}/bin/thunar";
 
