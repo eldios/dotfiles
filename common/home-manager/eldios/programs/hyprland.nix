@@ -30,8 +30,6 @@
 
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
-  # Command to launch Mailspring email client
-  mail = "mailspring --password-store=\"gnome-libsecret\"";
   # Screenshots using grimblast (Hyprland-native, grim+slurp wrapper)
   screenshot_select = "${pkgs.grimblast}/bin/grimblast copy area";
   screenshot_full = "${pkgs.grimblast}/bin/grimblast copysave screen ~/Pictures/Screenshots/$(date +%F_%T).png";
@@ -437,7 +435,6 @@ in {
         "$mod, Space, exec, ${full_menu}"
         "$mod ALT, Space, exec, ${omarchyMenu}"
         "$mod CTRL, E, exec, /etc/profiles/per-user/eldios/bin/omarchy-launch-walker -m symbols"
-        "$mod SHIFT, M, exec, ${mail}"
 
         # System controls
         "$mod CTRL SHIFT, Q, exec, ${powermenu}"

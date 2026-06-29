@@ -13,8 +13,6 @@ let
   powermenu = "${pkgs.wlogout}/bin/wlogout";
   # Screen locker
   lockscreen = "${pkgs.swaylock-effects}/bin/swaylock -f -c 000000 --clock";
-  # Mail client
-  mail = "mailspring --password-store='gnome-libsecret'";
 
   # Screenshot tools (Wayland-native)
   screenshot_select = "${pkgs.grimblast}/bin/grimblast --notify copy area";
@@ -632,7 +630,6 @@ in
       bind=SUPER+SHIFT,d,spawn,${quick_menu}
       bind=SUPER+SHIFT,e,spawn,${file_menu}
       bind=SUPER+SHIFT,w,spawn,${window_menu}
-      bind=SUPER+SHIFT,m,spawn,${mail}
 
       # =====================================================================
       # Key Bindings — System
