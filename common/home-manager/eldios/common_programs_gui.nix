@@ -30,7 +30,6 @@
     # Packages
     ./programs/packages_common_gui.nix
     ./programs/packages_linux_gui.nix
-    ./programs/packages_mailspring.nix
   ];
 }
 # vim: set ts=2 sw=2 et ai list nu
