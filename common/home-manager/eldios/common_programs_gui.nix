@@ -25,7 +25,6 @@
     ./programs/wezterm.nix
 
     # Browsers and apps
-    ./programs/firefox.nix
     ./programs/keybase.nix
 
     # Packages

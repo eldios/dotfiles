@@ -23,6 +23,12 @@ in
   # Overlays are now applied through nixpkgs.overlays at host level
   nixpkgs.config.allowUnfree = true;
 
+  # build-time-only dep of feishin, vesktop, signal-desktop, teleport; never in
+  # the runtime closure. Drop when upstream moves off it: nixpkgs#536370
+  nixpkgs.config.permittedInsecurePackages = [
+    "pnpm-10.29.2"
+  ];
+
   # nix
   nix = {
     # This will add each flake input as a registry

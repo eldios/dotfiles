@@ -35,10 +35,7 @@
       hyprpaper.enable = lib.mkForce false;
       waybar.enable = lib.mkForce false;
 
-      firefox = {
-        enable = true;
-        profileNames = [ "eldios" ];
-      };
+      firefox.enable = false;
     };
   };
 }
