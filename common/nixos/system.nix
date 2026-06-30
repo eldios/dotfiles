@@ -173,6 +173,7 @@ in
     btop
     byobu
     #colorls # like `ls --color=auto -F` but cooler
+    cmake
     ethtool
     fastfetch
     file
