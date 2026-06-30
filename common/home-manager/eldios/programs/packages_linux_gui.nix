@@ -66,7 +66,23 @@
 
         # Communication
         ayugram-desktop # Telegram alt client
-        mailspring # mail client
+        # mailspring wrapped to force the gnome-libsecret password backend.
+        # Electron can't auto-detect the Secret Service on wlroots compositors
+        # (hyprland/i3), so the app menu launch fails without this flag.
+        (pkgs.symlinkJoin {
+          name = "mailspring-libsecret";
+          paths = [ mailspring ];
+          nativeBuildInputs = [ pkgs.makeBinaryWrapper ];
+          postBuild = ''
+            rm $out/bin/mailspring
+            makeWrapper ${mailspring}/bin/mailspring $out/bin/mailspring \
+              --add-flags "--password-store=gnome-libsecret"
+            rm -f $out/share/applications/Mailspring.desktop
+            substitute ${mailspring}/share/applications/Mailspring.desktop \
+              $out/share/applications/Mailspring.desktop \
+              --replace-fail "${mailspring}/bin/mailspring" "$out/bin/mailspring"
+          '';
+        })
         signal-desktop # encrypted messaging app
         slack # team communication platform
         #telegram-desktop # messaging app
