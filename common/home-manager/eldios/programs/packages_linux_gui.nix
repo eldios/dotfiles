@@ -66,6 +66,7 @@
 
         # Communication
         ayugram-desktop # Telegram alt client
+        mailspring # mail client
         signal-desktop # encrypted messaging app
         slack # team communication platform
         #telegram-desktop # messaging app
@@ -199,7 +200,6 @@
         # Dev Tools
         dbeaver-bin # database management GUI
         vscode # Visual Studio Code editor
-
         # Desktop Customization
         anytype # knowledge management and wiki tool
         variety # automatic wallpaper changer
@@ -207,8 +207,6 @@
 
         # 3D Printing & IoT
         esphome # ESP microcontroller firmware manager
-        # FIXME: broken package — freecad-wayland fails to build on current nixpkgs
-        # freecad-wayland # parametric 3D CAD modeler
         orca-slicer # 3D printer slicer
         prusa-slicer # 3D printer slicer (Prusa)
 
