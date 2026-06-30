@@ -113,10 +113,9 @@ in
 
     pcscd.enable = true;
 
-    tailscale = {
-      enable = true;
-      package = pkgs.unstable.tailscale;
-    };
+    # Runs the wt0 client daemon and installs the netbird CLI system-wide.
+    # Idle until each host is enrolled (`netbird up`).
+    netbird.enable = true;
 
   };
 

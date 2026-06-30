@@ -23,14 +23,14 @@
       # it claims eno0 with a standalone "Wired connection 1", leaving br0
       # slave-less and DOWN (no LAN/.40, no VM bridging). wlan0 stays NM-managed.
       unmanaged = [ "eno0" "br0" ];
-      # Hand DNS to systemd-resolved so it can do split-DNS cleanly with
-      # Tailscale MagicDNS. With the default backend NM and tailscaled both
-      # write via openresolv, which merged these resolvers ahead of
-      # 100.100.100.100 and broke *.ts.net / peer short-name resolution.
+      # Hand DNS to systemd-resolved so the mesh VPN client can do split-DNS
+      # cleanly. With NM's default backend, NM and the VPN daemon both write
+      # via openresolv, which clobbers the VPN resolver and breaks peer /
+      # internal-domain resolution.
       dns = "systemd-resolved";
       # Pin public resolvers: the UniFi gateway handed out via DHCP does not
-      # serve DNS. Under resolved these become the per-link upstream for the
-      # default route; *.ts.net is routed to MagicDNS instead.
+      # serve DNS. Under resolved these are the per-link upstream for the
+      # default route; the VPN routes its own search domain to its resolver.
       insertNameservers = [ "1.1.1.1" "9.9.9.9" ];
     };
 
