@@ -37,6 +37,7 @@
         enable = true;
         dates = "weekly";
       };
+      storageDriver = "overlay2";
       daemon.settings = {
         log-driver = "local";
         log-opts = {

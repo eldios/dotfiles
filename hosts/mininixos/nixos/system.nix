@@ -7,9 +7,6 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-  # BTRFS storage driver (matching lele8845ace pattern)
-  virtualisation.docker.storageDriver = "btrfs";
-
   # Docker data on dedicated 1.8TB disk
   virtualisation.docker.daemon.settings = {
     data-root = "/srv/docker";
