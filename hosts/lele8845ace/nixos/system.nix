@@ -103,9 +103,6 @@
     };
   };
 
-  # run Android apps on linux
-  virtualisation.docker.storageDriver = "btrfs";
-
   programs = {
     steam = {
       enable = true;

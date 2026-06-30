@@ -98,8 +98,6 @@
     };
   };
 
-  virtualisation.docker.storageDriver = "btrfs";
-
   environment.systemPackages = (
     with pkgs;
     [
