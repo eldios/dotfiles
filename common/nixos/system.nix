@@ -117,6 +117,8 @@ in
     # Idle until each host is enrolled (`netbird up`).
     netbird.enable = true;
 
+    tailscale.enable = true;
+
   };
 
   programs.nix-ld = {
