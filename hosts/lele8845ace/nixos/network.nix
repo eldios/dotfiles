@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   # Rename interfaces based on MAC address to predictable names
   systemd.network.links = {
@@ -11,9 +12,22 @@
     };
   };
 
-  # Required by networkmanager.dns = "systemd-resolved" below: resolved owns
-  # /etc/resolv.conf (stub 127.0.0.53) and routes *.ts.net to Tailscale.
-  services.resolved.enable = true;
+  services.resolved = {
+    enable = true;
+    settings = {
+      Resolve = {
+        DNSSEC = "true";
+        Domains = [
+          "~."
+        ];
+        FallbackDNS = [
+          "1.1.1.1#one.one.one.one"
+          "1.0.0.1#one.one.one.one"
+        ];
+        DNSOverTLS = "false";
+      };
+    };
+  };
 
   networking = {
     usePredictableInterfaceNames = false; # We handle naming via systemd.network.links
@@ -26,18 +40,11 @@
         "eno0"
         "br0"
       ];
-      # Hand DNS to systemd-resolved so the mesh VPN client can do split-DNS
-      # cleanly. With NM's default backend, NM and the VPN daemon both write
-      # via openresolv, which clobbers the VPN resolver and breaks peer /
-      # internal-domain resolution.
-      dns = "systemd-resolved";
-      # Pin public resolvers: the UniFi gateway handed out via DHCP does not
-      # serve DNS. Under resolved these are the per-link upstream for the
-      # default route; the VPN routes its own search domain to its resolver.
-      insertNameservers = [
-        "1.1.1.1"
-        "9.9.9.9"
-      ];
+      ## Hand DNS to systemd-resolved so the mesh VPN client can do split-DNS
+      ## cleanly. With NM's default backend, NM and the VPN daemon both write
+      ## via openresolv, which clobbers the VPN resolver and breaks peer /
+      ## internal-domain resolution.
+      # dns = lib.mkForce "none";
     };
 
     bridges = {
