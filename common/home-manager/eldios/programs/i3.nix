@@ -120,7 +120,7 @@ in
   home = {
     # NOTE: X11 environment for i3 is set ONLY via dbus-update-activation-environment
     # in i3's startup commands below. This ensures X11 vars are active only when i3
-    # is running, without poisoning Wayland sessions (Hyprland, Sway, MangoWC).
+    # is running, without poisoning Wayland sessions (Hyprland, Sway, Mango).
 
     packages = with pkgs; [
       # Terminal
@@ -205,13 +205,16 @@ in
     enable = lib.mkDefault false;
     package = pkgs.picom;
 
-    backend = "egl";  # EGL works better than GLX on RDNA3 GPUs (fixes horizontal artifacts)
+    backend = "egl"; # EGL works better than GLX on RDNA3 GPUs (fixes horizontal artifacts)
     vSync = true;
 
     # Fading (matching Hyprland animation style)
     fade = true;
     fadeDelta = 5;
-    fadeSteps = [ 0.03 0.03 ];
+    fadeSteps = [
+      0.03
+      0.03
+    ];
     fadeExclude = [
       "class_g = 'Steam'"
       "class_g = 'steam'"
@@ -291,18 +294,34 @@ in
 
       # Window type specific settings - helps with Steam popups/menus
       wintypes = {
-        tooltip = { fade = false; shadow = false; opacity = 1.0; focus = true; };
-        dock = { shadow = false; clip-shadow-above = true; };
-        dnd = { shadow = false; };
-        popup_menu = { opacity = 1.0; shadow = false; };
-        dropdown_menu = { opacity = 1.0; shadow = false; };
+        tooltip = {
+          fade = false;
+          shadow = false;
+          opacity = 1.0;
+          focus = true;
+        };
+        dock = {
+          shadow = false;
+          clip-shadow-above = true;
+        };
+        dnd = {
+          shadow = false;
+        };
+        popup_menu = {
+          opacity = 1.0;
+          shadow = false;
+        };
+        dropdown_menu = {
+          opacity = 1.0;
+          shadow = false;
+        };
       };
 
       # AMD GPU artifact fixes
-      use-damage = false;           # Full redraws instead of partial - fixes white bar artifacts
-      glx-no-stencil = true;        # Performance improvement for GLX backend
-      xrender-sync-fence = true;    # Helps AMD GPU synchronization
-      unredir-if-possible = false;  # Prevents flickering on window state changes
+      use-damage = false; # Full redraws instead of partial - fixes white bar artifacts
+      glx-no-stencil = true; # Performance improvement for GLX backend
+      xrender-sync-fence = true; # Helps AMD GPU synchronization
+      unredir-if-possible = false; # Prevents flickering on window state changes
     };
 
     opacityRules = [
@@ -609,48 +628,188 @@ in
         # Floating window rules
         commands = [
           # System utilities
-          { command = "floating enable"; criteria = { class = "nm-connection-editor"; }; }
-          { command = "floating enable"; criteria = { class = "Nm-connection-editor"; }; }
-          { command = "floating enable"; criteria = { class = "blueman-manager"; }; }
-          { command = "floating enable"; criteria = { class = "Blueman-manager"; }; }
+          {
+            command = "floating enable";
+            criteria = {
+              class = "nm-connection-editor";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              class = "Nm-connection-editor";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              class = "blueman-manager";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              class = "Blueman-manager";
+            };
+          }
 
           # GNOME apps
-          { command = "floating enable"; criteria = { class = "org.gnome.Calculator"; }; }
-          { command = "floating enable"; criteria = { class = "Gnome-calculator"; }; }
-          { command = "floating enable, resize set 900 600"; criteria = { class = "org.gnome.Nautilus"; }; }
-          { command = "floating enable"; criteria = { class = "org.gnome.Settings"; }; }
+          {
+            command = "floating enable";
+            criteria = {
+              class = "org.gnome.Calculator";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              class = "Gnome-calculator";
+            };
+          }
+          {
+            command = "floating enable, resize set 900 600";
+            criteria = {
+              class = "org.gnome.Nautilus";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              class = "org.gnome.Settings";
+            };
+          }
 
           # File managers
-          { command = "floating enable, resize set 1000 700"; criteria = { class = "Thunar"; }; }
-          { command = "floating enable, resize set 1000 700"; criteria = { class = "thunar"; }; }
-          { command = "floating enable, resize set 1000 700"; criteria = { class = "Pcmanfm"; }; }
+          {
+            command = "floating enable, resize set 1000 700";
+            criteria = {
+              class = "Thunar";
+            };
+          }
+          {
+            command = "floating enable, resize set 1000 700";
+            criteria = {
+              class = "thunar";
+            };
+          }
+          {
+            command = "floating enable, resize set 1000 700";
+            criteria = {
+              class = "Pcmanfm";
+            };
+          }
 
           # Media
-          { command = "floating enable, sticky enable"; criteria = { title = "Picture-in-Picture"; }; }
-          { command = "floating enable, sticky enable"; criteria = { title = "Picture in picture"; }; }
-          { command = "floating enable"; criteria = { class = "mpv"; }; }
-          { command = "floating enable"; criteria = { class = "Sxiv"; }; }
-          { command = "floating enable"; criteria = { class = "feh"; }; }
+          {
+            command = "floating enable, sticky enable";
+            criteria = {
+              title = "Picture-in-Picture";
+            };
+          }
+          {
+            command = "floating enable, sticky enable";
+            criteria = {
+              title = "Picture in picture";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              class = "mpv";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              class = "Sxiv";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              class = "feh";
+            };
+          }
 
           # Development
-          { command = "floating enable"; criteria = { class = "jetbrains-toolbox"; }; }
-          { command = "floating enable"; criteria = { title = "splash"; }; }
+          {
+            command = "floating enable";
+            criteria = {
+              class = "jetbrains-toolbox";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              title = "splash";
+            };
+          }
 
           # Chat/Communication (floating for quick access)
-          { command = "floating enable, resize set 400 600"; criteria = { class = "telegram-desktop"; }; }
+          {
+            command = "floating enable, resize set 400 600";
+            criteria = {
+              class = "telegram-desktop";
+            };
+          }
 
           # SSH askpass
-          { command = "floating enable, resize set 400 150"; criteria = { class = "lxqt-openssh-askpass"; }; }
-          { command = "floating enable, resize set 400 150"; criteria = { class = "Lxqt-openssh-askpass"; }; }
+          {
+            command = "floating enable, resize set 400 150";
+            criteria = {
+              class = "lxqt-openssh-askpass";
+            };
+          }
+          {
+            command = "floating enable, resize set 400 150";
+            criteria = {
+              class = "Lxqt-openssh-askpass";
+            };
+          }
 
           # Misc
-          { command = "floating enable, border none"; criteria = { class = "screenkey"; }; }
-          { command = "floating enable"; criteria = { window_role = "pop-up"; }; }
-          { command = "floating enable"; criteria = { window_role = "task_dialog"; }; }
-          { command = "floating enable"; criteria = { window_role = "bubble"; }; }
-          { command = "floating enable"; criteria = { window_role = "dialog"; }; }
-          { command = "floating enable"; criteria = { window_type = "dialog"; }; }
-          { command = "floating enable"; criteria = { window_type = "menu"; }; }
+          {
+            command = "floating enable, border none";
+            criteria = {
+              class = "screenkey";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              window_role = "pop-up";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              window_role = "task_dialog";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              window_role = "bubble";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              window_role = "dialog";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              window_type = "dialog";
+            };
+          }
+          {
+            command = "floating enable";
+            criteria = {
+              window_type = "menu";
+            };
+          }
         ];
       };
 
@@ -812,9 +971,12 @@ in
 
         # Quick volume (shift for bigger steps)
         "${modifier}+equal" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
-        "${modifier}+Shift+equal" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+";
-        "${modifier}+bracketleft" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
-        "${modifier}+Shift+bracketleft" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-";
+        "${modifier}+Shift+equal" =
+          "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+";
+        "${modifier}+bracketleft" =
+          "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+        "${modifier}+Shift+bracketleft" =
+          "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-";
 
         # Window opacity control (picom-trans)
         "${modifier}+o" = "exec ${pkgs.picom}/bin/picom-trans -c -5";
@@ -892,8 +1054,8 @@ in
       global = {
         # Geometry (using new syntax for dunst 1.12+)
         width = 350;
-        height = "(0, 150)";  # Dynamic height, max 150
-        offset = "(20, 50)";  # New syntax: (x, y)
+        height = "(0, 150)"; # Dynamic height, max 150
+        offset = "(20, 50)"; # New syntax: (x, y)
         origin = "top-right";
 
         # Appearance
@@ -943,7 +1105,7 @@ in
       };
 
       urgency_critical = {
-        timeout = 0;  # Don't auto-close critical notifications
+        timeout = 0; # Don't auto-close critical notifications
       };
     };
   };
@@ -953,4 +1115,3 @@ in
 }
 
 # vim: set ts=2 sw=2 et ai list nu
-

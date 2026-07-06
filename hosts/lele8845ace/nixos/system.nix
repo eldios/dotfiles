@@ -68,7 +68,7 @@
 
       sessionPackages = with pkgs.unstable; [
         sway
-        mangowc
+        mango
       ];
     };
 
