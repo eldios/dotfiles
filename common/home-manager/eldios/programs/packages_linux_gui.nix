@@ -35,7 +35,6 @@
         appimage-run # run AppImage applications on NixOS
         arandr # visual X11 display arranger
         brightnessctl # backlight and LED brightness control
-        mango # lightweight DWM-style Wayland compositor (wlroots)
         gcal # GNU calendar
         geoclue2 # geolocation service
         gromit-mpx # screen annotation tool
