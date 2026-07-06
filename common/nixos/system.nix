@@ -113,9 +113,7 @@ in
 
     pcscd.enable = true;
 
-    # Runs the wt0 client daemon and installs the netbird CLI system-wide.
-    # Idle until each host is enrolled (`netbird up`).
-    netbird.enable = true;
+    tailscale.enable = true;
   };
 
   programs.nix-ld = {
