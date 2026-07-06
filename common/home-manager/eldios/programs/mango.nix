@@ -24,14 +24,14 @@ let
   # Stylix colors (hex without # prefix)
   colors = config.lib.stylix.colors;
 
-  # Helper: convert stylix hex color (e.g. "1e1e2e") to MangoWC RGBA format (e.g. "0x1e1e2eff")
+  # Helper: convert stylix hex color (e.g. "1e1e2e") to Mango RGBA format (e.g. "0x1e1e2eff")
   toMangoColor = hex: "0x${hex}ff";
   toMangoColorAlpha = hex: alpha: "0x${hex}${alpha}";
 in
 {
   home = {
     packages = with pkgs; [
-      # Wayland essentials for MangoWC
+      # Wayland essentials for Mango
       adwaita-icon-theme
       adwaita-qt
       adwaita-qt6
@@ -86,15 +86,15 @@ in
     ];
   };
 
-  # MangoWC config file (~/.config/mango/config.conf)
+  # Mango config file (~/.config/mango/config.conf)
   home.file.".config/mango/config.conf" = {
     text = ''
       # ╔══════════════════════════════════════════════════════════════════════╗
-      # ║                     MangoWC Configuration                          ║
-      # ║              Managed by NixOS Home Manager (Nix)                   ║
+      # ║                     Mango Configuration                              ║
+      # ║              Managed by NixOS Home Manager (Nix)                     ║
       # ╚══════════════════════════════════════════════════════════════════════╝
       #
-      # MangoWC is a dwm-inspired Wayland compositor built on dwl + scenefx.
+      # Mango is a dwm-inspired Wayland compositor built on dwl + scenefx.
       # Think of it as "dwm for Wayland" — lightweight, fast, tiling-first,
       # but with modern eye candy (blur, shadows, animations, rounded corners).
       #
@@ -103,22 +103,22 @@ in
       # Config: https://github.com/DreamMaoMao/mangowc/wiki/configoption
       # Binds:  https://github.com/DreamMaoMao/mangowc/wiki/bindaction
       #
-      # HOT RELOAD: MangoWC supports hot-reloading config without restarting.
+      # HOT RELOAD: Mango supports hot-reloading config without restarting.
       # After editing, press Super+R (or Super+Shift+Ctrl+R) to apply changes.
       #
       # ┌──────────────────────────────────────────────────────────────────────┐
-      # │                    CORE CONCEPTS                                    │
+      # │                    CORE CONCEPTS                                     │
       # └──────────────────────────────────────────────────────────────────────┘
       #
       # TAGS vs WORKSPACES
       # ~~~~~~~~~~~~~~~~~~
-      # MangoWC uses TAGS (1-9), NOT traditional workspaces. The difference:
+      # Mango uses TAGS (1-9), NOT traditional workspaces. The difference:
       #
       #   Workspaces (i3/Sway): Each window lives on exactly ONE workspace.
       #     Switching workspace = switching to a completely different set of
       #     windows. Workspaces are like rooms — you're in one room at a time.
       #
-      #   Tags (dwm/MangoWC): Each window has one or more TAGS (like labels).
+      #   Tags (dwm/Mango): Each window has one or more TAGS (like labels).
       #     You VIEW one or more tags at a time. A window tagged [1][3] is
       #     visible when viewing tag 1, tag 3, or both. Tags are like filters.
       #
@@ -142,7 +142,7 @@ in
       #
       # LAYOUTS
       # ~~~~~~~
-      # MangoWC supports multiple tiling layouts, switchable per-tag:
+      # Mango supports multiple tiling layouts, switchable per-tag:
       #
       #   tile     → Master-stack: one big window (master) on the left,
       #              remaining windows stacked on the right. Classic dwm layout.
@@ -165,7 +165,7 @@ in
       #
       # KEY MODES
       # ~~~~~~~~~
-      # MangoWC has a modal keybinding system (like vim):
+      # Mango has a modal keybinding system (like vim):
       #
       #   "common"  → Bindings that work in ALL modes (e.g., reload config)
       #   "default" → Normal operation mode, all main keybindings
@@ -181,7 +181,7 @@ in
       #   Super + Shift + -   → Launch a new scratchpad terminal (ghostty)
       #
       # "Named scratchpad" = a specific app matched by appid. When toggled,
-      # MangoWC launches it if not running, or shows/hides it if it is.
+      # Mango launches it if not running, or shows/hides it if it is.
       #
       # OVERVIEW MODE
       # ~~~~~~~~~~~~~
