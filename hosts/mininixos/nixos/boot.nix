@@ -75,6 +75,7 @@
         efiSupport = true;
         efiInstallAsRemovable = true;
         enableCryptodisk = true;
+        configurationLimit = 3;
       };
     };
   };
