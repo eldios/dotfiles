@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   ...
 }:
 
@@ -14,7 +15,9 @@
       "zfs"
     ];
 
-    kernelPackages = pkgs.linuxPackages_latest;
+    # Root-on-ZFS: linuxPackages_latest often has no compatible ZFS build, so
+    # pin the newest kernel ZFS actually supports.
+    kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
     kernelParams = [
       "nohibernate"
       "zfs.zfs_arc_max=6442856000"
