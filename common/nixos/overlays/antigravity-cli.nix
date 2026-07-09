@@ -1,12 +1,18 @@
 final: _prev: let
+  # Google Antigravity CLI (prebuilt, unfree). Follows upstream by bumping
+  # `version` and refreshing the two hashes:
+  #   nix store prefetch-file --json <asset-url> | jq -r .hash
+  # Releases: https://github.com/google-antigravity/antigravity-cli/releases
+  version = "1.1.0";
+  baseUrl = "https://github.com/google-antigravity/antigravity-cli/releases/download/${version}";
   sources = {
     x86_64-linux = {
-      url = "https://storage.googleapis.com/antigravity-public/antigravity-cli/1.0.13-5758107482193920/linux-x64/cli_linux_x64.tar.gz";
-      sha512 = "f8be088ceb90e77503b04039eb8657f1ffac29bab37f9058c2587faf364105900e7b72fe9311744c83fb19f6f9f0b2036b63bc01c7a3fff7a6abfe9c02164a6f";
+      url = "${baseUrl}/agy_cli_linux_x64.tar.gz";
+      hash = "sha256-fuUSRAr17QyBkGXNfMFO7JBpkhTfS+MigKw0bwEAV34=";
     };
     aarch64-linux = {
-      url = "https://storage.googleapis.com/antigravity-public/antigravity-cli/1.0.13-5758107482193920/linux-arm/cli_linux_arm64.tar.gz";
-      sha512 = "16718ea58bd16036e77080514d4ec4b9e37a25503298364400d9b9261eafbb28bb36312479c9fd56e4a8802e6f989ae73a3f25c355dfd450b4499319ba48e1fa";
+      url = "${baseUrl}/agy_cli_linux_arm64.tar.gz";
+      hash = "sha256-I1UKWuNpFrJwLABqR8IaqG++OvGsRPV7Xb0/nexcfno=";
     };
   };
   source =
@@ -15,10 +21,10 @@ final: _prev: let
 in {
   antigravity-cli = final.stdenvNoCC.mkDerivation {
     pname = "antigravity-cli";
-    version = "1.0.13";
+    inherit version;
 
     src = final.fetchurl {
-      inherit (source) url sha512;
+      inherit (source) url hash;
     };
 
     nativeBuildInputs = [
@@ -39,7 +45,7 @@ in {
 
     meta = {
       description = "Google Antigravity CLI";
-      homepage = "https://antigravity.google/product/antigravity-cli";
+      homepage = "https://github.com/google-antigravity/antigravity-cli";
       license = final.lib.licenses.unfree;
       mainProgram = "agy";
       platforms = builtins.attrNames sources;
