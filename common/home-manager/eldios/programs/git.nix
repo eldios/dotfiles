@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   eldios_lazygit = pkgs.lazygit.overrideAttrs (oa: {
     version = "0.41.0";
@@ -88,7 +93,7 @@ in
           name = "Emanuele \"Lele\" Calo";
           email = "emanuele.lele.calo@gmail.com";
           # Default signing key; mininixos overrides in its per-host git.nix.
-          signingkey = lib.mkDefault "64F87759366D72D60055C0BD3EDE14869955C119";
+          signingkey = lib.mkDefault "AA6BC7743F8F9AD84BBA15C72CCBF4B71EFFDD46";
         };
         gpg = {
           program = "${pkgs.gnupg}/bin/gpg";
