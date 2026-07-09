@@ -48,9 +48,9 @@ self: super: {
 }
 ```
 
-Register in `common/nixos/system.nix`:
+Register per-host in `hosts/<host>/nixos/configuration.nix`:
 ```nix
-nixpkgs.overlays = [ (import ./overlays/package.nix) ];
+nixpkgs.overlays = [ (import ../../../common/nixos/overlays/package.nix) ];
 ```
 
 ## Hashes
