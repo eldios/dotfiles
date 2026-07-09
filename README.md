@@ -32,23 +32,23 @@ sudo nixos-rebuild switch --flake .#$(hostname)
 ```
 dotfiles/
 ├── flake.nix          # Entrypoint
-├── common/
-│   ├── nixos/         # System config
-│   └── home-manager/  # User config
+├── common/            # Shared config (nixos, home-manager, omarchy, themes)
 ├── hosts/             # Per-machine config
-├── docs/              # Guides
-└── secrets/           # SOPS
+└── docs/              # Guides
 ```
+
+Secrets are pulled from a private repo via the `secrets` flake input
+(`git+ssh://…/eldios/secrets`), consumed through sops-nix — there is no
+`secrets/` directory in this repo.
 
 ## Hosts
 
 | Host | Type | Purpose |
 |------|------|---------|
-| `lele8845ace` | Laptop | Main dev |
-| `lele9iyoga` | Laptop | Secondary |
-| `wotah` | VM | Testing |
-| `nucone` | Server | Home |
-| `sox1x` | Server | Remote |
+| `lele8845ace` | Desktop (AMD 8845 AceMagic NUC) | Main workstation |
+| `lele9iyoga` | Laptop (Yoga9i, Intel) | Portable dev |
+| `mininixos` | Server (Minis NUC) | Storage / self-hosted services |
+| `sox1x` | Server (SOX1 Xtreme Gen2) | Remote server |
 
 ## Docs
 
