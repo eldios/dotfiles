@@ -25,6 +25,7 @@
     (import ../../../common/nixos/overlays/gws-cli.nix {inherit gws-cli;})
     (import ../../../common/nixos/overlays/zen-browser.nix {inherit zen-browser;})
     (import ../../../common/nixos/overlays/gitbutler.nix)
+    (import ../../../common/nixos/overlays/gitbutler-cli.nix)
     (import ../../../common/nixos/overlays/pi-coding-agent.nix)
   ];
 
@@ -47,7 +48,6 @@
 
     ../../../common/nixos/programs/neovim.nix
     ../../../common/nixos/programs/hyprland.nix
-    ../../../common/nixos/programs/niri.nix
     ../../../common/nixos/programs/walker.nix
 
     ../../../common/nixos/programs/vr.nix
@@ -74,7 +74,6 @@
 
       home-manager.sharedModules = [
         inputs.sops-nix.homeManagerModules.sops
-        inputs.stylix.homeModules.stylix
       ];
 
       home-manager.useGlobalPkgs = true;

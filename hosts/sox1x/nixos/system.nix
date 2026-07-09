@@ -1,5 +1,3 @@
-# `hardware.opengl.driSupport32Bit' has been renamed to `hardware.graphics.enable32Bit'.
-# `hardware.opengl.enable' has been renamed to `hardware.graphics.enable'.
 { pkgs, lib, ... }:
 {
   system = {
@@ -54,7 +52,6 @@
       defaultSession = "cinnamon";
       gdm.enable = true;
       sessionPackages = with pkgs; [
-        sway
         hyprland
       ];
     };

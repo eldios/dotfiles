@@ -5,9 +5,6 @@
   ...
 }: let
   terminal = "${pkgs.ghostty}/bin/ghostty";
-  colors = config.lib.stylix.colors;
-  activeBorder = "rgba(${colors.base0D}aa)";
-  inactiveBorder = "rgba(${colors.base03}aa)";
 
   # Application launchers use Walker, matching the Omarchy runtime menu stack.
   quick_menu = "/etc/profiles/per-user/eldios/bin/omarchy-launch-run";
@@ -16,17 +13,7 @@
   window_menu = "/etc/profiles/per-user/eldios/bin/omarchy-launch-windows";
   omarchyMenu = "/etc/profiles/per-user/eldios/bin/omarchy-menu";
 
-  # Bar selection: "waybar", "ironbar"
-  # Change this to switch status bars
-  barChoice = "waybar";
-  barCmd =
-    {
-      waybar = "${pkgs.waybar}/bin/waybar";
-      ironbar = "${pkgs.ironbar}/bin/ironbar";
-    }
-    .${
-      barChoice
-    };
+  barCmd = "${pkgs.waybar}/bin/waybar";
 
   # Power menu using wlogout
   powermenu = "${pkgs.wlogout}/bin/wlogout";
@@ -47,7 +34,6 @@ in {
       cliphist
       dconf
       dracula-theme
-      eww
       fuseiso
       gammastep
       geoclue2
@@ -231,11 +217,10 @@ in {
       # Commands to execute once on Hyprland startup
       exec-once = [
         "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP GDK_BACKEND NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT" # Enhanced DBus environment
-        "${barCmd}" # Status bar (change barChoice in let block to switch)
+        "${barCmd}" # Status bar (waybar)
         "${pkgs.mako}/bin/mako" # Starts the Mako notification daemon
-        "${pkgs.awww}/bin/awww-daemon" # Wallpaper daemon (used by Variety's set_wallpaper script)
+        "${pkgs.awww}/bin/awww-daemon" # Wallpaper daemon for the omarchy background
         "sleep 1 && ${pkgs.awww}/bin/awww img ~/.config/omarchy/current/background --transition-type fade"
-        # "${pkgs.eww}/bin/eww daemon && ${pkgs.eww}/bin/eww open eww_bar" # Start Eww daemon and open the bar
         "${pkgs.wl-clip-persist}/bin/wl-clip-persist --clipboard regular" # Keep clipboard contents after source apps exit
         "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store" # Clipboard history daemon (text + images)
       ];
@@ -261,8 +246,7 @@ in {
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = lib.mkDefault activeBorder;
-        "col.inactive_border" = lib.mkDefault inactiveBorder;
+        # Border colors come from the current omarchy theme (hyprland.conf).
         allow_tearing = false;
         no_focus_fallback = true; # Prevents focus from falling back to desktop if no window is focusable
       };
@@ -271,21 +255,19 @@ in {
       dwindle = {
         pseudotile = true; # Enable pseudotiling on dwindle
         preserve_split = true; # Preserves split direction when opening new windows
-        #no_gaps_when_only = false; # Keep gaps when there's only one window
         force_split = 2; # Open new splits predictably on the right/bottom
         use_active_for_splits = true; # Use the active window as the split target
         default_split_ratio = 1.0; # Default split ratio (0.1 - 1.9)
       };
 
       group = {
-        "col.border_active" = lib.mkDefault activeBorder;
-        "col.border_inactive" = lib.mkDefault inactiveBorder;
+        # Group border colors come from the current omarchy theme (hyprland.conf).
         "col.border_locked_active" = lib.mkDefault "-1";
         "col.border_locked_inactive" = lib.mkDefault "-1";
 
         groupbar = {
           font_size = lib.mkDefault 12;
-          font_family = lib.mkDefault config.stylix.fonts.monospace.name;
+          font_family = lib.mkDefault "DejaVu Sans Mono";
           font_weight_active = lib.mkDefault "ultraheavy";
           font_weight_inactive = lib.mkDefault "normal";
           indicator_height = lib.mkDefault 0;
@@ -293,10 +275,7 @@ in {
           height = lib.mkDefault 22;
           gaps_in = lib.mkDefault 5;
           gaps_out = lib.mkDefault 0;
-          text_color = lib.mkDefault "rgb(${colors.base05})";
-          text_color_inactive = lib.mkDefault "rgba(${colors.base04}cc)";
-          "col.active" = lib.mkDefault "rgba(${colors.base02}aa)";
-          "col.inactive" = lib.mkDefault "rgba(${colors.base01}88)";
+          # Groupbar text/background colors come from the omarchy theme (hyprland.conf).
           gradients = lib.mkDefault true;
           gradient_rounding = lib.mkDefault 0;
           gradient_round_only_edges = lib.mkDefault false;
@@ -441,12 +420,8 @@ in {
 
         # System controls
         "$mod CTRL SHIFT, Q, exec, ${powermenu}"
-        #"$mod CTRL SHIFT, Q, exit"
         # Lock binding ($mod CTRL, Q) lives in ./hyprlock.nix (opt-in).
         "$mod, Escape, exec, ${powermenu}"
-
-        # Eww bar toggle
-        "$mod SHIFT CTRL, B, exec, ~/.config/eww/scripts/toggle-bar-mode.sh"
 
         # Screenshots
         "$mod SHIFT, S, exec, ${screenshot_select}"

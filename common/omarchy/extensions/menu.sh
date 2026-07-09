@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Omarchy menu user extension.
 # Sourced at the end of `omarchy-menu` via $USER_EXTENSIONS hook.
 # - Drops Arch-only entries (Install / Remove / Update) from the main menu
