@@ -18,6 +18,7 @@ in
       [
         # LLM related stuff
         aider-chat
+        inputs.mpc-hub.packages."${pkgs.stdenv.hostPlatform.system}".default
         # LSPs
         deno
         fd
@@ -39,14 +40,7 @@ in
         # vars
         ripgrep # used by space-f-g
         ripgrep-all # used by space-f-g
-      ]
-      ++ (
-        with pkgs.unstable;
-        [ ]
-        ++ [
-          inputs.mpc-hub.packages."${pkgs.stdenv.hostPlatform.system}".default
-        ]
-      );
+      ];
   };
 
   # this file is used to setup LazyVim
@@ -90,17 +84,7 @@ in
       }, -- automatically check for plugin updates
       performance = {
         rtp = {
-          -- disable some rtp plugins
-          disabled_plugins = {
-            -- "gzip",
-            -- "matchit",
-            -- "matchparen",
-            -- "netrwPlugin",
-            -- "tarPlugin",
-            -- "tohtml",
-            -- "tutor",
-            -- "zipPlugin",
-          },
+          disabled_plugins = {},
         },
       },
     })
@@ -159,6 +143,7 @@ in
       -- version = "v0.*", -- use the latest stable version
       dependencies = {
         "rafamadriz/friendly-snippets",
+        "Kaiser-Yang/blink-cmp-avante", -- avante mentions/commands source
       },
       opts = {
         -- Disable cmdline completion entirely to prevent slash command interference
@@ -190,6 +175,14 @@ in
             enabled = true,
           },
         },
+
+        -- Avante source; LazyVim opts_extend appends "avante" to the default sources.
+        sources = {
+          default = { "avante" },
+          providers = {
+            avante = { module = "blink-cmp-avante", name = "Avante" },
+          },
+        },
       },
     }
   '';
@@ -206,7 +199,7 @@ in
             --- `mcp-hub` binary related options-------------------
             config = vim.fn.expand("~/.config/mcphub/servers.json"), -- Absolute path to MCP Servers config file (will create if not exists)
             port = 37373, -- The port `mcp-hub` server listens to
-            shutdown_delay = 60 * 10 * 000, -- Delay in ms before shutting down the server when last instance closes (default: 10 minutes)
+            shutdown_delay = 60 * 10 * 1000, -- Delay in ms before shutting down the server when last instance closes (default: 10 minutes)
             use_bundled_binary = false, -- Use local `mcp-hub` binary (set this to true when using build = "bundled_build.lua")
             mcp_request_timeout = 60000, --Max time allowed for a MCP tool or resource to execute in milliseconds, set longer for long running tasks
 
@@ -250,44 +243,52 @@ in
       end
     }
   '';
-  # Claude Code plugin configuration
+  # Claude Code plugin. coder/claudecode.nvim speaks the same WebSocket/MCP
+  # protocol as the official VS Code / JetBrains extensions (inline diffs,
+  # selection context, model select). Requires the `claude` CLI on PATH.
+  # https://github.com/coder/claudecode.nvim
   xdg.configFile."nvim/lua/plugins/claude-code.lua".text = ''
     return {
-      "greggh/claude-code.nvim",
-      config = function()
-        require("claude-code").setup({
-          -- Command settings
-          command = "claude",        -- Command used to launch Claude Code
-          -- Command variants
-          command_variants = {
-            -- Conversation management
-            claude = "", -- Resume the most recent conversation
-
-            -- Conversation management
-            continue = "--continue", -- Resume the most recent conversation
-
-            -- Output options
-            verbose = "--verbose",   -- Enable verbose logging with full turn-by-turn output
-          },
-          -- Keymaps
-          keymaps = {
-            toggle = {
-              variants = {
-                claude = "<leader>ac",   -- Normal mode keymap for Claude Code
-                continue = "<leader>aC", -- Normal mode keymap for Claude Code with continue flag
-                verbose = "<leader>aV",  -- Normal mode keymap for Claude Code with verbose flag
-              },
-            },
-            window_navigation = true, -- Enable window navigation keymaps (<C-h/j/k/l>)
-            scrolling = true,         -- Enable scrolling keymaps (<C-f/b>) for page up/down
-          }
-        })
-      end,
+      "coder/claudecode.nvim",
+      dependencies = { "folke/snacks.nvim" }, -- already provided by LazyVim
+      config = true,
+      -- Keys under <leader>a, chosen to not clash with avante's own <leader>a maps.
+      keys = {
+        { "<leader>ai", "<cmd>ClaudeCode<cr>", desc = "Claude Code: toggle" },
+        { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Claude Code: continue" },
+        { "<leader>ay", "<cmd>ClaudeCode --resume<cr>", desc = "Claude Code: resume" },
+        { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Claude Code: select model" },
+        { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Claude Code: add current buffer" },
+        { "<leader>av", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Claude Code: send selection" },
+        {
+          "<leader>av",
+          "<cmd>ClaudeCodeTreeAdd<cr>",
+          desc = "Claude Code: add file",
+          ft = { "NvimTree", "neo-tree", "oil", "minifiles", "netrw", "snacks_picker_list" },
+        },
+        { "<leader>aj", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Claude Code: accept diff" },
+        { "<leader>ak", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Claude Code: deny diff" },
+      },
     }
   '';
 
   # https://github.com/yetone/avante.nvim/blob/main/lua/avante/config.lua
   xdg.configFile."nvim/lua/plugins/avante.lua".text = ''
+    local or_key = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}"
+    local function openrouter(model, max)
+      return {
+        __inherited_from = "openai",
+        api_key_name = or_key,
+        endpoint = "https://openrouter.ai/api/v1",
+        model = model,
+        extra_request_body = {
+          timeout = 120000, -- ms; raise for reasoning models
+          max_completion_tokens = max,
+          max_tokens = max,
+        },
+      }
+    end
+
     return {
       {
         "yetone/avante.nvim",
@@ -295,198 +296,19 @@ in
         version = false, -- Never set this value to "*"! Never!
         build = "make",
         opts = {
-          provider = "qwen3coder",
-          auto_suggestions_provider = "deepseekV3",
+          provider = "coder",
+          auto_suggestions_provider = "fast",
           providers = {
-
-            --- SELF-HOSTED MODELS
-
-            ollama = {
-              __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/litellm/neovim/key".path}",
-              endpoint = "https://litellm.lele.rip/v1",
-              model = "ollama/ollama",
-              extra_request_body = {
-                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
-                --temperature = 0.75,
-                max_completion_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-              },
-            },
-
-            --- CHEAP MODELS
-
-            --- https://openrouter.ai/deepseek/deepseek-R1-0528
-            --- $0.18/M input tokens $0.72/M output tokens
-            deepseekR1 = {
-              __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
-              endpoint = "https://openrouter.ai/api/v1",
-              model = "deepseek/deepseek-r1-0528",
-              extra_request_body = {
-                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
-                --temperature = 0.75,
-                max_completion_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-              },
-            },
-            --- https://openrouter.ai/deepseek/deepseek-chat-v3-0324
-            --- $0.18/M input tokens $0.72/M output tokens
-            deepseekV3 = {
-              __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
-              endpoint = "https://openrouter.ai/api/v1",
-              model = "deepseek/deepseek-chat-v3-0324",
-              extra_request_body = {
-                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
-                --temperature = 0.75,
-                max_completion_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-              },
-            },
-            --- https://openrouter.ai/qwen/qwen3-coder
-            --- $0.20/M input tokens || $0.80/M output tokens
-            qwen3coder = {
-              __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
-              endpoint = "https://openrouter.ai/api/v1",
-              model = "qwen/qwen3-coder",
-              extra_request_body = {
-                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
-                --temperature = 0.75,
-                max_completion_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-              },
-            },
-            --- https://openrouter.ai/moonshotai/kimi-k2
-            --- $0.14/M input tokens || $2.49/M output tokens
-            kimik2 = {
-              __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
-              endpoint = "https://openrouter.ai/api/v1",
-              model = "moonshotai/kimi-k2",
-              extra_request_body = {
-                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
-                --temperature = 0.75,
-                max_completion_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 120000, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-              },
-            },
-            --- https://openrouter.ai/google/gemini-2.5-flash
-            --- $0.30/M input tokens || $2.50/M output tokens
-            gemini25flash = {
-              __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
-              endpoint = "https://openrouter.ai/api/v1",
-              model = "google/gemini-2.5-flash",
-              extra_request_body = {
-                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
-                --temperature = 0.75,
-                max_completion_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-              },
-            },
-            --- https://openrouter.ai/google/gemini-2.5-pro
-            --- $1.25/M input tokens || $10/M output tokens
-            gemini25pro = {
-              __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
-              endpoint = "https://openrouter.ai/api/v1",
-              model = "google/gemini-2.5-pro",
-              extra_request_body = {
-                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
-                --temperature = 0.75,
-                max_completion_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-              },
-            },
-
-            --- AVG EXPENSIVE MODELS
-            --- https://openrouter.ai/openai/gpt-4.1
-            --- $2/M input tokens || $8/M output tokens
-            gtp41 = {
-              __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
-              endpoint = "https://openrouter.ai/api/v1",
-              model = "openai/gpt-4.1",
-              extra_request_body = {
-                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
-                --temperature = 0.75,
-                max_completion_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-              },
-            },
-            --- https://openrouter.ai/openai/gpt-5-chat
-            --- $1.25/M input tokens || $10/M output tokens
-            gtp5 = {
-              __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
-              endpoint = "https://openrouter.ai/api/v1",
-              model = "openai/gpt-5",
-              extra_request_body = {
-                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
-                --temperature = 0.75,
-                max_completion_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 512000, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-              },
-            },
-            --- https://openrouter.ai/anthropic/claude-3.7-sonnet
-            --- $3/M input tokens || $15/M output tokens
-            xaigrok4 = {
-              __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
-              endpoint = "https://openrouter.ai/api/v1",
-              model = "x-ai/grok-4",
-              extra_request_body = {
-                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
-                --temperature = 0.75,
-                max_completion_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-              },
-            },
-            --- https://openrouter.ai/anthropic/claude-sonnet-4
-            --- $3/M input tokens || $15/M output tokens
-            claude4sonnet = {
-              __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
-              endpoint = "https://openrouter.ai/api/v1",
-              model = "anthropic/claude-sonnet-4",
-              extra_request_body = {
-                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
-                --temperature = 0.75,
-                max_completion_tokens = 64000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 64000, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-              },
-            },
-
-            --- CRAZY EXPENSIVE MODELS
-
-            --- https://openrouter.ai/anthropic/claude-opus-4
-            --- $15/M input tokens || $75/M output tokens
-            claude4opus = {
-              __inherited_from = 'openai',
-              api_key_name = "cmd:cat ${config.sops.secrets."tokens/openrouter/neovim/key".path}",
-              endpoint = "https://openrouter.ai/api/v1",
-              model = "anthropic/claude-opus-4",
-              extra_request_body = {
-                timeout = 120000, -- Timeout in milliseconds, increase this for reasoning models
-                --temperature = 0.75,
-                max_completion_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
-                max_tokens = 128000, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-              },
-            },
+            -- OpenRouter models. Prices per 1M tokens (in / out), verified 2026-07-09.
+            -- max = per-model output-token cap (stays within each model's real limit).
+            fast      = openrouter("deepseek/deepseek-v4-flash", 65536),     -- $0.09 / $0.18
+            coder     = openrouter("qwen/qwen3-coder", 65536),               -- $0.22 / $1.80
+            reasoning = openrouter("deepseek/deepseek-v4-pro", 131072),      -- $0.44 / $0.87
+            glm       = openrouter("z-ai/glm-5.2", 131072),                  -- $0.56 / $1.76
+            gemini    = openrouter("google/gemini-3.1-pro-preview", 65536),  -- $2.00 / $12.00 (preview)
+            grok      = openrouter("x-ai/grok-4.5", 65536),                  -- $2.00 / $6.00
+            smart     = openrouter("anthropic/claude-sonnet-5", 128000),     -- $2.00 / $10.00
+            pro       = openrouter("anthropic/claude-opus-4.8", 128000),     -- $5.00 / $25.00
           },
           ---Specify the special dual_boost mode
           ---1. enabled: Whether to enable dual_boost mode. Default to false.
@@ -499,8 +321,8 @@ in
           ---Note: This is an experimental feature and may not work as expected.
           dual_boost = {
             enabled = false,
-            first_provider = "claude4sonnet",
-            second_provider = "xaigrok4",
+            first_provider = "smart",
+            second_provider = "grok",
             prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
             timeout = 60000, -- Timeout in milliseconds
           },
@@ -522,10 +344,7 @@ in
           rag = {
             enabled = true, -- Enables the RAG service
             host_mount = os.getenv("HOME"), -- Host mount path for the rag service
-            provider = "gemini25pro", -- The provider to use for RAG service (e.g. openai or ollama)
-            -- endpoint = "https://api.openai.com/v1", -- The API endpoint for RAG service
-            -- llm_model = "", -- The LLM model to use for RAG service
-            -- embed_model = "", -- The embedding model to use for RAG service
+            provider = "gemini", -- The provider to use for RAG service (e.g. openai or ollama)
           },
           web_search_engine = {
             provider = "kagi", -- tavily, serpapi, searchapi, google or kagi
@@ -593,16 +412,11 @@ in
         hints = { enabled = true },
         dependencies = {
           "nvim-treesitter/nvim-treesitter",
-          "stevearc/dressing.nvim",
           "nvim-lua/plenary.nvim",
           "MunifTanjim/nui.nvim",
-          --- The below dependencies are optional,
+          -- optional
           "nvim-mini/mini.pick", -- for file_selector provider mini.pick
-          --- "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-          "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
-          --- "ibhagwan/fzf-lua", -- for file_selector provider fzf
-          "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-          --- "zbirenbaum/copilot.lua", -- for providers='copilot'
+          "nvim-tree/nvim-web-devicons",
           {
             -- support for image pasting
             "HakonHarnes/img-clip.nvim",
