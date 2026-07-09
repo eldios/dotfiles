@@ -1,5 +1,4 @@
 # Desktop/laptop host - use full GUI programs
-# Note: Previously had duplicate kitty.nix import (now fixed)
 {
   imports = [
     ../../../common/home-manager/eldios/common_programs_gui.nix

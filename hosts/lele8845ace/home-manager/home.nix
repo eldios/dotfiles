@@ -32,12 +32,10 @@
 
   imports = [
     ./display.nix
-    ./services.nix
 
     ./pkgs.nix
 
     ./common_programs.nix
-    ./programs/git.nix
   ];
 
 } # EOF

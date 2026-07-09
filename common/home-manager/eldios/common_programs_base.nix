@@ -7,7 +7,6 @@
 
     ./programs/neovim.nix
     ./programs/mcp-servers.nix
-    #./programs/zellij.nix
 
     ./programs/zsh.nix
     ./programs/atuin.nix
@@ -16,7 +15,7 @@
 
     ./programs/git.nix
 
-    ./programs/var.nix
+    ./programs/misc.nix
 
     ./programs/packages_common_cli.nix
     ./programs/packages_linux_cli.nix
