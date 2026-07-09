@@ -65,11 +65,6 @@
     displayManager = {
       sddm.enable = false;
       gdm.enable = true;
-
-      sessionPackages = with pkgs.unstable; [
-        sway
-        mango
-      ];
     };
 
     xserver = {
@@ -77,30 +72,10 @@
       autorun = true;
 
       videoDrivers = [ "amdgpu" ];
-
-      windowManager = {
-        i3 = {
-          enable = true;
-          extraPackages = with pkgs; [
-            dmenu
-            i3status
-            i3lock
-            i3blocks
-          ];
-        };
-      };
     };
 
     # gnome-keyring and gvfs configured in desktop-gui.nix
-
-    # CUPS
-    printing.enable = true;
-    # needed by CUPS for auto-discovery
-    avahi = {
-      enable = true;
-      nssmdns4 = true;
-      openFirewall = true;
-    };
+    # CUPS printing and avahi mDNS discovery configured in printing.nix
   };
 
   programs = {

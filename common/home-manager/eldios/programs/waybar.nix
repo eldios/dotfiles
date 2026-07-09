@@ -269,7 +269,6 @@ in {
           format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
           format = "{icon} {capacity}%";
           format-charging = "󰂄 {capacity}%";
-          onclick = "";
         };
 
         "hyprland/window" = {
@@ -365,7 +364,6 @@ in {
             tooltip = ''$(${cat} /etc/os-release | ${grep} PRETTY_NAME | ${cut} -d '"' -f2)'';
           };
           on-click-left = "omarchy-menu";
-          #on-click-right = "";
         };
 
         "custom/hostname" = {

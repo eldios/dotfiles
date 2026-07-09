@@ -1,6 +1,5 @@
 # common/home-manager/eldios/programs/rio.nix
 { config, lib, pkgs, ... }:
-
 {
   programs = {
     rio = {
@@ -8,8 +7,9 @@
 
       # Rio terminal settings
       settings = {
-        # INFO: Rio colors are managed by Stylix.
-        # No hardcoded color settings here as they will be managed by Stylix
+        # Colors come from the current omarchy theme via themes/omarchy.toml
+        # (symlinked below to current/theme/rio.toml). Rio reloads on config change.
+        theme = "omarchy";
 
         # Window settings
         window = {
@@ -22,21 +22,21 @@
           background-opacity = 0.95;
         };
 
-        # Font settings - will use system font from Stylix
+        # Fonts (colors are themed by omarchy, fonts are not)
         font = {
           normal = {
-            family = config.stylix.fonts.monospace.name;
+            family = "DejaVu Sans Mono";
             style = "Regular";
           };
           bold = {
-            family = config.stylix.fonts.monospace.name;
+            family = "DejaVu Sans Mono";
             style = "Bold";
           };
           italic = {
-            family = config.stylix.fonts.monospace.name;
+            family = "DejaVu Sans Mono";
             style = "Italic";
           };
-          size = config.stylix.fonts.sizes.terminal;
+          size = 12;
 
           # Enable ligatures
           features = {
@@ -104,4 +104,10 @@
       };
     };
   };
+
+  # Point rio's "omarchy" theme at the file rendered by omarchy-theme-set.
+  # Out-of-store symlink so the runtime theme swap is picked up without a rebuild.
+  home.file.".config/rio/themes/omarchy.toml".source =
+    config.lib.file.mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/.config/omarchy/current/theme/rio.toml";
 }

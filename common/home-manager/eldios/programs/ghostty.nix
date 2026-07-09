@@ -1,6 +1,5 @@
 # common/home-manager/eldios/programs/ghostty.nix
 { config, lib, pkgs, ... }:
-
 {
   programs = {
     ghostty = {
@@ -14,9 +13,9 @@
         window-padding-y = 10;
         background-opacity = 0.95;
 
-        # Font settings - will use system font from Stylix
-        font-family = config.stylix.fonts.monospace.name;
-        font-size = builtins.toString config.stylix.fonts.sizes.terminal;
+        # Fonts (colors come from the omarchy theme via config-file below)
+        font-family = "DejaVu Sans Mono";
+        font-size = "12";
         font-feature = "calt liga";
 
         # Cursor settings
