@@ -26,8 +26,36 @@ in
         nil # Nix LSP
         nodejs
         typescript
-        typescript-language-server
-        pyright
+        # LSPs formerly from Mason — now Nix-native (see plugins/no-mason.lua)
+        rust-analyzer
+        gopls
+        delve
+        golangci-lint
+        basedpyright
+        ruff
+        vtsls
+        yaml-language-server
+        terraform-ls
+        tflint
+        tfsec
+        marksman
+        tailwindcss-language-server
+        cmake-language-server
+        clang-tools
+        docker-compose-language-service
+        dockerfile-language-server-nodejs
+        vscode-langservers-extracted # json/html/css/eslint
+        jdt-language-server
+        ruby-lsp
+        # formatters + linters (Mason → Nix)
+        prettierd
+        stylua
+        shfmt
+        yamlfmt
+        yamllint
+        actionlint
+        nixfmt-rfc-style
+        trivy
         tree-sitter
         # Golang
         go
@@ -446,6 +474,33 @@ in
     }
   '';
 
+  # Disable Mason on NixOS — LSPs/formatters/linters come from Nix (home.packages).
+  xdg.configFile."nvim/lua/plugins/no-mason.lua".text = ''
+    return {
+      { "mason-org/mason.nvim", enabled = false },
+      { "mason-org/mason-lspconfig.nvim", enabled = false },
+    }
+  '';
+
+  # Let Neovim own the core parsers it bundles so nvim-treesitter's copies don't
+  # shadow them (the vim "tab" query clash).
+  xdg.configFile."nvim/lua/plugins/treesitter.lua".text = ''
+    return {
+      "nvim-treesitter/nvim-treesitter",
+      opts = function(_, opts)
+        local bundled = {
+          vim = true, vimdoc = true, c = true, lua = true,
+          markdown = true, markdown_inline = true, query = true,
+        }
+        if type(opts.ensure_installed) == "table" then
+          opts.ensure_installed = vim.tbl_filter(function(p)
+            return not bundled[p]
+          end, opts.ensure_installed)
+        end
+      end,
+    }
+  '';
+
   programs = {
 
     neovim = {
@@ -469,10 +524,6 @@ in
       ];
 
       package = neovim-unwrapped;
-
-      plugins = with pkgs.vimPlugins; [
-        avante-nvim
-      ];
 
       extraConfig = '''';
     }; # EOM neovim
