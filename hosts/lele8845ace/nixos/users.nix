@@ -1,8 +1,6 @@
 { inputs, config, ... }:
 let
   secretspath = builtins.toString inputs.secrets;
-
-  binDir = "/etc/profiles/per-user/eldios/bin";
 in
 {
   sops = {
