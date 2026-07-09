@@ -72,11 +72,6 @@
     displayManager = {
       sddm.enable = false;
       gdm.enable = true;
-
-      sessionPackages = with pkgs.unstable; [
-        sway
-        mango
-      ];
     };
 
     xserver = {
@@ -84,18 +79,6 @@
       autorun = true;
 
       videoDrivers = [ "modesetting" ];
-
-      windowManager = {
-        i3 = {
-          enable = true;
-          extraPackages = with pkgs; [
-            dmenu
-            i3status
-            i3lock
-            i3blocks
-          ];
-        };
-      };
     };
 
     # gnome-keyring and gvfs configured in desktop-gui.nix
@@ -148,20 +131,14 @@
     graphics = {
       enable = true;
       enable32Bit = true;
-      extraPackages =
-        with pkgs;
-        [
-          libva
-          libva-utils
-          intel-graphics-compiler
-          intel-media-driver # LIBVA_DRIVER_NAME=iHD
-          vpl-gpu-rt
-          intel-compute-runtime
-        ]
-        ++ [ ];
-      #extraPackages32 = with pkgs.pkgsi686Linux; [
-      #  intel-vaapi-driver
-      #];
+      extraPackages = with pkgs; [
+        libva
+        libva-utils
+        intel-graphics-compiler
+        intel-media-driver # LIBVA_DRIVER_NAME=iHD
+        vpl-gpu-rt
+        intel-compute-runtime
+      ];
     };
 
     keyboard.qmk.enable = true;

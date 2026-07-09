@@ -1,12 +1,8 @@
 {
-  config,
   lib,
   pkgs,
-  inputs,
   ...
 }: let
-  walkerPkg = inputs.walker.packages.${pkgs.stdenv.hostPlatform.system}.default;
-
   # First-run theme seed: pick this if no theme is currently active.
   # Updates as you swap out hyprland-fancy for whatever default suits you.
   defaultTheme = "hyprland-fancy";
@@ -46,7 +42,7 @@
     # ship neither colors.toml nor terminal files would otherwise leave them
     # missing, breaking our terminal HM modules that include them unconditionally.
     if [ -d "$HOME/.config/omarchy/current/theme" ]; then
-      for f in ghostty.conf alacritty.toml kitty.conf; do
+      for f in ghostty.conf alacritty.toml kitty.conf rio.toml; do
         [ -f "$HOME/.config/omarchy/current/theme/$f" ] || : > "$HOME/.config/omarchy/current/theme/$f"
       done
     fi

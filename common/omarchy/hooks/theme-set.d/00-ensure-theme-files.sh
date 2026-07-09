@@ -16,7 +16,7 @@ theme_dir="$HOME/.config/omarchy/current/theme"
 
 created_waybar=0
 for f in \
-  alacritty.toml ghostty.conf kitty.conf \
+  alacritty.toml ghostty.conf kitty.conf rio.toml \
   hyprland.conf hyprlock.conf mako.ini \
   walker.css waybar.css; do
   [[ -f "$theme_dir/$f" ]] || {
@@ -24,6 +24,7 @@ for f in \
     [[ $f == waybar.css ]] && created_waybar=1
   }
 done
+
 
 if [[ $created_waybar -eq 1 ]] && pgrep -f waybar >/dev/null; then
   omarchy-restart-waybar || true

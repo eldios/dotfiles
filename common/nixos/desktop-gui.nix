@@ -28,21 +28,10 @@
         "gtk"
         "hyprland"
       ];
-      sway.default = [
-        "gtk"
-        "wlr"
-        "luminous"
-      ];
-      # mkForce: the niri module sets its own portal default ("gnome;gtk") in 26.05
-      niri.default = lib.mkForce [
-        "gtk"
-        "wlr"
-      ];
     };
     extraPortals = [
       pkgs.xdg-desktop-portal
       pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-luminous
       # xdg-desktop-portal-hyprland provided by programs.hyprland.portalPackage
       # xdg-desktop-portal-wlr added automatically by wlr.enable = true above
     ];
