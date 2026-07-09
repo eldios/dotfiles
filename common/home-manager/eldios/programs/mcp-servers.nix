@@ -267,7 +267,7 @@
           else ""
         }
             ports:
-              - "${toString cfg.port}:${toString cfg.internalPort}"''
+              - "127.0.0.1:${toString cfg.port}:${toString cfg.internalPort}"''
     }
     ${
       if cfg ? healthcheck
