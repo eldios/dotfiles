@@ -7,9 +7,6 @@ in
     validateSopsFiles = true;
 
     defaultSopsFile = "${secretspath}/secrets.yaml";
-    # workaround to have home-manager work with sops
-    #defaultSymlinkPath = "/run/user/${main_user_id}/secrets";
-    #defaultSecretsMountPoint = "/run/user/${main_user_id}/secrets.d";
 
     gnupg.sshKeyPaths = [ ];
 
