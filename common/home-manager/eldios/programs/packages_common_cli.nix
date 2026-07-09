@@ -27,15 +27,14 @@
       entr # run commands when files change
       github-cli # GitHub from the terminal
       herdr # agent multiplexer for AI coding agents (via herdr flake overlay)
-      # FIXME: broken package — gitbutler fails to build due to turbo 2.7.6 upstream issue
-      # gitbutler # visual Git client for branches
+      gitbutler # visual Git client for branches
+      gitbutler-cli # GitButler CLI (but)
       just # command runner (Makefile alternative)
       pkg-config # build helper for compiled libraries
       protobuf # protocol buffer compiler
       sloc # source lines of code counter
       semgrep # static analysis code tool
       shellcheck # shell script linter
-      # toolboox # Tool for containerized command line environments on Linux
 
       # Cloud CLIs
       awscli2 # Amazon Web Services CLI
@@ -76,8 +75,6 @@
       ktop # top-like TUI for Kubernetes nodes
       kubeconform # Kubernetes manifest validator
       kubectx # switch between k8s contexts/namespaces
-      kubelogin # Kubernetes Azure AD auth plugin
-      kubelogin-oidc # Kubernetes OIDC auth plugin
       kubernetes-helm # Kubernetes package manager
       kustomize # Kubernetes manifest customization
       kustomize-sops # SOPS integration for Kustomize

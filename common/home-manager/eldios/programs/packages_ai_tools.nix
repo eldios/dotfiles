@@ -10,7 +10,6 @@
     opencode # OpenCode (via opencode-nix flake)
     pi-coding-agent # Pi (via local overlay from npm registry)
     ollama # CPU build, used as a client (OLLAMA_HOST); no ROCm
-
   ];
 }
 # vim: set ts=2 sw=2 et ai list nu

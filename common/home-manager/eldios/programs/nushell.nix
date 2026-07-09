@@ -100,7 +100,7 @@ in
     source ${nushellCfgDir}/zoxide.nu
 
     alias TF = ${pkgs.terraform}/bin/terraform
-    alias cg = ${pkgs.cargo}/bin/cargo # FIXME: Or from pkgs.rustc
+    alias cg = ${pkgs.cargo}/bin/cargo
     alias cgb = cg build
     alias cgc = cg check
     alias cgn = cg new
@@ -123,7 +123,7 @@ in
     alias ji = ${pkgs.jira-cli-go}/bin/jira issue
     alias jil = ji list
     alias jim = ji list -a 'lele@switchboard.xyz' --order-by STATUS
-    alias k = ${pkgs.kubectl}/bin/kubectl # FIXME: Verify package name, could be pkgs.kubectl
+    alias k = ${pkgs.kubectl}/bin/kubectl
     alias l = ${pkgs.coreutils}/bin/ls # Using coreutils ls as lsd is not in nushell packages
     alias la = l -a
     alias lg = ${pkgs.lazygit}/bin/lazygit
