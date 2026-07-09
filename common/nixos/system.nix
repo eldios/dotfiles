@@ -151,6 +151,7 @@ in
     git
     gptfdisk
     libgcc
+    nix-diff # compare derivations (e.g. why a rebuild differs)
     nix-tree
     pinentry-curses # required by GPG
     python3
