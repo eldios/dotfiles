@@ -26,13 +26,11 @@
 
   imports = [
     ./display.nix
-    ./services.nix
     ./xremap.nix
 
     ./pkgs.nix
 
     ./common_programs.nix
-    ./programs/git.nix
   ];
 
 } # EOF
