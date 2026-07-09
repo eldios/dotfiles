@@ -84,7 +84,6 @@
         })
         signal-desktop # encrypted messaging app
         slack # team communication platform
-        #telegram-desktop # messaging app
         zapzap # WhatsApp alt client
         zoom-us # video conferencing
 
@@ -159,7 +158,6 @@
         hyperrogue # roguelike on the hyperbolic plane
         ivan # Iter Vehemens ad Necem
         meritous # atmospheric dungeon crawler
-        #nethack # the classic roguelike
         nethack-qt # the classic roguelike QT version
         shattered-pixel-dungeon # modern roguelike
         tome4 # Tales of Maj'Eyal
