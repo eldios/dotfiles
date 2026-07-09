@@ -4,7 +4,6 @@
 { pkgs, ... }:
 
 {
-  # configuration.nix - il modo più semplice
   virtualisation.docker.enable = true;
 
   virtualisation.oci-containers = {
@@ -21,7 +20,7 @@
         "--label=traefik.enable=true"
         "--label=traefik.docker.network=proxy"
         "--label=traefik.http.services.portainer.loadbalancer.server.port=9000"
-        "--label=traefik.http.routers.portainer.rule=Host(`portainer.casa.lele.rip`)"
+        "--label=traefik.http.routers.portainer.rule=Host(`portainer.casa.lele.rip`) || Host(`portainer.vpn.lele.rip`)"
         "--label=traefik.http.routers.portainer.tls=true"
         "--label=traefik.http.routers.portainer.tls.certresolver=cloudflare"
       ];
