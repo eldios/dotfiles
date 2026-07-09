@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 {
   environment.systemPackages =
     (with pkgs; [
@@ -8,10 +8,7 @@
       k3s
       kata-runtime
       kind
-      kind
       kubectx
-      kubelogin
-      kubelogin-oidc
       kubernetes-helm
       talosctl
       virtiofsd
@@ -37,7 +34,8 @@
         enable = true;
         dates = "weekly";
       };
-      storageDriver = "overlay2";
+      # mkDefault so hosts on ZFS (e.g. sox1x) can override without mkForce.
+      storageDriver = lib.mkDefault "overlay2";
       daemon.settings = {
         log-driver = "local";
         log-opts = {
