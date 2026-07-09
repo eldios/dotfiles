@@ -168,7 +168,6 @@ in
     age
     btop
     byobu
-    #colorls # like `ls --color=auto -F` but cooler
     cmake
     ethtool
     fastfetch
@@ -218,7 +217,9 @@ in
   security = {
     polkit.enable = true;
 
-    sudo = {
+    # sudo-rs: memory-safe Rust reimplementation of sudo, drop-in for our usage.
+    sudo.enable = false;
+    sudo-rs = {
       enable = true;
       wheelNeedsPassword = false;
     };
