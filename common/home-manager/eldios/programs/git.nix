@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, lib, ... }:
 let
   eldios_lazygit = pkgs.lazygit.overrideAttrs (oa: {
     version = "0.41.0";
@@ -12,6 +12,11 @@ let
   });
 in
 {
+  # Authenticated GitHub for nix fetches (avoids API rate limits); token via sops.
+  nix.extraOptions = ''
+    !include ${config.sops.secrets."tokens/github/nix".path}
+  '';
+
   home = {
     packages = with pkgs; [
       github-cli
@@ -45,7 +50,6 @@ in
           lol = "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all";
           loll = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all";
           ppt = "pull --prune --tags";
-          prettylog = "...";
           rc = "repo clone";
           st = "status";
           w = "worktree";
@@ -83,6 +87,8 @@ in
           username = "eldios";
           name = "Emanuele \"Lele\" Calo";
           email = "emanuele.lele.calo@gmail.com";
+          # Default signing key; mininixos overrides in its per-host git.nix.
+          signingkey = lib.mkDefault "64F87759366D72D60055C0BD3EDE14869955C119";
         };
         gpg = {
           program = "${pkgs.gnupg}/bin/gpg";
