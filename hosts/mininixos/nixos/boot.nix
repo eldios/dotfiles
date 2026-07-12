@@ -21,6 +21,7 @@
     kernelParams = [
       "nohibernate"
       "amdgpu.runpm=0" # disable runtime PM — headless server, GPU must stay awake for Ollama
+      "pcie_aspm=off" # root NVMe (990 PRO) drops off the PCIe bus under ASPM L1, killing the root fs
     ];
 
     initrd = {
