@@ -43,7 +43,7 @@ in
         cmake-language-server
         clang-tools
         docker-compose-language-service
-        dockerfile-language-server-nodejs
+        dockerfile-language-server
         vscode-langservers-extracted # json/html/css/eslint
         jdt-language-server
         ruby-lsp
@@ -54,7 +54,7 @@ in
         yamlfmt
         yamllint
         actionlint
-        nixfmt-rfc-style
+        nixfmt
         trivy
         tree-sitter
         # Golang
