@@ -61,7 +61,7 @@ in
         l = "${pkgs.lsd}/bin/lsd -lhtra";
 
         g = "${pkgs.git}/bin/git";
-        gb = "${pkgs.gitbutler-cli}/bin/but"; # GitButler CLI
+        gb = "${pkgs.gitbutler}/bin/but"; # GitButler CLI
         "gb-gui" = "${pkgs.gitbutler}/bin/gitbutler-tauri"; # GitButler GUI
         lg = "${pkgs.lazygit}/bin/lazygit";
         lazg = "${pkgs.lazygit}/bin/lazygit";
