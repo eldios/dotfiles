@@ -71,6 +71,11 @@ in
         commit = {
           gpgsign = true;
         };
+        # user-level so GitButler cannot auto-disable signing repo-wide after
+        # a single failed signature (its documented behavior with local scope)
+        gitbutler = {
+          signCommits = true;
+        };
         tag = {
           gpgsign = true;
           forceSignAnnotated = true;
