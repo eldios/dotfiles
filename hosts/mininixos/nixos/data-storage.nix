@@ -18,12 +18,23 @@ in
   # Systemd service to assemble RAID post-boot
   systemd.services."mdadm-assemble-${mdDevice}" = {
     description = "Assemble mdadm RAID array /dev/${mdDevice} (RAID5)";
-    after       = [ "local-fs-pre.target" ];
-    before      = [ "systemd-cryptsetup@${luksName}.service" ];
+    # Must run before cryptsetup, which is ordered before sysinit/basic:
+    # with default dependencies (implicit After=basic.target) this is an
+    # ordering cycle, and systemd breaks cycles by deleting an arbitrary
+    # job — some boots that job is this one and /data never comes up.
+    # udev-settle is required so the USB enclosure disks are enumerated
+    # before the mdadm scan.
+    after       = [ "systemd-udev-settle.service" "local-fs-pre.target" ];
+    wants       = [ "systemd-udev-settle.service" ];
+    before      = [ "systemd-cryptsetup@${luksName}.service" "cryptsetup.target" "shutdown.target" ];
+    conflicts   = [ "shutdown.target" ];
     wantedBy    = [ "multi-user.target" ];
 
-    # Only run if array is not already active
-    unitConfig.ConditionPathExists = "!/sys/block/${mdDevice}/md/array_state";
+    unitConfig = {
+      DefaultDependencies = false;
+      # Only run if array is not already active
+      ConditionPathExists = "!/sys/block/${mdDevice}/md/array_state";
+    };
 
     serviceConfig = {
       Type             = "oneshot";
