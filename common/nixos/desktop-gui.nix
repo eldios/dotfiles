@@ -24,10 +24,17 @@
     wlr.enable = true;
     config = {
       common.default = [ "gtk" ];
-      hyprland.default = [
-        "gtk"
-        "hyprland"
-      ];
+      hyprland = {
+        default = [
+          "gtk"
+          "hyprland"
+        ];
+        # Pin screencast/screenshot to hyprland. wlr (enabled for other wlroots
+        # sessions) also advertises ScreenCast, and the frontend invoking both
+        # makes the share picker appear twice. Explicit routing removes it.
+        "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
+        "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
+      };
     };
     extraPortals = [
       pkgs.xdg-desktop-portal
