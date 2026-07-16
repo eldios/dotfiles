@@ -79,14 +79,16 @@ in {
       wlsunset
       wshowkeys
       wtype
-      xdg-desktop-portal
-      # xdg-desktop-portal-hyprland provided system-wide via
-      # programs.hyprland.portalPackage (nixpkgs-unstable); adding it here
-      # would pull a second copy and conflict on hyprland-share-picker.
       xdg-utils
       ydotool
     ];
   };
+
+  # The hyprland HM module auto-enables xdg.portal with only the hyprland
+  # backend; its NIX_XDG_DESKTOP_PORTAL_DIR then shadows the complete system
+  # portal set (gtk+hyprland+wlr from desktop-gui.nix), so GTK apps lose
+  # org.freedesktop.appearance and fall back to light. NixOS owns the portals.
+  xdg.portal.enable = lib.mkForce false;
 
   wayland.windowManager.hyprland = {
     enable = true;
