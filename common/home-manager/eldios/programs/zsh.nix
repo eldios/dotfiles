@@ -87,20 +87,24 @@ in
         tfd = "tf destroy -auto-approve"; # Uses the 'tf' alias
 
         cg = "${pkgs.cargo}/bin/cargo";
-        cgb = "cg build"; # Uses the 'cg' alias
-        cgc = "cg check"; # Uses the 'cg' alias
-        cgn = "cg new"; # Uses the 'cg' alias
-        cgr = "cg run"; # Uses the 'cg' alias
-        cgt = "cg test"; # Uses the 'cg' alias
+        # full paths: an alias ('cg') would not expand after 'nice';
+        # cgr stays un-niced so the launched program runs at normal priority
+        cgb = "nice -n 19 ${pkgs.cargo}/bin/cargo build";
+        cgc = "nice -n 19 ${pkgs.cargo}/bin/cargo check";
+        cgn = "${pkgs.cargo}/bin/cargo new";
+        cgr = "${pkgs.cargo}/bin/cargo run";
+        cgt = "nice -n 19 ${pkgs.cargo}/bin/cargo test";
 
         ipcalc = "${pkgs.sipcalc}/bin/sipcalc";
         ff = "${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}";
 
-        nixs = "nix search nixpkgs"; # 'nix' assumed in PATH
+        nixs = "nice -n 19 nix search nixpkgs"; # 'nix' assumed in PATH
         nixe = "$EDITOR $HOME/dotfiles"; # Uses $EDITOR variable
 
-        nixu = "sudo nixos-rebuild switch --flake $HOME/dotfiles"; # 'sudo' and 'nixos-rebuild' assumed in PATH
-        nixuo = "sudo nixos-rebuild switch --flake $HOME/dotfiles --option substituters 'https://cache.nixos.org https://nix-community.cachix.org'"; # offline/outside - skip local cache
+        # nice covers the client-side flake eval; the actual builds are niced
+        # via nix.daemonCPUSchedPolicy/daemonIOSchedClass (system.nix).
+        nixu = "sudo nice -n 19 nixos-rebuild switch --flake $HOME/dotfiles"; # 'sudo' and 'nixos-rebuild' assumed in PATH
+        nixuo = "sudo nice -n 19 nixos-rebuild switch --flake $HOME/dotfiles --option substituters 'https://cache.nixos.org https://nix-community.cachix.org'"; # offline/outside - skip local cache
         nixU = "sudo nix flake update $HOME/dotfiles && nixu"; # 'sudo', 'nix', and 'nixu' alias
         nixUo = "sudo nix flake update $HOME/dotfiles && nixuo"; # 'sudo', 'nix', and 'nixuo' alias - outside network
 
@@ -116,7 +120,8 @@ in
         hmA = "hme && hmU"; # Uses aliases
         hm-cleanup = "hm expire-generations '-7 days' && nix-store --gc"; # Uses 'hm' alias, 'nix-store' in PATH
         hm-edit = "hm edit"; # Uses 'hm' alias
-        hm-update = "hm switch -b backup --flake $HOME/dotfiles"; # Uses 'hm' alias
+        # full path: an alias ('hm') would not expand after 'nice'
+        hm-update = "nice -n 19 ${pkgs.home-manager}/bin/home-manager switch -b backup --flake $HOME/dotfiles";
 
         SHX = "exec \$SHELL -l"; # Uses $SHELL environment variable
       };
