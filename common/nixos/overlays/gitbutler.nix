@@ -25,7 +25,7 @@ in {
     # prev.pnpmDeps already tracks the new src/version via finalAttrs;
     # only its fixed-output hash needs refreshing.
     pnpmDeps = prev.pnpmDeps.overrideAttrs {
-      outputHash = "sha256-ZgRJWPCf6L1AHus16+AZ+apNFYf3ib6KnimyGopQjUs=";
+      outputHash = "sha256-Tjiyx4zjcsOQMb/D/2gEPkqWVVYrxbi7Eu0vhuvXhX0=";
     };
 
     # The `but` integration tests build git fixtures by running scripts at
