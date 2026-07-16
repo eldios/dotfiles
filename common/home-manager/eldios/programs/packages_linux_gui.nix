@@ -1,6 +1,5 @@
 # Packages for Linux-specific graphical user interface tools.
 # This includes applications, theming, and services like gpg-agent.
-# NOTE: kitty is installed via programs.kitty.enable in kitty.nix
 { pkgs, ... }:
 {
   home.sessionVariables = {
@@ -89,6 +88,7 @@
 
         # Media Players
         mpv # lightweight media player
+        qbz # Qobuz native app (v2 via overlay)
         vlc # versatile multimedia player
 
         # Streaming & Recording
@@ -193,7 +193,6 @@
         sonixd # Subsonic/Jellyfin music client
         spotify # music streaming service
         tidal-hifi # TIDAL music streaming client
-        qbz # Qobuz native app
 
         # Cloud Storage
         # pCloud client wrapped with libglvnd + opengl-driver in LD_LIBRARY_PATH
