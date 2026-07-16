@@ -25,6 +25,7 @@
     (import ../../../common/nixos/overlays/gws-cli.nix {inherit gws-cli;})
     (import ../../../common/nixos/overlays/zen-browser.nix {inherit zen-browser;})
     (import ../../../common/nixos/overlays/gitbutler.nix)
+    (import ../../../common/nixos/overlays/qbz.nix)
     (import ../../../common/nixos/overlays/pi-coding-agent.nix)
   ];
 
