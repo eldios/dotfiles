@@ -90,6 +90,16 @@ in {
   # org.freedesktop.appearance and fall back to light. NixOS owns the portals.
   xdg.portal.enable = lib.mkForce false;
 
+  # xdg-desktop-portal-hyprland: tick "allow restore token" by default so the
+  # share picker remembers the selection. Screen-share apps (Chromium/Electron)
+  # can then restore it instead of re-prompting, which is what made Discord/
+  # Vivaldi require selecting the same window twice.
+  xdg.configFile."hypr/xdph.conf".text = ''
+    screencopy {
+      allow_token_by_default = true
+    }
+  '';
+
   wayland.windowManager.hyprland = {
     enable = true;
     # Match common/nixos/programs/hyprland.nix (nixpkgs-unstable, ~v0.54.3+)
