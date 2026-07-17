@@ -27,6 +27,9 @@ in
   # the runtime closure. Drop when upstream moves off it: nixpkgs#536370
   nixpkgs.config.permittedInsecurePackages = [
     "pnpm-10.29.2"
+    # vesktop runtime; EOL but still pinned by vesktop even on nixpkgs
+    # master. Drop when vesktop moves to a supported electron.
+    "electron-40.10.5"
   ];
 
   # nix
