@@ -8,8 +8,16 @@
 let
   system = pkgs.stdenv.hostPlatform.system;
 
-  elephantPkg = inputs.elephant.packages.${system}.elephant;
-  providersPkg = inputs.elephant.packages.${system}.elephant-providers;
+  # Upstream rev 8e77c59 bumped go.mod without updating vendorHash in its
+  # flake.nix; drop this override once upstream fixes it.
+  fixVendorHash =
+    pkg:
+    pkg.overrideAttrs (_: {
+      vendorHash = "sha256-ssX+ZQ6v+XcwC/RuIZ+rO/9zZwZnotudj8bvZNM7M3g=";
+    });
+
+  elephantPkg = fixVendorHash inputs.elephant.packages.${system}.elephant;
+  providersPkg = fixVendorHash inputs.elephant.packages.${system}.elephant-providers;
   walkerPkg = inputs.walker.packages.${system}.default;
 
   # Combine elephant binary + providers under one prefix, wrap PATH so the
