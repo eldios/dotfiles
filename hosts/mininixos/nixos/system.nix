@@ -24,7 +24,10 @@
 
   services.btrfs.autoScrub = {
     enable = true;
-    interval = "weekly";
+    # Not "weekly": that is Mon 00:00, the same instant as nix-gc.dates =
+    # "weekly", and the combined scrub+GC I/O peak on the root NVMe
+    # correlates with both 990 PRO controller dropouts (Jun 28, Jul 20).
+    interval = "Sat *-*-* 04:00:00";
     fileSystems = [ "/" ]; # scrubs entire BTRFS filesystem including all subvolumes
     # /srv/docker scrub is in srv-storage.nix
   };
