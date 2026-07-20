@@ -42,19 +42,6 @@
       };
     };
 
-    # nex VM (Arch Linux - OpenClaw)
-    "libvirt-vm-nex" = {
-      description = "Libvirt VM: nex";
-      after = [ "libvirtd.service" ];
-      wantedBy = [ "multi-user.target" ];
-
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = "yes";
-        ExecStart = "${pkgs.bash}/bin/bash -c \"state=$(${pkgs.libvirt}/bin/virsh domstate nex 2>/dev/null || echo 'shut off'); [[ $state == 'shut off' ]] && ${pkgs.libvirt}/bin/virsh start nex || exit 0\"";
-        ExecStop = "${pkgs.libvirt}/bin/virsh shutdown nex";
-      };
-    };
   };
 }
 
