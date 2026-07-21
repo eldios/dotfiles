@@ -1,0 +1,1 @@
+ah no aspetta.. ora waybar e' andato sopra di un livello.. ma e' sparita l'opzione top/bottom/left/right ... ed e' rimasto il menu aeasthetics
