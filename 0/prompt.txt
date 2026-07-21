@@ -1,0 +1,1 @@
+sistema anche gli altri cg a questo punto.. che non usino il binario nudo ma quello di ${pkgs.cargo}
