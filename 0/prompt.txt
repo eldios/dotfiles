@@ -1,0 +1,1 @@
+il test manuale funziona ma dopo rebuild continua a non funzionare
