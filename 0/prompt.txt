@@ -1,0 +1,53 @@
+smal error
+```
+sudo: preserving the entire environment is not supported, '-E' is ignored
+warning: Git tree '/home/eldios/dotfiles' is dirty
+building the system configuration...
+warning: Git tree '/home/eldios/dotfiles' is dirty
+error: Cannot build '/nix/store/3z41mqr9qqlk0q1q053b9nb34mn5g140-home-manager-path.drv'.
+       Reason: builder failed with exit code 25.
+       Output paths:
+         /nix/store/REDACTED
+       Last 6 log lines:
+       > structuredAttrs is enabled
+       > pkgs.buildEnv error: two given paths contain a conflicting subpath:
+       >   `/nix/store/REDACTED/bin/play' and
+       >   `/nix/store/8nd8gnnyll5y584wf9lapk847w53ma03-gotools-0.44.0/bin/play'
+       > hint: this may be caused by two different versions of the same package in buildEnv's `paths` parameter
+       > hint: `pkgs.nix-diff` can be used to compare derivations
+       For full logs, run:
+         nix log /nix/store/3z41mqr9qqlk0q1q053b9nb34mn5g140-home-manager-path.drv
+error: Cannot build '/nix/store/vf05c5sd28ccda089fia630kiv23p6gq-hm_fontconfigconf.d10hmfonts.conf.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED.d10hmfonts.conf
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Build failed due to failed dependency
+error: Build failed due to failed dependency
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/4b5xdjvzbwsh57yg6dkx9l6hrs5562sf-etc
+error: Cannot build '/nix/store/REDACTED.service.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED.service
+error: Build failed due to failed dependency
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/l0j8s1k0lgblfa14kcj8ray46m9q3iy1-activate
+error: Cannot build '/nix/store/REDACTED.05.20260707.0ad6f47.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED.05.20260707.0ad6f47
+error: Build failed due to failed dependency
+Command 'nix --extra-experimental-features 'nix-command flakes' build --print-out-paths '/home/eldios/dotfiles#nixosConfigurations."lele8845ace".config.system.build.toplevel' --no-link' returned non-zero exit status 1.
+```
