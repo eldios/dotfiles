@@ -1,0 +1,16 @@
+<task-notification>
+<task-id>aff7c451c68c5df1d</task-id>
+<tool-use-id>toolu_0194NLkwMcvvwreZUfc3EecH</tool-use-id>
+<output-file>/tmp/claude-1000/-home-eldios-dotfiles/9fcdd576-3d30-4e21-947e-edfba39ee991/tasks/aff7c451c68c5df1d.output</output-file>
+<status>completed</status>
+<summary>Agent "Cleanup terminals and shells" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>hm-term-shell cleanup done. Summary:
+
+- Changed 2 files: `nushell.nix` (removed 2 stale/wrong FIXME comments — `pkgs.cargo`/`pkgs.kubectl` are already correct) and `git.nix` (removed broken dead alias `prettylog = "..."`, grep-proven unreferenced; `lol`/`loll` already cover pretty logs). Both pass `nix-instantiate --parse`.
+- Biggest finding: all SIX terminal emulators (alacritty, ghostty, kitty, rio, wezterm, waveterm) are `enable = true` AND imported via `common_programs_gui.nix` — real config bloat, but none provably dead, so I flagged rather than deleted. `zellij.nix` is imported nowhere (commented out in base) — flagged, not removed.
+- Security (ssh.nix + waveterm json): no hardcoded secrets; apitoken uses a runtime `cmd:` lookup. Noted (unchanged) `Match all → User root` + `PasswordAuthentication yes` client default and an empty `Match canonical all` no-op block.
+- 4 open questions for Lele (six-terminal bloat, ssh no-op Match block, zellij file fate, git `settings` API). Nothing risky or security-sensitive was modified.
+- Report: `/home/eldios/.claude/jobs/72dfb7db/tmp/reports/hm-term-shell.md`. Parse-checks passed.</result>
+<usage><subagent_tokens>77199</subagent_tokens><tool_uses>32</tool_uses><duration_ms>207344</duration_ms></usage>
+</task-notification>
