@@ -1,0 +1,1 @@
+okay come pulisco le vecchie generation in nix? ho la /boot piena di roba vecchia
