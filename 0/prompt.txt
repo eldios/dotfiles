@@ -1,0 +1,1 @@
+in /home/eldios/go/src/github.com/vicrodh/qbz ho buildato l'ultima versione di qbz e funziona alla grande.. non so perche' ci stanno mettendo cosi' tanto ad aggiornare il packaging, facciamo un overlay simile a quello di gitbuler dove compiliamo l'ultima versione
