@@ -1,0 +1,1 @@
+riesci a farmi un html in ~/tmp/nvim/ con la spiegazione di tutti settings, plugins, repo, app, etc che uso dentro nvim? per ogni fammi una mini animazione che spiega come funziona, o una gif o un svg o prendi una gif online, confronta la configurazione in nix con quello che c'e' in neovim (dove ho installato parecchia roba con lazyvim/mason)
