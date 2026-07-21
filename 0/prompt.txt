@@ -1,0 +1,1 @@
+partiamo da gitbluter, perche' nixpkgs non builda il CLI? che senso ha? usiamo il codice e lo buildiamo noi intanto leggo il resto
