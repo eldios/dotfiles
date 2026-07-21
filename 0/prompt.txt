@@ -1,0 +1,1 @@
+non ho capito perche' ma i temi GTK sono tornati chiari, ho provato a cambiare usando i temi omarchy-based ma rimangono chiari.. strano. verifica la conf
