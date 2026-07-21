@@ -1,0 +1,1 @@
+okay usare la stable ha funzionato.. pero' ora non riesce ad accedere allo store delle password... inoltre bisogna riaggiungere il keybinding in hyprland ed i3
