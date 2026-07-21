@@ -1,0 +1,27 @@
+nada de nada:
+```
+dotfiles on  main [!] on ☁️  (ap-northeast-1)
+❯ systemctl status split-dns-lan
+resolvectl status br0
+resolvectl query mininixos.lan
+● split-dns-lan.service - Route .lan queries to the local DNS on br0 (no DoT)
+     Loaded: loaded (/etc/systemd/system/split-dns-lan.service; enabled; preset: ignored)
+     Active: active (exited) since Wed 2026-07-01 10:39:48 CEST; 13min ago
+ Invocation: c36eed8ccc77410397fbca2244aa4e04
+    Process: 2423944 ExecStart=/nix/store/rd05syhv5v5999907a2n1r37sgi19vpd-systemd-260.2/bin/resolvectl dns br0 192.168.152.1 (code=exited, status=0/SUCCESS)
+    Process: 2423954 ExecStart=/nix/store/rd05syhv5v5999907a2n1r37sgi19vpd-systemd-260.2/bin/resolvectl domain br0 lan (code=exited, status=0/SUCCESS)
+    Process: 2423962 ExecStart=/nix/store/rd05syhv5v5999907a2n1r37sgi19vpd-systemd-260.2/bin/resolvectl dnsovertls br0 no (code=exited, status=0/SUCCESS)
+   Main PID: 2423962 (code=exited, status=0/SUCCESS)
+         IP: 0B in, 0B out
+         IO: 0B read, 0B written
+   Mem peak: 3.8M
+        CPU: 11ms
+
+Jul 01 10:39:48 lele8845ace systemd[1]: Starting Route .lan queries to the local DNS on br0 (no DoT)...
+Jul 01 10:39:48 lele8845ace systemd[1]: Finished Route .lan queries to the local DNS on br0 (no DoT).
+Link 4 (br0)
+    Current Scopes: LLMNR/IPv4 LLMNR/IPv6 mDNS/IPv4 mDNS/IPv6
+         Protocols: -DefaultRoute +LLMNR +mDNS +DNSOverTLS DNSSEC=yes/supported
+     Default Route: no
+mininixos.lan: Name 'mininixos.lan' not found
+```
