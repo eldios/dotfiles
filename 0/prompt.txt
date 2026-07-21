@@ -1,0 +1,7 @@
+<task-notification>
+<task-id>bwgy2w7vv</task-id>
+<tool-use-id>toolu_019HQdSHNMSKC9VrKQsQKBVy</tool-use-id>
+<output-file>/tmp/claude-1000/-home-eldios-dotfiles/cc212204-6ea7-4e07-b0d2-165744dbeef6/tasks/bwgy2w7vv.output</output-file>
+<status>completed</status>
+<summary>Background command "Build with fake hashes to learn real FOD hashes" completed (exit code 0)</summary>
+</task-notification>
