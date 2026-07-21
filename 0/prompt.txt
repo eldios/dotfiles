@@ -1,0 +1,1 @@
+okay mi sembra funzioni tutto.. forse QT ancora no, infatti sta rimanendo chiaro per ora, GTK invece si e' cambiato in base ai temi
