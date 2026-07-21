@@ -1,0 +1,20 @@
+<task-notification>
+<task-id>a48507f8b915898ad</task-id>
+<tool-use-id>toolu_01PL3UaugeepN8hSjxxCjoNi</tool-use-id>
+<output-file>/tmp/claude-1000/-home-eldios-dotfiles/9fcdd576-3d30-4e21-947e-edfba39ee991/tasks/a48507f8b915898ad.output</output-file>
+<status>completed</status>
+<summary>Agent "Security and info-leak review" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Security review complete. Report written to `/home/eldios/.claude/jobs/72dfb7db/tmp/reports/SECURITY.md`.
+
+Summary:
+- Severity counts: Critical 0, High 0, Medium 2, Low 3.
+- Hardcoded secret found: NO. No private-key headers, no literal `password/token/apiKey/secret = "..."` values anywhere in tracked files. sops-nix is used correctly (references/placeholders only) and the actual secrets live in a separate private `git+ssh` flake.
+- Most important finding (Medium): `common/home-manager/eldios/programs/mcp-servers.nix:270` publishes MCP Docker containers as `"${port}:${internalPort}"`, which binds `0.0.0.0` and (via Docker's DNAT) bypasses the NixOS firewall — exposing them to the LAN. The standout is the `mutx` crypto-wallet signing MCP on port 3030 (`mcp-servers.nix:121`), plus `anytype` running `networkMode = "host"` (line 159). Fix: bind `127.0.0.1` in the compose template. Human-in-the-loop approval on mutx mitigates but does not remove the exposure.
+- Other Medium: passwordless sudo (`security.sudo.wheelNeedsPassword = false`, `common/nixos/system.nix:223`) on all hosts.
+- Lows: Portainer publishes 9443 on `0.0.0.0` with docker.sock mounted (`libvirt-vms.nix`); internal IPs/`*.casa.lele.rip` hostnames committed (topology info leak); SSH client password-auth fallback (benign, server enforces key-only).
+- Verified-OK: SSH server hardened + fail2ban, Clevis/Tang subnet-restricted with sound fallback design, borg via sops, public cache signing keys are meant to be public, `.claude`/`.crush` gitignored and untracked.
+
+One note flagged for you: `CLEANUP_REVIEW.md` exists in the worktree and self-declares as local-only scratch — confirm it is not staged before any commit.</result>
+<usage><subagent_tokens>79369</subagent_tokens><tool_uses>21</tool_uses><duration_ms>268465</duration_ms></usage>
+</task-notification>
