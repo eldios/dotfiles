@@ -1,0 +1,1 @@
+come apro un terminale (tipo kitty) senza importare il zsh profile?
