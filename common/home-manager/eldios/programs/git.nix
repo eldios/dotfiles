@@ -25,7 +25,9 @@ in
   home = {
     packages = with pkgs; [
       github-cli
-    ];
+    ] ++ ( with pkgs.unstable; [
+      entire
+    ] );
   };
 
   programs = {
