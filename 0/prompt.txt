@@ -1,0 +1,1 @@
+come sempre, NON parlare nel codice di cose che non ci sono piu'. non e' un diario personale. SOLO quel che c'e' va commentato e documentato. Se non c'e' perche' parlarne? aggiunge confusione e basta
