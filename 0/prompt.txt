@@ -1,0 +1,1 @@
+who's requesting pnpm in my nixos config? also let's fix all these errors:
