@@ -1,0 +1,2 @@
+1. toglierlo e' okay tanto cinnamon ha il suo menu di style di gtk, va bene quello di default. togli stylix dappertutto
+2. scusa, intendevo cinnamon
