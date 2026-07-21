@@ -1,0 +1,1 @@
+in i3 cambia quel comando per aprire il $browser e metti browser = vivaldi per ora
