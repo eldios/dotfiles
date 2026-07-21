@@ -1,0 +1,1 @@
+cleanup the neovim.nix file in common/home-manager/programs/neovim.nix ... there's a lot of cruft and mess up
