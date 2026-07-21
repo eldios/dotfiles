@@ -1,0 +1,1 @@
+come faccio a stoppare una sessione di agents ? non ho piu' terminali con quella sessione attiva eppure mi dice che e' ancora attiva
