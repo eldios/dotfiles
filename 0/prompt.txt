@@ -1,0 +1,1 @@
+mi sa che si e' rotta la configurazione di dbus... vivaldi ma anche discord non mi lascia condividere lo schermo. questa e' la soluzione https://www.reddit.com/r/hyprland/comments/1duxnmi/comment/lm94fpc/ cioe' lanciando con dbus-launch vivaldi poi funzoina.. che caccio sta succedendo?
