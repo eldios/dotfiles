@@ -1,0 +1,7 @@
+<task-notification>
+<task-id>b2v4zvy5d</task-id>
+<tool-use-id>toolu_01DipC4DEuvUigQvQvor4FeY</tool-use-id>
+<output-file>/tmp/claude-1000/-home-eldios-dotfiles/87abae71-f5bf-4326-aa56-8d8c0940b0e0/tasks/b2v4zvy5d.output</output-file>
+<status>completed</status>
+<summary>Background command "Build system toplevel to verify gitbutler hash fix" completed (exit code 0)</summary>
+</task-notification>
