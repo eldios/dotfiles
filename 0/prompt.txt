@@ -1,0 +1,191 @@
+<task-notification>
+<task-id>a213a720725fc67f0</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/tmp/claude-1000/-home-eldios-dotfiles/72dfb7db-0b0f-418a-b425-eebd4aefee4d/tasks/a213a720725fc67f0.output</output-file>
+<status>completed</status>
+<summary>Agent "Claude Code agent management docs" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Based on the official documentation I've fetched, here's a complete, current (2026) guide to managing agents in Claude Code:
+
+## 1. Subagents: Automatic Delegation &amp; Core Concepts
+
+**What they are:** Subagents are specialized AI assistants that handle specific tasks in isolation, each running in its own context window with custom system prompts, tool restrictions, and permissions. When Claude encounters a task that matches a subagent's description, it automatically delegates to that subagent—the subagent works independently and returns only a summary to your main conversation.
+
+**Why they exist:** Subagents preserve context by keeping exploration output, logs, or verbose results out of your main conversation. They enforce tool restrictions (e.g., read-only agents) and reduce costs by routing tasks to cheaper models like Haiku.
+
+**Built-in subagents** (v2.1.198+, per https://code.claude.com/docs/en/sub-agents.md):
+- **Explore**: Fast, read-only agent for file discovery and codebase exploration. Inherits the parent session's model (capped at Opus on Claude API).
+- **Plan**: Read-only agent for research before presenting a plan. Inherits the parent session's model.
+- **General-purpose**: Capable agent for multi-step tasks requiring both exploration and action. All tools, inherits the parent model.
+- **Other helpers**: `statusline-setup` (Sonnet), `claude-code-guide` (Haiku)
+
+---
+
+## 2. Creating &amp; Managing Custom Agents
+
+**File Format and Location:**  
+Subagent files are YAML-frontmatter Markdown files stored in these locations (highest to lowest priority):
+1. Managed settings (organization-wide)
+2. `--agents` CLI flag (current session only)
+3. `.claude/agents/` (project scope)
+4. `~/.claude/agents/` (user scope, all projects)
+5. Plugin `agents/` directories (where plugin is enabled)
+
+**Supported Frontmatter Fields** (from https://code.claude.com/docs/en/sub-agents.md#supported-frontmatter-fields):
+
+| Field | Required | Description |
+|---|---|---|
+| `name` | Yes | Unique identifier (lowercase + hyphens). Used by hooks as `agent_type`. |
+| `description` | Yes | When Claude should delegate to this agent. Be specific so Claude knows when to use it. |
+| `tools` | No | Comma-separated list of allowed tools. If omitted, inherits all. |
+| `disallowedTools` | No | Tools to explicitly deny. Applied before `tools`. Supports patterns like `mcp__&lt;server&gt;`. |
+| `model` | No | `sonnet`, `opus`, `haiku`, `fable`, or full model ID (e.g. `claude-opus-4-8`), or `inherit`. Defaults to `inherit`. |
+| `permissionMode` | No | `default`, `acceptEdits`, `auto`, `dontAsk`, `bypassPermissions`, `plan`, or `manual`. |
+| `maxTurns` | No | Maximum agentic turns before the subagent stops. |
+| `skills` | No | List of skills to preload into the subagent's context. Full skill content is injected. |
+| `mcpServers` | No | MCP servers scoped to this subagent. Inline definitions or references to configured servers. |
+| `hooks` | No | Lifecycle hooks (PreToolUse, PostToolUse, Stop). Ignored for plugin subagents. |
+| `memory` | No | `user`, `project`, or `local`. Enables persistent cross-session learning. |
+| `background` | No | `true` to always run in background. Default (v2.1.198+): runs in background by default. |
+| `effort` | No | Effort level: `low`, `medium`, `high`, `xhigh`, `max`. Overrides session setting. |
+| `isolation` | No | Set to `worktree` to run in an isolated git worktree. |
+| `color` | No | Display color: `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, or `cyan`. |
+| `initialPrompt` | No | Auto-submitted as the first turn when agent runs as the main session (via `--agent` or `agent` setting). |
+
+**Example file** (`.claude/agents/code-reviewer.md`):
+```markdown
+---
+name: code-reviewer
+description: Expert code review specialist. Proactively reviews code for quality, security, and maintainability. Use immediately after writing or modifying code.
+tools: Read, Grep, Glob, Bash
+model: sonnet
+---
+
+You are a senior code reviewer ensuring high standards of code quality and security.
+
+When invoked:
+1. Run git diff to see recent changes
+2. Focus on modified files
+3. Review for clarity, security, proper error handling, and test coverage
+
+Provide feedback organized by priority:
+- Critical issues (must fix)
+- Warnings (should fix)
+- Suggestions (consider improving)
+```
+
+**Creating subagents:**
+- **Ask Claude to write it** (preferred): `Create a code-reviewer subagent in ~/.claude/agents/`
+- **Write the file manually** in `.claude/agents/&lt;name&gt;.md` or `~/.claude/agents/&lt;name&gt;.md`
+- **CLI flag** (session-only): `claude --agents '{"code-reviewer": {"description": "...", "tools": [...], "model": "sonnet", "prompt": "..."}}'`
+
+---
+
+## 3. Running &amp; Observing Agents
+
+**The `/agents` command** (v2.1.198+, per https://code.claude.com/docs/en/agents.md):  
+Running `/agents` no longer opens an interactive wizard. Instead, it prints a reminder to ask Claude or edit `.claude/agents/` directly. Subagent files are watched automatically: changes within ~3 seconds are detected without restarting the session (caveat: after creating a new agents directory for the first time, a restart is required).
+
+**Explicit invocation patterns** (from https://code.claude.com/docs/en/sub-agents.md#invoke-subagents-explicitly):
+1. **Natural language**: name the subagent in your prompt (Claude decides whether to delegate)
+   ```
+   Use the code-reviewer subagent to look at my auth changes
+   ```
+
+2. **@-mention** (guarantees invocation): type `@` and select from typeahead
+   ```
+   @"code-reviewer (agent)" review this auth module
+   ```
+   Or manually: `@agent-code-reviewer`
+
+3. **Session-wide default** (entire session uses that subagent's system prompt, tools, model):
+   ```bash
+   claude --agent code-reviewer
+   ```
+   Or in `.claude/settings.json`:
+   ```json
+   { "agent": "code-reviewer" }
+   ```
+
+**Running in foreground vs. background** (v2.1.198+):  
+Subagents run in the **background by default**. Claude runs foreground when it needs the result immediately. You can steer this:
+- Ask Claude explicitly: "run this task in the background"
+- Press **Ctrl+B** to background a running task
+- Set `background: true` in the subagent's frontmatter to force background
+- Disable all background tasks: `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1`
+
+**Observing running work:**
+- **Main session subagents**: Named background subagents appear in the @-mention typeahead with status
+- **Background sessions** (different approach): `claude agents` opens agent view — a dashboard of all running sessions
+- **Current session tasks**: `/tasks` lists each item and lets you check on, attach to, or stop them
+- **Transcripts**: Each subagent creates a transcript file at `~/.claude/projects/{projectId}/{sessionId}/subagents/agent-{agentId}.jsonl`
+
+**Resuming subagents**: Each subagent invocation creates a fresh instance. To continue an existing subagent's work:
+```
+Continue that code review and now analyze the authorization logic
+```
+Claude uses `SendMessage` with the agent ID or name to resume it, preserving full conversation history. (Built-in Explore and Plan agents are one-shot and can't be resumed; use `general-purpose` or a custom subagent when resumption is needed.)
+
+---
+
+## 4. Neovim-Specific: How Agents Work in the Coder/claudecode.nvim Plugin
+
+**The short answer:** Agent management is a **property of the `claude` CLI session itself**, not the Neovim plugin. When Claude Code runs inside Neovim via **coder/claudecode.nvim**, the plugin simply hosts the `claude` CLI in a Neovim terminal split. All agent features — `/agents` command, `.claude/agents/` file watching, `--agent` flag, `--agents` JSON, @-mentions, foreground/background task switching (Ctrl+B), and agent invocation patterns — work **identically** whether launched from a shell or Neovim.
+
+**Why:** The coder/claudecode.nvim plugin doesn't modify Claude Code's agent system or intercept agent management commands. It's a terminal wrapper that:
+- Spawns the `claude` CLI in a Neovim terminal split
+- Routes your keyboard input to the CLI's stdin
+- Displays the CLI's stdout/stderr in the terminal
+
+Since agents are managed by the CLI session, not the plugin, the `/agents` command, @-mentions for subagent selection, background task panels, and all agent control work exactly as documented.
+
+**Caveat:** The plugin does **not** expose Neovim-specific agent discovery or UI. You cannot browse `.claude/agents/` from a Neovim command or picker integration (the plugin doesn't offer that). You manage agents by editing files directly in Neovim or asking Claude to create/edit them.
+
+---
+
+## 5. Comparison: Agents vs. MCP Servers vs. Plugins
+
+| Feature | Subagents | MCP Servers | Plugins |
+|---|---|---|---|
+| **What** | Specialized AI assistants with custom prompts, tools, models | Tools/resources (APIs, databases, external services) exposed to Claude | Reusable automations: agents, skills, hooks, commands distributed as packages |
+| **Scope** | Single session or project | Single session or project | Across sessions, teams (if published) |
+| **Context** | Own isolated context window | None (MCP tool definitions are context) | Plugins can provide agents + skills + hooks that share context |
+| **When to use** | Task-specific delegation (e.g., "research", "code review", "debug") | Wrapping external services (e.g., GitHub API, Slack, databases) | Reusable workflows (e.g., "code-review plugin" bundling a code-reviewer agent + review skills + hooks) |
+| **Who manages** | You (edit `.claude/agents/`) or Claude | You (configure in `.mcp.json`) | Plugin author; you install with `/plugins` |
+| **Tool restriction** | Yes (`tools:`, `disallowedTools:`) | No (all tools from a server are available once connected) | Yes (plugin agents can restrict tools) |
+
+**Key distinction:** Subagents are **Claude instances**—separate AI sessions with their own reasoning. MCP servers are **tool packages**—they don't think, they just expose operations. A plugin can combine both: a plugin-distributed subagent that uses MCP servers to do work.
+
+---
+
+## Quick Start: Create Your First Custom Subagent
+
+1. **Ask Claude to create it:**
+   ```
+   Create a personal code-improver subagent in ~/.claude/agents/ that scans files and suggests improvements for readability, performance, and best practices. Make it read-only and have it use Sonnet.
+   ```
+
+2. **Review the file** (Claude writes `~/.claude/agents/code-improver.md`):
+   ```bash
+   cat ~/.claude/agents/code-improver.md
+   ```
+
+3. **Invoke it:**
+   - Natural language: `Use the code-improver agent to review this file`
+   - @-mention: `@agent-code-improver look at the auth module`
+   - Or ask Claude to suggest improvements
+
+4. **Customize via frontmatter** if needed:
+   - Change `tools:` to restrict what it can do
+   - Change `model:` to route to a different model
+   - Add `memory: user` for cross-session learning
+   - Add `hooks:` for conditional logic
+
+---
+
+**Official docs:**
+- Subagents: https://code.claude.com/docs/en/sub-agents.md
+- Run agents in parallel: https://code.claude.com/docs/en/agents.md
+- How Claude Code works (agent loop): https://code.claude.com/docs/en/how-claude-code-works.md</result>
+<usage><subagent_tokens>79391</subagent_tokens><tool_uses>8</tool_uses><duration_ms>83648</duration_ms></usage>
+</task-notification>
