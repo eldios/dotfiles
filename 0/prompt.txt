@@ -1,0 +1,1 @@
+okay quindi mi basta togliere nvim-treesitter?
