@@ -1,0 +1,4 @@
+```
+❯ resolvectl query mininixos.lan
+mininixos.lan: Name 'mininixos.lan' not found
+```
