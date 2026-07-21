@@ -1,0 +1,1 @@
+esiste un modo per cachare anche le build di nixos? con ncp mi sa che fa cache solo degli artifact scaricati ma non della build per cui alla fine rebuildo la stessa roba N volte su tutti gli host (che e' un grande spreco)
