@@ -1,0 +1,1 @@
+sto disabilitando stylix interamente.. poi riavvio e vediamo che succede...  e cambio i temi con l'adattamento di Omarchy e vediamo. Dovrebbe fare l'update anche di GTK e QT?
