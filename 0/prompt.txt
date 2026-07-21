@@ -1,0 +1,3 @@
+build failed and now it says:
+```
+[0/12 built] waiting for lock on '/nix/store/REDACTED.21.0'
