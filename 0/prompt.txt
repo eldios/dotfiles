@@ -1,0 +1,99 @@
+<task-notification>
+<task-id>a2a6e887297e0f4f3</task-id>
+<tool-use-id>toolu_01PYRAponKnjk129iZcYHDka</tool-use-id>
+<output-file>/tmp/claude-1000/-home-eldios-dotfiles/72dfb7db-0b0f-418a-b425-eebd4aefee4d/tasks/a2a6e887297e0f4f3.output</output-file>
+<status>completed</status>
+<summary>Agent "Community comparison avante vs codecompanion" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Research complete. Here is the evidence-driven report.
+
+---
+
+# avante.nvim vs codecompanion.nvim — Neovim community sentiment, 2026
+
+## Method note
+Most "2026" writeups are blog/aggregator pieces that recycle the same GitHub Discussion (`codecompanion.nvim` #1209). The richest primary sentiment is in that discussion, the LazyVim discussion, Lobsters/HN threads, and the history-extension repo. Reddit r/neovim threads exist but were not directly reachable via the search index today (US-only WebSearch surfaced blog re-syntheses of them rather than the threads themselves) — flagged where relevant. I also pulled live repo stats to sanity-check the "loud" claims (some are stale).
+
+## Live repo stats (verified 2026-07-08/09 via GitHub API)
+- **avante.nvim**: 18,028 stars, ~36 open issues+PRs, last push 2026-07-08 — actively maintained.
+- **codecompanion.nvim**: 6,727 stars, ~9 open issues+PRs, last push 2026-07-08 — actively maintained.
+- **codecompanion-history.nvim** (the history extension): created 2025-05-03, 188 stars, last push 2026-01-22.
+
+Note: older comparisons (Feb 2025) cite "203 open issues for Avante vs 1 for CodeCompanion." That figure is **stale** — avante now sits at ~36. Use the issue-count argument with caution; it aged.
+
+---
+
+## 1. Sentiment summary per plugin
+
+### avante.nvim — "Cursor inside Neovim"
+**Praised for:** the diff-first sidebar workflow (select → describe → review diff → accept/reject with one keystroke), broad multi-provider support (Claude, OpenAI, Gemini, Copilot, Ollama, plus ACP agents: claude-code, gemini-cli, codex, goose, kimi-cli), per-project `avante.md` steering (the CLAUDE.md parallel), and well-handled code diffs. Users doing non-trivial refactors specifically prefer it because the explicit review step matters (Samuel Lawrentz blog, 2026-03-26).
+
+**Complained about (recurring, from users who left):**
+- "too loaded, heavy and hard to use now. There is just no documentation" — *pratyushmittal*, CC Discussion #1209.
+- "buggy and it doesn't work with copilot," plus unresolved bug reports — *TheLazyCat00*, #1209.
+- Context overflow causing freezing, slow issue resolution, confusing release notes, and repeated build-artifact re-downloads on update — *gitsang*, #1209.
+- Build friction: `make BUILD_FROM_SOURCE=true` trips up new users (avante GitHub issues).
+- Breaking changes tracking fast-moving model APIs (e.g. the Opus 4.7 `temperature` deprecation 400-error, issue #3022).
+- Keybinding conflicts with LazyVim defaults (LazyVim Discussion #4402).
+
+**Consensus read:** avante is the popular, feature-rich, higher-velocity option — and that velocity is exactly the double-edged sword. The core knock is *internal complexity / instability / thin docs*, not the UX. Its sidebar+diff UX is consistently the thing people *praise*, even detractors.
+
+### codecompanion.nvim — "feels like Neovim, not Cursor"
+**Praised for:** documentation quality and simplicity ("love CodeCompanion for its documentation and simplicity" — *pratyushmittal*), a clean codebase that's easy to modify/extend, clear release notes flagging breaking changes, deep native integration (chat buffers in splits, `@lsp`/`@buffers` variables, slash commands, prompt library, GitHub Models free tier), and a cautious maintainer who ships fewer but more stable features.
+
+**Complained about:**
+- Cautious pace means "might take longer to solve problems" (*gitsang*, #1209).
+- Historically weaker at *agentic* coding: "works well for interactive chat but falls short for agentic coding… limited to pre-configured 'workflows'" (HN #44839311, ~2025).
+- Chat persistence historically clunky: "CodeCompanionSave/CodeCompanionLoad requires quite the dance" (Discussion #139/#652).
+
+**Consensus read:** the "Neovim-native, stable, well-documented, extensible" choice. The recurring reservation is agentic depth and (historically) chat persistence — both of which have been actively closing in late-2025/2026.
+
+---
+
+## 2. Who should pick which (community synthesis)
+
+- **Pick avante** if you want a Cursor-like, diff-first review workflow for non-trivial refactors, the widest provider/ACP-agent menu out of the box, and per-project `avante.md` steering — and you can tolerate faster churn, occasional bugs, thinner docs, and a source build.
+- **Pick codecompanion** if you value Neovim-native feel, stability, excellent docs, an easily-hackable/extensible codebase, and tight LSP/buffer context — and you're doing more chat/in-flow work than heavy autonomous agentic edits.
+- **The most-repeated actual advice: install both.** They don't conflict; bind to different keymaps and use avante for big diffs, codecompanion for in-flow questions (Samuel Lawrentz 2026; *gitsang* #1209). Several heavy users also run an external CLI (Claude Code in a tmux pane) for truly agentic work regardless of plugin (HN #44839311, Lobsters).
+
+**Direction of migration:** the visible movement in the primary sources is **Avante → CodeCompanion** (pratyushmittal, TheLazyCat00, caesar-ipl in #1209), driven by avante's complexity/bugs/doc gaps — not by feature envy. I found **no** documented CodeCompanion → Avante migrations, though this is partly a sampling artifact (the richest thread lives on the CodeCompanion repo, so it over-samples people who chose CC). Treat "everyone is leaving avante" as a **loud, self-selected minority**, not proven broad consensus: avante still has ~2.7x the stars and heavy ongoing use.
+
+---
+
+## 3. The chat UI / multi-session history / UX-polish question (your specific concern)
+
+Your recollection — *you prefer avante's UX; codecompanion historically lacked chat + multi-history* — was **accurate for 2024–early 2025, but is now contradicted by 2026 reality on the history point.**
+
+- **Chat multi-session history — codecompanion has caught up, and arguably surpassed avante here.**
+  - Native: CodeCompanion now supports **ACP session resume** — `/resume` in a fresh chat buffer calls `session/list` → `session/load` to restore prior conversations across restarts (docs last updated 2026-06-30; ACP Discussion #2313).
+  - Extension: **`ravitemer/codecompanion-history.nvim`** (created 2025-05-03, 188 stars) gives full multi-session management — save/browse/restore, smart auto-generated titles, project-aware filtering, chat duplication, and a vector-search summary system over past chats (telescope/snacks/fzf-lua pickers). This is genuinely richer multi-history than avante ships. It preserves messages, tools, schemas, and references.
+  - Caveat: this is a *third-party extension*, not core, and its last push was 2026-01-22 (stable but less active); there's a known open bug (issue #63) about message history not passed to ACP adapters on restore. Avante's own persisted, browsable multi-session history is comparatively thin — avante is centered on the live sidebar/diff loop, not a chat archive.
+
+- **Chat UI quality / conversations — codecompanion is strong; this is arguably its home turf.** Its chat-buffer-in-a-split model, slash commands, `@` context variables, and prompt library are consistently what people praise (#1209, Samuel Lawrentz). TheLazyCat00's reason for leaving avante was literally that CC "supports conversations (not just buffer editing)." So the framing "codecompanion lacked chat" is now inverted — chat is its strength.
+
+- **Overall UX polish — this is where your preference still holds up.** "Polish" splits two ways in the sources:
+  - *Interaction polish for edits*: avante's one-keystroke diff accept/reject sidebar is repeatedly called the more Cursor-like, satisfying flow for applying changes. If "UX polish" means the inline-edit/diff experience, avante still wins in community sentiment.
+  - *Docs / stability / coherence polish*: codecompanion is judged the more polished, less janky, better-documented product. Avante's UX is praised but its *reliability and docs* are the top complaint.
+
+**Bottom line for you:** the specific gap you remember (no chat, no multi-history in codecompanion) has been closed as of 2026 — via native ACP resume plus `codecompanion-history.nvim`. Your preference for avante's *diff/sidebar interaction feel* is still shared by the community; but if the deciding factor is "multi-session chat history + chat UI," codecompanion is now at least on par and by several accounts ahead — with the asterisk that its best history story depends on a third-party extension.
+
+---
+
+## 4. Sources (with dates / recency flags)
+
+- **CodeCompanion vs Avante — Discussion #1209**, olimorris/codecompanion.nvim — richest primary sentiment (Avante→CC migrations, complaints). https://github.com/olimorris/codecompanion.nvim/discussions/1209 *(2025, ongoing)*
+- **Samuel Lawrentz, "avante.nvim vs CodeCompanion — AI Inside Neovim in 2026"** — 2026-03-26. https://samuellawrentz.com/blog/neovim-ai-plugins-avante-codecompanion/ *(current; opinion + framing)*
+- **ravitemer/codecompanion-history.nvim** — multi-session history extension. https://github.com/ravitemer/codecompanion-history.nvim *(created 2025-05-03, 188★, last push 2026-01-22)*
+- **CodeCompanion ACP / session resume docs** — https://codecompanion.olimorris.dev/agent-client-protocol and /usage/acp-protocol *(docs updated 2026-06-30)*; ACP session mgmt Discussion #2313.
+- **"Save and restore chats" #139 / "Working Chat History Extension" #652** — historical evidence CC persistence was clunky. https://github.com/olimorris/codecompanion.nvim/discussions/139 *(older, 2024–2025 — the "dance" complaint is now partly addressed)*
+- **HN #44839311** — "agentic stuff with neovim" — CC "falls short for agentic coding"; people fall back to Claude CLI. https://news.ycombinator.com/item?id=44839311 *(~2025, ~11 months old)*
+- **HN #41353835** — original avante Show HN. https://news.ycombinator.com/item?id=41353835 *(2024 — stale, launch-era)*
+- **Lobsters — "Neovim users: what AI tools are you using?"** — avante "most useful" but many prefer external CLIs in tmux. https://lobste.rs/s/6san1l/neovim_users_what_ai_tools_are_you_using *(~1 year old — flag as aging)*
+- **LazyVim Discussion #4402** — avante praise + keybinding-conflict/config complaints. https://github.com/LazyVim/LazyVim/discussions/4402 *(2024–2025)*
+- **avante issues** #3022 (Opus 4.7 breaking change), #2750 (auto-applies suggestions), #1973 (diff-not-applyable) — build/stability friction. https://github.com/yetone/avante.nvim/issues *(2026)*
+- **BigGo, "Community Debates Neovim AI Plugins"** — 2025-02-19 aggregation; source of the now-stale "203 vs 1 open issues" stat. https://biggo.com/news/202502191322_neovim-ai-plugins-comparison *(stale on the issue-count figure)*
+- **ColinKennedy/neovim-ai-plugins** — landscape list for cross-checking the field. https://github.com/ColinKennedy/neovim-ai-plugins
+
+**Reliability caveats:** (1) the Avante→CC migration narrative over-samples the CodeCompanion repo — likely a vocal minority, not proven majority; avante retains ~2.7x the stars and active dev. (2) Several 2026-dated blog posts are re-syntheses of the same #1209 thread, not independent data points. (3) The stale "203 open issues" claim shows how fast this space moves — I verified current counts live rather than trusting the writeups.</result>
+<usage><subagent_tokens>65275</subagent_tokens><tool_uses>20</tool_uses><duration_ms>201805</duration_ms></usage>
+</task-notification>
