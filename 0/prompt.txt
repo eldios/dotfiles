@@ -1,0 +1,1 @@
+CREDO che praticamente questo sia il mio scenario https://docs.netbird.io/manage/reverse-proxy/bring-your-own-proxy pero' se possibile preferirei NON dover usare un server esterno.. comunque in caso ne ho disponibili
