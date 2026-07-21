@@ -1,0 +1,82 @@
+okay cambio sha per elephant ma non trovo dove si trova
+```
+❯ nixu
+building the system configuration...
+warning: ignoring substitute for '/nix/store/REDACTED.25.4' from 'https://nix-cache.casa.lele.rip', as it's not signed by any of the keys in 'trusted-public-keys'
+warning: ignoring substitute for '/nix/store/REDACTED.1' from 'https://nix-cache.casa.lele.rip', as it's not signed by any of the keys in 'trusted-public-keys'
+warning: ignoring substitute for '/nix/store/REDACTED.36.10' from 'https://nix-cache.casa.lele.rip', as it's not signed by any of the keys in 'trusted-public-keys'
+warning: ignoring substitute for '/nix/store/REDACTED.1' from 'https://nix-cache.casa.lele.rip', as it's not signed by any of the keys in 'trusted-public-keys'
+warning: ignoring substitute for '/nix/store/xb65lffrn4fkg2ks6l0nwsnx6qhl9z0k-gtest-1.17.0' from 'https://nix-cache.casa.lele.rip', as it's not signed by any of the keys in 'trusted-public-keys'
+warning: ignoring substitute for '/nix/store/REDACTED.115' from 'https://nix-cache.casa.lele.rip', as it's not signed by any of the keys in 'trusted-public-keys'
+error: hash mismatch in fixed-output derivation '/nix/store/REDACTED.22.0-go-modules.drv':
+         specified: sha256-EWXZ+9/QDRpidpVHBcfJgp0xoc3YtRsiC/UTk1R+FSY=
+            got:    sha256-ssX+ZQ6v+XcwC/RuIZ+rO/9zZwZnotudj8bvZNM7M3g=
+error: Cannot build '/nix/store/REDACTED.22.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED.22.0
+error: Build failed due to failed dependency
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Build failed due to failed dependency
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Cannot build '/nix/store/nph6z93kffzx0p0p5sprwn2bb2kvvv3i-set-environment.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/p4s86zdjppkpdl3xd4wldj16389xlwyk-system-path
+error: Cannot build '/nix/store/y079nihcazh8z402kn73n2vk8fkibn3y-unit-elephant.service.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED.service
+error: Cannot build '/nix/store/REDACTED.service.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED.service
+error: Build failed due to failed dependency
+error: Build failed due to failed dependency
+error: Build failed due to failed dependency
+error: Build failed due to failed dependency
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Cannot build '/nix/store/p583sz8fvqxka707cf8fvd61aay8wspb-dbus-1.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/swjsls2qqin5l0776nyssk1ai0jhlrrw-dbus-1
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Cannot build '/nix/store/ngkmw4vvhcfvb1h71jq3mvxv6cz608y0-etc-zshenv.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/gpqy44n3innffwihrv6yml3xz8rxc867-etc
+error: Cannot build '/nix/store/REDACTED.05.20260716.4382ed2.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/hxs4m09fl3c2kw588f5hmnc558yxm4a8-nixos-system-lele8845ace-26.05.20260716.4382ed2
+error: Cannot build '/nix/store/REDACTED.service.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED.service
+error: Cannot build '/nix/store/jky3p5ngsg38qy1rq967r1d451g286ps-user-units.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Build failed due to failed dependency
+Command 'nix --extra-experimental-features 'nix-command flakes' build --print-out-paths '/home/eldios/dotfiles#nixosConfigurations."lele8845ace".config.system.build.toplevel' --no-link' returned non-zero exit status 1.
+```
