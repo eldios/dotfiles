@@ -1,0 +1,16 @@
+<task-notification>
+<task-id>aa1d548571d243606</task-id>
+<tool-use-id>toolu_016ujkVy7r22Y8M2kDtDBjvS</tool-use-id>
+<output-file>/tmp/claude-1000/-home-eldios-dotfiles/9fcdd576-3d30-4e21-947e-edfba39ee991/tasks/aa1d548571d243606.output</output-file>
+<status>completed</status>
+<summary>Agent "Cleanup home-manager core modules" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Done. Summary of hm-core cleanup:
+
+- **Files changed (3):** `sops.nix`, `services/audio.nix`, `common_programs_gui.nix`. Reviewed and left clean: `common_programs_base.nix`, `services.nix`, `services/swayosd.nix`, `style/stylix.nix`.
+- **Biggest wins:** removed dead commented sops "workaround" block referencing an **undefined** `main_user_id` var (grep-proven unused); rewrote audio.nix's history-diary comment into a terse forward-looking DAC-conflict warning; fixed a wrong "Browsers and apps" section comment.
+- **Import-hub check (special focus):** all 29 imports across both hubs resolve to real files, 0 missing, no reference to any removed module; `services/audio.nix` correctly kept (imported by 3 hosts).
+- **2 open questions:** (1) `stylix.enable = false` contradicts its own comment claiming it keeps Firefox+fonts theming — comment likely stale, left untouched as risky; (2) whether to drop the `#./programs/zellij.nix` disabled-toggle. Did NOT touch `stylix.targets.qt.enable` per instructions.
+- **Parse-checks:** `nix-instantiate --parse` (nice -n 19) passed on all 3 changed files. No secrets leaked (only secret paths/names present, no values). Report at `/home/eldios/.claude/jobs/72dfb7db/tmp/reports/hm-core.md`.</result>
+<usage><subagent_tokens>60745</subagent_tokens><tool_uses>15</tool_uses><duration_ms>135725</duration_ms></usage>
+</task-notification>
