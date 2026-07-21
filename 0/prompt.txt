@@ -1,0 +1,22 @@
+<task-notification>
+<task-id>ada56200c8b9086ca</task-id>
+<tool-use-id>toolu_01WaCsvjMwmgwty5ykoz7p7B</tool-use-id>
+<output-file>/tmp/claude-1000/-home-eldios-dotfiles/9fcdd576-3d30-4e21-947e-edfba39ee991/tasks/ada56200c8b9086ca.output</output-file>
+<status>completed</status>
+<summary>Agent "Cleanup omarchy themes docs" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Done. Summary:
+
+**Files changed (5):** `README.md`, `docs/theming.md`, `docs/new-host.md`, `docs/nixos-commands.md`, `common/omarchy/extensions/menu.sh`.
+
+**Biggest wins:**
+- **README** now lists the 4 real flake hosts (lele8845ace, lele9iyoga, mininixos, sox1x) with accurate Type/Purpose — removed the fictional `wotah` and deleted `nucone`; dropped the non-existent `secrets/` directory line and replaced it with a note that secrets come from the `secrets` flake input over ssh (verified against flake.nix).
+- **docs/theming.md** was almost entirely false (claimed a Stylix "Neon dark" theme + Discord/Firefox manual configs that don't exist). Rewrote to reality: theming is omarchy-driven (`~/.config/omarchy/current/theme/`), Stylix is `enable = false` with a catppuccin-mocha fallback at `common/home-manager/eldios/style/stylix.nix`.
+- **new-host.md**: fixed non-existent template host, stale flake snippet (now `mkHost`/`genAttrs`), hostname path (`network.nix` not `system.nix`), and hardware-config filename convention.
+- **nixos-commands.md**: overlays are registered per-host in `hosts/&lt;host&gt;/nixos/configuration.nix`, not `system.nix` — fixed.
+
+**Open questions (2):** whether `common/themes/eldios_neon` + `io` are still used (zero Nix references — flagged, not deleted); a stale `lelex1yoga` comment on a public key in `authorized_keys` (public keys, no leak).
+
+**Verification:** No `.nix` files were in scope, so no parse checks needed. The one shell edit (menu.sh — added `# shellcheck shell=bash`) passes `shellcheck -S error` clean.</result>
+<usage><subagent_tokens>84897</subagent_tokens><tool_uses>36</tool_uses><duration_ms>364663</duration_ms></usage>
+</task-notification>
