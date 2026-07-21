@@ -1,0 +1,2 @@
+aggiorniamo gitbutler e facciamo tutta l'installazione tramite gitbutler-cli e togliamo l'alias `gb` tanto uso `but` per tutto.
+quindi sia la GUI che la CLI la facciamo tramite l'overlay, quindi direi togliamo gitbutler.nix e spostiamo gitbutler-cli.nix in gitbutler.nix e buildiamo tutto da li direi
