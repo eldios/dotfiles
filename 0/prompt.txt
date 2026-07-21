@@ -1,0 +1,7 @@
+<task-notification>
+<task-id>b2qc683mx</task-id>
+<tool-use-id>toolu_01AqD32qeYFz2Tq6zSGJoFqe</tool-use-id>
+<output-file>/tmp/claude-1000/-home-eldios-dotfiles/cc212204-6ea7-4e07-b0d2-165744dbeef6/tasks/b2qc683mx.output</output-file>
+<status>completed</status>
+<summary>Background command "Build GitButler GUI and CLI 0.21.0" completed (exit code 0)</summary>
+</task-notification>
