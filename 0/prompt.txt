@@ -1,0 +1,1 @@
+controlla la configurazione nixos perche' gemini-cli non funziona.. inoltre gemini non mi fa loggare perche' settings.json e' RO (perche' controllato da nixos) quindi non si puo' fare cosi'
