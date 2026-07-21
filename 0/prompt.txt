@@ -1,0 +1,4 @@
+CREDO che praticamente questo sia il mio scenario https://docs.netbird.io/manage/reverse-proxy/bring-your-own-proxy pero' se possibile preferirei NON dover usare un server esterno.. comunque in caso ne ho disponibili
+
+
+no aspetta.. la tua analisi sopra e' sbagliata. Immich deve essere raggiungibile da tutti, pubblicamente ed usabile da tutti, pubblicamente. NON deve essere un requisito usare netbird.. infatti immich lo si raggiunga a pics.lele.rip
