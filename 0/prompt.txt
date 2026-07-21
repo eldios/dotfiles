@@ -1,0 +1,1 @@
+io uso lazyvim e mason, perche' non fanno loro l'update di tutto quel che serve? il resto dovrebbe essere gestito da nixos
