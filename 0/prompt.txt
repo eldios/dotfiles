@@ -1,0 +1,3 @@
+branch corrente va bene
+
+facciamo una chiave per ogni host in /home/eldios/go/src/github.com/eldios/secrets e poi usiamola per il push cosi' e' tutto coperto gia' da subito
