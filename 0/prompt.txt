@@ -1,0 +1,1 @@
+in realta' su quel traefik ho crowdsec e ssh e' protetto con fail2ban quindi dovremmo essere a posto
