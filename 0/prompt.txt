@@ -1,0 +1,8 @@
+per le decisioni in flight:
+1. teniamo nopass per ora
+2. anytype ha bisogno di network host perche' raggiunge l'applicativo anytype in locale.. se togliemo network host e' un casino fare il forwarding
+3. portainer ha gia' la sua autenticazione ed il cert self-signed su 9443
+4. topology leak.. cosa viene leakato? parliamone
+5. fai pure la passata DRY
+6. antigravity non e' gia' stato aggiornato?
+7. var.nix .etc... mi sa che il cleanup_review va aaggiornato
