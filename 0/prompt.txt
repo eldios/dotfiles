@@ -1,0 +1,40 @@
+<task-notification>
+<task-id>a306904c820a85e18</task-id>
+<tool-use-id>toolu_016PoPXUvwkwHXXg1aqWkZKP</tool-use-id>
+<output-file>/tmp/claude-1000/-home-eldios-dotfiles/72dfb7db-0b0f-418a-b425-eebd4aefee4d/tasks/a306904c820a85e18.output</output-file>
+<status>completed</status>
+<summary>Agent "Audit completion/mcp/deps plugins" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>All data verified against the live repos. Here is the decision-focused report.
+
+## Neovim plugin status (verified July 9 2026)
+
+| Plugin | Latest release + date | 2026 maintenance | Recommendation | Conf. |
+|---|---|---|---|---|
+| **saghen/blink.cmp** | v1.10.2 — 2026-04-04 | Active (last push 2026-07-05, 6.4k★, not archived) | **KEEP** — it's the de-facto modern engine and LazyVim's default | high |
+| **ravitemer/mcphub.nvim** | v6.2.0 — 2025-07-31 | Active but slowing (last commit 2026-01-18, 1.8k★, not archived) | **KEEP** — still the standard MCP client; note release cadence stalled since mid-2025 | med |
+| **stevearc/dressing.nvim** | (tags only) last push 2025-02-12 | **ARCHIVED** (1.97k★) | **REPLACE with folke/snacks.nvim** (snacks.input/select) — author's own recommendation | high |
+| **MeanderingProgrammer/render-markdown.nvim** | v8.13.0 — 2026-06-18 | Active (5.6k★) | **KEEP** — most actively developed, best AI-chat-buffer integration | high |
+| **OXY2DEV/markview.nvim** | v28.3.0 — 2026-05-16 | Active | (alternative to above; not needed if using render-markdown) | high |
+| **HakonHarnes/img-clip.nvim** | v0.6.0 — 2025-02-25 | Low activity (last push 2025-12-19, 924★, not archived) | **KEEP** — still the standard image-paste plugin; no maintained replacement | med |
+| **hrsh7th/nvim-cmp** | (tags only) last push 2026-03-25 | Active-ish (9.5k★, not archived) | **REMOVE-redundant** (as your main comp) — see below | high |
+| **nvim-mini/mini.pick** | monorepo mini.nvim, push 2026-07-08 | Very active (9.4k★) | **KEEP** — fine; snacks.picker is the modern LazyVim-default alternative if you consolidate | high |
+| **nvim-tree/nvim-web-devicons** | rolling, push 2026-07-01 | Active (2.7k★) | **KEEP** — fine; mini.icons exists as lighter alt but no need to switch | high |
+
+## Key findings on your specific questions
+
+**1. blink.cmp** — Yes, it is now the de-facto modern completion engine. LazyVim ships `blink.cmp` as its **default** completion (via the `coding.blink` extra); `nvim-cmp` is now the opt-in alternative extra, and exactly one is active at a time. Latest stable v1.10.2 (2026-04). No notable stability issues surfaced; recent releases are bugfix/polish. **KEEP.**
+
+**3. dressing.nvim** — Confirmed **ARCHIVED**. README top notice, verbatim:
+&gt; "This plugin is archived! It still works, but I recommend that you use snacks.nvim instead for your `vim.ui.*` interfaces."
+Since you almost certainly already have snacks.nvim (LazyVim core), just enable `snacks.input`/`snacks.select` and drop dressing. **REPLACE.**
+
+**4. render-markdown vs markview** — Both are actively developed in 2026. render-markdown.nvim (v8.13.0, 2026-06-18) is the one broadly wired into AI-chat plugins (avante, codecompanion, copilot-chat) and is what LazyVim's AI extras pull in. markview.nvim (v28.3.0, 2026-05-16) is equally maintained but a heavier, more feature-broad renderer. **No reason to switch off render-markdown.**
+
+**6. nvim-cmp redundancy (important)** — nvim-cmp is not archived and still maintained, but if blink.cmp is your main engine, having nvim-cmp loaded **only** as an avante dependency is redundant. avante can use blink directly via **Kaiser-Yang/blink-cmp-avante** (add it as a blink dependency and add `avante` to blink sources), or via `blink.compat`. Recommendation: switch avante to the blink-cmp-avante provider and drop the nvim-cmp dependency, so you don't run two completion frameworks. **REMOVE-redundant.**
+
+**7. mini.pick / nvim-web-devicons** — Both current and fine. Note the org rename: mini.pick now lives under `nvim-mini/mini.nvim` (was `echasnovski`). The only "modern shift" worth knowing: LazyVim's default picker is now **snacks.picker**, and **mini.icons** is a lighter icon provider many configs adopt — but neither is a required migration; your current choices are fully supported.
+
+Sources: GitHub API/releases for each repo (archived, pushed_at, stargazers, latest tag as cited above); [dressing README](https://github.com/stevearc/dressing.nvim); [LazyVim Blink extra](http://www.lazyvim.org/extras/coding/blink); [avante blink support issue #959](https://github.com/yetone/avante.nvim/issues/959) and [blink-cmp-avante](https://github.com/Kaiser-Yang/blink-cmp-avante).</result>
+<usage><subagent_tokens>84186</subagent_tokens><tool_uses>16</tool_uses><duration_ms>114426</duration_ms></usage>
+</task-notification>
