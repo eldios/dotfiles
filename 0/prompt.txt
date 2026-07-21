@@ -1,0 +1,86 @@
+stavo modificando come funziona la build di gitbutler ma fallisce con questo:
+❯ nixu
+warning: Git tree '/home/eldios/dotfiles' is dirty
+building the system configuration...
+warning: Git tree '/home/eldios/dotfiles' is dirty
+evaluation warning: 'dockerfile-language-server-nodejs' has been renamed to 'dockerfile-language-server'
+evaluation warning: nixfmt-rfc-style is now the same as pkgs.nixfmt which should be used instead.
+error: Cannot build '/nix/store/REDACTED.21.0.drv'.
+       Reason: builder failed with exit code 101.
+       Output paths:
+         /nix/store/REDACTED.21.0
+       Last 25 log lines:
+       >
+       > thread 'command::status::status_upstream_prunes_with_different_bases' (108596) panicked at crates/but-testsupport/src/sandbox.rs:128:10:
+       > called `Result::unwrap()` on an `Err` value: No such file or directory (os error 2)
+       >
+       >
+       > failures:
+       >     command::branch::delete::can_delete_branch_with_commits_in_the_bottom_of_a_stack
+       >     command::branch::delete::can_delete_branch_with_commits_in_the_middle_of_a_stack
+       >     command::branch::delete::can_delete_branch_with_commits_in_the_top_of_a_stack
+       >     command::branch::delete::can_delete_branches_via_short_code
+       >     command::branch::show::checking_merge_status_of_branch_that_isnt_top_of_stack
+       >     command::branch::show::showing_branch_that_isnt_top_of_stack
+       >     command::land::land_fast_forwards_self_remote
+       >     command::land::land_no_ff_creates_signed_merge_commit
+       >     command::land::land_refuses_non_bottom_stack_segment
+       >     command::land::land_rename_no_silent_mismerge
+       >     command::land::land_without_yes_refuses_non_interactively
+       >     command::status::status_upstream_advanced_target_does_not_leak_branches
+       >     command::status::status_upstream_prunes_metadata_tracked_integrated_branches
+       >     command::status::status_upstream_prunes_untracked_integrated_branch
+       >     command::status::status_upstream_prunes_with_different_bases
+       >
+       > test result: FAILED. 443 passed; 15 failed; 14 ignored; 0 measured; 2 filtered out; finished in 7.07s
+       >
+       > error: test failed, to rerun pass `-p but --test but`
+       For full logs, run:
+         nix log /nix/store/REDACTED.21.0.drv
+error: Cannot build '/nix/store/7dvz5bs0q7q4j0vwvr6qq1xf01gywgv0-hm_..zshrc.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED..zshrc
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Build failed due to failed dependency
+error: Build failed due to failed dependency
+error: Cannot build '/nix/store/118x3jvnlcqwcns1mn9jalgncpdbc3wg-hm_fontconfigconf.d10hmfonts.conf.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED.d10hmfonts.conf
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Build failed due to failed dependency
+error: Build failed due to failed dependency
+error: Cannot build '/nix/store/ldx5pbaq5gqgpclsa8sn0dzr5f2ai0a8-etc.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Cannot build '/nix/store/REDACTED.service.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED.service
+error: Build failed due to failed dependency
+error: Cannot build '/nix/store/icw04qhc2xl38x88mq18g6lggd79zqgs-activate.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/w6wlnwr8l64v403xc1d4smri4nww4cqx-activate
+error: Cannot build '/nix/store/REDACTED.05.20260707.0ad6f47.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED.05.20260707.0ad6f47
+error: Build failed due to failed dependency
+Command 'nix --extra-experimental-features 'nix-command flakes' build --print-out-paths '/home/eldios/dotfiles#nixosConfigurations."lele8845ace".config.system.build.toplevel' --no-link' returned non-zero exit status 1.
