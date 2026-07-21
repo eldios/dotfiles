@@ -1,0 +1,7 @@
+allora quello che voglio togliere e' l'accesso via cloudflare proxy tunnel ad immich, principalmente, perche' ha un limite di 100MB e quindi impedisce di caricare video grandi.. poi ovviamente una volta migrato quello ha senso migrare tutto per pulizia e coerenza, quel che importa e' che vengano esposti nel solito modo che li espone ora:
+*.lele.rip - servizi esposti in esterno via traefik + cloudflare tunnel
+*.casa.lele.rip - servizi esposti esterno ma raggiungibili SOLO dentro casa (risolvono ad indirizzo privato)
+*.vpn.lele.rip - servizi  esposti esterno ma raggiungibili solo via VPN (sviluppo futuro, al momento non pienamente implementato)
+nome host o IP VPN - servizi SSH o privati
+
+tieni conto che con "servizi esposti" principalmente intendo HTTP + HTTPs con certificato valido tramite letsencrypt o cloudflare (cloudflare tunnel lo fa) .. tutto passa da un traefik che ho su mininixos dentro portainer (puoi collegarti via ssh e verificare)
