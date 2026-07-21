@@ -1,0 +1,29 @@
+inoltre, interessante:
+```
+ℹ Waiting for authentication...
+
+╭──────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Gemini CLI update available! 0.47.0 → 0.49.0                                                 │
+│ Please run npm install -g @google/gemini-cli@latest to update                                │
+╰──────────────────────────────────────────────────────────────────────────────────────────────╯
+
+
+╭──────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                              │
+│ ? Get started                                                                                │
+│                                                                                              │
+│   How would you like to authenticate for this project?                                       │
+│                                                                                              │
+│   ● 1. Sign in with Google                                                                   │
+│     2. Use Gemini API Key                                                                    │
+│     3. Vertex AI                                                                             │
+│                                                                                              │
+│   Failed to sign in. Message: Failed to exchange authorization code for tokens: Invalid      │
+│   response body while trying to fetch https://oauth2.googleapis.com/token: Premature close   │
+│                                                                                              │
+│   (Use Enter to select)                                                                      │
+│                                                                                              │
+│   Terms of Services and Privacy Notice for Gemini CLI                                        │
+│                                                                                              │
+│   https://geminicli.com/docs/resources/tos-privacy/
+```
