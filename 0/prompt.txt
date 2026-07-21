@@ -1,0 +1,1 @@
+sai che non so perche' e' fallito... non mi sembra ci siano state interruzioni particolare durange un gc o cleanup.. sto facendo fare un verify/repair perche' continuava a trovare path mancanti... al 4 ho lanciato il repair senza target
