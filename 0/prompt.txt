@@ -1,0 +1,1 @@
+mmh.. non so se e' un problema ma spesso con la maggior partre dei temi ora waybar si riavvia due volte... non e' un problema perche' tanto torna su, ma mi sembrava valesse la pena segnalarlo
