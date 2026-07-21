@@ -1,0 +1,1 @@
+mmh, una cosa.. magari nel alias `nixu` e tutti gli altri alias legati ad esso, aggiungiamo 'nice -19' perche' non e' la prima volta che la compilazione mi pianta il sistema per un'ora (quando non uso nice)
