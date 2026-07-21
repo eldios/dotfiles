@@ -1,0 +1,1 @@
+thunar non sta cambiando, beeper non sta cambiando.. direi che non mi sembra funzionare il cambio tema GTK
