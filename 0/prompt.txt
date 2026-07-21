@@ -1,0 +1,58 @@
+altri errori:
+```
+❯ nixu
+warning: $HOME ('/home/eldios') is not owned by you, falling back to the one defined in the 'passwd' file ('/root')
+building the system configuration...
+warning: $HOME ('/home/eldios') is not owned by you, falling back to the one defined in the 'passwd' file ('/root')
+[0/112 built, 2/0/265 copied (25.6/729.2 MiB), 5.9/237.2 MiB DL] fetching libvirt-12.4.0 from https://nix-cache.casa.lelewarning: $HOME ('/home/eldios') is not owned by you, falling back to the one defined in the 'passwd' file ('/root')
+warning: ignoring substitute for '/nix/store/ab6hsblgi6k0llryys3lzpf1mqyfsblp-obsidian-1.12.7.tar.gz' from 'https://nix-cache.casa.lele.rip', as it's not signed by any of the keys in 'trusted-public-keys'
+error: Cannot build '/nix/store/qyv14w01css00cq8dcwcnmdcfs31x8gi-mailspring-1.17.4.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/9lvnc95mi7dsf9y5knrfl8ak55xvf63h-mailspring-1.17.4
+       Last 3 log lines:
+       > Running phase: unpackPhase
+       > unpacking source archive /nix/store/dww392cvwy17zxw7yzggc39fz6y9wkwn-mailspring-1.17.4-amd64.deb
+       > do not know how to unpack source archive /nix/store/dww392cvwy17zxw7yzggc39fz6y9wkwn-mailspring-1.17.4-amd64.deb
+       For full logs, run:
+         nix log /nix/store/qyv14w01css00cq8dcwcnmdcfs31x8gi-mailspring-1.17.4.drv
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Build failed due to failed dependency
+error: Cannot build '/nix/store/REDACTED.d10hmfonts.conf.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/yk8xz5xyll1acvahi71n1h7a0jhcxham-hm_fontconfigconf.d10hmfonts.conf
+error: Cannot build '/nix/store/l4av5x59w7hhb52n4p2lxnhcs27yx9bp-home-manager-generation.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Build failed due to failed dependency
+error: Build failed due to failed dependency
+error: Cannot build '/nix/store/REDACTED.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/933r04xkbpscdgwy7321ln6swj9l69nc-etc
+error: Cannot build '/nix/store/REDACTED.service.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED.service
+error: Build failed due to failed dependency
+error: Cannot build '/nix/store/f7610iaf18fhz19n5sawa9wksydfgdsb-activate.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED
+error: Cannot build '/nix/store/REDACTED.05.20260627.714a5f8.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/REDACTED.05.20260627.714a5f8
+error: Build failed due to failed dependency
+Command 'nix --extra-experimental-features 'nix-command flakes' build --print-out-paths '/home/eldios/dotfiles#nixosConfigurations."lele8845ace".config.system.build.toplevel' --no-link' returned non-zero exit status 1.
+``` 
+guarda mailspring togliamolo perche' tanto non mi piace e sto cercando di pasasre ad altro.. quindi rimuoviamolo pure dai dotfiles
