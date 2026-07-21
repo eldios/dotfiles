@@ -1,0 +1,1 @@
+okay.. sono un attimo confuso riguardo netbird... come lo configuro su nixos? avere il client non sembra essere molto utile. mi sa che servono diversi altri pezzi che vedo diponibili come services o pkgs
