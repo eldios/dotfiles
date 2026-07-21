@@ -1,0 +1,3 @@
+durante il primo giro del 3, pusha gia' direttamente? o devo fare un altro secondo giro? quello che e' gia' stato buildato localmente e viene usato per la generazione corrente lo pusha? se no come faccio a pusharlo?
+
+per ncps-push-test dovrebbe essere pulito quando scade no?
