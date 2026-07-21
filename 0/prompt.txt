@@ -1,0 +1,3 @@
+waveterm, togliamolo entirely, non lo uso
+
+portainer.casa.lele.rip risolve all'esterno ma cosa succede se raggiungiamo il reseverse proxy cercando di forzare l'HOST? non dovrebbe funzionare quindi teoricamente NON dovrebbe esserci modo di raggiungere questi sistemi .. ma meglio verificare tra l'altro bisogna aggiungere anche portainer.vpn.lele.rip a quelle rule .. history anche potremmo metterlo via vpn o casa ma non so se atuin permettere di fare doppio endpoint, per questo avevo fatto quello pubblico .. nix-cache va bene solo casa, non e' raggiungibile da nessun altra parte e' solo un proxy locale .. per gli IP \o/ boh non mi sembra un gran problema rivediamo la tabella di rischio con queste info
