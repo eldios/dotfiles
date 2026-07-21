@@ -1,0 +1,1 @@
+si' avevo lanciato l'agente usando `claude agents` ma ora sono dentro neovim .. come faccio a riprendere quella sessione dentro qui? ho gia' cominciato ad usare le modifiche che ha fatto quella sessione quindi questo agente a cui sto parlando e' dentro neovim
