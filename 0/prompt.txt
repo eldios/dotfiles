@@ -1,0 +1,1 @@
+non so perche' ma ho riaggiunto mailspring e rimane bloccato su buildphase con il counter del tempo speso che avanza ma non si sblocca mai
