@@ -1,0 +1,7 @@
+<task-notification>
+<task-id>baqjfdp0h</task-id>
+<tool-use-id>toolu_017owouQsZb2bHRhekzaqUcu</tool-use-id>
+<output-file>/tmp/claude-1000/-home-eldios-dotfiles/9fcdd576-3d30-4e21-947e-edfba39ee991/tasks/baqjfdp0h.output</output-file>
+<status>completed</status>
+<summary>Background command "Build gitbutler-cli but binary (heavy Rust build)" completed (exit code 0)</summary>
+</task-notification>
