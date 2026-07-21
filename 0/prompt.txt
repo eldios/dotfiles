@@ -1,0 +1,1 @@
+ho ribuildato io con `nixu` ... ma lo fa ancora.. temo di dover riavviare hyprland giusto?
