@@ -1,0 +1,1 @@
+non riesco a capire come configurare dotfiles per aggiungerge resolved delegates per .lan a 192.168.152.1
