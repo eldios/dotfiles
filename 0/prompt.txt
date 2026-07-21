@@ -1,0 +1,86 @@
+inoltre:
+```
+❯ nixu
+building the system configuration...
+error:
+       … while calling the 'head' builtin
+         at «github:nixos/nixpkgs/4382ed2b7a6839d4280a9b386db49cbc5907414d?narHash=sha256-iYL/bixrb6FlHFu/gIuBYzq6c6lM5AAXsXNSWXtIgQc%3D»/lib/attrsets.nix:1717:13:
+         1716|           if length values == 1 || pred here (elemAt values 1) (head values) then
+         1717|             head values
+             |             ^
+         1718|           else
+
+       … while evaluating the attribute 'value'
+         at «github:nixos/nixpkgs/4382ed2b7a6839d4280a9b386db49cbc5907414d?narHash=sha256-iYL/bixrb6FlHFu/gIuBYzq6c6lM5AAXsXNSWXtIgQc%3D»/lib/modules.nix:1167:7:
+         1166|     // {
+         1167|       value = addErrorContext "while evaluating the option `${showOption loc}':" value;
+             |       ^
+         1168|       inherit (res.defsFinal') highestPrio;
+
+       … while evaluating the option `system.build.toplevel':
+
+       … while evaluating definitions from `/nix/store/l04zqfll8qf058bcdbmfq1vnlrc24p4l-source/nixos/modules/system/activation/top-level.nix':
+
+       … while evaluating the option `warnings':
+
+       … while evaluating definitions from `/nix/store/l04zqfll8qf058bcdbmfq1vnlrc24p4l-source/nixos/modules/system/boot/systemd.nix':
+
+       … while evaluating the option `systemd.services.home-manager-eldios.serviceConfig':
+
+       … while evaluating definitions from `/nix/store/REDACTED/nixos':
+
+       … while evaluating the option `home-manager.users.eldios.home.file."/home/eldios/.config/fontconfig/conf.d/10-hm-fonts.conf".source':
+
+       … while evaluating definitions from `/nix/store/REDACTED/modules/files.nix':
+
+       … while evaluating the option `home-manager.users.eldios.home.file."/home/eldios/.config/fontconfig/conf.d/10-hm-fonts.conf".text':
+
+       … while evaluating definitions from `/nix/store/REDACTED/modules/misc/xdg.nix':
+
+       … while evaluating the option `home-manager.users.eldios.xdg.configFile."fontconfig/conf.d/10-hm-fonts.conf".text':
+
+       … while evaluating definitions from `/nix/store/REDACTED/modules/misc/fontconfig.nix':
+
+       … while evaluating the option `home-manager.users.eldios.fonts.fontconfig.configFile.fonts.text':
+
+       … while evaluating definitions from `/nix/store/REDACTED/modules/misc/fontconfig.nix':
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: Refusing to evaluate package 'electron-40.10.5' in /nix/store/REDACTED/pkgs/development/tools/electron/binary/generic.nix:50 because it is marked as insecure
+
+       Known issues:
+        - Electron version 40.10.5 is EOL
+
+       You can install it anyway by allowing this package, using the
+       following methods:
+
+       a) To temporarily allow all insecure packages, you can use an environment
+          variable for a single invocation of the nix tools:
+
+            $ export NIXPKGS_ALLOW_INSECURE=1
+
+          Note: When using `nix shell`, `nix build`, `nix develop`, etc with a flake,
+                then pass `--impure` in order to allow use of environment variables.
+
+       b) for `nixos-rebuild` you can add ‘electron-40.10.5’ to
+          `nixpkgs.config.permittedInsecurePackages` in the configuration.nix,
+          like so:
+
+            {
+              nixpkgs.config.permittedInsecurePackages = [
+                "electron-40.10.5"
+              ];
+            }
+
+       c) For `nix-env`, `nix-build`, `nix-shell` or any other Nix command you can add
+          ‘electron-40.10.5’ to `permittedInsecurePackages` in
+          ~/.config/nixpkgs/config.nix, like so:
+
+            {
+              permittedInsecurePackages = [
+                "electron-40.10.5"
+              ];
+            }
+Command 'nix --extra-experimental-features 'nix-command flakes' build --print-out-paths '/home/eldios/dotfiles#nixosConfigurations."lele8845ace".config.system.build.toplevel' --no-link' returned non-zero exit status 1.
+```
