@@ -1,0 +1,9 @@
+momento ci sono DUE traefik in ballo:
+- internet
+- cloudflare (a volte proxa, a volte no)
+- traefik su x.lele.rip con ip pubblico
+- VPN tailscale tra x e mininixos
+- traefik su mininixos a casa che pero' usa starlink con CGNAT e NON ha ip port forwarding
+- container docker con app
+
+di quale origin stai parlando?
