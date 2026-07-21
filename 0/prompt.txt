@@ -1,0 +1,7 @@
+<task-notification>
+<task-id>bmoe13ayd</task-id>
+<tool-use-id>toolu_019ude1bhh5y2UdKEqQwukck</tool-use-id>
+<output-file>/tmp/claude-1000/-home-eldios-dotfiles/9fcdd576-3d30-4e21-947e-edfba39ee991/tasks/bmoe13ayd.output</output-file>
+<status>completed</status>
+<summary>Background command "Rebuild gitbutler-cli with dbus (background)" completed (exit code 0)</summary>
+</task-notification>
