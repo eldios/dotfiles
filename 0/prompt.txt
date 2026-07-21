@@ -1,0 +1,101 @@
+```
+❯ nixu
+warning: $HOME ('/home/eldios') is not owned by you, falling back to the one defined in the 'passwd' file ('/root')
+building the system configuration...
+warning: $HOME ('/home/eldios') is not owned by you, falling back to the one defined in the 'passwd' file ('/root')
+evaluation warning: The default value of `wayland.windowManager.hyprland.configType` has changed from `"hyprlang"` to `"lua"`.
+                    You are currently using the legacy default (`"hyprlang"`) because `home.stateVersion` is less than "26.05".
+                    To silence this warning and keep legacy behavior, set:
+                      wayland.windowManager.hyprland.configType = "hyprlang";
+                    To adopt the new default behavior, set:
+                      wayland.windowManager.hyprland.configType = "lua";
+error:
+       … while calling the 'head' builtin
+         at «github:nixos/nixpkgs/714a5f8c4ead6b31148d829288440ed033ccc041?REDACTED%3D»/lib/attrsets.nix:1717:13:
+         1716|           if length values == 1 || pred here (elemAt values 1) (head values) then
+         1717|             head values
+             |             ^
+         1718|           else
+
+       … while evaluating the attribute 'value'
+         at «github:nixos/nixpkgs/714a5f8c4ead6b31148d829288440ed033ccc041?REDACTED%3D»/lib/modules.nix:1167:7:
+         1166|     // {
+         1167|       value = addErrorContext "while evaluating the option `${showOption loc}':" value;
+             |       ^
+         1168|       inherit (res.defsFinal') highestPrio;
+
+       … while evaluating the option `system.build.toplevel':
+
+       … while evaluating definitions from `/nix/store/agyg2m8bkbcr2d5p57my3bla8794arlp-source/nixos/modules/system/activation/top-level.nix':
+
+       … while evaluating the option `warnings':
+
+       … while evaluating definitions from `/nix/store/agyg2m8bkbcr2d5p57my3bla8794arlp-source/nixos/modules/system/boot/systemd.nix':
+
+       … while evaluating the option `systemd.services.home-manager-eldios.serviceConfig':
+
+       … while evaluating definitions from `/nix/store/REDACTED/nixos':
+
+       … while evaluating the option `home-manager.users.eldios.home.file."/home/eldios/.config/fontconfig/conf.d/10-hm-fonts.conf".source':
+
+       … while evaluating definitions from `/nix/store/REDACTED/modules/files.nix':
+
+       … while evaluating the option `home-manager.users.eldios.home.file."/home/eldios/.config/fontconfig/conf.d/10-hm-fonts.conf".text':
+
+       … while evaluating definitions from `/nix/store/REDACTED/modules/misc/xdg.nix':
+
+       … while evaluating the option `home-manager.users.eldios.xdg.configFile."fontconfig/conf.d/10-hm-fonts.conf".text':
+
+       … while evaluating definitions from `/nix/store/REDACTED/modules/misc/fontconfig.nix':
+
+       … while evaluating the option `home-manager.users.eldios.fonts.fontconfig.configFile.fonts.text':
+
+       … while evaluating definitions from `/nix/store/REDACTED/modules/misc/fontconfig.nix':
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: Refusing to evaluate package 'pnpm-10.29.2' in /nix/store/agyg2m8bkbcr2d5p57my3bla8794arlp-source/pkgs/development/tools/pnpm/generic.nix:164 because it is marked as insecure
+
+       Known issues:
+        - CVE-2026-48995
+        - CVE-2026-50014
+        - CVE-2026-50015
+        - CVE-2026-50016
+        - CVE-2026-50017
+        - CVE-2026-50573
+        - CVE-2026-55699
+
+       You can install it anyway by allowing this package, using the
+       following methods:
+
+       a) To temporarily allow all insecure packages, you can use an environment
+          variable for a single invocation of the nix tools:
+
+            $ export NIXPKGS_ALLOW_INSECURE=1
+
+          Note: When using `nix shell`, `nix build`, `nix develop`, etc with a flake,
+                then pass `--impure` in order to allow use of environment variables.
+
+       b) for `nixos-rebuild` you can add ‘pnpm-10.29.2’ to
+          `nixpkgs.config.permittedInsecurePackages` in the configuration.nix,
+          like so:
+
+            {
+              nixpkgs.config.permittedInsecurePackages = [
+                "pnpm-10.29.2"
+              ];
+            }
+
+       c) For `nix-env`, `nix-build`, `nix-shell` or any other Nix command you can add
+          ‘pnpm-10.29.2’ to `permittedInsecurePackages` in
+          ~/.config/nixpkgs/config.nix, like so:
+
+            {
+              permittedInsecurePackages = [
+                "pnpm-10.29.2"
+              ];
+            }
+Command 'nix --extra-experimental-features 'nix-command flakes' build --print-out-paths '/home/eldios/dotfiles#nixosConfigurations."lele8845ace".config.system.build.toplevel' --no-link' returned non-zero exit status 1.
+```
+
+vai
