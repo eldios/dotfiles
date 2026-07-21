@@ -1,0 +1,1 @@
+okay togliamo tailscale dappertutto e mettiamo netbird allora su dotfiles e comincio subito la migrazione
