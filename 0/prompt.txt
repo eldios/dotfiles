@@ -1,0 +1,18 @@
+<task-notification>
+<task-id>ae02e5f265d0db23e</task-id>
+<tool-use-id>toolu_019yDZToCr5JAaC3MuRCQEoP</tool-use-id>
+<output-file>/tmp/claude-1000/-home-eldios-dotfiles/9fcdd576-3d30-4e21-947e-edfba39ee991/tasks/ae02e5f265d0db23e.output</output-file>
+<status>completed</status>
+<summary>Agent "Cleanup home-manager window managers" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Done. Summary:
+
+- **Files changed (3):** `niri.nix`, `hyprland.nix`, `sway.nix`. Left `i3.nix`, `mango.nix`, `hyprlock.nix` untouched (no safe change).
+- **Biggest win:** a real bug in `niri.nix:353` — polkit spawn path `${pkgs.polkit_gnome}libexec/...` was missing the `/` before `libexec`, so the polkit agent never started under niri (which is active on every host); fixed against the correct sibling paths in `i3.nix`/`mango.nix`. Plus removed two commented-out dead lines in `hyprland.nix` and cleaned five stale/diary comments in `sway.nix`.
+- **mango.nix is NOT dead:** still imported by lele8845ace + lele9iyoga display.nix and its package is in both hosts' system.nix; the "remove mango" commit only dropped a duplicate package line elsewhere. No WM module is unused.
+- **3 open questions** for Lele (package-list duplication DRY refactor; niri's two overlapping systemd services; hyprland `enable_swallow` with commented-out `swallow_regex`) — all flagged, not changed.
+- All 3 edited files passed `nix-instantiate --parse`. No commits/staging done.
+
+Report: `/home/eldios/.claude/jobs/72dfb7db/tmp/reports/hm-wm.md`</result>
+<usage><subagent_tokens>128003</subagent_tokens><tool_uses>23</tool_uses><duration_ms>252737</duration_ms></usage>
+</task-notification>
