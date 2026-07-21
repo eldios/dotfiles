@@ -1,0 +1,14 @@
+su mininixos mi da questo errore:
+```
+❯ nixu
+warning: $HOME ('/home/eldios') is not owned by you, falling back to the one defined in the 'passwd' file ('/root')
+building the system configuration...
+warning: $HOME ('/home/eldios') is not owned by you, falling back to the one defined in the 'passwd' file ('/root')
+evaluation warning: The option `systemd.watchdog.runtimeTime' defined in `/nix/store/l6h5f9cr3cv51kzvyrl75cgqv35gi7fq-source/hosts/mininixos/nixos/system.nix' has been renamed to `systemd.settings.Manager.RuntimeWatchdogSec'.
+[11/0/86 built, 16/3/59 copied (354.4 MiB/3.8 GiB), 101.3 MiB/2.5 GiB DL] building user-generatorswarning: $HOME ('/home/eldios') is not owned by you, falling back to the one defined in the 'passwd' file ('/root')
+error:
+       … while setting up the build environment
+
+       error: getting attributes of path "/nix/store/REDACTED.2.1": No such file or directory
+Command 'nix --extra-experimental-features 'nix-command flakes' build --print-out-paths '/home/eldios/dotfiles#nixosConfigurations."mininixos".config.system.build.toplevel' --no-link' returned non-zero exit status 1.
+```
