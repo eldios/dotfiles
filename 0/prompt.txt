@@ -1,0 +1,1 @@
+direi che quello va fixato su tutti i sistemi gui pero'.. altrimenti tutti i programmi GTK saranno a caso. inoltre farei la stessa fix anche per i sistemi Qt. uno alla volte, prima fixiamo GTK
