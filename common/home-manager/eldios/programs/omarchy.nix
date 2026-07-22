@@ -52,7 +52,7 @@ let
     # Capture
     "omarchy-capture-screenshot"
     "omarchy-capture-screenrecording"
-    "omarchy-capture-text-extraction"
+    "omarchy-capture-text"
 
     # System / cmd
     "omarchy-system-lock"
@@ -61,17 +61,14 @@ let
     "omarchy-cmd-missing"
     "omarchy-cmd-terminal-cwd"
 
-    # Restart / refresh (graceful no-op if target app missing)
-    "omarchy-restart-walker"
-    "omarchy-restart-waybar"
-    "omarchy-restart-mako"
+    # Restart / refresh (graceful no-op if target app missing).
+    # restart-walker/waybar/swayosd are no longer shipped upstream; we supply
+    # them via `overrides` below, so they must NOT be vendored (no source file).
     "omarchy-restart-hyprctl"
-    "omarchy-restart-swayosd"
     "omarchy-restart-terminal"
     "omarchy-restart-btop"
     "omarchy-restart-opencode"
     "omarchy-restart-helix"
-    "omarchy-refresh-walker"
     "omarchy-refresh-config"
 
     # Per-app theme appliers (invoked by omarchy-theme-set, exit 0 if app absent)
