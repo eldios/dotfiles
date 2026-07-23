@@ -14,6 +14,12 @@ let
   ncpsUploadHook = pkgs.writeShellScript "ncps-upload" ''
     set -uf
     export IFS=' '
+    # Sign the whole closure first: fetched paths (flake input sources) are
+    # added to the store unsigned, and ncps rejects unsigned narinfos.
+    ${config.nix.package}/bin/nix \
+      --extra-experimental-features nix-command \
+      store sign --key-file ${config.sops.secrets."nix/cache-push-key".path} \
+      --recursive $OUT_PATHS || true
     ${config.nix.package}/bin/nix \
       --extra-experimental-features nix-command \
       copy --option connect-timeout 2 \
