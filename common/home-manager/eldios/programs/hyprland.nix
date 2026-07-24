@@ -22,6 +22,74 @@
   # Screenshots using grimblast (Hyprland-native, grim+slurp wrapper)
   screenshot_select = "${pkgs.grimblast}/bin/grimblast copy area";
   screenshot_full = "${pkgs.grimblast}/bin/grimblast copysave screen ~/Pictures/Screenshots/$(date +%F_%T).png";
+
+  # Open the walker clipboard menu (the same UI as $mod V), wait for the
+  # user to pick an entry (walker copies it on select), then save the
+  # resulting clipboard to a file chosen through a GTK save dialog; the
+  # extension follows the detected mime type.
+  # Selection is detected via `wl-paste --watch`, which fires on every
+  # selection event even when the content is unchanged; its first event
+  # always describes the current selection, so the pick is event #2.
+  clipSave = pkgs.writeShellApplication {
+    name = "clip-save";
+    runtimeInputs = with pkgs; [
+      coreutils
+      file
+      gnugrep
+      libnotify
+      wl-clipboard
+      zenity
+    ];
+    text = ''
+      tmp=""
+      fifo="$(mktemp -u -t clip-save.XXXXXX)"
+      mkfifo "$fifo"
+      wl-paste --watch echo picked > "$fifo" &
+      watchpid=$!
+      trap 'kill "$watchpid" 2>/dev/null; rm -f "$fifo" "$tmp"' EXIT
+
+      /etc/profiles/per-user/eldios/bin/omarchy-launch-walker -m clipboard
+
+      picks=0
+      while [ "$picks" -lt 2 ]; do
+        if ! read -r -t 120 _; then
+          exit 0
+        fi
+        picks=$((picks + 1))
+      done < "$fifo"
+
+      tmp="$(mktemp -t clip-save.XXXXXX)"
+
+      # Prefer an offered image type; otherwise take the default (text).
+      imgtype="$(wl-paste --list-types | grep -m1 '^image/' || true)"
+      if [ -n "$imgtype" ]; then
+        wl-paste --type "$imgtype" > "$tmp"
+      else
+        wl-paste --no-newline > "$tmp"
+      fi
+
+      mime="$(file --brief --mime-type "$tmp")"
+      case "$mime" in
+        image/jpeg) ext="jpg" ;;
+        image/svg+xml) ext="svg" ;;
+        image/*) ext="''${mime#image/}" ;;
+        application/json) ext="json" ;;
+        application/pdf) ext="pdf" ;;
+        text/*) ext="txt" ;;
+        *) ext="bin" ;;
+      esac
+
+      default="$HOME/Pictures/Screenshots/clip_$(date +%F_%H%M%S).$ext"
+      # Save-mode dialog = directory navigation + filename in one step,
+      # prefilled with the default; GTK itself confirms on overwrite.
+      dest="$(zenity --file-selection --save --title 'Save clipboard as...' --filename "$default")" || exit 0
+      [ -n "$dest" ] || dest="$default"
+
+      mkdir -p "$(dirname "$dest")"
+      mv "$tmp" "$dest"
+      notify-send "Clipboard saved" "$dest"
+    '';
+  };
 in {
   home = {
     packages = with pkgs; [
@@ -32,6 +100,7 @@ in {
       catppuccin-gtk
       catppuccin-kvantum
       cliphist
+      clipSave
       dconf
       dracula-theme
       fuseiso
@@ -495,6 +564,7 @@ in {
 
         # Clipboard history
         "$mod, v, exec, /etc/profiles/per-user/eldios/bin/omarchy-launch-walker -m clipboard"
+        "$mod SHIFT, v, exec, ${clipSave}/bin/clip-save" # save current clipboard to a file (pick older entries with $mod V first)
 
         # Window grouping (tabbed windows like i3)
         "$mod, g, togglegroup" # Create/dissolve a group from active window
