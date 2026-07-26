@@ -85,6 +85,7 @@
         slack # team communication platform
         zapzap # WhatsApp alt client
         zoom-us # video conferencing
+        zulip # Zulip chat client
 
         # Media Players
         mpv # lightweight media player
