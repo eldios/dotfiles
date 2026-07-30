@@ -68,6 +68,10 @@
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Ratspeak — Reticulum/LXMF desktop client, own packaging flake
+    # (builds against its own nixpkgs-unstable pin, like herdr)
+    nix-ratspeak.url = "github:eldios/nix-ratspeak";
   };
 
   outputs = {
@@ -82,6 +86,7 @@
     opencode-nix,
     home-manager,
     mpc-hub,
+    nix-ratspeak,
     nixos-hardware,
     nixpkgs,
     nixpkgs-darwin,
@@ -113,6 +118,7 @@
         opencode-nix
         inputs
         mpc-hub
+        nix-ratspeak
         nixos-hardware
         nixpkgs
         nixpkgs-darwin
