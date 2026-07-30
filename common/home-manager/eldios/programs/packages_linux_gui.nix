@@ -64,6 +64,7 @@
 
         # Communication
         ayugram-desktop # Telegram alt client
+        ratspeak # Reticulum/LXMF mesh messaging client
         # mailspring wrapped to force the gnome-libsecret password backend.
         # Electron can't auto-detect the Secret Service on wlroots compositors
         # (hyprland/i3), so the app menu launch fails without this flag.
