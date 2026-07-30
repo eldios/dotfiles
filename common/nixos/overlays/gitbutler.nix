@@ -11,12 +11,12 @@ final: _prev: let
     owner = "gitbutlerapp";
     repo = "gitbutler";
     tag = "release/${version}";
-    hash = "sha256-5Lqwpk3iGBQTwU06snoCNYadql3gr4hTmZHT2j7HDeE=";
+    hash = "sha256-aFKy761lkcWbeGeET+RB+kjuyhaNK3qitptXC8i6Y9A=";
   };
   cargoDeps = final.unstable.rustPlatform.fetchCargoVendor {
     inherit src;
     name = "gitbutler-${version}-vendor";
-    hash = "sha256-bRQEFQw9XjUfG5SQab3BtsFNMV1JgDm8PiLoZAsrzQg=";
+    hash = "sha256-f6Xz6PfF/wnOKc910tS88kXKWx7bvksfIFjQG5UWxgE=";
   };
 in {
   gitbutler = final.unstable.gitbutler.overrideAttrs (_finalAttrs: prev: {
@@ -25,7 +25,7 @@ in {
     # prev.pnpmDeps already tracks the new src/version via finalAttrs;
     # only its fixed-output hash needs refreshing.
     pnpmDeps = prev.pnpmDeps.overrideAttrs {
-      outputHash = "sha256-lT2R4dxh2dvjDs0e15joOWQjn4o4fw/xW62xnP7h99Q=";
+      outputHash = "sha256-Tkfzpcsyg2aKiO/MOOuaF82qa3idE7mq5nPrXSqJMWs=";
     };
 
     # The `but` integration tests build git fixtures by running scripts at
