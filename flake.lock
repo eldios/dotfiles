@@ -328,11 +328,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1785415136,
-        "narHash": "sha256-ycDi9vdq+bA6jzDoii8m2YzuJlp0j+QNCAFYPRSZi8U=",
+        "lastModified": 1785426476,
+        "narHash": "sha256-DjdToJZdaGmHJrBjNhUi7wauKn+kB+n2+Hnhl1hhoJQ=",
         "owner": "ogulcancelik",
         "repo": "herdr",
-        "rev": "53199270f6658324248a56f027ab29a6c44bfd8d",
+        "rev": "9135ffe10bc07ff102e650a9f12588809cfbf900",
         "type": "github"
       },
       "original": {
@@ -408,11 +408,11 @@
         "nixpkgs": "nixpkgs_8"
       },
       "locked": {
-        "lastModified": 1785415454,
-        "narHash": "sha256-I/r5Wd4+NtboCX6vmZC5hM3onNAj91jjfMECU/p9KBw=",
+        "lastModified": 1785417338,
+        "narHash": "sha256-YhCui7AeOIrVGTG9t1kf8g3Sqm7A/sKlX9j41Mj52Go=",
         "owner": "eldios",
         "repo": "nix-ratspeak",
-        "rev": "a77cb8b8bf03b721b0faaf0eaef745f67ef4ae1e",
+        "rev": "05dabf84bed4077896c7876947cd640c7569e421",
         "type": "github"
       },
       "original": {
@@ -694,11 +694,11 @@
     "omarchy": {
       "flake": false,
       "locked": {
-        "lastModified": 1785381705,
-        "narHash": "sha256-OCcnhdCQzog8iAgYQkfwSS2de3Z1p6qFtE+YNcAQdbI=",
+        "lastModified": 1785424256,
+        "narHash": "sha256-qOlSXtlDh7WhGvrv41rdgOm5Y2OvEN7mjD7EWUyZhfo=",
         "owner": "basecamp",
         "repo": "omarchy",
-        "rev": "e47d895ffe23599a122cde8ff819f1aea78c5a06",
+        "rev": "283276bec09a2bc17d8941071037e971c7423fd5",
         "type": "github"
       },
       "original": {
