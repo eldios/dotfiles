@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}:
+{ pkgs, ... }:
 
 {
   boot = {
@@ -15,9 +11,13 @@
       "zfs"
     ];
 
-    # Root-on-ZFS: linuxPackages_latest often has no compatible ZFS build, so
-    # pin the newest kernel ZFS actually supports.
-    kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+    # hostId is stable and the pool never moves between machines, so the
+    # initrd can import it without -f (default from 26.11 on).
+    zfs.forceImportRoot = false;
+
+    # Root-on-ZFS: stay on the default LTS kernel, the one ZFS reliably
+    # supports (linuxPackages_latest often has no compatible ZFS build).
+    kernelPackages = pkgs.linuxPackages;
     kernelParams = [
       "nohibernate"
       "zfs.zfs_arc_max=6442856000"
