@@ -56,6 +56,8 @@
 
     ../../../common/nixos/virtualisation.nix
 
+    ../../../common/nixos/dns.nix
+
     ./hardware-configuration.nix
 
     ./boot.nix

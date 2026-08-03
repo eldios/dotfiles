@@ -5,6 +5,11 @@
 # add a hostname by dropping a file into a directory. It watches hostsdir with
 # inotify and picks the change up in under a second, with no reload and no
 # rebuild, which is what makes throwaway machines bearable.
+#
+# Importing this on a host requires `sudo tailscale set --accept-dns=false`
+# once, otherwise tailscaled and dnsmasq both rewrite /etc/resolv.conf. It
+# cannot be declared here: services.tailscale.extraUpFlags only takes effect
+# through tailscaled-autoconnect, which never runs without an authKeyFile.
 {
   services.dnsmasq = {
     enable = true;
@@ -22,6 +27,16 @@
       # No `no-resolv` on purpose: upstream comes from resolvconf, so
       # DHCP/VPN-provided servers survive. That keeps LAN names resolvable and
       # keeps roaming laptops working on networks that mandate their resolver.
+
+      # Split-DNS for the tailnet, so MagicDNS names resolve without handing
+      # /etc/resolv.conf to systemd-resolved. Matching the whole ts.net TLD
+      # avoids naming this tailnet and survives a rename; MagicDNS only ever
+      # answers for our own tailnet anyway. The second entry is a wildcard over
+      # the 100.x reverse space, so `dig -x` on a tailnet IP works.
+      server = [
+        "/ts.net/100.100.100.100"
+        "/100.in-addr.arpa/100.100.100.100"
+      ];
 
       # Ad-hoc hosts: one file per entry, picked up without a rebuild.
       hostsdir = "/var/lib/dnsmasq/hosts.d";
