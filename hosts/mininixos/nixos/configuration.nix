@@ -47,6 +47,8 @@
 
     ../../../common/nixos/virtualisation.nix
 
+    ../../../common/nixos/dns.nix
+
     ../../../common/nixos/tang-server.nix
     ../../../common/nixos/clevis-unlock.nix
 
