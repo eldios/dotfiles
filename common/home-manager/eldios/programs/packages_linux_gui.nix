@@ -64,6 +64,7 @@
 
         # Communication
         ayugram-desktop # Telegram alt client
+        contact # Reticulum/LXMF TUI client
         ratspeak # Reticulum/LXMF mesh messaging client
         # mailspring wrapped to force the gnome-libsecret password backend.
         # Electron can't auto-detect the Secret Service on wlroots compositors
