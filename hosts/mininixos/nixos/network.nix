@@ -73,6 +73,8 @@
       enable = true;
       allowedTCPPorts = [
         8095 # Music Assistant web UI (raggiunto da traefik su docker bridge)
+        9100 # node-exporter, scrapato da prometheus sul docker bridge
+        11434 # ollama, scrapato da prometheus sul docker bridge
       ];
       checkReversePath = false;
       trustedInterfaces = [ "br0" "br50" ];
