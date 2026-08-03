@@ -56,6 +56,16 @@
     };
   };
 
+  # Short names for tailnet-only nodes. A search domain cannot be a wildcard the
+  # way the ts.net forward above is, so the tailnet is spelled out here.
+  # `_append` and not networking.search: the latter goes in through resolvconf's
+  # static record at metric 1, which would put the tailnet ahead of the
+  # DHCP-supplied domains and send `ssh mininixos` over the tailnet instead of
+  # the LAN. See search_domains vs search_domains_append in resolvconf.conf(5).
+  networking.resolvconf.extraConfig = ''
+    search_domains_append='caracal-great.ts.net'
+  '';
+
   systemd.tmpfiles.rules = [
     "d /var/lib/dnsmasq/hosts.d 0755 root root -"
   ];
