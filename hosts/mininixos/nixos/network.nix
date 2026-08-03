@@ -1,4 +1,11 @@
+{ lib, ... }:
 {
+  # Public fallback resolvers, kept because DNS on the LAN gateways has proven
+  # unreliable here. They belong on dnsmasq rather than in resolv.conf: dnsmasq
+  # tracks upstream latency and prefers the fastest, so the LAN servers still
+  # win in practice and local zones keep resolving.
+  services.dnsmasq.settings.server = lib.mkAfter [ "1.1.1.1" "9.9.9.9" ];
+
   # Rename interfaces based on MAC address to predictable names
   systemd.network.links = {
     "10-eno0" = {
@@ -16,9 +23,9 @@
     networkmanager = {
       enable = true;
       unmanaged = [ "eno0" "eno0.50" "br0" "br50" ];
-      # Pin public resolvers: MagicDNS here is flaky and the UniFi gateway
-      # doesn't serve DNS, so without these the box can't resolve anything.
-      insertNameservers = [ "1.1.1.1" "9.9.9.9" ];
+      # No insertNameservers here: it lands ahead of 127.0.0.1 in resolv.conf,
+      # so every host query skips the local cache. The public resolvers it used
+      # to pin are dnsmasq upstreams instead, declared at the top of this file.
     };
 
     interfaces = {
