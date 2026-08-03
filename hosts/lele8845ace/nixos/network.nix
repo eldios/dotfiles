@@ -12,23 +12,6 @@
     };
   };
 
-  services.resolved = {
-    enable = true;
-    settings = {
-      Resolve = {
-        DNSSEC = "true";
-        Domains = [
-          "~."
-        ];
-        FallbackDNS = [
-          "1.1.1.1#one.one.one.one"
-          "1.0.0.1#one.one.one.one"
-        ];
-        DNSOverTLS = "false";
-      };
-    };
-  };
-
   networking = {
     usePredictableInterfaceNames = false; # We handle naming via systemd.network.links
     networkmanager = {
@@ -40,11 +23,10 @@
         "eno0"
         "br0"
       ];
-      ## Hand DNS to systemd-resolved so the mesh VPN client can do split-DNS
-      ## cleanly. With NM's default backend, NM and the VPN daemon both write
-      ## via openresolv, which clobbers the VPN resolver and breaks peer /
-      ## internal-domain resolution.
-      # dns = lib.mkForce "none";
+      # Default backend on purpose: NM writes through resolvconf, which feeds
+      # dnsmasq its upstreams. Tailscale must not fight over resolv.conf, hence
+      # `tailscale set --accept-dns=false`; the tailnet is served by the
+      # split-DNS route in common/nixos/dns.nix.
     };
 
     bridges = {
