@@ -27,6 +27,7 @@
       entr # run commands when files change
       github-cli # GitHub from the terminal
       herdr # agent multiplexer for AI coding agents (via herdr flake overlay)
+      hermit # manages isolated, self-bootstrapping sets of tools
       gitbutler # GUI + `but` CLI/TUI (one multi-call binary)
       just # command runner (Makefile alternative)
       pkg-config # build helper for compiled libraries
