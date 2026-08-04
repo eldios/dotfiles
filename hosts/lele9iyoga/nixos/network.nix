@@ -49,23 +49,20 @@
     };
   };
 
-  # DHCP + DNS for VMs on br0. Bound to br0 only so it never touches the host
-  # resolver (systemd-resolved is off here; NetworkManager owns /etc/resolv.conf).
-  services.dnsmasq = {
-    enable = true;
-    resolveLocalQueries = false;
-    settings = {
-      interface = "br0";
-      bind-interfaces = true;
-      dhcp-range = [ "192.168.100.50,192.168.100.200,24h" ];
-      dhcp-option = [
-        "option:router,192.168.100.1"
-        "option:dns-server,192.168.100.1"
-      ];
-    };
+  # DHCP for the VMs on br0, served by the same dnsmasq that caches for the
+  # host. Everything else, including the cache and the listen addresses, comes
+  # from common/nixos/dns.nix. No bind-interfaces here: that module uses
+  # bind-dynamic, and dnsmasq rejects the two together.
+  services.dnsmasq.settings = {
+    interface = "br0";
+    dhcp-range = [ "192.168.100.50,192.168.100.200,24h" ];
+    dhcp-option = [
+      "option:router,192.168.100.1"
+      "option:dns-server,192.168.100.1"
+    ];
   };
 
-  # dnsmasq binds br0, so it must come up only after the bridge has its address.
+  # DHCP wants the bridge addressed before it starts handing out leases.
   systemd.services.dnsmasq = {
     after = [ "network-addresses-br0.service" "br0-netdev.service" ];
     wants = [ "network-addresses-br0.service" ];

@@ -52,6 +52,9 @@
     ../../../common/nixos/programs/walker.nix
 
     ../../../common/nixos/virtualisation.nix
+
+    ../../../common/nixos/dns.nix
+
     ../../../common/nixos/desktop-gui.nix
 
     ./disko.nix
