@@ -19,6 +19,14 @@ in
   systemd.services.zfs-mount.enable = false;
   systemd.services.NetworkManager-wait-online.enable = false;
 
+  # Builds run in the daemon's cgroup when rebuilds are invoked as a normal
+  # user: throttle reclaim at MemoryHigh and kill at MemoryMax so an oversized
+  # build (e.g. a 35GB rustc) fails cleanly instead of thrashing the desktop.
+  systemd.services.nix-daemon.serviceConfig = {
+    MemoryHigh = "50%";
+    MemoryMax = "75%";
+  };
+
   # nixpkgs configuration moved to avoid warning with home-manager.useGlobalPkgs
   # Overlays are now applied through nixpkgs.overlays at host level
   nixpkgs.config.allowUnfree = true;
@@ -56,6 +64,9 @@ in
     settings = {
       # Nix Settings
       auto-optimise-store = true; # Auto Optimize nix store.
+      # Cap intra-build parallelism: uncapped builds run make/cargo -j$(nproc)
+      # and can starve the interactive desktop on CPU and RAM.
+      cores = lib.mkDefault 8;
       experimental-features = [
         "nix-command"
         "flakes"
