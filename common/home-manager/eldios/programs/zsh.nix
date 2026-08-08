@@ -101,12 +101,19 @@ in
         nixs = "nice -n 19 nix search nixpkgs"; # 'nix' assumed in PATH
         nixe = "$EDITOR $HOME/dotfiles"; # Uses $EDITOR variable
 
-        # nice covers the client-side flake eval; the actual builds are niced
-        # via nix.daemonCPUSchedPolicy/daemonIOSchedClass (system.nix).
-        nixu = "sudo nice -n 19 nixos-rebuild switch --flake $HOME/dotfiles"; # 'sudo' and 'nixos-rebuild' assumed in PATH
-        nixuo = "sudo nice -n 19 nixos-rebuild switch --flake $HOME/dotfiles --option substituters 'https://cache.nixos.org https://nix-community.cachix.org'"; # offline/outside - skip local cache
-        nixU = "sudo nix flake update $HOME/dotfiles && nixu"; # 'sudo', 'nix', and 'nixu' alias
-        nixUo = "sudo nix flake update $HOME/dotfiles && nixuo"; # 'sudo', 'nix', and 'nixuo' alias - outside network
+        # Run as the regular user on purpose: nh builds through nix-daemon,
+        # so the daemon's idle scheduling and memory limits (system.nix)
+        # apply, and sudo is used only for the activation step. A root
+        # nixos-rebuild would build outside the daemon, unconstrained.
+        # The *.old aliases keep the pre-nh commands as a fallback.
+        nixu = "nice -n 19 nh os switch"; # 'nh' from programs.nh; NH_FLAKE points at ~/dotfiles
+        nixuo = "nice -n 19 nh os switch -- --option substituters 'https://cache.nixos.org https://nix-community.cachix.org'"; # offline/outside - skip local cache
+        nixU = "nice -n 19 nh os switch --update"; # also updates all flake inputs first
+        nixUo = "nice -n 19 nh os switch --update -- --option substituters 'https://cache.nixos.org https://nix-community.cachix.org'"; # outside network
+        "nixu.old" = "sudo nice -n 19 nixos-rebuild switch --flake $HOME/dotfiles"; # 'sudo' and 'nixos-rebuild' assumed in PATH
+        "nixuo.old" = "sudo nice -n 19 nixos-rebuild switch --flake $HOME/dotfiles --option substituters 'https://cache.nixos.org https://nix-community.cachix.org'"; # offline/outside - skip local cache
+        "nixU.old" = "sudo nix flake update $HOME/dotfiles && nixu.old"; # 'sudo', 'nix', and 'nixu.old' alias
+        "nixUo.old" = "sudo nix flake update $HOME/dotfiles && nixuo.old"; # 'sudo', 'nix', and 'nixuo.old' alias - outside network
 
         nixa = "nixe && nixu"; # Uses aliases
         nixA = "nixe && nixU"; # Uses aliases
@@ -120,8 +127,9 @@ in
         hmA = "hme && hmU"; # Uses aliases
         hm-cleanup = "hm expire-generations '-7 days' && nix-store --gc"; # Uses 'hm' alias, 'nix-store' in PATH
         hm-edit = "hm edit"; # Uses 'hm' alias
+        hm-update = "nice -n 19 nh home switch -b backup"; # NH_FLAKE points at ~/dotfiles
         # full path: an alias ('hm') would not expand after 'nice'
-        hm-update = "nice -n 19 ${pkgs.home-manager}/bin/home-manager switch -b backup --flake $HOME/dotfiles";
+        "hm-update.old" = "nice -n 19 ${pkgs.home-manager}/bin/home-manager switch -b backup --flake $HOME/dotfiles";
 
         SHX = "exec \$SHELL -l"; # Uses $SHELL environment variable
       };

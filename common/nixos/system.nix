@@ -13,7 +13,9 @@ in
   zramSwap = {
     enable = true;
     algorithm = "zstd";
-    memoryPercent = 10;
+    # Cap, not a reservation: RAM is consumed only by pages actually
+    # swapped out, stored compressed. Sized to absorb build spikes.
+    memoryPercent = 30;
   };
 
   systemd.services.zfs-mount.enable = false;
@@ -140,9 +142,9 @@ in
   };
 
   # nh: modern wrapper around nixos-rebuild / home-manager / nix-collect-garbage.
-  # Existing `nixu` alias (sudo -E nixos-rebuild switch --flake ~/dotfiles)
-  # keeps working in parallel. Try: `nh os switch ~/dotfiles`,
-  # `nh clean all --keep 5`, `nh search <pkg>`.
+  # The `nixu` alias (zsh.nix) is `nh os switch`: run as the regular user it
+  # builds through nix-daemon, where the idle scheduling and memory limits
+  # above apply. Also: `nh clean all --keep 5`, `nh search <pkg>`.
   # nh.clean.enable left off because nix.gc.automatic above already
   # handles GC weekly; nh would conflict with the warning.
   programs.nh = {
