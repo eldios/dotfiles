@@ -13,6 +13,10 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
+  # 24 threads and 64GB here: allow more build parallelism than the
+  # common default.
+  nix.settings.cores = 12;
+
   # Italy - Rome
   time.timeZone = lib.mkForce "Europe/Rome";
 
