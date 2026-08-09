@@ -51,7 +51,11 @@
     # Upstream omarchy repo — source of vendored scripts/themes/configs.
     # We pull bin/, default/, config/ as-is and override only Nix-specific bits.
     omarchy = {
-      url = "github:basecamp/omarchy";
+      # Pinned to the last pre-Quickshell revision (2026-06-08): from mid-May
+      # upstream moved menu/capture/theme plumbing into an IPC daemon
+      # (omarchy-shell) that we do not run, so newer revs break the vendored
+      # scripts. Bump only as part of a deliberate migration to that stack.
+      url = "github:basecamp/omarchy/9cf1852525a5f7de26d3162db9d61e2f5c1d5523";
       flake = false;
     };
 
