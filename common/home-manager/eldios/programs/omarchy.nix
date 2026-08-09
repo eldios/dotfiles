@@ -52,7 +52,7 @@ let
     # Capture
     "omarchy-capture-screenshot"
     "omarchy-capture-screenrecording"
-    "omarchy-capture-text"
+    "omarchy-capture-text-extraction"
 
     # System / cmd
     "omarchy-system-lock"
@@ -62,8 +62,11 @@ let
     "omarchy-cmd-terminal-cwd"
 
     # Restart / refresh (graceful no-op if target app missing).
-    # restart-walker/waybar/swayosd are no longer shipped upstream; we supply
-    # them via `overrides` below, so they must NOT be vendored (no source file).
+    # restart-waybar/swayosd have Nix-adapted `overrides` below, so they must
+    # NOT be vendored (overrides are installed last and win anyway).
+    "omarchy-restart-walker"
+    "omarchy-restart-mako"
+    "omarchy-refresh-walker"
     "omarchy-restart-hyprctl"
     "omarchy-restart-terminal"
     "omarchy-restart-btop"
