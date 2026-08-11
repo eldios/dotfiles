@@ -60,11 +60,10 @@ in {
         min-height: 0;
       }
 
-      window#waybar {
-        background-color: alpha(@background, 0.92);
-        border-bottom: 1px solid alpha(@foreground, 0.12);
-        color: @foreground;
-      }
+      /* window#waybar is intentionally NOT styled here: the theme owns the
+         bar background (bubble themes want a transparent strip). Themes that
+         do not style it get a fallback appended to their waybar.css by the
+         theme-set hook 00-ensure-theme-files.sh. */
 
       .modules-left {
         margin-left: 8px;
