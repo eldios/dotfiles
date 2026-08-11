@@ -59,6 +59,19 @@ ensure_waybar_color background "#1a1a1a"
 ensure_waybar_color foreground "#d0d0d0"
 ensure_waybar_color accent "#7aa2f7"
 
+# The HM waybar style leaves window#waybar to the theme (bubble themes want a
+# transparent strip). Themes that do not style it get this solid fallback.
+if ! grep -q 'window#waybar' "$theme_dir/waybar.css"; then
+  cat >>"$theme_dir/waybar.css" <<'EOF'
+window#waybar {
+  background-color: alpha(@background, 0.92);
+  border-bottom: 1px solid alpha(@foreground, 0.12);
+  color: @foreground;
+}
+EOF
+  waybar_changed=1
+fi
+
 if [[ $waybar_changed -eq 1 ]] && pgrep -f waybar >/dev/null; then
   omarchy-restart-waybar || true
 fi
