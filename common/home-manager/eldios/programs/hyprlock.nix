@@ -1,7 +1,16 @@
-{ pkgs, ... }:
+{
+  lib,
+  osConfig,
+  pkgs,
+  ...
+}:
 
 let
   hyprlock = "${pkgs.hyprlock}/bin/hyprlock";
+  # Follow the host PAM stack: when pam_fprintd is present, hyprlock must
+  # drive it itself (password and fingerprint in parallel); with it absent,
+  # its own fingerprint support stays off.
+  fprint = osConfig.security.pam.services.hyprlock.fprintAuth or false;
 in {
   home.packages = [ pkgs.hyprlock ];
 
@@ -60,7 +69,7 @@ in {
     }
 
     auth {
-      fingerprint:enabled = false
+      fingerprint:enabled = ${lib.boolToString fprint}
     }
   '';
 
