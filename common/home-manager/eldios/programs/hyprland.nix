@@ -306,6 +306,10 @@ in {
 
       # Environment variables for Wayland compatibility
       env = [
+        # Needed by keybind-launched omarchy scripts: omarchy-theme-set-templates
+        # reads $OMARCHY_PATH with no fallback, and home.sessionVariables only
+        # reaches shells, not the Hyprland session.
+        "OMARCHY_PATH,${config.home.homeDirectory}/.local/share/omarchy"
         "NIXOS_OZONE_WL,1"
         "MOZ_ENABLE_WAYLAND,1"
         "QT_QPA_PLATFORM,wayland"
