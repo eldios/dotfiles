@@ -25,6 +25,10 @@
     serviceConfig.Type = "simple";
   };
 
+  # Finger unlock on the lockscreen: keeps pam_fprintd in hyprlock's stack;
+  # hyprlock.nix follows this and runs password and fingerprint in parallel.
+  security.pam.services.hyprlock.fprintAuth = true;
+
   services = {
     fprintd = {
       enable = true;
