@@ -166,7 +166,7 @@ let
       src="$HOME/.config/omarchy/current/theme/hyprland.conf"
       dst="$HOME/.config/hypr/omarchy-theme.conf"
       [[ -f "$src" ]] && ${pkgs.coreutils}/bin/install -m 0644 "$src" "$dst" 2>/dev/null || true
-      ${pkgs.hyprland}/bin/hyprctl reload >/dev/null 2>&1 || true
+      ${pkgs.unstable.hyprland}/bin/hyprctl reload >/dev/null 2>&1 || true
     '';
 
     # No-op if swayosd-server unit doesn't exist (we don't ship swayosd).
@@ -252,16 +252,16 @@ let
     # raw `0x...` falls through to class-regex matching and silently no-ops.
     "omarchy-window-undim-blur-toggle" = pkgs.writeShellScript "omarchy-window-undim-blur-toggle" ''
       set -euo pipefail
-      addr="$(${pkgs.hyprland}/bin/hyprctl activewindow -j | ${pkgs.jq}/bin/jq -r '.address')"
+      addr="$(${pkgs.unstable.hyprland}/bin/hyprctl activewindow -j | ${pkgs.jq}/bin/jq -r '.address')"
       [[ -n "$addr" && "$addr" != "null" ]] || exit 0
       state_dir="''${XDG_RUNTIME_DIR:-/tmp}/omarchy-undim-blur"
       ${pkgs.coreutils}/bin/mkdir -p "$state_dir"
       flag="$state_dir/''${addr#0x}"
       if [[ -f "$flag" ]]; then
-        ${pkgs.hyprland}/bin/hyprctl --batch "dispatch setprop address:$addr no_dim unset ; dispatch setprop address:$addr no_blur unset ; dispatch setprop address:$addr opaque unset" >/dev/null
+        ${pkgs.unstable.hyprland}/bin/hyprctl --batch "dispatch setprop address:$addr no_dim unset ; dispatch setprop address:$addr no_blur unset ; dispatch setprop address:$addr opaque unset" >/dev/null
         ${pkgs.coreutils}/bin/rm -f "$flag"
       else
-        ${pkgs.hyprland}/bin/hyprctl --batch "dispatch setprop address:$addr no_dim 1 ; dispatch setprop address:$addr no_blur 1 ; dispatch setprop address:$addr opaque 1" >/dev/null
+        ${pkgs.unstable.hyprland}/bin/hyprctl --batch "dispatch setprop address:$addr no_dim 1 ; dispatch setprop address:$addr no_blur 1 ; dispatch setprop address:$addr opaque 1" >/dev/null
         : > "$flag"
       fi
     '';

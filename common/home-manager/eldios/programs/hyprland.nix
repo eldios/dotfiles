@@ -473,6 +473,8 @@ in {
       #   $mod CTRL       window groups + secondary apps
       #   $mod CTRL SHIFT inverse/exit of the CTRL action
       #   $mod ALT        hold-to-repeat resize (+SHIFT: workspace to monitor)
+      # Known exceptions: the F family (F files, SHIFT+F fullscreen, CTRL+F
+      # client fullscreen), screenshots on SHIFT+S/A, Print = color picker.
       bind = [
         # Session / power
         "$mod CTRL SHIFT, Q, exec, ${powermenu}"
@@ -484,8 +486,6 @@ in {
         "$mod, E, exec, /etc/profiles/per-user/eldios/bin/omarchy-launch-walker -m symbols" # Emoji / symbols
         "$mod, W, exec, ${window_menu}"
         "$mod, M, exec, ${omarchyMenu}"
-        "$mod, N, exec, ${pkgs.mako}/bin/makoctl restore" # Bring back last expired notification
-        "$mod SHIFT, N, exec, /etc/profiles/per-user/eldios/bin/notif-history" # Full notification history menu
         "$mod SHIFT, D, exec, ${quick_menu}"
 
         # Applications
@@ -563,6 +563,10 @@ in {
         "$mod, v, exec, /etc/profiles/per-user/eldios/bin/omarchy-launch-walker -m clipboard"
         "$mod SHIFT, v, exec, ${clipSave}/bin/clip-save" # save current clipboard to a file (pick older entries with $mod V first)
 
+        # Notifications
+        "$mod, N, exec, ${pkgs.mako}/bin/makoctl restore" # Bring back last expired notification
+        "$mod SHIFT, N, exec, /etc/profiles/per-user/eldios/bin/notif-history" # Full notification history menu
+
         # Window groups (tabbed windows like i3)
         "$mod, g, togglegroup" # Create/dissolve a group from active window
         "$mod CTRL, g, lockactivegroup, toggle" # Lock group to prevent accidental changes
@@ -572,14 +576,16 @@ in {
         "$mod CTRL, j, moveintogroup, d" # Move window into group below
         "$mod CTRL, k, moveintogroup, u" # Move window into group above
         "$mod CTRL, l, moveintogroup, r" # Move window into group on the right
-        "$mod CTRL SHIFT, h, moveoutofgroup" # Move window out of its group
-        "$mod CTRL SHIFT, j, moveoutofgroup" # Move window out of its group
-        "$mod CTRL SHIFT, k, moveoutofgroup" # Move window out of its group
-        "$mod CTRL SHIFT, l, moveoutofgroup" # Move window out of its group
+        # moveoutofgroup takes no direction: the four keys are deliberate
+        # aliases so leaving mirrors the CTRL+hjkl entering gesture.
+        "$mod CTRL SHIFT, h, moveoutofgroup"
+        "$mod CTRL SHIFT, j, moveoutofgroup"
+        "$mod CTRL SHIFT, k, moveoutofgroup"
+        "$mod CTRL SHIFT, l, moveoutofgroup"
 
         # Hyprland maintenance
         "$mod SHIFT, R, forcerendererreload"
-        "$mod CTRL SHIFT, R, exec, ${pkgs.hyprland}/bin/hyprctl reload"
+        "$mod CTRL SHIFT, R, exec, ${pkgs.unstable.hyprland}/bin/hyprctl reload"
       ];
 
       # Global keybinds: passed to apps even when they're not focused (e.g. push-to-talk)
@@ -591,25 +597,27 @@ in {
         "$mod, mouse:273, resizewindow"
       ];
 
-      # Repeating binds: the action repeats while the key is held
-      binde = [
-        # Audio
-        # swayosd-client wraps the underlying tool and pops an on-screen overlay.
+      # Ramps: repeat while held, and stay active on the lockscreen.
+      # swayosd-client wraps the underlying tool and pops an on-screen overlay.
+      bindel = [
         ", XF86AudioRaiseVolume, exec, ${pkgs.swayosd}/bin/swayosd-client --output-volume raise"
         ", XF86AudioLowerVolume, exec, ${pkgs.swayosd}/bin/swayosd-client --output-volume lower"
-        ", XF86AudioMute,        exec, ${pkgs.swayosd}/bin/swayosd-client --output-volume mute-toggle"
-        ", XF86AudioMicMute,     exec, ${pkgs.swayosd}/bin/swayosd-client --input-volume mute-toggle"
-
-        # Brightness
         ", XF86MonBrightnessUp,   exec, ${pkgs.swayosd}/bin/swayosd-client --brightness raise"
         ", XF86MonBrightnessDown, exec, ${pkgs.swayosd}/bin/swayosd-client --brightness lower"
+      ];
 
-        # Media
+      # Toggles and track control: single-shot (repeat would flap the state),
+      # still active on the lockscreen.
+      bindl = [
+        ", XF86AudioMute,    exec, ${pkgs.swayosd}/bin/swayosd-client --output-volume mute-toggle"
+        ", XF86AudioMicMute, exec, ${pkgs.swayosd}/bin/swayosd-client --input-volume mute-toggle"
         ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
         ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
         ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
+      ];
 
-        # Window resize (dwindle layout)
+      # Repeating binds: window resize (dwindle layout)
+      binde = [
         "$mod ALT, h, resizeactive, -20 0"
         "$mod ALT, l, resizeactive, 20 0"
         "$mod ALT, k, resizeactive, 0 -20"
