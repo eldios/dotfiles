@@ -170,8 +170,8 @@ in {
 
   wayland.windowManager.hyprland = {
     enable = true;
-    # Match common/nixos/programs/hyprland.nix (nixpkgs-unstable, ~v0.54.3+)
-    # so HM-injected config targets the same Hyprland version the session runs.
+    # Match common/nixos/programs/hyprland.nix (nixpkgs-unstable) so
+    # HM-injected config targets the same Hyprland version the session runs.
     package = pkgs.unstable.hyprland;
     xwayland.enable = true;
     systemd.enable = true;
@@ -467,6 +467,12 @@ in {
         hide_special_on_workspace_change = true;
       };
 
+      # Modifier grammar:
+      #   $mod            direct action: launchers, focus, workspace, window toggles
+      #   $mod SHIFT      move/strong variant of the bare action (or its inverse)
+      #   $mod CTRL       window groups + secondary apps
+      #   $mod CTRL SHIFT inverse/exit of the CTRL action
+      #   $mod ALT        hold-to-repeat resize (+SHIFT: workspace to monitor)
       bind = [
         # Session / power
         "$mod CTRL SHIFT, Q, exec, ${powermenu}"
