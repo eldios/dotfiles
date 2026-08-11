@@ -145,13 +145,13 @@ let
     # Upstream `omarchy-restart-terminal` `touch`es alacritty.toml which is a
     # read-only Nix store symlink in our setup. Skip alacritty; keep kitty/ghostty
     # SIGUSR reload paths (those work on running instances regardless).
+    # Match "/bin/<term>" on the full cmdline: Nix wraps the binaries so their
+    # comm is ".<name>-wrapped" and a plain `pgrep/pkill -x <name>` never fires
+    # (ghostty is single-instance, so a missed signal leaves every window,
+    # current and future, on the previous theme).
     "omarchy-restart-terminal" = pkgs.writeShellScript "omarchy-restart-terminal" ''
-      if ${pkgs.procps}/bin/pgrep -x kitty >/dev/null; then
-        ${pkgs.procps}/bin/pkill -USR1 kitty >/dev/null || true
-      fi
-      if ${pkgs.procps}/bin/pgrep -x ghostty >/dev/null; then
-        ${pkgs.procps}/bin/pkill -USR2 ghostty >/dev/null || true
-      fi
+      ${pkgs.procps}/bin/pkill -USR1 -f "/bin/kitty" >/dev/null 2>&1 || true
+      ${pkgs.procps}/bin/pkill -USR2 -f "/bin/ghostty" >/dev/null 2>&1 || true
     '';
 
     # Upstream uses `uwsm-app -- waybar` which we shim. Use absolute waybar path
