@@ -478,6 +478,7 @@ in {
         "$mod, E, exec, /etc/profiles/per-user/eldios/bin/omarchy-launch-walker -m symbols" # Emoji / symbols
         "$mod, W, exec, ${window_menu}"
         "$mod, M, exec, ${omarchyMenu}"
+        "$mod, N, exec, /etc/profiles/per-user/eldios/bin/notif-history" # Notification history
         "$mod CTRL, D, exec, ${quick_menu}"
 
         # Applications
