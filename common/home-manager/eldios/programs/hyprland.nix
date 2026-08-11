@@ -468,66 +468,53 @@ in {
       };
 
       bind = [
-        # Window management
-        "$mod SHIFT, C, killactive"
+        # Session / power
+        "$mod CTRL SHIFT, Q, exec, ${powermenu}"
+        # Lock binding ($mod CTRL, Q) lives in ./hyprlock.nix (opt-in).
 
-        "$mod, F, fullscreen"
-        "$mod SHIFT, Space, togglefloating"
-
-        # Toggle no_dim + no_blur on the active window (persists for window
-        # lifetime). State tracked per-window-address in XDG_RUNTIME_DIR.
-        "$mod ALT, B, exec, omarchy-window-undim-blur-toggle"
-
-        # Dwindle layout controls
-        "$mod, p, pseudo" # Toggle pseudo-tiling (fixed size windows)
-        "$mod SHIFT, t, pin" # Pin floating window: stays visible across all workspaces (great for PiP/notes)
-
-        "$mod, i, cyclenext" # Cycle window focus
-        "$mod, o, cyclenext, prev" # Cycle window focus
-        "$mod SHIFT, i, swapnext" # Swap with window in direction
-        "$mod SHIFT, o, swapnext, prev" # Swap with window in direction
-
-        "$mod, x, togglesplit" # Toggle split direction
-        "$mod SHIFT, x, layoutmsg, togglesplit" # Toggle between dwindle/master
-
-        # Applications
+        # Launchers and applications
         "$mod, D, exec, ${full_menu}"
         "$mod SHIFT, D, exec, ${quick_menu}"
         "$mod SHIFT, E, exec, ${file_menu}"
         "$mod SHIFT, W, exec, ${window_menu}"
         "$mod, Return, exec, ${terminal}"
-        "$mod, Space, exec, ${full_menu}"
         "$mod ALT, Space, exec, ${omarchyMenu}"
         "$mod CTRL, E, exec, /etc/profiles/per-user/eldios/bin/omarchy-launch-walker -m symbols"
         "$mod SHIFT, M, exec, ${mail}"
 
-        # System controls
-        "$mod CTRL SHIFT, Q, exec, ${powermenu}"
-        # Lock binding ($mod CTRL, Q) lives in ./hyprlock.nix (opt-in).
-        "$mod, Escape, exec, ${powermenu}"
+        # Window state
+        "$mod SHIFT, C, killactive"
+        "$mod SHIFT, Space, togglefloating"
+        "$mod, F, fullscreen"
+        "$mod CTRL, F, fullscreenstate, 0 2" # Client-only fullscreen: window stays in its tiled container
+        "$mod SHIFT, t, pin" # Pin floating window: stays visible across all workspaces (great for PiP/notes)
+        "$mod, c, centerwindow" # Center floating window on screen
+        # Toggle no_dim + no_blur on the active window (persists for window
+        # lifetime). State tracked per-window-address in XDG_RUNTIME_DIR.
+        "$mod ALT, B, exec, omarchy-window-undim-blur-toggle"
 
-        # Screenshots
-        "$mod SHIFT, S, exec, ${screenshot_select}"
-        "$mod SHIFT, A, exec, ${screenshot_full}"
-        "$mod, Print, exec, ${pkgs.procps}/bin/pkill hyprpicker || ${pkgs.hyprpicker}/bin/hyprpicker -a"
+        # Dwindle and window order
+        "$mod, p, pseudo" # Toggle pseudo-tiling (fixed size windows)
+        "$mod SHIFT, x, layoutmsg, togglesplit" # Toggle split direction (needs dwindle preserve_split)
+        "$mod, i, cyclenext" # Cycle window focus forward
+        "$mod, o, cyclenext, prev" # Cycle window focus backward
+        "$mod SHIFT, i, swapnext" # Swap with next window in cycle order
+        "$mod SHIFT, o, swapnext, prev" # Swap with previous window in cycle order
 
-        # Focus
+        # Focus and movement
         "$mod, Tab, focusmonitor, +1"
         "$mod SHIFT, Tab, focusmonitor, -1"
-
-        # Focus
         "$mod, h, movefocus, l"
         "$mod, j, movefocus, d"
         "$mod, k, movefocus, u"
         "$mod, l, movefocus, r"
-
-        # Move
         "$mod SHIFT, h, movewindow, l"
         "$mod SHIFT, j, movewindow, d"
         "$mod SHIFT, k, movewindow, u"
         "$mod SHIFT, l, movewindow, r"
+        "$mod, z, focusurgentorlast" # Jump to window requesting attention
 
-        # Workspaces
+        # Workspaces and scratchpad
         "$mod, 1, workspace, 1"
         "$mod, 2, workspace, 2"
         "$mod, 3, workspace, 3"
@@ -538,8 +525,6 @@ in {
         "$mod, 8, workspace, 8"
         "$mod, 9, workspace, 9"
         "$mod, 0, workspace, 10"
-
-        # Move to workspace
         "$mod SHIFT, 1, movetoworkspacesilent, 1"
         "$mod SHIFT, 2, movetoworkspacesilent, 2"
         "$mod SHIFT, 3, movetoworkspacesilent, 3"
@@ -550,34 +535,26 @@ in {
         "$mod SHIFT, 8, movetoworkspacesilent, 8"
         "$mod SHIFT, 9, movetoworkspacesilent, 9"
         "$mod SHIFT, 0, movetoworkspacesilent, 10"
-
-        # Scratchpad
         "$mod, minus, togglespecialworkspace, scratchpad"
         "$mod SHIFT, minus, movetoworkspace, special:scratchpad"
+        "$mod, BackSpace, workspace, previous" # Quick jump back
+        "$mod SHIFT ALT, Left, movecurrentworkspacetomonitor, l"
+        "$mod SHIFT ALT, Right, movecurrentworkspacetomonitor, r"
+        "$mod SHIFT ALT, Up, movecurrentworkspacetomonitor, u"
+        "$mod SHIFT ALT, Down, movecurrentworkspacetomonitor, d"
 
-        # Previous workspace (quick jump back)
-        "$mod, BackSpace, workspace, previous"
-
-        # Urgent window focus (jump to window requesting attention)
-        "$mod, z, focusurgentorlast"
-
-        # Center floating window on screen
-        "$mod, c, centerwindow"
-
-        # Clipboard history
+        # Screenshots and clipboard
+        "$mod SHIFT, S, exec, ${screenshot_select}"
+        "$mod SHIFT, A, exec, ${screenshot_full}"
+        "$mod, Print, exec, ${pkgs.procps}/bin/pkill hyprpicker || ${pkgs.hyprpicker}/bin/hyprpicker -a"
         "$mod, v, exec, /etc/profiles/per-user/eldios/bin/omarchy-launch-walker -m clipboard"
         "$mod SHIFT, v, exec, ${clipSave}/bin/clip-save" # save current clipboard to a file (pick older entries with $mod V first)
 
-        # Window grouping (tabbed windows like i3)
+        # Window groups (tabbed windows like i3)
         "$mod, g, togglegroup" # Create/dissolve a group from active window
+        "$mod SHIFT, g, lockactivegroup, toggle" # Lock group to prevent accidental changes
         "$mod CTRL, Tab, changegroupactive, f" # Cycle forward through tabs in group
         "$mod CTRL SHIFT, Tab, changegroupactive, b" # Cycle backward through tabs in group
-        "$mod SHIFT, g, lockactivegroup, toggle" # Lock group to prevent accidental changes
-        "$mod CTRL, h, moveintogroup, l" # Move window into group on the left
-        "$mod CTRL, j, moveintogroup, d" # Move window into group below
-        "$mod CTRL, k, moveintogroup, u" # Move window into group above
-        "$mod CTRL, l, moveintogroup, r" # Move window into group on the right
-        "$mod CTRL SHIFT, h, moveoutofgroup" # Move window out of its group
         "$mod ALT, Tab, changegroupactive, f"
         "$mod ALT SHIFT, Tab, changegroupactive, b"
         "$mod ALT, 1, changegroupactive, 1"
@@ -585,18 +562,18 @@ in {
         "$mod ALT, 3, changegroupactive, 3"
         "$mod ALT, 4, changegroupactive, 4"
         "$mod ALT, 5, changegroupactive, 5"
+        "$mod CTRL, h, moveintogroup, l" # Move window into group on the left
+        "$mod CTRL, j, moveintogroup, d" # Move window into group below
+        "$mod CTRL, k, moveintogroup, u" # Move window into group above
+        "$mod CTRL, l, moveintogroup, r" # Move window into group on the right
+        "$mod CTRL SHIFT, h, moveoutofgroup" # Move window out of its group
 
-        # Omarchy-inspired monitor/workspace helpers
-        "$mod CTRL, F, fullscreenstate, 0 2"
-        "$mod SHIFT ALT, Left, movecurrentworkspacetomonitor, l"
-        "$mod SHIFT ALT, Right, movecurrentworkspacetomonitor, r"
-        "$mod SHIFT ALT, Up, movecurrentworkspacetomonitor, u"
-        "$mod SHIFT ALT, Down, movecurrentworkspacetomonitor, d"
+        # System utilities
         "$mod CTRL, A, exec, ${pkgs.pavucontrol}/bin/pavucontrol"
         "$mod CTRL, B, exec, ${pkgs.blueman}/bin/blueman-manager"
         "$mod CTRL, T, exec, ${terminal} -e ${pkgs.btop}/bin/btop"
 
-        # Reload
+        # Hyprland maintenance
         "$mod SHIFT, R, forcerendererreload"
         "$mod SHIFT CTRL, R, exec, ${pkgs.hyprland}/bin/hyprctl reload"
       ];
@@ -610,21 +587,25 @@ in {
         "$mod, mouse:273, resizewindow"
       ];
 
-      # Add resize bindings with keyboard
+      # Repeating binds: the action repeats while the key is held
       binde = [
-        # Volume and media controls
+        # Audio
         # swayosd-client wraps the underlying tool and pops an on-screen overlay.
         ", XF86AudioRaiseVolume, exec, ${pkgs.swayosd}/bin/swayosd-client --output-volume raise"
         ", XF86AudioLowerVolume, exec, ${pkgs.swayosd}/bin/swayosd-client --output-volume lower"
         ", XF86AudioMute,        exec, ${pkgs.swayosd}/bin/swayosd-client --output-volume mute-toggle"
         ", XF86AudioMicMute,     exec, ${pkgs.swayosd}/bin/swayosd-client --input-volume mute-toggle"
+
+        # Brightness
         ", XF86MonBrightnessUp,   exec, ${pkgs.swayosd}/bin/swayosd-client --brightness raise"
         ", XF86MonBrightnessDown, exec, ${pkgs.swayosd}/bin/swayosd-client --brightness lower"
+
+        # Media
         ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
         ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
         ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
 
-        # Window resize bindings (for dwindle layout)
+        # Window resize (dwindle layout)
         "$mod ALT, h, resizeactive, -20 0"
         "$mod ALT, l, resizeactive, 20 0"
         "$mod ALT, k, resizeactive, 0 -20"
