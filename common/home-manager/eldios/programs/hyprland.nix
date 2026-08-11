@@ -474,7 +474,8 @@ in {
 
         # WM Launchers
         "$mod, D, exec, ${full_menu}"
-        "$mod, E, exec, ${file_menu}"
+        "$mod, F, exec, ${file_menu}"
+        "$mod, E, exec, /etc/profiles/per-user/eldios/bin/omarchy-launch-walker -m symbols" # Emoji / symbols
         "$mod, W, exec, ${window_menu}"
         "$mod, M, exec, ${omarchyMenu}"
         "$mod CTRL, D, exec, ${quick_menu}"
@@ -484,13 +485,12 @@ in {
         "$mod CTRL, M, exec, ${mail}"
         "$mod CTRL, A, exec, ${pkgs.pavucontrol}/bin/pavucontrol"
         "$mod CTRL, B, exec, ${pkgs.blueman}/bin/blueman-manager"
-        "$mod CTRL, E, exec, /etc/profiles/per-user/eldios/bin/omarchy-launch-walker -m symbols"
         "$mod CTRL, T, exec, ${terminal} -e ${pkgs.btop}/bin/btop"
 
         # Window state
         "$mod SHIFT, C, killactive"
         "$mod SHIFT, Space, togglefloating"
-        "$mod, F, fullscreen"
+        "$mod SHIFT, F, fullscreen"
         "$mod CTRL, F, fullscreenstate, 0 2" # Client-only fullscreen: window stays in its tiled container
         "$mod, t, pin" # Pin floating window: stays visible across all workspaces (great for PiP/notes)
         "$mod, c, centerwindow" # Center floating window on screen
