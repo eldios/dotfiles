@@ -480,7 +480,7 @@ in {
         "$mod, M, exec, ${omarchyMenu}"
         "$mod, N, exec, ${pkgs.mako}/bin/makoctl restore" # Bring back last expired notification
         "$mod SHIFT, N, exec, /etc/profiles/per-user/eldios/bin/notif-history" # Full notification history menu
-        "$mod CTRL, D, exec, ${quick_menu}"
+        "$mod SHIFT, D, exec, ${quick_menu}"
 
         # Applications
         "$mod, Return, exec, ${terminal}"
