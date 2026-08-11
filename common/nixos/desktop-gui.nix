@@ -83,8 +83,11 @@
   services.upower.enable = lib.mkDefault true;
 
   # Security - PAM services for screen lockers
-  security.pam.services.swaylock = { };
-  security.pam.services.hyprlock = { };
+  security.pam.services.swaylock.fprintAuth = false;
+  # No pam_fprintd in the locker stacks: hyprlock runs with
+  # fingerprint:enabled=false, so PAM would sit through the fingerprint
+  # timeout before checking the typed password on every unlock.
+  security.pam.services.hyprlock.fprintAuth = false;
 
   # Wayland env vars are set per-compositor (hyprland.nix, niri.nix, etc.)
   # Don't set them globally - breaks X11 sessions like i3
