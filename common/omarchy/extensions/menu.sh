@@ -274,3 +274,30 @@ show_waybar_bar_submenu() {
   *) show_waybar_position_menu ;;
   esac
 }
+
+# Background submenu: upstream only opens the picker; add wallpaper display
+# modes on top (state + re-apply via omarchy-bg-mode, ● marks the active one).
+show_background_menu() {
+  local mode
+  mode=$(cat "$HOME/.config/omarchy/current/background.mode" 2>/dev/null || echo fill)
+  local m_fill="" m_fit="" m_center="" m_stretch="" m_tile=""
+  case $mode in
+  fit) m_fit=" ●" ;;
+  center) m_center=" ●" ;;
+  stretch) m_stretch=" ●" ;;
+  tile) m_tile=" ●" ;;
+  *) m_fill=" ●" ;;
+  esac
+  case $(menu "Background" "  Pick background\n󰊓  Filled$m_fill\n󰁌  Fit$m_fit\n󰉠  Centered$m_center\n󰩨  Stretched$m_stretch\n󱓉  Tiled$m_tile") in
+  *Pick*)
+    background=$(omarchy-theme-bg-switcher)
+    [[ -n $background ]] && omarchy-theme-bg-set "$background"
+    ;;
+  *Filled*) omarchy-bg-mode fill ;;
+  *Fit*) omarchy-bg-mode fit ;;
+  *Centered*) omarchy-bg-mode center ;;
+  *Stretched*) omarchy-bg-mode stretch ;;
+  *Tiled*) omarchy-bg-mode tile ;;
+  *) show_style_menu ;;
+  esac
+}

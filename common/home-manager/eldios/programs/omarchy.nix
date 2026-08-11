@@ -188,9 +188,10 @@ let
       ${pkgs.util-linux}/bin/setsid ${pkgs.waybar}/bin/waybar >/dev/null 2>&1 &
     '';
 
-    # Upstream uses swaybg exclusively; we prefer awww (transitions, daemon-based)
-    # if awww-daemon is up — fall back to swaybg otherwise. Matches our setup
-    # where variety + awww manage wallpapers.
+    # Upstream pattern, plus a display mode read from background.mode
+    # (written by omarchy-bg-mode below). fit/center pad with the theme's
+    # background color, taken from waybar.css where the theme-set hook
+    # guarantees a @define-color background line.
     "omarchy-theme-bg-set" = pkgs.writeShellScript "omarchy-theme-bg-set" ''
       set -euo pipefail
       [[ -n "''${1:-}" ]] || { echo "Usage: omarchy-theme-bg-set <path-to-image>" >&2; exit 1; }
@@ -201,12 +202,34 @@ let
       ${pkgs.coreutils}/bin/mkdir -p "$(${pkgs.coreutils}/bin/dirname "$link")"
       ${pkgs.coreutils}/bin/ln -nsf "$background" "$link"
 
-      if ${pkgs.procps}/bin/pgrep -x awww-daemon >/dev/null 2>&1; then
-        ${pkgs.awww}/bin/awww img "$link" --transition-type fade >/dev/null 2>&1 || true
-      else
-        ${pkgs.procps}/bin/pkill -x swaybg >/dev/null 2>&1 || true
-        ${pkgs.util-linux}/bin/setsid ${pkgs.swaybg}/bin/swaybg -i "$link" -m fill >/dev/null 2>&1 &
-      fi
+      mode="$(${pkgs.coreutils}/bin/cat "$HOME/.config/omarchy/current/background.mode" 2>/dev/null || true)"
+      case "$mode" in
+        fill | fit | center | stretch | tile) ;;
+        *) mode="fill" ;;
+      esac
+
+      color="$(${pkgs.gnused}/bin/sed -nE \
+        's/^@define-color background[[:space:]]+#?([0-9a-fA-F]{6}).*/\1/p' \
+        "$HOME/.config/omarchy/current/theme/waybar.css" 2>/dev/null | ${pkgs.coreutils}/bin/head -1)"
+
+      ${pkgs.procps}/bin/pkill -x swaybg >/dev/null 2>&1 || true
+      ${pkgs.util-linux}/bin/setsid ${pkgs.swaybg}/bin/swaybg \
+        -i "$link" -m "$mode" -c "''${color:-000000}" >/dev/null 2>&1 &
+    '';
+
+    # Persist the wallpaper display mode and re-apply the current background.
+    "omarchy-bg-mode" = pkgs.writeShellScript "omarchy-bg-mode" ''
+      set -euo pipefail
+      mode="''${1:-}"
+      case "$mode" in
+        fill | fit | center | stretch | tile) ;;
+        *)
+          echo "Usage: omarchy-bg-mode <fill|fit|center|stretch|tile>" >&2
+          exit 1
+          ;;
+      esac
+      printf '%s\n' "$mode" >"$HOME/.config/omarchy/current/background.mode"
+      exec omarchy-theme-bg-set "$HOME/.config/omarchy/current/background"
     '';
 
     # Local convenience wrappers not present upstream (niri keybinds use them).

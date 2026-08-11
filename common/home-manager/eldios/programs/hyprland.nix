@@ -130,7 +130,6 @@ in {
       swaybg
       swayr
       swayrbar
-      awww
       tofi
       udiskie
       wayland
@@ -300,8 +299,7 @@ in {
         "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP GDK_BACKEND NIXOS_OZONE_WL ELECTRON_OZONE_PLATFORM_HINT" # Enhanced DBus environment
         "${barCmd}" # Status bar (waybar)
         "${pkgs.mako}/bin/mako" # Starts the Mako notification daemon
-        "${pkgs.awww}/bin/awww-daemon" # Wallpaper daemon for the omarchy background
-        "sleep 1 && ${pkgs.awww}/bin/awww img ~/.config/omarchy/current/background --transition-type fade"
+        "sleep 1 && /etc/profiles/per-user/eldios/bin/omarchy-theme-bg-set \"$HOME/.config/omarchy/current/background\"" # Wallpaper (swaybg, mode-aware)
         "${pkgs.wl-clip-persist}/bin/wl-clip-persist --clipboard regular" # Keep clipboard contents after source apps exit
         "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store" # Clipboard history daemon (text + images)
       ];
