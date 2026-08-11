@@ -4,7 +4,8 @@
   ...
 }: let
   # Browse mako's history in the walker dmenu; the picked entry is copied
-  # to the clipboard. Bound to $mod+N in hyprland.nix.
+  # to the clipboard. Bound to $mod+SHIFT+N in hyprland.nix ($mod+N is the
+  # lighter makoctl restore).
   notifHistory = pkgs.writeShellApplication {
     name = "notif-history";
     runtimeInputs = with pkgs; [
