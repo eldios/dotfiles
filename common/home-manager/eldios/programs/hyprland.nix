@@ -158,6 +158,15 @@ in {
   # org.freedesktop.appearance and fall back to light. NixOS owns the portals.
   xdg.portal.enable = lib.mkForce false;
 
+  # Lua config (preferred by Hyprland 0.55+ when hyprland.lua exists); the
+  # hyprlang generation below stays as the rollback path: mv the .lua away
+  # and reload to fall back. Modules in common/hypr/, helpers from omarchy.
+  xdg.configFile."hypr/hyprland.lua".source = ../../../hypr/hyprland.lua;
+  xdg.configFile."hypr/lua/settings.lua".source = ../../../hypr/settings.lua;
+  xdg.configFile."hypr/lua/bindings.lua".source = ../../../hypr/bindings.lua;
+  xdg.configFile."hypr/lua/windows.lua".source = ../../../hypr/windows.lua;
+  xdg.configFile."hypr/lua/autostart.lua".source = ../../../hypr/autostart.lua;
+
   # xdg-desktop-portal-hyprland: tick "allow restore token" by default so the
   # share picker remembers the selection. Screen-share apps (Chromium/Electron)
   # can then restore it instead of re-prompting, which is what made Discord/
