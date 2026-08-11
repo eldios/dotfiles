@@ -28,7 +28,9 @@
         # Pull palette from the current omarchy theme. Updated atomically by
         # `omarchy-theme-set` on every switch; ghostty reloads via SIGUSR2
         # (sent by omarchy-restart-terminal).
-        config-file = "${config.home.homeDirectory}/.config/omarchy/current/theme/ghostty.conf";
+        # "?" = optional: during a theme swap the file briefly does not exist
+        # (and some themes never ship one); reload must not error on it.
+        config-file = "?${config.home.homeDirectory}/.config/omarchy/current/theme/ghostty.conf";
       };
     };
   };
