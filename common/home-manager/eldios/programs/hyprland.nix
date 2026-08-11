@@ -472,30 +472,35 @@ in {
         "$mod CTRL SHIFT, Q, exec, ${powermenu}"
         # Lock binding ($mod CTRL, Q) lives in ./hyprlock.nix (opt-in).
 
-        # Launchers and applications
+        # WM Launchers
         "$mod, D, exec, ${full_menu}"
-        "$mod SHIFT, D, exec, ${quick_menu}"
-        "$mod SHIFT, E, exec, ${file_menu}"
-        "$mod SHIFT, W, exec, ${window_menu}"
+        "$mod, E, exec, ${file_menu}"
+        "$mod, W, exec, ${window_menu}"
+        "$mod, M, exec, ${omarchyMenu}"
+        "$mod CTRL, D, exec, ${quick_menu}"
+
+        # Applications
         "$mod, Return, exec, ${terminal}"
-        "$mod ALT, Space, exec, ${omarchyMenu}"
+        "$mod CTRL, M, exec, ${mail}"
+        "$mod CTRL, A, exec, ${pkgs.pavucontrol}/bin/pavucontrol"
+        "$mod CTRL, B, exec, ${pkgs.blueman}/bin/blueman-manager"
         "$mod CTRL, E, exec, /etc/profiles/per-user/eldios/bin/omarchy-launch-walker -m symbols"
-        "$mod SHIFT, M, exec, ${mail}"
+        "$mod CTRL, T, exec, ${terminal} -e ${pkgs.btop}/bin/btop"
 
         # Window state
         "$mod SHIFT, C, killactive"
         "$mod SHIFT, Space, togglefloating"
         "$mod, F, fullscreen"
         "$mod CTRL, F, fullscreenstate, 0 2" # Client-only fullscreen: window stays in its tiled container
-        "$mod SHIFT, t, pin" # Pin floating window: stays visible across all workspaces (great for PiP/notes)
+        "$mod, t, pin" # Pin floating window: stays visible across all workspaces (great for PiP/notes)
         "$mod, c, centerwindow" # Center floating window on screen
         # Toggle no_dim + no_blur on the active window (persists for window
         # lifetime). State tracked per-window-address in XDG_RUNTIME_DIR.
-        "$mod ALT, B, exec, omarchy-window-undim-blur-toggle"
+        "$mod, b, exec, omarchy-window-undim-blur-toggle"
 
         # Dwindle and window order
         "$mod, p, pseudo" # Toggle pseudo-tiling (fixed size windows)
-        "$mod SHIFT, x, layoutmsg, togglesplit" # Toggle split direction (needs dwindle preserve_split)
+        "$mod, x, layoutmsg, togglesplit" # Toggle split direction (needs dwindle preserve_split)
         "$mod, i, cyclenext" # Cycle window focus forward
         "$mod, o, cyclenext, prev" # Cycle window focus backward
         "$mod SHIFT, i, swapnext" # Swap with next window in cycle order
@@ -552,30 +557,21 @@ in {
 
         # Window groups (tabbed windows like i3)
         "$mod, g, togglegroup" # Create/dissolve a group from active window
-        "$mod SHIFT, g, lockactivegroup, toggle" # Lock group to prevent accidental changes
+        "$mod CTRL, g, lockactivegroup, toggle" # Lock group to prevent accidental changes
         "$mod CTRL, Tab, changegroupactive, f" # Cycle forward through tabs in group
         "$mod CTRL SHIFT, Tab, changegroupactive, b" # Cycle backward through tabs in group
-        "$mod ALT, Tab, changegroupactive, f"
-        "$mod ALT SHIFT, Tab, changegroupactive, b"
-        "$mod ALT, 1, changegroupactive, 1"
-        "$mod ALT, 2, changegroupactive, 2"
-        "$mod ALT, 3, changegroupactive, 3"
-        "$mod ALT, 4, changegroupactive, 4"
-        "$mod ALT, 5, changegroupactive, 5"
         "$mod CTRL, h, moveintogroup, l" # Move window into group on the left
         "$mod CTRL, j, moveintogroup, d" # Move window into group below
         "$mod CTRL, k, moveintogroup, u" # Move window into group above
         "$mod CTRL, l, moveintogroup, r" # Move window into group on the right
         "$mod CTRL SHIFT, h, moveoutofgroup" # Move window out of its group
-
-        # System utilities
-        "$mod CTRL, A, exec, ${pkgs.pavucontrol}/bin/pavucontrol"
-        "$mod CTRL, B, exec, ${pkgs.blueman}/bin/blueman-manager"
-        "$mod CTRL, T, exec, ${terminal} -e ${pkgs.btop}/bin/btop"
+        "$mod CTRL SHIFT, j, moveoutofgroup" # Move window out of its group
+        "$mod CTRL SHIFT, k, moveoutofgroup" # Move window out of its group
+        "$mod CTRL SHIFT, l, moveoutofgroup" # Move window out of its group
 
         # Hyprland maintenance
         "$mod SHIFT, R, forcerendererreload"
-        "$mod SHIFT CTRL, R, exec, ${pkgs.hyprland}/bin/hyprctl reload"
+        "$mod CTRL SHIFT, R, exec, ${pkgs.hyprland}/bin/hyprctl reload"
       ];
 
       # Global keybinds: passed to apps even when they're not focused (e.g. push-to-talk)
