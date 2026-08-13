@@ -29,6 +29,7 @@
     (import ../../../common/nixos/overlays/gitbutler.nix)
     (import ../../../common/nixos/overlays/qbz.nix)
     (import ../../../common/nixos/overlays/pi-coding-agent.nix)
+    (import ../../../common/nixos/overlays/buzz-desktop.nix)
   ];
 
   imports = [
