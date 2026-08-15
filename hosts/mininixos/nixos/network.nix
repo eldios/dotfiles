@@ -19,10 +19,15 @@
   };
 
   networking = {
+    # Without this, the mkDefault true from hardware-configuration gives every
+    # undeclared interface a lease, and the USB dongle on the isolation VLAN wins
+    # the default route on metric. Only br0 asks for a lease, declared below.
+    useDHCP = false;
+
     usePredictableInterfaceNames = false; # We handle naming via systemd.network.links
     networkmanager = {
       enable = true;
-      unmanaged = [ "eno0" "eno0.50" "br0" "br50" ];
+      unmanaged = [ "eno0" "eno0.50" "br0" "br50" "eth0" "br13" ];
       # No insertNameservers here: it lands ahead of 127.0.0.1 in resolv.conf,
       # so every host query skips the local cache. The public resolvers it used
       # to pin are dnsmasq upstreams instead, declared at the top of this file.
@@ -54,6 +59,16 @@
       br50 = {
         # No IP needed on host - VMs will use this bridge
       };
+
+      # USB dongle wired to a UDM port on VLAN 13 (isolation network)
+      eth0 = {
+        # No IP: the host stays off the isolation network, bsdino reaches it
+        # through br13 and is routed by the gateway
+      };
+
+      br13 = {
+        # No IP needed on host - bsdino uses this bridge
+      };
     };
 
     # VLAN interfaces
@@ -70,6 +85,9 @@
       };
       br50 = {
         interfaces = [ "eno0.50" ]; # VLAN 50 (NAS network)
+      };
+      br13 = {
+        interfaces = [ "eth0" ]; # VLAN 13 (isolation network, untagged on the dongle)
       };
     };
 
