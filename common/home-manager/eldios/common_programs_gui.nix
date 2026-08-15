@@ -5,17 +5,19 @@
     ./common_programs_base.nix
 
     ./services/audio.nix
-    ./services/swayosd.nix
 
     ./programs/nushell.nix
     ./programs/keychain.nix
+
+    # The desktop stack is chosen per host in its display.nix: either
+    # omarchy.nix + omarchy-runtime.nix + swayosd.nix (Waybar and Walker), or
+    # omarchy-shell.nix (the Omarchy 4 Quickshell desktop). The two are
+    # mutually exclusive, so neither is imported here.
 
     # Terminal emulators
     ./programs/alacritty.nix
     ./programs/ghostty.nix
     ./programs/kitty.nix
-    ./programs/omarchy.nix
-    ./programs/omarchy-runtime.nix
     ./programs/rio.nix
     ./programs/tmux.nix
     ./programs/wezterm.nix
