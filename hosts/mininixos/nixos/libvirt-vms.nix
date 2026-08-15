@@ -41,8 +41,13 @@
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = "yes";
-        ExecStart = "${pkgs.bash}/bin/bash -c \"state=$(${pkgs.libvirt}/bin/virsh domstate HomeAssistant 2>/dev/null || echo 'shut off'); [[ $state == 'shut off' ]] && ${pkgs.libvirt}/bin/virsh start HomeAssistant || exit 0\"";
-        ExecStop = "-${pkgs.libvirt}/bin/virsh shutdown HomeAssistant";
+        # virsh shutdown only asks the guest to power off, so the stop has to
+        # wait for it: otherwise ExecStart finds the domain still running,
+        # skips the start, and the guest settles into shut off with nobody
+        # left to bring it up.
+        TimeoutStopSec = "150";
+        ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.libvirt}/bin/virsh domstate HomeAssistant | grep -q running || ${pkgs.libvirt}/bin/virsh start HomeAssistant'";
+        ExecStop = "${pkgs.bash}/bin/bash -c '${pkgs.libvirt}/bin/virsh shutdown HomeAssistant || true; for i in $(seq 1 60); do ${pkgs.libvirt}/bin/virsh domstate HomeAssistant | grep -q shut && exit 0; sleep 2; done'";
       };
     };
 
