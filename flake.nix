@@ -44,20 +44,33 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Omarchy launcher stack (Walker GTK frontend + Elephant provider daemon)
+    # Launcher stack for the hosts still on the pre-Quickshell desktop.
+    # Drop both once every host imports omarchy-shell.nix, which carries its
+    # own launcher inside the shell.
     walker.url = "github:abenz1267/walker/v2.16.2";
     elephant.url = "github:abenz1267/elephant";
 
-    # Upstream omarchy repo — source of vendored scripts/themes/configs.
-    # We pull bin/, default/, config/ as-is and override only Nix-specific bits.
+    # Upstream omarchy, pre-Quickshell. Source of the scripts, themes and
+    # configs vendored by omarchy.nix, which hosts still on Waybar and Walker
+    # import. Drop it, and omarchy.nix with it, once every host runs the shell.
     omarchy = {
-      # Pinned to the last pre-Quickshell revision (2026-06-08): from mid-May
-      # upstream moved menu/capture/theme plumbing into an IPC daemon
-      # (omarchy-shell) that we do not run, so newer revs break the vendored
-      # scripts. Bump only as part of a deliberate migration to that stack.
       url = "github:basecamp/omarchy/9cf1852525a5f7de26d3162db9d61e2f5c1d5523";
       flake = false;
     };
+
+    # Omarchy 4, whose desktop is a single Quickshell process. Consumed by
+    # omarchy-shell.nix, which takes the QML, themes, templates and scripts
+    # straight from the tree rather than vendoring a curated list.
+    omarchy-quattro = {
+      url = "github:basecamp/omarchy/v4.0.0";
+      flake = false;
+    };
+
+    # riso renders omarchy themes into the files the shell reads, replacing
+    # the bash template pipeline that expects an Arch install.
+    # Not published yet: build with
+    #   --override-input riso git+file:///home/eldios/go/src/github.com/riso
+    riso.url = "github:eldios/riso";
 
     # AI tool overlays (auto-updated by maintainers)
     claude-code-overlay.url = "github:ryoppippi/claude-code-overlay";
@@ -95,6 +108,7 @@
     nixpkgs,
     nixpkgs-darwin,
     nixpkgs-unstable,
+    riso,
     sops-nix,
     xremap,
     zen-browser,
@@ -127,6 +141,7 @@
         nixpkgs
         nixpkgs-darwin
         nixpkgs-unstable
+        riso
         sops-nix
         xremap
         zen-browser
