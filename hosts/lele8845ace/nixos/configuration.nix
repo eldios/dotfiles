@@ -11,6 +11,7 @@
   llm-agents-nix,
   nix-ratspeak,
   opencode-nix,
+  riso,
   zen-browser,
   ...
 }: {
@@ -22,6 +23,7 @@
     codex-cli-nix.overlays.default
     opencode-nix.overlays.default
     herdr.overlays.default
+    riso.overlays.default
     (import ../../../common/nixos/overlays/crush.nix {inherit llm-agents-nix;})
     (import ../../../common/nixos/overlays/gws-cli.nix {inherit gws-cli;})
     (import ../../../common/nixos/overlays/zen-browser.nix {inherit zen-browser;})
@@ -51,7 +53,6 @@
 
     ../../../common/nixos/programs/neovim.nix
     ../../../common/nixos/programs/hyprland.nix
-    ../../../common/nixos/programs/walker.nix
 
     ../../../common/nixos/programs/vr.nix
 
