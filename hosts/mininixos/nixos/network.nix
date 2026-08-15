@@ -97,7 +97,7 @@
     firewall = {
       enable = true;
       allowedTCPPorts = [
-        5000 # Frigate web UI, reached by traefik over the docker bridge
+        8971 # Frigate authenticated UI, reached by traefik over the docker bridge
         8095 # Music Assistant web UI (raggiunto da traefik su docker bridge)
         9100 # node-exporter, scrapato da prometheus sul docker bridge
         11434 # ollama, scrapato da prometheus sul docker bridge
