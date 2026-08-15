@@ -33,12 +33,16 @@
       description = "Libvirt VM: HomeAssistant";
       after = [ "libvirtd.service" ];
       wantedBy = [ "multi-user.target" ];
+      # libvirt-guests stops every guest when libvirtd restarts, and a oneshot
+      # with RemainAfterExit stays active across that, so ExecStart would never
+      # run again. partOf ties the unit to libvirtd so it restarts with it.
+      partOf = [ "libvirtd.service" ];
 
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = "yes";
         ExecStart = "${pkgs.bash}/bin/bash -c \"state=$(${pkgs.libvirt}/bin/virsh domstate HomeAssistant 2>/dev/null || echo 'shut off'); [[ $state == 'shut off' ]] && ${pkgs.libvirt}/bin/virsh start HomeAssistant || exit 0\"";
-        ExecStop = "${pkgs.libvirt}/bin/virsh shutdown HomeAssistant";
+        ExecStop = "-${pkgs.libvirt}/bin/virsh shutdown HomeAssistant";
       };
     };
 
