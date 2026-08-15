@@ -11,9 +11,6 @@
   # Theme applied on first run, when no theme is active yet.
   defaultTheme = "tokyo-night";
 
-  stateDir = "${homeDir}/.local/state/omarchy";
-  currentTheme = "${stateDir}/current/theme";
-
   # The tree OMARCHY_PATH points at. Upstream installs it at
   # /usr/share/omarchy from an Arch package; the shell reads its own QML from
   # $OMARCHY_PATH/shell and the scripts resolve through $OMARCHY_PATH/bin, so
@@ -51,49 +48,21 @@
     ${lib.concatMapStringsSep "\n" monitorLine monitors}
   '';
 
-  # Render the active theme into the files the shell reads. This is
-  # omarchy-theme-set minus the parts that need a running session: riso does
-  # the palette and template work, the swap stays here until riso grows a
-  # `set` subcommand of its own.
+  # Re-apply whatever theme is active, or the default on a fresh machine.
+  # Paths come from $HOME at run time rather than being baked in, so the same
+  # command works when invoked by hand.
   applyTheme = pkgs.writeShellScript "riso-apply-theme" ''
     set -euo pipefail
 
-    theme_name="''${1:-}"
-    if [ -z "$theme_name" ]; then
-      theme_name="$(cat "${stateDir}/current/theme.name" 2>/dev/null || echo "${defaultTheme}")"
-    fi
+    state="''${XDG_STATE_HOME:-$HOME/.local/state}/omarchy"
+    theme="''${1:-$(cat "$state/current/theme.name" 2>/dev/null || echo "${defaultTheme}")}"
 
-    # A user theme of the same name wins over the shipped one.
-    theme_dir="${homeDir}/.config/omarchy/themes/$theme_name"
-    [ -d "$theme_dir" ] || theme_dir="${omarchyRoot}/themes/$theme_name"
-    if [ ! -d "$theme_dir" ]; then
-      echo "riso-apply-theme: no theme named '$theme_name'" >&2
-      exit 1
-    fi
-
-    staging="${stateDir}/current/next-theme"
-    rm -rf "$staging"
-    mkdir -p "$staging"
-
-    ${lib.getExe pkgs.riso} render \
-      --theme "$theme_dir" \
-      --out "$staging" \
-      --templates "${homeDir}/.config/omarchy/themed" \
-      --templates "${omarchyRoot}/default/themed"
-
-    rm -rf "${currentTheme}"
-    mv "$staging" "${currentTheme}"
-    echo "$theme_name" > "${stateDir}/current/theme.name"
-
-    # Hand the running shell the new palette so it retints without a restart.
-    # Absent shell (first activation, or a rebuild from a TTY) is not a failure.
-    if command -v omarchy-shell >/dev/null 2>&1; then
-      colors=""
-      shell_toml=""
-      [ -f "${currentTheme}/colors.toml" ] && colors="$(base64 -w 0 "${currentTheme}/colors.toml")"
-      [ -f "${currentTheme}/shell.toml" ] && shell_toml="$(base64 -w 0 "${currentTheme}/shell.toml")"
-      timeout 2 omarchy-shell shell applyTheme "$colors" "$shell_toml" >/dev/null 2>&1 || true
-    fi
+    exec ${lib.getExe pkgs.riso} set "$theme" \
+      --themes "${omarchyRoot}/themes" \
+      --themes "$HOME/.config/omarchy/themes" \
+      --templates "$HOME/.config/omarchy/themed" \
+      --templates "${omarchyRoot}/default/themed" \
+      --state "$state"
   '';
 in {
   home.packages = [
