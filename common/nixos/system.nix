@@ -15,7 +15,7 @@ in
     algorithm = "zstd";
     # Cap, not a reservation: RAM is consumed only by pages actually
     # swapped out, stored compressed. Sized to absorb build spikes.
-    memoryPercent = 30;
+    memoryPercent = lib.mkDefault 30;
   };
 
   systemd.services.zfs-mount.enable = false;
