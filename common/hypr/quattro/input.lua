@@ -1,0 +1,4 @@
+-- Personal input overrides.
+--
+-- Nothing yet: the keyboard layout comes from /etc/vconsole.conf through
+-- Omarchy's default input config, which is what NixOS already sets.
