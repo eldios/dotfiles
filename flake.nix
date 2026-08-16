@@ -69,7 +69,7 @@
     # riso renders omarchy themes into the files the shell reads, replacing
     # the bash template pipeline that expects an Arch install.
     # Not published yet: build with
-    #   --override-input riso git+file:///home/eldios/go/src/github.com/riso
+    #   --override-input riso git+file:///home/eldios/go/src/github.com/riso/riso
     riso.url = "github:eldios/riso";
 
     # DankMaterialShell: a third desktop stack for desktop-switch. Not in
