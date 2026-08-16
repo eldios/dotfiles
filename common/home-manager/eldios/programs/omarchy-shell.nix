@@ -114,6 +114,13 @@
       .. "${omarchyRoot}/?.lua;"
       .. package.path
 
+    -- Their shell and its scripts resolve themselves through OMARCHY_PATH and
+    -- expect their own bin/ on PATH. Only their envs.lua sets those, and it is
+    -- not loaded here, so declare them: without OMARCHY_PATH the shell starts
+    -- with an empty -p argument and dies.
+    hl.env("OMARCHY_PATH", "${omarchyRoot}")
+    hl.env("PATH", "${omarchyRoot}/bin:" .. (os.getenv("PATH") or ""))
+
     -- The `o.*` helper layer only. None of their default bindings or settings
     -- are loaded: every key and every rule in this session comes from the
     -- files below.
@@ -146,7 +153,6 @@ in {
     # Exactly one runs; having the others installed is what makes falling
     # back instant instead of a rebuild away.
     desktopTools
-    pkgs.dms
 
     # The pre-Quickshell stack, kept whole so it stays a working fallback.
     pkgs.waybar
