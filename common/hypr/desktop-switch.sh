@@ -4,6 +4,7 @@
 #
 #   desktop-switch waybar    the pre-Quickshell stack: bar, launcher, notifier
 #   desktop-switch omarchy   Omarchy 4, one Quickshell process
+#   desktop-switch dms       DankMaterialShell
 #   desktop-switch current   which one is running
 #   desktop-switch list      which ones are installed
 #
@@ -40,6 +41,8 @@ readonly WAYBAR_PATTERN='^/[^[:space:]]*/waybar$'
 readonly OMARCHY_SUPERVISOR='/omarchy-launch-shell$'
 readonly OMARCHY_SHELL='^quickshell .*-p '
 readonly OMARCHY_PATTERN="$OMARCHY_SUPERVISOR|$OMARCHY_SHELL"
+readonly DMS_PATTERN='^/[^[:space:]]*/dms run|dms-shell'
+
 
 # Stop everything any stack may have started, so a switch never leaves two
 # bars on screen. Killing what is not running is not an error.
@@ -47,8 +50,8 @@ stop_all() {
   local pattern
   # The supervisor first: it restarts the shell, so killing the shell while it
   # still watches only earns a new one.
-  for pattern in "$OMARCHY_SUPERVISOR" "$OMARCHY_SHELL" "$WAYBAR_PATTERN" \
-    '^/[^[:space:]]*/mako$' '^/[^[:space:]]*/swayosd-server$'; do
+  for pattern in "$OMARCHY_SUPERVISOR" "$OMARCHY_SHELL" "$DMS_PATTERN" \
+    "$WAYBAR_PATTERN" '^/[^[:space:]]*/mako$' '^/[^[:space:]]*/swayosd-server$'; do
     pkill -f "$pattern" 2>/dev/null
   done
   # Give the compositor a moment to reap the layer surfaces.
@@ -75,6 +78,15 @@ start_omarchy() {
   return 0
 }
 
+start_dms() {
+  local shell
+  shell="$(where dms)"
+  [ -n "$shell" ] || { echo "DankMaterialShell is not installed" >&2; return 1; }
+
+  setsid "$shell" run >/dev/null 2>&1 &
+  return 0
+}
+
 current() {
   # Answering its own IPC is the only proof that counts; the process match is
   # the fallback for the moment between launch and the socket being up.
@@ -82,6 +94,8 @@ current() {
     echo omarchy
   elif running "$OMARCHY_PATTERN"; then
     echo omarchy
+  elif running "$DMS_PATTERN"; then
+    echo dms
   elif running "$WAYBAR_PATTERN"; then
     echo waybar
   else
@@ -92,6 +106,7 @@ current() {
 list() {
   have waybar && echo "waybar    installed" || echo "waybar    missing"
   have omarchy-launch-shell && echo "omarchy   installed" || echo "omarchy   missing"
+  have dms && echo "dms       installed" || echo "dms       missing"
 }
 
 # Re-render the current theme for whichever shell now owns the screen: each
@@ -118,7 +133,7 @@ esac
 
 target="$1"
 case "$target" in
-  waybar | omarchy) ;;
+  waybar | omarchy | dms) ;;
   *) echo "desktop-switch: unknown stack '$target'" >&2; usage 1 ;;
 esac
 
@@ -131,7 +146,7 @@ stop_all
 if ! "start_$target"; then
   # Never leave the screen bare: fall back to whatever is installed.
   echo "desktop-switch: could not start $target, falling back" >&2
-  start_waybar || start_omarchy
+  start_waybar || start_omarchy || start_dms
   exit 1
 fi
 

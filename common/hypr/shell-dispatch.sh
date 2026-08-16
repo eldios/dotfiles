@@ -36,6 +36,11 @@ active_shell() {
   if command -v omarchy-shell >/dev/null 2>&1 &&
     timeout 1 omarchy-shell shell ping >/dev/null 2>&1; then
     echo omarchy
+  elif command -v dms >/dev/null 2>&1 &&
+    pgrep -f 'dms run|dms-shell' >/dev/null 2>&1; then
+    # No harmless IPC probe exists: every dms call acts. The command line is
+    # distinctive enough to trust.
+    echo dms
   elif command -v caelestia >/dev/null 2>&1 &&
     timeout 1 caelestia shell -s >/dev/null 2>&1; then
     echo caelestia
@@ -65,6 +70,20 @@ omarchy() {
   esac
 }
 
+
+dms() {
+  case "$1" in
+    launcher|menu) command dms ipc call spotlight toggle ;;
+    clipboard)     command dms ipc call clipboard toggle ;;
+    emoji)         command dms ipc call spotlight toggle ;;
+    notifications) command dms ipc call notifications open ;;
+    lock)          command dms ipc call lock lock ;;
+    power)         command dms ipc call powermenu toggle ;;
+    # Quick settings hold audio, network and bluetooth in one panel.
+    audio|network|bluetooth) command dms ipc call control-center toggle ;;
+    *)             return 2 ;;
+  esac
+}
 
 # The pre-Quickshell stack: separate programs rather than one shell.
 waybar() {
