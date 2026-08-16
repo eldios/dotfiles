@@ -10,9 +10,13 @@ set -euo pipefail
 
 riso-apply "${1:-}"
 
-# The retints their pipeline ran after a switch, kept because terminals only
-# reload on a signal. Anything absent or failing is not the theme's problem.
-for helper in omarchy-restart-terminal omarchy-restart-hyprctl omarchy-restart-btop; do
+# Terminals only reload on a signal, and the upstream helper sends them with
+# killall by name, which never matches a Nix-wrapped binary: signal by
+# command line instead. Alacritty watches its imported files by itself, and
+# btop's helper uses pkill and works as shipped.
+pkill -SIGUSR2 -f '(^|/)ghostty( |$)' 2>/dev/null || true
+pkill -SIGUSR1 -f '(^|/)kitty( |$)' 2>/dev/null || true
+for helper in omarchy-restart-hyprctl omarchy-restart-btop; do
   command -v "$helper" >/dev/null 2>&1 && "$helper" >/dev/null 2>&1 || true
 done
 
