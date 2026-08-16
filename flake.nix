@@ -66,9 +66,8 @@
       flake = false;
     };
 
-    # riso renders omarchy themes into the files the shell reads, replacing
-    # the bash template pipeline that expects an Arch install.
-    # Not published yet: build with
+    # riso renders themes into the files the desktop reads. Published; for
+    # local riso development:
     #   --override-input riso git+file:///home/eldios/go/src/github.com/riso/riso
     riso.url = "github:eldios/riso";
 
