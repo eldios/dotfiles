@@ -953,11 +953,10 @@
       "locked": {
         "lastModified": 1786923599,
         "narHash": "sha256-OOPsO66RR06VvUglyC3DroGjrWHOgerVtOQKHNQiQEI=",
-        "ref": "refs/heads/main",
+        "owner": "eldios",
+        "repo": "riso",
         "rev": "a20ed2be89579c63fd90a73ffca966e89e8d55af",
-        "revCount": 47,
-        "type": "git",
-        "url": "file:///home/eldios/go/src/github.com/riso/riso"
+        "type": "github"
       },
       "original": {
         "owner": "eldios",
