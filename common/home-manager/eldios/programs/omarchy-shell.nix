@@ -95,12 +95,10 @@
       "hl.monitor({ output = \"${field 0}\", mode = \"${field 1}\", "
       + "position = \"${field 2}\", scale = ${field 3} })";
 
-  monitors = config.wayland.windowManager.hyprland.settings.monitor or [];
-
   monitorsLua = ''
-    -- Generated from wayland.windowManager.hyprland.settings.monitor.
+    -- Generated from desktop.hyprland.monitors.
     -- Edit the host's Nix configuration, not this file.
-    ${lib.concatMapStringsSep "\n" monitorLine monitors}
+    ${lib.concatMapStringsSep "\n" monitorLine config.desktop.hyprland.monitors}
   '';
 
   # Applying a theme means pointing riso at this machine's directories, and the
@@ -174,6 +172,16 @@
     pcall(require, "riso.overrides.hypr")
   '';
 in {
+  # Hyprland's monitor layout, declared per host and emitted as monitors.lua.
+  # Our own option: the home-manager hyprland module and its hyprlang
+  # generation are not used at all.
+  options.desktop.hyprland.monitors = lib.mkOption {
+    type = lib.types.listOf lib.types.str;
+    default = [];
+    description = "Monitor specs in Hyprland's string form: output,mode,position,scale.";
+  };
+
+  config = {
   home.packages = [
     # The desktop shell itself. Upstream builds against quickshell-git; 0.3.0
     # is what nixpkgs carries, and only `quickshell kill` is known to differ,
@@ -196,6 +204,9 @@ in {
     pkgs.swayosd
     pkgs.wlogout
     inputs.walker.packages.${pkgs.stdenv.hostPlatform.system}.default
+    # Walker 2.x is a UI over the elephant data daemon; without the binary on
+    # PATH the service exits at startup with only a hint on stderr.
+    pkgs.elephant
 
     # What shell-dispatch opens for the network and bluetooth panels when the
     # classic stack is running.
@@ -269,5 +280,6 @@ in {
   home.activation.applyOmarchyTheme = lib.hm.dag.entryAfter ["seedOmarchyShellConfig" "migrateStateToRiso"] ''
     $DRY_RUN_CMD ${desktopTools}/bin/riso-apply || true
   '';
+};
 }
 # vim: set ts=2 sw=2 et ai list nu
