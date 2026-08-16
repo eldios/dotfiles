@@ -204,6 +204,20 @@ in {
     "hypr/lua/monitors.lua".text = monitorsLua;
   };
 
+  # ~/.config/omarchy/current is the path every shared module includes the
+  # theme from, on every host. On the hosts still running the old stack it is
+  # a real directory their pipeline writes; here it aliases what riso renders,
+  # so the same include line serves both worlds. A leftover real directory
+  # from before the migration is moved aside, not deleted.
+  home.activation.linkLegacyCurrent = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    legacy="${homeDir}/.config/omarchy/current"
+    if [ -d "$legacy" ] && [ ! -L "$legacy" ]; then
+      $DRY_RUN_CMD mv "$legacy" "$legacy.pre-riso.bak"
+    fi
+    $DRY_RUN_CMD mkdir -p "${homeDir}/.config/omarchy"
+    $DRY_RUN_CMD ln -sfn "${homeDir}/.local/state/omarchy/current" "$legacy"
+  '';
+
   # shell.json holds the bar layout and is rewritten by the shell whenever a
   # widget is added or the bar is dragged to another edge, so it must be a real
   # file. Seed it once and leave it alone afterwards.

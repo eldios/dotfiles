@@ -28,7 +28,7 @@ in {
 
   xdg.configFile."hypr/hyprlock.conf".text = ''
     source = ~/.config/hypr/hyprlock-defaults.conf
-    source = ~/.local/state/omarchy/current/theme/hyprlock.conf
+    source = ~/.config/omarchy/current/theme/hyprlock.conf
 
     general {
       ignore_empty_input = true
@@ -37,7 +37,7 @@ in {
     background {
       monitor =
       color = $color
-      path = ~/.local/state/omarchy/current/background
+      path = ~/.config/omarchy/current/background
       blur_passes = 3
     }
 
