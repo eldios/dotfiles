@@ -82,17 +82,18 @@ list() {
 
 # Re-render the current theme for whichever shell now owns the screen: each
 # reads its own format, so the files that were right a second ago are not.
+# riso-apply carries the theme and template directories; only the desktop to
+# notify differs between stacks.
 retheme() {
-  local stack="$1" theme
-  have riso || return 0
+  local desktop
+  have riso-apply || return 0
 
-  theme="$(cat "${XDG_STATE_HOME:-$HOME/.local/state}/riso/current/theme.name" 2>/dev/null)"
-  [[ -n $theme ]] || return 0
-
-  case "$stack" in
-    omarchy) riso set "$theme" --desktop omarchy >/dev/null 2>&1 || true ;;
-    *)       riso set "$theme" --desktop hyprland >/dev/null 2>&1 || true ;;
+  case "$1" in
+    omarchy) desktop=omarchy ;;
+    *) desktop=hyprland ;;
   esac
+
+  riso-apply "" "$desktop" >/dev/null 2>&1 || true
 }
 
 case "${1:-current}" in
