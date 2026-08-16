@@ -8,7 +8,8 @@ hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_TYPE", "wayland")
 hl.env("XDG_SESSION_DESKTOP", "Hyprland")
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "wayland")
-hl.env("OMARCHY_PATH", os.getenv("HOME") .. "/.local/share/omarchy")
+-- OMARCHY_PATH is set by the entrypoint, which knows the store path; setting
+-- it here would override that with a directory that does not exist.
 
 hl.config({
   general = {
