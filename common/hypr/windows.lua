@@ -16,3 +16,24 @@ end
 
 hl.window_rule({ match = { title = "^(Picture-in-Picture)$" }, float = true, pin = true })
 o.window("^(screenkey)$", { float = true, border_size = 0 })
+
+for _, class in ipairs({
+  "^(blueman-manager)$",
+  "^(thunar)$",
+  "^(pcmanfm)$",
+  "^(org\\.gnome\\.FileRoller)$",
+  "^(xdg-desktop-portal-gtk)$",
+}) do
+  o.window(class, { float = true })
+end
+
+-- Strip every decoration effect from fullscreen windows. Re-evaluates on
+-- every fullscreen state change.
+hl.window_rule({
+  match = { fullscreen = 1 },
+  no_blur = 1,
+  no_dim = 1,
+  no_shadow = 1,
+  rounding = 0,
+  opaque = 1,
+})
