@@ -6,12 +6,12 @@
       enable = true;
 
       settings = {
-        # Colors imported from the current omarchy theme. Updated atomically
-        # by `omarchy-theme-set` on every switch; alacritty live-reloads.
+        # Colors imported from the theme riso renders; alacritty
+        # live-reloads on every switch.
         general = {
           live_config_reload = true;
           import = [
-            "${config.home.homeDirectory}/.config/omarchy/current/theme/alacritty.toml"
+            "${config.home.homeDirectory}/.local/state/riso/current/theme/alacritty.toml"
           ];
         };
 

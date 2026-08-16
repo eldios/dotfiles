@@ -90,15 +90,13 @@
   #   riso-apply [theme] [desktop]
   #
   # Both arguments are optional: the theme defaults to the one in use, the
-  # desktop to whatever riso detects from the session.
-  #
-  # The state directory is not free to choose: the Hyprland config loads
-  # omarchy.current.theme.* through package.path, and the shell reads the same
-  # tree, so both expect it under ~/.local/state/omarchy.
+  # desktop to whatever riso detects from the session. State lives in riso's
+  # own tree; the Omarchy shell reads it through the ~/.local/state/omarchy
+  # alias the activation below maintains.
   risoApply = pkgs.writeShellScript "riso-apply" ''
     set -euo pipefail
 
-    state="''${XDG_STATE_HOME:-$HOME/.local/state}/omarchy"
+    state="''${XDG_STATE_HOME:-$HOME/.local/state}/riso"
     theme="''${1:-}"
     [ -n "$theme" ] ||
       theme="$(cat "$state/current/theme.name" 2>/dev/null || echo "${defaultTheme}")"
@@ -109,9 +107,8 @@
     # Themes come from riso's own search path: the wrapper's RISO_THEMES
     # points it at the shipped set, and themes the user installs win over it.
     exec ${lib.getExe pkgs.riso} set "$theme" \
-      --templates "$HOME/.config/omarchy/themed" \
+      --templates "$HOME/.config/riso/themed" \
       --templates "${omarchyRoot}/default/themed" \
-      --state "$state" \
       "''${desktop[@]}"
   '';
 
@@ -148,8 +145,8 @@
     require("hypr.lua.autostart")
 
     -- The theme riso renders, then hand-written overrides; both optional.
-    pcall(require, "omarchy.current.theme.hyprland")
-    pcall(require, "omarchy.overrides.hypr")
+    pcall(require, "riso.current.theme.hyprland")
+    pcall(require, "riso.overrides.hypr")
   '';
 in {
   home.packages = [
@@ -204,18 +201,22 @@ in {
     "hypr/lua/monitors.lua".text = monitorsLua;
   };
 
-  # ~/.config/omarchy/current is the path every shared module includes the
-  # theme from, on every host. On the hosts still running the old stack it is
-  # a real directory their pipeline writes; here it aliases what riso renders,
-  # so the same include line serves both worlds. A leftover real directory
-  # from before the migration is moved aside, not deleted.
-  home.activation.linkLegacyCurrent = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    legacy="${homeDir}/.config/omarchy/current"
-    if [ -d "$legacy" ] && [ ! -L "$legacy" ]; then
-      $DRY_RUN_CMD mv "$legacy" "$legacy.pre-riso.bak"
+  # riso's tree is the source of truth; ~/.local/state/omarchy is an alias
+  # for the one consumer that cannot move, the Omarchy shell and its scripts,
+  # which hardcode that location. A tree the old pipeline wrote is migrated
+  # into riso's on first switch, so the active theme and the ownership
+  # registry survive the move.
+  home.activation.migrateStateToRiso = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    state="${homeDir}/.local/state"
+    if [ -d "$state/omarchy" ] && [ ! -L "$state/omarchy" ]; then
+      if [ ! -e "$state/riso" ]; then
+        $DRY_RUN_CMD mv "$state/omarchy" "$state/riso"
+      else
+        $DRY_RUN_CMD mv "$state/omarchy" "$state/omarchy.pre-riso.bak"
+      fi
     fi
-    $DRY_RUN_CMD mkdir -p "${homeDir}/.config/omarchy"
-    $DRY_RUN_CMD ln -sfn "${homeDir}/.local/state/omarchy/current" "$legacy"
+    $DRY_RUN_CMD mkdir -p "$state/riso"
+    $DRY_RUN_CMD ln -sfn "$state/riso" "$state/omarchy"
   '';
 
   # shell.json holds the bar layout and is rewritten by the shell whenever a
@@ -231,7 +232,7 @@ in {
 
   # Re-render on every activation: a nixpkgs bump or a theme edit changes the
   # templates, and the generated files are not tracked anywhere else.
-  home.activation.applyOmarchyTheme = lib.hm.dag.entryAfter ["seedOmarchyShellConfig"] ''
+  home.activation.applyOmarchyTheme = lib.hm.dag.entryAfter ["seedOmarchyShellConfig" "migrateStateToRiso"] ''
     $DRY_RUN_CMD ${desktopTools}/bin/riso-apply || true
   '';
 }

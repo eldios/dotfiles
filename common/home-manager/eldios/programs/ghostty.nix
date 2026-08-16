@@ -25,12 +25,10 @@
         macos-option-as-alt = true;
         confirm-close-surface = false;
 
-        # Pull palette from the current omarchy theme. Updated atomically by
-        # `omarchy-theme-set` on every switch; ghostty reloads via SIGUSR2
-        # (sent by omarchy-restart-terminal).
-        # "?" = optional: during a theme swap the file briefly does not exist
-        # (and some themes never ship one); reload must not error on it.
-        config-file = "?${config.home.homeDirectory}/.config/omarchy/current/theme/ghostty.conf";
+        # Pull palette from the theme riso renders; ghostty reloads via
+        # SIGUSR2. "?" = optional: during a theme swap the file briefly does
+        # not exist; reload must not error on it.
+        config-file = "?${config.home.homeDirectory}/.local/state/riso/current/theme/ghostty.conf";
       };
     };
   };

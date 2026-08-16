@@ -4,11 +4,10 @@
 
     kitty = {
       enable = true;
-      # Pull palette from the current omarchy theme. Updated atomically by
-      # `omarchy-theme-set` on every switch; kitty live-reloads via SIGUSR1
-      # (sent by omarchy-restart-terminal).
+      # Pull palette from the theme riso renders; kitty live-reloads via
+      # SIGUSR1.
       extraConfig = ''
-        include ${config.home.homeDirectory}/.config/omarchy/current/theme/kitty.conf
+        include ${config.home.homeDirectory}/.local/state/riso/current/theme/kitty.conf
       '';
       settings = {
         font_size = "12.0";
