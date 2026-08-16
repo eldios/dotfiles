@@ -26,6 +26,7 @@ o.bind("SUPER + E", "Emoji / symbols", ask .. "emoji")
 o.bind("SUPER + W", "Window menu", ask .. "menu")
 o.bind("SUPER + M", "Main menu", ask .. "menu")
 o.bind("SUPER + SHIFT + T", "Theme picker", ask .. "theme")
+o.bind("SUPER + SHIFT + B", "Background picker", ask .. "background")
 
 -- Applications
 o.bind("SUPER + RETURN", "Terminal", "ghostty")
