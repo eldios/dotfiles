@@ -48,8 +48,8 @@ in {
     systemd.enable = false;
 
     style = ''
-      @import "../omarchy/current/theme/waybar.css";
-      @import "../omarchy/overrides/waybar.css";
+      @import "../../.local/state/riso/current/theme/waybar.css";
+      @import "../riso/overrides/waybar.css";
 
       * {
         background-color: transparent;
