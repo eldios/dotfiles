@@ -132,10 +132,9 @@ in {
     ];
   };
 
-  # The hyprland HM module auto-enables xdg.portal with only the hyprland
-  # backend; its NIX_XDG_DESKTOP_PORTAL_DIR then shadows the complete system
-  # portal set (gtk+hyprland+wlr from desktop-gui.nix), so GTK apps lose
-  # org.freedesktop.appearance and fall back to light. NixOS owns the portals.
+  # NixOS owns the portals (gtk+hyprland+wlr from desktop-gui.nix); an
+  # HM-side xdg.portal would shadow that set with an incomplete one and GTK
+  # apps would lose org.freedesktop.appearance and fall back to light.
   xdg.portal.enable = lib.mkForce false;
 
   # The session config is Lua: the entrypoint comes from omarchy-shell.nix,
@@ -156,23 +155,9 @@ in {
     }
   '';
 
-  wayland.windowManager.hyprland = {
-    enable = true;
-    # Match common/nixos/programs/hyprland.nix (nixpkgs-unstable) so
-    # HM-injected config targets the same Hyprland version the session runs.
-    package = pkgs.unstable.hyprland;
-    xwayland.enable = true;
-    systemd.enable = true;
-
-    # Deliberately hyprlang: the session's real config is the Lua entrypoint
-    # omarchy-shell.nix installs, and this module must not compete for
-    # hyprland.lua. Its hyprlang output carries only the monitor list below,
-    # which Hyprland never reads; monitors.lua is generated from it.
-    configType = "hyprlang";
-
-    # Only the monitor layout lives here: hosts override it declaratively and
-    # omarchy-shell.nix emits it as Lua for the session config.
-    settings.monitor = [];
-  };
+  # The home-manager hyprland module is deliberately not used: the session
+  # and its package come from NixOS (common/nixos/programs/hyprland.nix), the
+  # config is the Lua tree above, and monitors are declared through
+  # desktop.hyprland.monitors. Nothing here speaks hyprlang.
 }
 # EOF

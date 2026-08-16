@@ -88,7 +88,7 @@ dms() {
 # The pre-Quickshell stack: separate programs rather than one shell.
 waybar() {
   case "$1" in
-    launcher)      walker --modules applications ;;
+    launcher)      walker -m desktopapplications ;;
     menu)          walker ;;
     clipboard)     walker -m clipboard ;;
     emoji)         walker -m symbols ;;
