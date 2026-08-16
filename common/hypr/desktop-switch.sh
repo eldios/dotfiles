@@ -58,11 +58,28 @@ stop_all() {
   for pattern in "$OMARCHY_SUPERVISOR" "$OMARCHY_SHELL" "$DMS_PATTERN" \
     "$CAELESTIA_PATTERN" \
     "$WAYBAR_PATTERN" '^/[^[:space:]]*/mako$' '^/[^[:space:]]*/swayosd-server$' \
-    '^/[^[:space:]]*/elephant$' '/walker --gapplication-service$'; do
+    '/bin/swaybg' '^/[^[:space:]]*/elephant$' '/walker --gapplication-service$'; do
     pkill -f "$pattern" 2>/dev/null
   done
   # Give the compositor a moment to reap the layer surfaces.
   sleep 0.5
+}
+
+# The classic stack draws its own wallpaper: swaybg, fed from the link and
+# the mode file riso keeps. Every other shell paints for itself.
+start_swaybg() {
+  local bg mode daemon
+  daemon="$(where swaybg)" || return 0
+  [ -n "$daemon" ] || return 0
+  bg=$(readlink -f "${XDG_STATE_HOME:-$HOME/.local/state}/riso/current/background" 2>/dev/null) || return 0
+  [ -n "$bg" ] || return 0
+  mode=$(cat "${XDG_STATE_HOME:-$HOME/.local/state}/riso/current/background.mode" 2>/dev/null)
+  case "$mode" in
+    fill | fit | center | stretch | tile) ;;
+    *) mode=fill ;;
+  esac
+  pkill -f '/bin/swaybg' 2>/dev/null
+  setsid "$daemon" -i "$bg" -m "$mode" >/dev/null 2>&1 &
 }
 
 start_classic() {
@@ -70,6 +87,7 @@ start_classic() {
   bar="$(where waybar)" || return 1
   [ -n "$bar" ] || { echo "waybar is not installed" >&2; return 1; }
 
+  start_swaybg
   setsid "$bar" >/dev/null 2>&1 &
   have mako && setsid "$(where mako)" >/dev/null 2>&1 &
   have swayosd-server && setsid "$(where swayosd-server)" >/dev/null 2>&1 &
@@ -155,6 +173,9 @@ case "${1:-current}" in
   -h | --help | help) usage 0 ;;
   current) current; exit 0 ;;
   list) list; exit 0 ;;
+  # Redraw the classic wallpaper from the current link and mode; a no-op
+  # unless swaybg has anything to show.
+  classic-bg) start_swaybg; exit 0 ;;
 esac
 
 target="$1"

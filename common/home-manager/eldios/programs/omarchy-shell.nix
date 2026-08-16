@@ -97,8 +97,23 @@
       echo 'omarchy-theme-bg-set "$1" >/dev/null 2>&1 || true'
       echo "if pgrep -f 'dms run|dms-shell' >/dev/null 2>&1; then dms ipc call wallpaper set \"\$1\" >/dev/null 2>&1 || true; fi"
       echo "if pgrep -f 'caelestia-shell|quickshell.*caelestia' >/dev/null 2>&1; then caelestia-shell ipc call wallpaper set \"\$1\" >/dev/null 2>&1 || true; fi"
+      echo "if pgrep -f '/bin/waybar' >/dev/null 2>&1; then $out/bin/desktop-switch classic-bg >/dev/null 2>&1 || true; fi"
     } > $out/bin/riso-background-apply
     chmod +x $out/bin/riso-background-apply
+
+    # How the wallpaper is scaled, a knob only the classic stack has: the
+    # Omarchy shell and DMS crop by their own code. Written next to the
+    # background link; swaybg is restarted to read both.
+    {
+      echo '#!${pkgs.runtimeShell}'
+      echo 'set -eu'
+      echo 'case "''${1:-}" in fill|fit|center|stretch|tile) ;; *) echo "usage: riso-background-mode fill|fit|center|stretch|tile" >&2; exit 1 ;; esac'
+      echo 'state="''${XDG_STATE_HOME:-$HOME/.local/state}/riso/current"'
+      echo 'mkdir -p "$state"'
+      echo 'printf "%s\n" "$1" > "$state/background.mode"'
+      echo "exec $out/bin/desktop-switch classic-bg"
+    } > $out/bin/riso-background-mode
+    chmod +x $out/bin/riso-background-mode
 
     for tool in desktop-switch shell-dispatch riso-apply omarchy-theme-set riso-theme-menu; do
       {
