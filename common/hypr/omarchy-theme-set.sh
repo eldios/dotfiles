@@ -27,6 +27,17 @@ done
 
 # DMS colors follow the rendered dms.json on their own; the wallpaper needs
 # to be handed over.
+# Caelestia repaints from the scheme file it watches; hand it the fragment
+# riso just rendered. Harmless when the shell is merely installed.
+if command -v caelestia-shell >/dev/null 2>&1; then
+  scheme_src="${XDG_STATE_HOME:-$HOME/.local/state}/riso/current/theme/caelestia.json"
+  scheme_dst="${XDG_STATE_HOME:-$HOME/.local/state}/caelestia/scheme.json"
+  if [ -f "$scheme_src" ]; then
+    mkdir -p "$(dirname "$scheme_dst")"
+    cp "$scheme_src" "$scheme_dst" 2>/dev/null || true
+  fi
+fi
+
 bg=$(readlink -f "${XDG_STATE_HOME:-$HOME/.local/state}/riso/current/background" 2>/dev/null || true)
 if [ -n "$bg" ]; then
   if pgrep -f 'dms run|dms-shell' >/dev/null 2>&1; then
