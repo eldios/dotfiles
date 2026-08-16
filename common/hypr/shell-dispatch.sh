@@ -13,6 +13,7 @@
 #   shell-dispatch audio         audio panel
 #   shell-dispatch network       network panel
 #   shell-dispatch bluetooth     bluetooth panel
+#   shell-dispatch theme         theme picker
 #   shell-dispatch which         print the shell it would talk to
 #
 # Every shell here speaks the same shape, `<cli> ipc call <target> <method>`,
@@ -21,7 +22,7 @@
 set -uo pipefail
 
 usage() {
-  sed -n '3,20p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '3,18p' "$0" | sed 's/^# \{0,1\}//'
   exit "${1:-0}"
 }
 
@@ -48,7 +49,7 @@ active_shell() {
     # Match the path, not the name: Nix wraps binaries, so their comm is
     # `.waybar-wrapped` and `pgrep -x waybar` never fires. desktop-switch
     # starts it by absolute path so that this pattern has something to find.
-    echo waybar
+    echo classic
   else
     echo none
   fi
@@ -66,6 +67,7 @@ omarchy() {
     audio)         omarchy-shell shell toggle omarchy.audio ;;
     network)       omarchy-shell shell toggle omarchy.network ;;
     bluetooth)     omarchy-shell shell toggle omarchy.bluetooth ;;
+    theme)         omarchy-menu toggle style.theme ;;
     *)             return 2 ;;
   esac
 }
@@ -81,12 +83,13 @@ dms() {
     power)         command dms ipc call powermenu toggle ;;
     # Quick settings hold audio, network and bluetooth in one panel.
     audio|network|bluetooth) command dms ipc call control-center toggle ;;
+    theme)         riso-theme-menu ;;
     *)             return 2 ;;
   esac
 }
 
-# The pre-Quickshell stack: separate programs rather than one shell.
-waybar() {
+# The classic stack: separate programs rather than one shell.
+classic() {
   case "$1" in
     launcher)      walker -m desktopapplications ;;
     menu)          walker ;;
@@ -98,6 +101,7 @@ waybar() {
     audio)         pavucontrol ;;
     network)       nm-connection-editor ;;
     bluetooth)     blueman-manager ;;
+    theme)         riso-theme-menu ;;
     *)             return 2 ;;
   esac
 }

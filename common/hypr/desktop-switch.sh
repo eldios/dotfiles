@@ -2,11 +2,14 @@
 #
 # Swap the desktop shell without leaving Hyprland, and without a rebuild.
 #
-#   desktop-switch waybar    the pre-Quickshell stack: bar, launcher, notifier
+#   desktop-switch classic   waybar + walker + mako + swayosd, separate programs
 #   desktop-switch omarchy   Omarchy 4, one Quickshell process
 #   desktop-switch dms       DankMaterialShell
 #   desktop-switch current   which one is running
 #   desktop-switch list      which ones are installed
+#
+# "waybar" is accepted as an alias for classic: the stack is four programs,
+# and the bar is merely the visible one.
 #
 # Every stack is installed at once and exactly one runs, which is what makes
 # switching a matter of stopping processes rather than rebuilding. The choice
@@ -22,7 +25,7 @@ set -uo pipefail
 STATE="${XDG_STATE_HOME:-$HOME/.local/state}/desktop-stack"
 
 usage() {
-  sed -n '3,17p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '3,12p' "$0" | sed 's/^# \{0,1\}//'
   exit "${1:-0}"
 }
 
@@ -59,7 +62,7 @@ stop_all() {
   sleep 0.5
 }
 
-start_waybar() {
+start_classic() {
   local bar
   bar="$(where waybar)" || return 1
   [ -n "$bar" ] || { echo "waybar is not installed" >&2; return 1; }
@@ -105,14 +108,14 @@ current() {
   elif running "$DMS_PATTERN"; then
     echo dms
   elif running "$WAYBAR_PATTERN"; then
-    echo waybar
+    echo classic
   else
     echo none
   fi
 }
 
 list() {
-  have waybar && echo "waybar    installed" || echo "waybar    missing"
+  have waybar && echo "classic   installed" || echo "classic   missing"
   have omarchy-launch-shell && echo "omarchy   installed" || echo "omarchy   missing"
   have dms && echo "dms       installed" || echo "dms       missing"
 }
@@ -141,7 +144,8 @@ esac
 
 target="$1"
 case "$target" in
-  waybar | omarchy | dms) ;;
+  waybar) target=classic ;;
+  classic | omarchy | dms) ;;
   *) echo "desktop-switch: unknown stack '$target'" >&2; usage 1 ;;
 esac
 
@@ -154,7 +158,7 @@ stop_all
 if ! "start_$target"; then
   # Never leave the screen bare: fall back to whatever is installed.
   echo "desktop-switch: could not start $target, falling back" >&2
-  start_waybar || start_omarchy || start_dms
+  start_classic || start_omarchy || start_dms
   exit 1
 fi
 
