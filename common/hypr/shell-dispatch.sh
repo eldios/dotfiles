@@ -83,7 +83,7 @@ dms() {
     power)         command dms ipc call powermenu toggle ;;
     # Quick settings hold audio, network and bluetooth in one panel.
     audio|network|bluetooth) command dms ipc call control-center toggle ;;
-    theme)         riso-theme-menu ;;
+    theme)         riso-carousel ;;
     *)             return 2 ;;
   esac
 }
@@ -101,7 +101,7 @@ classic() {
     audio)         pavucontrol ;;
     network)       nm-connection-editor ;;
     bluetooth)     blueman-manager ;;
-    theme)         riso-theme-menu ;;
+    theme)         riso-carousel ;;
     *)             return 2 ;;
   esac
 }
