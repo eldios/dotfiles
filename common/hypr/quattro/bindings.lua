@@ -2,17 +2,35 @@
 --
 -- Omarchy's defaults load first and cover 179 bindings; only what differs
 -- belongs here. Rebinding a default key replaces it.
+--
+-- Anything that asks the shell for something goes through shell-dispatch,
+-- which translates the action for whichever shell is running. Without that
+-- these keys would be dead the moment desktop-switch changes stack, since
+-- each shell has its own command for the same thing.
 
 local bin = "/etc/profiles/per-user/eldios/bin/"
+local ask = "shell-dispatch "
 
--- Menus. Omarchy puts these on SPACE; these hands know D and M.
-o.bind("SUPER + D", "App menu", "omarchy-menu toggle apps")
-o.bind("SUPER + SHIFT + D", "Runner", "omarchy-menu toggle")
-o.bind("SUPER + M", "Omarchy menu", "omarchy-menu toggle root")
-o.bind("SUPER + E", "Emoji / symbols", "omarchy-shell shell toggle omarchy.emojis")
+-- Menus and launchers. Omarchy puts these on SPACE; these hands know D and M.
+o.bind("SUPER + D", "App menu", ask .. "launcher")
+o.bind("SUPER + SHIFT + D", "Runner", ask .. "menu")
+o.bind("SUPER + M", "Main menu", ask .. "menu")
+o.bind("SUPER + E", "Emoji / symbols", ask .. "emoji")
+
+-- The defaults bind these to Omarchy's own commands, which answer to nobody
+-- once another shell owns the screen.
+o.bind("SUPER + SPACE", "Main menu", ask .. "menu")
+o.bind("SUPER + ALT + SPACE", "App menu", ask .. "launcher")
+o.bind("SUPER + CTRL + V", "Clipboard", ask .. "clipboard")
+o.bind("SUPER + CTRL + E", "Emoji", ask .. "emoji")
+o.bind("SUPER + CTRL + A", "Audio panel", ask .. "audio")
+o.bind("SUPER + CTRL + B", "Bluetooth panel", ask .. "bluetooth")
+o.bind("SUPER + CTRL + W", "Network panel", ask .. "network")
+o.bind("SUPER + CTRL + L", "Lock", ask .. "lock")
 
 -- Applications
 o.bind("SUPER + CTRL + M", "Mail", "mailspring")
+o.bind("SUPER + CTRL + T", "System monitor", "ghostty -e btop")
 
 -- Window state
 o.bind("SUPER + SHIFT + SPACE", "Toggle floating", hl.dsp.window.float({ action = "toggle" }))
