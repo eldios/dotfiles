@@ -25,6 +25,7 @@ o.bind("SUPER + F", "Files", "ghostty -e yazi")
 o.bind("SUPER + E", "Emoji / symbols", ask .. "emoji")
 o.bind("SUPER + W", "Window menu", ask .. "menu")
 o.bind("SUPER + M", "Main menu", ask .. "menu")
+o.bind("SUPER + SHIFT + T", "Theme picker", ask .. "theme")
 
 -- Applications
 o.bind("SUPER + RETURN", "Terminal", "ghostty")
