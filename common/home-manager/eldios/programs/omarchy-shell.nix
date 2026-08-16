@@ -144,6 +144,11 @@
     require("hypr.lua.windows")
     require("hypr.lua.autostart")
 
+    -- Their toggle loader: the shell writes small Lua files under the state
+    -- tree when a toggle flips, and this is what reads them back. Without it
+    -- a toggle writes its file and nothing changes on screen.
+    require("default.hypr.toggles")
+
     -- The theme riso renders, then hand-written overrides; both optional.
     pcall(require, "riso.current.theme.hyprland")
     pcall(require, "riso.overrides.hypr")
@@ -217,6 +222,15 @@ in {
     fi
     $DRY_RUN_CMD mkdir -p "$state/riso"
     $DRY_RUN_CMD ln -sfn "$state/riso" "$state/omarchy"
+  '';
+
+  # Override slots the user edits and tools rewrite at runtime, so they must
+  # be real files rather than store links. Seeded once, then left alone.
+  home.activation.seedRisoOverrides = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    overrides="${homeDir}/.config/riso/overrides"
+    $DRY_RUN_CMD mkdir -p "$overrides"
+    [ -f "$overrides/waybar-config.json" ] || $DRY_RUN_CMD sh -c "echo '{}' > '$overrides/waybar-config.json'"
+    [ -f "$overrides/waybar.css" ] || $DRY_RUN_CMD touch "$overrides/waybar.css"
   '';
 
   # shell.json holds the bar layout and is rewritten by the shell whenever a

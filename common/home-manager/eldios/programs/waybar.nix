@@ -180,7 +180,7 @@ in {
         # position / height / width / margin are NOT set here: they live in the
         # override include below so omarchy-aesthetic-set can change them at
         # runtime (a waybar include cannot override keys set in the main file).
-        include = [ "${config.home.homeDirectory}/.config/omarchy/overrides/waybar-config.json" ];
+        include = [ "${config.home.homeDirectory}/.config/riso/overrides/waybar-config.json" ];
 
         modules-left = [
           "custom/menu"
