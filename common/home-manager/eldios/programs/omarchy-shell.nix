@@ -36,12 +36,13 @@
     done
   '';
 
-  # Switching shells and dispatching keybindings are session tools, so they
-  # live in the profile like any other command.
+  # Switching shells, dispatching keybindings and applying a theme are session
+  # tools, so they live in the profile like any other command.
   desktopTools = pkgs.runCommandLocal "desktop-tools" {} ''
     mkdir -p $out/bin
     install -m755 ${../../../hypr/desktop-switch.sh} $out/bin/desktop-switch
     install -m755 ${../../../hypr/shell-dispatch.sh} $out/bin/shell-dispatch
+    install -m755 ${risoApply} $out/bin/riso-apply
   '';
 
   # Monitors stay declarative in Nix and are emitted as Lua, so a host keeps
@@ -66,21 +67,67 @@
     ${lib.concatMapStringsSep "\n" monitorLine monitors}
   '';
 
-  # Re-apply whatever theme is active, or the default on a fresh machine.
-  # Paths come from $HOME at run time rather than being baked in, so the same
-  # command works when invoked by hand.
-  applyTheme = pkgs.writeShellScript "riso-apply-theme" ''
+  # Applying a theme means pointing riso at this machine's directories, and the
+  # activation, the shell switcher and a hand invocation all need the same
+  # ones. One command owns them so the three cannot drift apart.
+  #
+  #   riso-apply [theme] [desktop]
+  #
+  # Both arguments are optional: the theme defaults to the one in use, the
+  # desktop to whatever riso detects from the session.
+  #
+  # The state directory is not free to choose: the Hyprland config loads
+  # omarchy.current.theme.* through package.path, and the shell reads the same
+  # tree, so both expect it under ~/.local/state/omarchy.
+  risoApply = pkgs.writeShellScript "riso-apply" ''
     set -euo pipefail
 
     state="''${XDG_STATE_HOME:-$HOME/.local/state}/omarchy"
-    theme="''${1:-$(cat "$state/current/theme.name" 2>/dev/null || echo "${defaultTheme}")}"
+    theme="''${1:-}"
+    [ -n "$theme" ] ||
+      theme="$(cat "$state/current/theme.name" 2>/dev/null || echo "${defaultTheme}")"
+
+    desktop=()
+    [ -n "''${2:-}" ] && desktop=(--desktop "$2")
 
     exec ${lib.getExe pkgs.riso} set "$theme" \
       --themes "${omarchyRoot}/themes" \
       --themes "$HOME/.config/omarchy/themes" \
+      --themes "$HOME/.config/riso/themes" \
       --templates "$HOME/.config/omarchy/themed" \
       --templates "${omarchyRoot}/default/themed" \
-      --state "$state"
+      --state "$state" \
+      "''${desktop[@]}"
+  '';
+
+  # Upstream's hyprland.lua resolves Omarchy through $OMARCHY_PATH and falls
+  # back to /usr/share/omarchy. The display manager starts the session without
+  # reading the profile, so the variable is absent, the fallback does not exist
+  # here, and the failing dofile aborts the whole config: no bindings, no
+  # autostart. The store path is known at build time, so nothing below depends
+  # on the environment. envs.lua exports it again for child processes.
+  hyprlandLua = ''
+    local home = os.getenv("HOME")
+
+    package.path = home .. "/.config/?.lua;"
+      .. home .. "/.local/state/?.lua;"
+      .. "${omarchyRoot}/?.lua;"
+      .. package.path
+
+    -- The `o.*` helper layer only. None of their default bindings or settings
+    -- are loaded: every key and every rule in this session comes from the
+    -- files below.
+    require("default.hypr.helpers")
+
+    require("hypr.lua.monitors")
+    require("hypr.lua.settings")
+    require("hypr.lua.bindings")
+    require("hypr.lua.windows")
+    require("hypr.lua.autostart")
+
+    -- The theme riso renders, then hand-written overrides; both optional.
+    pcall(require, "omarchy.current.theme.hyprland")
+    pcall(require, "omarchy.overrides.hypr")
   '';
 in {
   home.packages = [
@@ -126,20 +173,13 @@ in {
   # loads these five files. Defaults improve with each release without
   # rewriting anything here, which is the whole point of the arrangement.
   xdg.configFile = {
-    "hypr/hyprland.lua".source = lib.mkForce "${upstream}/config/hypr/hyprland.lua";
-    "hypr/bindings.lua".source = ../../../hypr/quattro/bindings.lua;
-    "hypr/autostart.lua".source = ../../../hypr/quattro/autostart.lua;
-    "hypr/looknfeel.lua".source = ../../../hypr/quattro/looknfeel.lua;
-    "hypr/input.lua".source = ../../../hypr/quattro/input.lua;
-    "hypr/monitors.lua".text = monitorsLua;
-
-    # The pre-Quickshell config lives under hypr/lua/ and is loaded by the
-    # hyprland.lua that hyprland.nix installs. Both are replaced above, so
-    # leaving those files in place would only be confusing.
-    "hypr/lua/settings.lua".enable = lib.mkForce false;
-    "hypr/lua/bindings.lua".enable = lib.mkForce false;
-    "hypr/lua/windows.lua".enable = lib.mkForce false;
-    "hypr/lua/autostart.lua".enable = lib.mkForce false;
+    # hyprland.nix defines this too, and points it at $OMARCHY_PATH. The
+    # display manager starts the session without that variable, so the path is
+    # resolved here instead. Overriding through `text` does not win: the source
+    # home-manager derives from it does not inherit the override's priority.
+    "hypr/hyprland.lua".source =
+      lib.mkForce (pkgs.writeText "hyprland.lua" hyprlandLua);
+    "hypr/lua/monitors.lua".text = monitorsLua;
   };
 
   # shell.json holds the bar layout and is rewritten by the shell whenever a
@@ -156,7 +196,7 @@ in {
   # Re-render on every activation: a nixpkgs bump or a theme edit changes the
   # templates, and the generated files are not tracked anywhere else.
   home.activation.applyOmarchyTheme = lib.hm.dag.entryAfter ["seedOmarchyShellConfig"] ''
-    $DRY_RUN_CMD ${applyTheme} || true
+    $DRY_RUN_CMD ${risoApply} || true
   '';
 }
 # vim: set ts=2 sw=2 et ai list nu
