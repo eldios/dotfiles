@@ -103,6 +103,17 @@
     } > $out/bin/riso-background-apply
     chmod +x $out/bin/riso-background-apply
 
+    # Cycle to the theme's next background with the same handoff a pick gets.
+    {
+      echo '#!${pkgs.runtimeShell}'
+      echo 'export OMARCHY_PATH=${omarchyRoot}'
+      echo 'export PATH=${omarchyRoot}/bin:/etc/profiles/per-user/${config.home.username}/bin:$PATH'
+      echo '${lib.getExe pkgs.riso} bg next --no-reload'
+      echo 'bg=$(readlink -f "''${XDG_STATE_HOME:-$HOME/.local/state}/riso/current/background")'
+      echo "exec $out/bin/riso-background-apply \"\$bg\""
+    } > $out/bin/riso-background-next
+    chmod +x $out/bin/riso-background-next
+
     # riso validates and records the mode; the consumers that can honour it
     # are told. DMS reads wallpaperFillMode from the settings file it watches
     # (Pad is its name for centred); swaybg is restarted on the classic
