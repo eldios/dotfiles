@@ -43,6 +43,10 @@
       omarchy-update-* omarchy-system-factory-reset* omarchy-snapshot \
       omarchy-dev-pkg-test omarchy-voxtype-install omarchy-voxtype-remove \
       omarchy-setup-security-*
+    # Theme switching is riso's: the original pipeline copies store
+    # permissions into the state tree, which no later run can remove. The
+    # profile answers to this name with a riso-backed stand-in.
+    rm -f omarchy-theme-set
     mv .keep/* . && rmdir .keep
   '';
 
@@ -68,8 +72,10 @@
     install -m755 ${../../../hypr/desktop-switch.sh} $out/libexec/desktop-switch
     install -m755 ${../../../hypr/shell-dispatch.sh} $out/libexec/shell-dispatch
     install -m755 ${risoApply} $out/libexec/riso-apply
+    install -m755 ${../../../hypr/omarchy-theme-set.sh} $out/libexec/omarchy-theme-set
+    install -m755 ${../../../hypr/riso-theme-menu.sh} $out/libexec/riso-theme-menu
 
-    for tool in desktop-switch shell-dispatch riso-apply; do
+    for tool in desktop-switch shell-dispatch riso-apply omarchy-theme-set riso-theme-menu; do
       {
         echo '#!${pkgs.runtimeShell}'
         echo 'export OMARCHY_PATH=${omarchyRoot}'
