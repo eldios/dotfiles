@@ -76,6 +76,10 @@
     # nixpkgs; its flake ships the dms CLI and shell as one package.
     dank-material-shell.url = "github:AvengeMedia/DankMaterialShell";
 
+    # Caelestia: a fourth stack. Only the shell package from its flake is
+    # used; the project's script-driven installer repo stays out.
+    caelestia-shell.url = "github:caelestia-dots/shell";
+
     # AI tool overlays (auto-updated by maintainers)
     claude-code-overlay.url = "github:ryoppippi/claude-code-overlay";
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";

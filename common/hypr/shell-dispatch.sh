@@ -42,8 +42,8 @@ active_shell() {
     # No harmless IPC probe exists: every dms call acts. The command line is
     # distinctive enough to trust.
     echo dms
-  elif command -v caelestia >/dev/null 2>&1 &&
-    timeout 1 caelestia shell -s >/dev/null 2>&1; then
+  elif command -v caelestia-shell >/dev/null 2>&1 &&
+    timeout 1 caelestia-shell ipc show >/dev/null 2>&1; then
     echo caelestia
   elif pgrep -f '/bin/waybar' >/dev/null 2>&1; then
     # Match the path, not the name: Nix wraps binaries, so their comm is
@@ -83,6 +83,20 @@ dms() {
     power)         command dms ipc call powermenu toggle ;;
     # Quick settings hold audio, network and bluetooth in one panel.
     audio|network|bluetooth) command dms ipc call control-center toggle ;;
+    theme)         riso-carousel ;;
+    *)             return 2 ;;
+  esac
+}
+
+caelestia() {
+  case "$1" in
+    launcher)      caelestia-shell ipc call drawers toggle launcher ;;
+    menu)          caelestia-shell ipc call drawers toggle dashboard ;;
+    notifications) caelestia-shell ipc call drawers toggle notifications ;;
+    lock)          caelestia-shell ipc call lock lock ;;
+    power)         caelestia-shell ipc call drawers toggle session ;;
+    # The dashboard carries the quick settings.
+    audio|network|bluetooth) caelestia-shell ipc call drawers toggle dashboard ;;
     theme)         riso-carousel ;;
     *)             return 2 ;;
   esac

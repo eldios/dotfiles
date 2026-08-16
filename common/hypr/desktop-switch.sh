@@ -5,6 +5,7 @@
 #   desktop-switch classic   waybar + walker + mako + swayosd, separate programs
 #   desktop-switch omarchy   Omarchy 4, one Quickshell process
 #   desktop-switch dms       DankMaterialShell
+#   desktop-switch caelestia Caelestia
 #   desktop-switch current   which one is running
 #   desktop-switch list      which ones are installed
 #
@@ -45,6 +46,7 @@ readonly OMARCHY_SUPERVISOR='/omarchy-launch-shell$'
 readonly OMARCHY_SHELL='^quickshell .*-p '
 readonly OMARCHY_PATTERN="$OMARCHY_SUPERVISOR|$OMARCHY_SHELL"
 readonly DMS_PATTERN='^/[^[:space:]]*/dms run|dms-shell'
+readonly CAELESTIA_PATTERN='caelestia-shell|quickshell.*caelestia'
 
 
 # Stop everything any stack may have started, so a switch never leaves two
@@ -54,6 +56,7 @@ stop_all() {
   # The supervisor first: it restarts the shell, so killing the shell while it
   # still watches only earns a new one.
   for pattern in "$OMARCHY_SUPERVISOR" "$OMARCHY_SHELL" "$DMS_PATTERN" \
+    "$CAELESTIA_PATTERN" \
     "$WAYBAR_PATTERN" '^/[^[:space:]]*/mako$' '^/[^[:space:]]*/swayosd-server$' \
     '^/[^[:space:]]*/elephant$' '/walker --gapplication-service$'; do
     pkill -f "$pattern" 2>/dev/null
@@ -89,6 +92,15 @@ start_omarchy() {
   return 0
 }
 
+start_caelestia() {
+  local shell
+  shell="$(where caelestia-shell)"
+  [ -n "$shell" ] || { echo "Caelestia is not installed" >&2; return 1; }
+
+  setsid "$shell" -d >/dev/null 2>&1 &
+  return 0
+}
+
 start_dms() {
   local shell
   shell="$(where dms)"
@@ -107,6 +119,8 @@ current() {
     echo omarchy
   elif running "$DMS_PATTERN"; then
     echo dms
+  elif running "$CAELESTIA_PATTERN"; then
+    echo caelestia
   elif running "$WAYBAR_PATTERN"; then
     echo classic
   else
@@ -118,6 +132,7 @@ list() {
   have waybar && echo "classic   installed" || echo "classic   missing"
   have omarchy-launch-shell && echo "omarchy   installed" || echo "omarchy   missing"
   have dms && echo "dms       installed" || echo "dms       missing"
+  have caelestia-shell && echo "caelestia installed" || echo "caelestia missing"
 }
 
 # Re-render the current theme for whichever shell now owns the screen: each
@@ -145,7 +160,7 @@ esac
 target="$1"
 case "$target" in
   waybar) target=classic ;;
-  classic | omarchy | dms) ;;
+  classic | omarchy | dms | caelestia) ;;
   *) echo "desktop-switch: unknown stack '$target'" >&2; usage 1 ;;
 esac
 
