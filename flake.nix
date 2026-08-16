@@ -72,6 +72,10 @@
     #   --override-input riso git+file:///home/eldios/go/src/github.com/riso
     riso.url = "github:eldios/riso";
 
+    # DankMaterialShell: a third desktop stack for desktop-switch. Not in
+    # nixpkgs; its flake ships the dms CLI and shell as one package.
+    dank-material-shell.url = "github:AvengeMedia/DankMaterialShell";
+
     # AI tool overlays (auto-updated by maintainers)
     claude-code-overlay.url = "github:ryoppippi/claude-code-overlay";
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";
