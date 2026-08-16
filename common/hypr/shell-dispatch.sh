@@ -44,7 +44,7 @@ active_shell() {
     # distinctive enough to trust.
     echo dms
   elif command -v caelestia-shell >/dev/null 2>&1 &&
-    timeout 1 caelestia-shell ipc show >/dev/null 2>&1; then
+    timeout 1 caelestia-shell ipc call drawers list >/dev/null 2>&1; then
     echo caelestia
   elif pgrep -f '/bin/waybar' >/dev/null 2>&1; then
     # Match the path, not the name: Nix wraps binaries, so their comm is
