@@ -271,6 +271,7 @@ in {
     $DRY_RUN_CMD mkdir -p "$overrides"
     [ -f "$overrides/waybar-config.json" ] || $DRY_RUN_CMD sh -c "echo '{}' > '$overrides/waybar-config.json'"
     [ -f "$overrides/waybar.css" ] || $DRY_RUN_CMD touch "$overrides/waybar.css"
+    [ -f "$overrides/alacritty.toml" ] || $DRY_RUN_CMD touch "$overrides/alacritty.toml"
   '';
 
   # DMS keeps its settings in a file it rewrites at runtime, so it stays a

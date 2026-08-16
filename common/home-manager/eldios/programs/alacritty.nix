@@ -10,8 +10,14 @@
         # live-reloads on every switch.
         general = {
           live_config_reload = true;
+          # The theme fragment, then the user's own override, which wins.
+          # The override is a real file with a stable inode: the theme tree
+          # is replaced whole on every switch, which kills the watcher on the
+          # fragment, and touching this file is what makes live windows
+          # re-read the chain and re-arm it.
           import = [
             "${config.home.homeDirectory}/.local/state/riso/current/theme/alacritty.toml"
+            "${config.home.homeDirectory}/.config/riso/overrides/alacritty.toml"
           ];
         };
 

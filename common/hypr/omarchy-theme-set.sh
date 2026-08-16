@@ -16,6 +16,11 @@ riso-apply "${1:-}"
 # btop's helper uses pkill and works as shipped.
 pkill -SIGUSR2 -f '(^|/)ghostty( |$)' 2>/dev/null || true
 pkill -SIGUSR1 -f '(^|/)kitty( |$)' 2>/dev/null || true
+
+# Alacritty has no reload signal, and the swap of the theme tree kills the
+# watcher on the fragment. Its import chain ends in this stable override
+# file: touching it makes every live window re-read the chain and re-arm.
+touch "$HOME/.config/riso/overrides/alacritty.toml" 2>/dev/null || true
 for helper in omarchy-restart-hyprctl omarchy-restart-btop; do
   command -v "$helper" >/dev/null 2>&1 && "$helper" >/dev/null 2>&1 || true
 done
