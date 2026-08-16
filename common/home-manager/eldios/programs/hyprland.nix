@@ -164,6 +164,12 @@ in {
     xwayland.enable = true;
     systemd.enable = true;
 
+    # Deliberately hyprlang: the session's real config is the Lua entrypoint
+    # omarchy-shell.nix installs, and this module must not compete for
+    # hyprland.lua. Its hyprlang output carries only the monitor list below,
+    # which Hyprland never reads; monitors.lua is generated from it.
+    configType = "hyprlang";
+
     # Only the monitor layout lives here: hosts override it declaratively and
     # omarchy-shell.nix emits it as Lua for the session config.
     settings.monitor = [];
