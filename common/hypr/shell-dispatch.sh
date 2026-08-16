@@ -36,15 +36,13 @@ active_shell() {
   if command -v omarchy-shell >/dev/null 2>&1 &&
     timeout 1 omarchy-shell shell ping >/dev/null 2>&1; then
     echo omarchy
-  elif command -v dms >/dev/null 2>&1 &&
-    timeout 1 dms ipc call spotlight status >/dev/null 2>&1; then
-    echo dms
   elif command -v caelestia >/dev/null 2>&1 &&
     timeout 1 caelestia shell -s >/dev/null 2>&1; then
     echo caelestia
-  elif pgrep -f '/bin/waybar' 2>/dev/null | grep -qv "^\($$\|$PPID\)$"; then
+  elif pgrep -f '/bin/waybar' >/dev/null 2>&1; then
     # Match the path, not the name: Nix wraps binaries, so their comm is
-    # `.waybar-wrapped` and `pgrep -x waybar` never fires.
+    # `.waybar-wrapped` and `pgrep -x waybar` never fires. desktop-switch
+    # starts it by absolute path so that this pattern has something to find.
     echo waybar
   else
     echo none
@@ -67,19 +65,6 @@ omarchy() {
   esac
 }
 
-dms() {
-  case "$1" in
-    launcher|menu) command dms ipc call spotlight toggle ;;
-    clipboard)     command dms ipc call clipboard toggle ;;
-    notifications) command dms ipc call notifications toggle ;;
-    lock)          command dms ipc call lock lock ;;
-    power)         command dms ipc call powermenu toggle ;;
-    audio)         command dms ipc call audio toggle ;;
-    network)       command dms ipc call network toggle ;;
-    bluetooth)     command dms ipc call bluetooth toggle ;;
-    *)             return 2 ;;
-  esac
-}
 
 # The pre-Quickshell stack: separate programs rather than one shell.
 waybar() {
