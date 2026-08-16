@@ -75,42 +75,38 @@
     install -m755 ${../../../hypr/omarchy-theme-set.sh} $out/libexec/omarchy-theme-set
     install -m755 ${../../../hypr/riso-theme-menu.sh} $out/libexec/riso-theme-menu
 
-    # The carousel comes straight from riso's tree; selections go through
-    # the same stand-ins every other switcher uses, for themes and for
-    # backgrounds alike.
+    # The carousel, the background link, its cycle and its mode all live in
+    # the riso binary now; these wrappers only pin this machine's facts and
+    # add what the binary rightly does not know: which other shells might be
+    # on screen, and that the classic stack repaints through swaybg.
     {
       echo '#!${pkgs.runtimeShell}'
       echo 'export RISO_THEMES=${omarchyRoot}/themes'
+      echo 'export OMARCHY_PATH=${omarchyRoot}'
       echo 'export RISO_CAROUSEL_APPLY=omarchy-theme-set'
       echo "export RISO_CAROUSEL_APPLY_BG=$out/bin/riso-background-apply"
       echo 'export PATH=${omarchyRoot}/bin:/etc/profiles/per-user/${config.home.username}/bin:$PATH'
-      echo 'exec ${inputs.riso}/carousel/riso-carousel "$@"'
+      echo 'exec ${lib.getExe pkgs.riso} carousel "$@"'
     } > $out/bin/riso-carousel
     chmod +x $out/bin/riso-carousel
 
-    # Applying a background: the link riso owns, then whoever is on screen.
+    # riso bg set moves the link and tells the Omarchy shell; the shells riso
+    # does not know, and swaybg on the classic stack, are this machine's.
     {
       echo '#!${pkgs.runtimeShell}'
       echo 'export OMARCHY_PATH=${omarchyRoot}'
       echo 'export PATH=${omarchyRoot}/bin:/etc/profiles/per-user/${config.home.username}/bin:$PATH'
-      echo '${inputs.riso}/carousel/set-background.sh "$1"'
-      echo 'omarchy-theme-bg-set "$1" >/dev/null 2>&1 || true'
+      echo '${lib.getExe pkgs.riso} bg set "$1"'
       echo "if pgrep -f 'dms run|dms-shell' >/dev/null 2>&1; then dms ipc call wallpaper set \"\$1\" >/dev/null 2>&1 || true; fi"
       echo "if pgrep -f 'caelestia-shell|quickshell.*caelestia' >/dev/null 2>&1; then caelestia-shell ipc call wallpaper set \"\$1\" >/dev/null 2>&1 || true; fi"
       echo "if pgrep -f '/bin/waybar' >/dev/null 2>&1; then $out/bin/desktop-switch classic-bg >/dev/null 2>&1 || true; fi"
     } > $out/bin/riso-background-apply
     chmod +x $out/bin/riso-background-apply
 
-    # How the wallpaper is scaled, a knob only the classic stack has: the
-    # Omarchy shell and DMS crop by their own code. Written next to the
-    # background link; swaybg is restarted to read both.
     {
       echo '#!${pkgs.runtimeShell}'
-      echo 'set -eu'
-      echo 'case "''${1:-}" in fill|fit|center|stretch|tile) ;; *) echo "usage: riso-background-mode fill|fit|center|stretch|tile" >&2; exit 1 ;; esac'
-      echo 'state="''${XDG_STATE_HOME:-$HOME/.local/state}/riso/current"'
-      echo 'mkdir -p "$state"'
-      echo 'printf "%s\n" "$1" > "$state/background.mode"'
+      echo 'export PATH=/etc/profiles/per-user/${config.home.username}/bin:$PATH'
+      echo '${lib.getExe pkgs.riso} bg mode "$@"'
       echo "exec $out/bin/desktop-switch classic-bg"
     } > $out/bin/riso-background-mode
     chmod +x $out/bin/riso-background-mode
