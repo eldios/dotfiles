@@ -75,6 +75,17 @@
     install -m755 ${../../../hypr/omarchy-theme-set.sh} $out/libexec/omarchy-theme-set
     install -m755 ${../../../hypr/riso-theme-menu.sh} $out/libexec/riso-theme-menu
 
+    # The carousel comes straight from riso's tree; selections go through
+    # the same stand-in every other switcher uses.
+    {
+      echo '#!${pkgs.runtimeShell}'
+      echo 'export RISO_THEMES=${omarchyRoot}/themes'
+      echo 'export RISO_CAROUSEL_APPLY=omarchy-theme-set'
+      echo 'export PATH=${omarchyRoot}/bin:/etc/profiles/per-user/${config.home.username}/bin:$PATH'
+      echo 'exec quickshell -n -p ${inputs.riso}/carousel'
+    } > $out/bin/riso-carousel
+    chmod +x $out/bin/riso-carousel
+
     for tool in desktop-switch shell-dispatch riso-apply omarchy-theme-set riso-theme-menu; do
       {
         echo '#!${pkgs.runtimeShell}'
