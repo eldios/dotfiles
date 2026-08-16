@@ -51,7 +51,8 @@ stop_all() {
   # The supervisor first: it restarts the shell, so killing the shell while it
   # still watches only earns a new one.
   for pattern in "$OMARCHY_SUPERVISOR" "$OMARCHY_SHELL" "$DMS_PATTERN" \
-    "$WAYBAR_PATTERN" '^/[^[:space:]]*/mako$' '^/[^[:space:]]*/swayosd-server$'; do
+    "$WAYBAR_PATTERN" '^/[^[:space:]]*/mako$' '^/[^[:space:]]*/swayosd-server$' \
+    '^/[^[:space:]]*/elephant$' '/walker --gapplication-service$'; do
     pkill -f "$pattern" 2>/dev/null
   done
   # Give the compositor a moment to reap the layer surfaces.
@@ -66,6 +67,13 @@ start_waybar() {
   setsid "$bar" >/dev/null 2>&1 &
   have mako && setsid "$(where mako)" >/dev/null 2>&1 &
   have swayosd-server && setsid "$(where swayosd-server)" >/dev/null 2>&1 &
+  # Walker 2.x: the elephant data daemon first, then walker in service mode;
+  # a walker invocation without the service is an error, not a window.
+  have elephant && setsid "$(where elephant)" >/dev/null 2>&1 &
+  if have walker; then
+    sleep 0.5
+    setsid "$(where walker)" --gapplication-service >/dev/null 2>&1 &
+  fi
   return 0
 }
 
