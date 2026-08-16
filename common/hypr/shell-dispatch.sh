@@ -14,6 +14,7 @@
 #   shell-dispatch network       network panel
 #   shell-dispatch bluetooth     bluetooth panel
 #   shell-dispatch theme         theme picker
+#   shell-dispatch background    background picker
 #   shell-dispatch which         print the shell it would talk to
 #
 # Every shell here speaks the same shape, `<cli> ipc call <target> <method>`,
@@ -22,7 +23,7 @@
 set -uo pipefail
 
 usage() {
-  sed -n '3,18p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '3,19p' "$0" | sed 's/^# \{0,1\}//'
   exit "${1:-0}"
 }
 
@@ -68,6 +69,7 @@ omarchy() {
     network)       omarchy-shell shell toggle omarchy.network ;;
     bluetooth)     omarchy-shell shell toggle omarchy.bluetooth ;;
     theme)         omarchy-menu toggle style.theme ;;
+    background)    riso-carousel backgrounds ;;
     *)             return 2 ;;
   esac
 }
@@ -84,6 +86,7 @@ dms() {
     # Quick settings hold audio, network and bluetooth in one panel.
     audio|network|bluetooth) command dms ipc call control-center toggle ;;
     theme)         riso-carousel ;;
+    background)    riso-carousel backgrounds ;;
     *)             return 2 ;;
   esac
 }
@@ -98,6 +101,7 @@ caelestia() {
     # The dashboard carries the quick settings.
     audio|network|bluetooth) caelestia-shell ipc call drawers toggle dashboard ;;
     theme)         riso-carousel ;;
+    background)    riso-carousel backgrounds ;;
     *)             return 2 ;;
   esac
 }
@@ -116,6 +120,7 @@ classic() {
     network)       nm-connection-editor ;;
     bluetooth)     blueman-manager ;;
     theme)         riso-carousel ;;
+    background)    riso-carousel backgrounds ;;
     *)             return 2 ;;
   esac
 }
