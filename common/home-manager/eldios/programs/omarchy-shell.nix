@@ -38,11 +38,27 @@
 
   # Switching shells, dispatching keybindings and applying a theme are session
   # tools, so they live in the profile like any other command.
+  #
+  # Each one gets a wrapper that pins OMARCHY_PATH and PATH to the store: these
+  # commands run from keybindings, whose environment is whatever the session
+  # was started with, and an env keyword only applies at session launch. The
+  # store path is the one fact Nix knows better than the environment does.
   desktopTools = pkgs.runCommandLocal "desktop-tools" {} ''
-    mkdir -p $out/bin
-    install -m755 ${../../../hypr/desktop-switch.sh} $out/bin/desktop-switch
-    install -m755 ${../../../hypr/shell-dispatch.sh} $out/bin/shell-dispatch
-    install -m755 ${risoApply} $out/bin/riso-apply
+    mkdir -p $out/bin $out/libexec
+    install -m755 ${../../../hypr/desktop-switch.sh} $out/libexec/desktop-switch
+    install -m755 ${../../../hypr/shell-dispatch.sh} $out/libexec/shell-dispatch
+    install -m755 ${risoApply} $out/libexec/riso-apply
+
+    for tool in desktop-switch shell-dispatch riso-apply; do
+      {
+        echo '#!${pkgs.runtimeShell}'
+        echo 'export OMARCHY_PATH=${omarchyRoot}'
+        echo 'export RISO_THEMES=${omarchyRoot}/themes'
+        echo 'export PATH=${omarchyRoot}/bin:$PATH'
+        echo "exec $out/libexec/$tool \"\$@\""
+      } > "$out/bin/$tool"
+      chmod +x "$out/bin/$tool"
+    done
   '';
 
   # Monitors stay declarative in Nix and are emitted as Lua, so a host keeps
@@ -90,10 +106,9 @@
     desktop=()
     [ -n "''${2:-}" ] && desktop=(--desktop "$2")
 
+    # Themes come from riso's own search path: the wrapper's RISO_THEMES
+    # points it at the shipped set, and themes the user installs win over it.
     exec ${lib.getExe pkgs.riso} set "$theme" \
-      --themes "${omarchyRoot}/themes" \
-      --themes "$HOME/.config/omarchy/themes" \
-      --themes "$HOME/.config/riso/themes" \
       --templates "$HOME/.config/omarchy/themed" \
       --templates "${omarchyRoot}/default/themed" \
       --state "$state" \
@@ -151,15 +166,19 @@ in {
 
     # Switching between shells at runtime only works if they are all here.
     # Exactly one runs; having the others installed is what makes falling
-    # back instant instead of a rebuild away.
+    # back instant instead of a rebuild away. Waybar, mako and hyprlock come
+    # from their own modules, imported next to this one, so the classic stack
+    # is configured rather than merely present.
     desktopTools
-
-    # The pre-Quickshell stack, kept whole so it stays a working fallback.
-    pkgs.waybar
-    pkgs.mako
+    inputs.dank-material-shell.packages.${pkgs.stdenv.hostPlatform.system}.default
     pkgs.swayosd
     pkgs.wlogout
     inputs.walker.packages.${pkgs.stdenv.hostPlatform.system}.default
+
+    # What shell-dispatch opens for the network and bluetooth panels when the
+    # classic stack is running.
+    pkgs.networkmanagerapplet
+    pkgs.blueman
 
     # omarchy-notification-send resolves notify-send from PATH. Low priority
     # because pcloud ships its own libnotify.so and would otherwise collide.
@@ -179,12 +198,9 @@ in {
   # loads these five files. Defaults improve with each release without
   # rewriting anything here, which is the whole point of the arrangement.
   xdg.configFile = {
-    # hyprland.nix defines this too, and points it at $OMARCHY_PATH. The
-    # display manager starts the session without that variable, so the path is
-    # resolved here instead. Overriding through `text` does not win: the source
-    # home-manager derives from it does not inherit the override's priority.
-    "hypr/hyprland.lua".source =
-      lib.mkForce (pkgs.writeText "hyprland.lua" hyprlandLua);
+    # This module owns the entrypoint because only it knows the helper
+    # layer's store path; the modules it loads come from hyprland.nix.
+    "hypr/hyprland.lua".source = pkgs.writeText "hyprland.lua" hyprlandLua;
     "hypr/lua/monitors.lua".text = monitorsLua;
   };
 
@@ -202,7 +218,7 @@ in {
   # Re-render on every activation: a nixpkgs bump or a theme edit changes the
   # templates, and the generated files are not tracked anywhere else.
   home.activation.applyOmarchyTheme = lib.hm.dag.entryAfter ["seedOmarchyShellConfig"] ''
-    $DRY_RUN_CMD ${risoApply} || true
+    $DRY_RUN_CMD ${desktopTools}/bin/riso-apply || true
   '';
 }
 # vim: set ts=2 sw=2 et ai list nu
