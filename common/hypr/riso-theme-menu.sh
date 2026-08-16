@@ -24,4 +24,7 @@ ensure_walker
 choice=$(printf '%s\n' "$themes" | walker --dmenu -p 'Theme' || true)
 [ -n "$choice" ] || exit 0
 
-omarchy-theme-set "$choice"
+# By absolute sibling, not by name: a stale session PATH can still carry a
+# root where the original script exists.
+"$(dirname "$(readlink -f "$0")")/../bin/omarchy-theme-set" "$choice" 2>/dev/null \
+  || omarchy-theme-set "$choice"

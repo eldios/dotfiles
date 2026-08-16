@@ -80,7 +80,10 @@
         echo '#!${pkgs.runtimeShell}'
         echo 'export OMARCHY_PATH=${omarchyRoot}'
         echo 'export RISO_THEMES=${omarchyRoot}/themes'
-        echo 'export PATH=${omarchyRoot}/bin:$PATH'
+        # The profile comes before the inherited PATH: a session started on an
+        # older generation still carries the old root, where names this
+        # generation removed on purpose would otherwise be found again.
+        echo 'export PATH=${omarchyRoot}/bin:/etc/profiles/per-user/${config.home.username}/bin:$PATH'
         echo "exec $out/libexec/$tool \"\$@\""
       } > "$out/bin/$tool"
       chmod +x "$out/bin/$tool"
@@ -268,6 +271,23 @@ in {
     $DRY_RUN_CMD mkdir -p "$overrides"
     [ -f "$overrides/waybar-config.json" ] || $DRY_RUN_CMD sh -c "echo '{}' > '$overrides/waybar-config.json'"
     [ -f "$overrides/waybar.css" ] || $DRY_RUN_CMD touch "$overrides/waybar.css"
+  '';
+
+  # DMS keeps its settings in a file it rewrites at runtime, so it stays a
+  # real file and only the two theme keys are set, once idempotently: the
+  # custom theme points at the dms.json riso renders, which DMS watches and
+  # repaints from on every theme change.
+  home.activation.wireDmsTheme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    dmscfg="${homeDir}/.config/DankMaterialShell/settings.json"
+    fragment="${homeDir}/.local/state/riso/current/theme/dms.json"
+    $DRY_RUN_CMD mkdir -p "${homeDir}/.config/DankMaterialShell"
+    [ -f "$dmscfg" ] || $DRY_RUN_CMD sh -c "echo '{}' > '$dmscfg'"
+    if ! ${pkgs.jq}/bin/jq -e --arg f "$fragment" \
+        '.currentThemeName == "custom" and .customThemeFile == $f' "$dmscfg" >/dev/null 2>&1; then
+      $DRY_RUN_CMD sh -c '${pkgs.jq}/bin/jq --arg f "'"$fragment"'" \
+        ".currentThemeName = \"custom\" | .customThemeFile = \$f" "'"$dmscfg"'" \
+        > "'"$dmscfg"'.tmp" && mv "'"$dmscfg"'.tmp" "'"$dmscfg"'"'
+    fi
   '';
 
   # shell.json holds the bar layout and is rewritten by the shell whenever a
