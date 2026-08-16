@@ -16,14 +16,34 @@
   # $OMARCHY_PATH/shell and the scripts resolve through $OMARCHY_PATH/bin, so
   # pointing the variable at the store is all the relocation that is needed.
   #
-  # bin/ is taken whole rather than curated: the shell shells out to 77 of
-  # those scripts for network, bluetooth, audio, brightness, lock and weather.
-  # A missing one is a dead panel, and they are 2 MB of bash.
+  # bin/ is taken nearly whole rather than curated one by one: the shell
+  # shells out to some 80 of those scripts for network, bluetooth, audio,
+  # brightness, lock and weather, and a missing one is a dead panel.
+  #
+  # What does not come along is Arch's package management: everything that
+  # drives pacman or the AUR, and the installer families built on it. On
+  # NixOS software enters through Nix, and an installer that survives only
+  # to fail half-way is worse than one that is honestly absent. Chromium's
+  # helpers are kept back out of the installer sweep: they write user
+  # configuration, not packages.
   omarchyRoot = pkgs.runCommandLocal "omarchy-root" {} ''
     mkdir -p $out
     cp -r ${upstream}/shell ${upstream}/themes ${upstream}/default ${upstream}/config ${upstream}/bin $out/
     chmod -R u+w $out
     patchShebangs $out/bin
+
+    cd $out/bin
+    mkdir -p .keep
+    mv omarchy-install-chromium-* .keep/
+    rm -f $(grep -lE '\b(pacman|yay|paru|makepkg|pacstrap)\b' * || true)
+    rm -f omarchy-pkg-* omarchy-install-* omarchy-remove-gaming-* \
+      omarchy-remove-service-* omarchy-remove-browser omarchy-remove-preinstalls \
+      omarchy-remove-dev-env omarchy-remove-security-* omarchy-provision-* \
+      omarchy-migrate* omarchy-upgrade-* omarchy-reinstall* omarchy-channel-* \
+      omarchy-update-* omarchy-system-factory-reset* omarchy-snapshot \
+      omarchy-dev-pkg-test omarchy-voxtype-install omarchy-voxtype-remove \
+      omarchy-setup-security-*
+    mv .keep/* . && rmdir .keep
   '';
 
   # The scripts have to be in the profile, not only on the session PATH.
