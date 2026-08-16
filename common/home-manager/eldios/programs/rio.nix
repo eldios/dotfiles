@@ -105,9 +105,9 @@
     };
   };
 
-  # Point rio's "omarchy" theme at the file rendered by omarchy-theme-set.
-  # Out-of-store symlink so the runtime theme swap is picked up without a rebuild.
+  # Point rio's "omarchy" theme at the file the theme renders. Out-of-store
+  # symlink so the runtime theme swap is picked up without a rebuild.
   home.file.".config/rio/themes/omarchy.toml".source =
     config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/.config/omarchy/current/theme/rio.toml";
+      "${config.home.homeDirectory}/.local/state/riso/current/theme/rio.toml";
 }

@@ -44,6 +44,6 @@ in {
   # enough for the notif-history browser to be useful.
   xdg.configFile."mako/config".text = ''
     max-history=100
-    include=${config.home.homeDirectory}/.config/omarchy/current/theme/mako.ini
+    include=${config.home.homeDirectory}/.local/state/riso/current/theme/mako.ini
   '';
 }
