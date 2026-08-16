@@ -103,10 +103,21 @@
     } > $out/bin/riso-background-apply
     chmod +x $out/bin/riso-background-apply
 
+    # riso validates and records the mode; the consumers that can honour it
+    # are told. DMS reads wallpaperFillMode from the settings file it watches
+    # (Pad is its name for centred); swaybg is restarted on the classic
+    # stack; the Omarchy shell has no such knob.
     {
       echo '#!${pkgs.runtimeShell}'
       echo 'export PATH=/etc/profiles/per-user/${config.home.username}/bin:$PATH'
       echo '${lib.getExe pkgs.riso} bg mode "$@"'
+      echo 'dmscfg="$HOME/.config/DankMaterialShell/settings.json"'
+      echo 'if [ -n "''${1:-}" ] && [ -f "$dmscfg" ]; then'
+      echo '  case "$1" in fill) m=Fill ;; fit) m=Fit ;; center) m=Pad ;; stretch) m=Stretch ;; tile) m=Tile ;; *) m= ;; esac'
+      echo '  if [ -n "$m" ]; then'
+      echo '    ${pkgs.jq}/bin/jq --arg m "$m" ".wallpaperFillMode = \$m" "$dmscfg" > "$dmscfg.tmp" && mv "$dmscfg.tmp" "$dmscfg"'
+      echo '  fi'
+      echo 'fi'
       echo "exec $out/bin/desktop-switch classic-bg"
     } > $out/bin/riso-background-mode
     chmod +x $out/bin/riso-background-mode
