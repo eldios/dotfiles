@@ -26,6 +26,24 @@
     patchShebangs $out/bin
   '';
 
+  # The scripts have to be in the profile, not only on the session PATH.
+  # home.sessionPath applies at the next login, which leaves a rebuild with
+  # neither the old commands nor the new ones until the user logs out.
+  omarchyBin = pkgs.runCommandLocal "omarchy-bin" {} ''
+    mkdir -p $out/bin
+    for script in ${omarchyRoot}/bin/*; do
+      ln -s "$script" "$out/bin/$(basename "$script")"
+    done
+  '';
+
+  # Switching shells and dispatching keybindings are session tools, so they
+  # live in the profile like any other command.
+  desktopTools = pkgs.runCommandLocal "desktop-tools" {} ''
+    mkdir -p $out/bin
+    install -m755 ${../../../hypr/desktop-switch.sh} $out/bin/desktop-switch
+    install -m755 ${../../../hypr/shell-dispatch.sh} $out/bin/shell-dispatch
+  '';
+
   # Monitors stay declarative in Nix and are emitted as Lua, so a host keeps
   # describing its layout through wayland.windowManager.hyprland.settings.monitor
   # whichever desktop it runs. Hyprland's string form is
@@ -73,6 +91,22 @@ in {
 
     # Renders themes into the files the shell reads.
     pkgs.riso
+
+    # The commands the shell and the menus call out to.
+    omarchyBin
+
+    # Switching between shells at runtime only works if they are all here.
+    # Exactly one runs; having the others installed is what makes falling
+    # back instant instead of a rebuild away.
+    desktopTools
+    pkgs.dms
+
+    # The pre-Quickshell stack, kept whole so it stays a working fallback.
+    pkgs.waybar
+    pkgs.mako
+    pkgs.swayosd
+    pkgs.wlogout
+    inputs.walker.packages.${pkgs.stdenv.hostPlatform.system}.default
 
     # omarchy-notification-send resolves notify-send from PATH. Low priority
     # because pcloud ships its own libnotify.so and would otherwise collide.
