@@ -9,17 +9,22 @@
 
 local bin = "/etc/profiles/per-user/eldios/bin/"
 
+-- Anything a desktop shell answers goes through shell-dispatch, which asks
+-- whichever one is running. Naming a shell's own command here would tie these
+-- keys to it, and desktop-switch can change it at any time.
+local ask = bin .. "shell-dispatch "
+
 -- Session / power
 o.bind("SUPER + CTRL + SHIFT + Q", "Power menu", "wlogout")
 o.bind("SUPER + CTRL + Q", "Lock screen", "hyprlock")
 
 -- WM launchers
-o.bind("SUPER + D", "App menu", bin .. "omarchy-launch-apps")
-o.bind("SUPER + SHIFT + D", "Runner", bin .. "omarchy-launch-run")
-o.bind("SUPER + F", "File menu", bin .. "omarchy-launch-files")
-o.bind("SUPER + E", "Emoji / symbols", bin .. "omarchy-launch-walker -m symbols")
-o.bind("SUPER + W", "Window menu", bin .. "omarchy-launch-windows")
-o.bind("SUPER + M", "Omarchy menu", bin .. "omarchy-menu")
+o.bind("SUPER + D", "App menu", ask .. "launcher")
+o.bind("SUPER + SHIFT + D", "Runner", ask .. "menu")
+o.bind("SUPER + F", "Files", "ghostty -e yazi")
+o.bind("SUPER + E", "Emoji / symbols", ask .. "emoji")
+o.bind("SUPER + W", "Window menu", ask .. "menu")
+o.bind("SUPER + M", "Main menu", ask .. "menu")
 
 -- Applications
 o.bind("SUPER + RETURN", "Terminal", "ghostty")
@@ -35,7 +40,7 @@ o.bind("SUPER + SHIFT + F", "Fullscreen", hl.dsp.window.fullscreen({ mode = "ful
 o.bind("SUPER + CTRL + F", "Client-only fullscreen", hl.dsp.window.fullscreen_state({ internal = 0, client = 2 }))
 o.bind("SUPER + T", "Pin floating window", hl.dsp.window.pin())
 o.bind("SUPER + C", "Center floating window", hl.dsp.window.center())
-o.bind("SUPER + B", "Toggle no-dim/no-blur", "omarchy-window-undim-blur-toggle")
+o.bind("SUPER + B", "Toggle window transparency", "omarchy-hyprland-window-transparency-toggle")
 
 -- Dwindle and window order
 o.bind("SUPER + P", "Pseudo-tile", hl.dsp.window.pseudo())
@@ -74,11 +79,11 @@ end
 o.bind("SUPER + SHIFT + S", "Screenshot area", "grimblast copy area")
 o.bind("SUPER + SHIFT + A", "Screenshot screen", "grimblast copysave screen ~/Pictures/Screenshots/$(date +%F_%T).png")
 o.bind("SUPER + PRINT", "Color picker", "sh -c 'pkill hyprpicker || hyprpicker -a'")
-o.bind("SUPER + V", "Clipboard history", bin .. "omarchy-launch-walker -m clipboard")
+o.bind("SUPER + V", "Clipboard history", ask .. "clipboard")
 o.bind("SUPER + SHIFT + V", "Save clipboard to file", bin .. "clip-save")
 
 -- Notifications
-o.bind("SUPER + N", "Restore last notification", "makoctl restore")
+o.bind("SUPER + N", "Notifications", ask .. "notifications")
 o.bind("SUPER + SHIFT + N", "Notification history", bin .. "notif-history")
 
 -- Window groups
