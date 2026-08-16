@@ -48,7 +48,7 @@ in {
     systemd.enable = false;
 
     style = ''
-      @import "../../.local/state/omarchy/current/theme/waybar.css";
+      @import "../omarchy/current/theme/waybar.css";
       @import "../omarchy/overrides/waybar.css";
 
       * {
