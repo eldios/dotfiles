@@ -15,3 +15,10 @@ riso-apply "${1:-}"
 for helper in omarchy-restart-terminal omarchy-restart-hyprctl omarchy-restart-btop; do
   command -v "$helper" >/dev/null 2>&1 && "$helper" >/dev/null 2>&1 || true
 done
+
+# DMS colors follow the rendered dms.json on their own; the wallpaper needs
+# to be handed over.
+if pgrep -f 'dms run|dms-shell' >/dev/null 2>&1; then
+  bg=$(readlink -f "${XDG_STATE_HOME:-$HOME/.local/state}/riso/current/background" 2>/dev/null || true)
+  [ -n "$bg" ] && dms ipc call wallpaper set "$bg" >/dev/null 2>&1 || true
+fi
