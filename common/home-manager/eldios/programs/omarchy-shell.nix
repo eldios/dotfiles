@@ -221,6 +221,7 @@ in {
     # is configured rather than merely present.
     desktopTools
     inputs.dank-material-shell.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.caelestia-shell.packages.${pkgs.stdenv.hostPlatform.system}.caelestia-shell
     pkgs.swayosd
     pkgs.wlogout
     inputs.walker.packages.${pkgs.stdenv.hostPlatform.system}.default
