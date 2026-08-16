@@ -23,7 +23,7 @@
         exit 0
       fi
       sel="$(printf '%s\n' "$hist" \
-        | /etc/profiles/per-user/eldios/bin/omarchy-launch-walker --dmenu -p 'Notifications' || true)"
+        | /etc/profiles/per-user/eldios/bin/walker --dmenu -p 'Notifications' || true)"
       [ -n "$sel" ] || exit 0
       printf '%s' "$sel" | wl-copy
       notify-send -u low "Copied to clipboard" -t 1500
@@ -44,6 +44,6 @@ in {
   # enough for the notif-history browser to be useful.
   xdg.configFile."mako/config".text = ''
     max-history=100
-    include=${config.home.homeDirectory}/.config/omarchy/current/theme/mako.ini
+    include=${config.home.homeDirectory}/.local/state/omarchy/current/theme/mako.ini
   '';
 }

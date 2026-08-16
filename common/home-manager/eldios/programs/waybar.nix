@@ -48,7 +48,7 @@ in {
     systemd.enable = false;
 
     style = ''
-      @import "../omarchy/current/theme/waybar.css";
+      @import "../../.local/state/omarchy/current/theme/waybar.css";
       @import "../omarchy/overrides/waybar.css";
 
       * {
@@ -362,7 +362,7 @@ in {
             text = "";
             tooltip = ''$(${cat} /etc/os-release | ${grep} PRETTY_NAME | ${cut} -d '"' -f2)'';
           };
-          on-click-left = "omarchy-menu";
+          on-click-left = "shell-dispatch menu";
         };
 
         "custom/hostname" = {
