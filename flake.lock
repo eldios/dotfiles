@@ -852,11 +852,11 @@
         "nixpkgs": "nixpkgs_13"
       },
       "locked": {
-        "lastModified": 1786913834,
-        "narHash": "sha256-CfNlDXZBdvPm7lrDS77oNUC2mCBfS9cjknCGFnIYV+U=",
+        "lastModified": 1786914526,
+        "narHash": "sha256-twtqs3Fxj/MwUN6vgN5UgV8cee+rjVlSeMnh/z2cXDw=",
         "ref": "refs/heads/main",
-        "rev": "be6cdf2a4b601d8f4a72f518a59ef63a8db9412f",
-        "revCount": 42,
+        "rev": "5e0b4a02918af71808846c8fee7fb845ea5c4cc8",
+        "revCount": 43,
         "type": "git",
         "url": "file:///home/eldios/go/src/github.com/riso"
       },
