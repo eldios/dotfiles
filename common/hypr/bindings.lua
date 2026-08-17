@@ -29,7 +29,6 @@ o.bind("SUPER + M", "Main menu", ask .. "menu")
 -- and call it directly: same picker whichever shell owns the screen.
 o.bind("SUPER + SHIFT + T", "Theme picker", bin .. "riso-carousel")
 o.bind("SUPER + SHIFT + B", "Background picker", bin .. "riso-carousel backgrounds")
-o.bind("SUPER + CTRL + SPACE", "Next background", bin .. "riso-background-next")
 
 -- Applications
 o.bind("SUPER + RETURN", "Terminal", "ghostty")
