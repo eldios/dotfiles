@@ -54,14 +54,15 @@ readonly NOCTALIA_PATTERN='^/[^[:space:]]*/\.?noctalia(-wrapped)?$'
 
 
 # Stop everything any stack may have started, so a switch never leaves two
-# bars on screen. Killing what is not running is not an error.
+# bars on screen. Killing what is not running is not an error. Mako is
+# matched by bare name too: D-Bus activation starts it with no path.
 stop_all() {
   local pattern
   # The supervisor first: it restarts the shell, so killing the shell while it
   # still watches only earns a new one.
   for pattern in "$OMARCHY_SUPERVISOR" "$OMARCHY_SHELL" "$DMS_PATTERN" \
     "$CAELESTIA_PATTERN" "$NOCTALIA_PATTERN" \
-    "$WAYBAR_PATTERN" '^/[^[:space:]]*/mako$' '^/[^[:space:]]*/swayosd-server$' \
+    "$WAYBAR_PATTERN" '(^|/)mako$' '^/[^[:space:]]*/swayosd-server$' \
     '/bin/swaybg' '^/[^[:space:]]*/elephant$' '/walker --gapplication-service$'; do
     pkill -f "$pattern" 2>/dev/null
   done
