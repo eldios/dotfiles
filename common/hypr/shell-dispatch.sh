@@ -46,6 +46,10 @@ active_shell() {
   elif command -v caelestia-shell >/dev/null 2>&1 &&
     timeout 1 caelestia-shell ipc call drawers list >/dev/null 2>&1; then
     echo caelestia
+  elif command -v noctalia >/dev/null 2>&1 &&
+    timeout 1 noctalia msg status >/dev/null 2>&1; then
+    # `msg status` only prints shell state, so it doubles as a liveness probe.
+    echo noctalia
   elif pgrep -f '/bin/waybar' >/dev/null 2>&1; then
     # Match the path, not the name: Nix wraps binaries, so their comm is
     # `.waybar-wrapped` and `pgrep -x waybar` never fires. desktop-switch
@@ -100,6 +104,23 @@ caelestia() {
     power)         caelestia-shell ipc call drawers toggle session ;;
     # The dashboard carries the quick settings.
     audio|network|bluetooth) caelestia-shell ipc call drawers toggle dashboard ;;
+    theme)         riso-carousel ;;
+    background)    riso-carousel backgrounds ;;
+    *)             return 2 ;;
+  esac
+}
+
+noctalia() {
+  case "$1" in
+    launcher|menu) command noctalia msg panel-toggle launcher ;;
+    clipboard)     command noctalia msg panel-toggle clipboard ;;
+    emoji)         command noctalia msg panel-toggle launcher ;;
+    notifications) command noctalia msg panel-toggle control-center notifications ;;
+    lock)          command noctalia msg session lock ;;
+    power)         command noctalia msg panel-toggle session ;;
+    audio)         command noctalia msg panel-toggle control-center audio ;;
+    network)       command noctalia msg panel-toggle control-center network ;;
+    bluetooth)     command noctalia msg panel-toggle control-center bluetooth ;;
     theme)         riso-carousel ;;
     background)    riso-carousel backgrounds ;;
     *)             return 2 ;;
