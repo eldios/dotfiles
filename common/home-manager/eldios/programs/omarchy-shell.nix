@@ -248,6 +248,22 @@
 
     -- The theme riso renders, then hand-written overrides; both optional.
     pcall(require, "riso.current.theme.hyprland")
+
+    -- Omarchy themes carry their WM styling as a hyprlang fragment; the
+    -- translator applies it after the template so the theme's own style
+    -- (rounding, borders, opacity, animations, rules) wins over the
+    -- palette-derived defaults. Re-read on every reload, so a theme
+    -- switch only needs the hyprctl reload it already does. dofile, not
+    -- require: the runtime's require does not hand back the chunk's
+    -- return value, and swallows load errors into an empty table.
+    local compat_ok, compat = pcall(dofile, home .. "/.config/hypr/lua/hyprlang_compat.lua")
+    if compat_ok and type(compat) == "table" and compat.apply then
+      local applied, err = pcall(compat.apply, home .. "/.local/state/riso/current/theme/hyprland.conf")
+      if not applied then print("hyprlang-compat failed: " .. tostring(err)) end
+    else
+      print("hyprlang-compat did not load: " .. tostring(compat))
+    end
+
     pcall(require, "riso.overrides.hypr")
   '';
 in {
