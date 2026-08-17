@@ -144,6 +144,7 @@ in {
   xdg.configFile."hypr/lua/bindings.lua".source = ../../../hypr/bindings.lua;
   xdg.configFile."hypr/lua/windows.lua".source = ../../../hypr/windows.lua;
   xdg.configFile."hypr/lua/autostart.lua".source = ../../../hypr/autostart.lua;
+  xdg.configFile."hypr/lua/hyprlang_compat.lua".source = ../../../hypr/hyprlang-compat.lua;
 
   # xdg-desktop-portal-hyprland: tick "allow restore token" by default so the
   # share picker remembers the selection. Screen-share apps (Chromium/Electron)
