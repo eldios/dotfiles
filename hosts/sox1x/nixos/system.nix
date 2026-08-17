@@ -5,6 +5,9 @@
     autoUpgrade.enable = true;
   };
 
+  # Laptop: sleep allowed, lid behavior from the common suspend module
+  machine.suspend.enable = true;
+
   virtualisation.docker.storageDriver = "zfs";
 
   services = {

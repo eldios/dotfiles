@@ -11,6 +11,9 @@
     autoUpgrade.enable = true;
   };
 
+  # Laptop: sleep allowed, lid behavior from the common suspend module
+  machine.suspend.enable = true;
+
   # 25.11 user creation backend: faster, no passwd file flapping on
   # rebuild. Drop-in replacement for the default useradd/groupadd path.
   services.userborn.enable = true;
