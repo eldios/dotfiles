@@ -6,6 +6,7 @@
 #   desktop-switch omarchy   Omarchy 4, one Quickshell process
 #   desktop-switch dms       DankMaterialShell
 #   desktop-switch caelestia Caelestia
+#   desktop-switch noctalia  Noctalia
 #   desktop-switch current   which one is running
 #   desktop-switch list      which ones are installed
 #
@@ -26,7 +27,7 @@ set -uo pipefail
 STATE="${XDG_STATE_HOME:-$HOME/.local/state}/desktop-stack"
 
 usage() {
-  sed -n '3,12p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '3,13p' "$0" | sed 's/^# \{0,1\}//'
   exit "${1:-0}"
 }
 
@@ -47,6 +48,9 @@ readonly OMARCHY_SHELL='^quickshell .*-p '
 readonly OMARCHY_PATTERN="$OMARCHY_SUPERVISOR|$OMARCHY_SHELL"
 readonly DMS_PATTERN='^/[^[:space:]]*/dms run|dms-shell'
 readonly CAELESTIA_PATTERN='caelestia-shell|quickshell.*caelestia'
+# Anchored on both ends: `noctalia msg ...` invocations carry arguments and
+# must not look like the shell itself.
+readonly NOCTALIA_PATTERN='^/[^[:space:]]*/\.?noctalia(-wrapped)?$'
 
 
 # Stop everything any stack may have started, so a switch never leaves two
@@ -56,7 +60,7 @@ stop_all() {
   # The supervisor first: it restarts the shell, so killing the shell while it
   # still watches only earns a new one.
   for pattern in "$OMARCHY_SUPERVISOR" "$OMARCHY_SHELL" "$DMS_PATTERN" \
-    "$CAELESTIA_PATTERN" \
+    "$CAELESTIA_PATTERN" "$NOCTALIA_PATTERN" \
     "$WAYBAR_PATTERN" '^/[^[:space:]]*/mako$' '^/[^[:space:]]*/swayosd-server$' \
     '/bin/swaybg' '^/[^[:space:]]*/elephant$' '/walker --gapplication-service$'; do
     pkill -f "$pattern" 2>/dev/null
@@ -119,6 +123,15 @@ start_caelestia() {
   return 0
 }
 
+start_noctalia() {
+  local shell
+  shell="$(where noctalia)"
+  [ -n "$shell" ] || { echo "Noctalia is not installed" >&2; return 1; }
+
+  setsid "$shell" >/dev/null 2>&1 &
+  return 0
+}
+
 start_dms() {
   local shell
   shell="$(where dms)"
@@ -139,6 +152,8 @@ current() {
     echo dms
   elif running "$CAELESTIA_PATTERN"; then
     echo caelestia
+  elif running "$NOCTALIA_PATTERN"; then
+    echo noctalia
   elif running "$WAYBAR_PATTERN"; then
     echo classic
   else
@@ -151,6 +166,7 @@ list() {
   have omarchy-launch-shell && echo "omarchy   installed" || echo "omarchy   missing"
   have dms && echo "dms       installed" || echo "dms       missing"
   have caelestia-shell && echo "caelestia installed" || echo "caelestia missing"
+  have noctalia && echo "noctalia  installed" || echo "noctalia  missing"
 }
 
 # Re-render the current theme for whichever shell now owns the screen: each
@@ -181,7 +197,7 @@ esac
 target="$1"
 case "$target" in
   waybar) target=classic ;;
-  classic | omarchy | dms | caelestia) ;;
+  classic | omarchy | dms | caelestia | noctalia) ;;
   *) echo "desktop-switch: unknown stack '$target'" >&2; usage 1 ;;
 esac
 

@@ -79,6 +79,10 @@
     # used; the project's script-driven installer repo stays out.
     caelestia-shell.url = "github:caelestia-dots/shell";
 
+    # Noctalia v5: a fifth stack, native Wayland with no Qt underneath. Kept
+    # on its own nixpkgs so the official cachix binaries stay valid.
+    noctalia.url = "github:noctalia-dev/noctalia";
+
     # AI tool overlays (auto-updated by maintainers)
     claude-code-overlay.url = "github:ryoppippi/claude-code-overlay";
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";

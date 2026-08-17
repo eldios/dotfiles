@@ -46,6 +46,7 @@ in
       "https://nix-community.cachix.org"
       "https://walker.cachix.org"
       "https://walker-git.cachix.org"
+      "https://noctalia.cachix.org"
     ];
 
     # Trust the NCPS signing key
@@ -56,6 +57,7 @@ in
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "walker.cachix.org-1:fG8q+uAaMqhsMxWjwvk0IMb4mFPFLqHjuvfwQxE4oJM="
       "walker-git.cachix.org-1:vmC0ocfPWh0S/vRAQGtChuiZBTAe4wiKDeyyXM0/7pM="
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       # Per-host push keys (paths built and uploaded by sibling hosts)
       "lele8845ace-nix-push-1:Tqs2nfkjeSpDMOOHCDtzjDtpuOD4cWi05k7/lGkXU7E="
       "lele9iyoga-nix-push-1:h2Ip1j6X79KIGnX5vlxU9nlN684SZ+QI7SXyw/2f48c="

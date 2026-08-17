@@ -38,6 +38,12 @@ if command -v caelestia-shell >/dev/null 2>&1; then
   fi
 fi
 
+# Noctalia reads the palette through the riso symlink in its palettes dir;
+# re-selecting the custom scheme makes the running shell reload it.
+if pgrep -f '^/[^[:space:]]*/\.?noctalia(-wrapped)?$' >/dev/null 2>&1; then
+  noctalia msg color-scheme-set custom riso >/dev/null 2>&1 || true
+fi
+
 bg=$(readlink -f "${XDG_STATE_HOME:-$HOME/.local/state}/riso/current/background" 2>/dev/null || true)
 if [ -n "$bg" ]; then
   if pgrep -f 'dms run|dms-shell' >/dev/null 2>&1; then
@@ -45,5 +51,8 @@ if [ -n "$bg" ]; then
   fi
   if pgrep -f 'caelestia-shell|quickshell.*caelestia' >/dev/null 2>&1; then
     caelestia-shell ipc call wallpaper set "$bg" >/dev/null 2>&1 || true
+  fi
+  if pgrep -f '^/[^[:space:]]*/\.?noctalia(-wrapped)?$' >/dev/null 2>&1; then
+    noctalia msg wallpaper-set "$bg" >/dev/null 2>&1 || true
   fi
 fi
