@@ -25,8 +25,11 @@ o.bind("SUPER + F", "Files", "ghostty -e yazi")
 o.bind("SUPER + E", "Emoji / symbols", ask .. "emoji")
 o.bind("SUPER + W", "Window menu", ask .. "menu")
 o.bind("SUPER + M", "Main menu", ask .. "menu")
-o.bind("SUPER + SHIFT + T", "Theme picker", ask .. "theme")
-o.bind("SUPER + SHIFT + B", "Background picker", ask .. "background")
+-- Theming is riso's job on every stack, so these keys skip shell-dispatch
+-- and call it directly: same picker whichever shell owns the screen.
+o.bind("SUPER + SHIFT + T", "Theme picker", bin .. "riso-carousel")
+o.bind("SUPER + SHIFT + B", "Background picker", bin .. "riso-carousel backgrounds")
+o.bind("SUPER + CTRL + SPACE", "Next background", bin .. "riso-background-next")
 
 -- Applications
 o.bind("SUPER + RETURN", "Terminal", "ghostty")
