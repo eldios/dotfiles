@@ -29,6 +29,16 @@
       notify-send -u low "Copied to clipboard" -t 1500
     '';
   };
+  # D-Bus activation guard: mako ships fr.emersion.mako.service, so the first
+  # notification after login would start it on any stack and it would hold
+  # org.freedesktop.Notifications, locking out the shells' own daemons. The
+  # XDG data home copy of the service wins over the profile's, and this Exec
+  # yields a mako only when the classic stack is the one recorded.
+  makoDbusGuard = pkgs.writeShellScript "mako-dbus-guard" ''
+    stack="$(cat "''${XDG_STATE_HOME:-$HOME/.local/state}/desktop-stack" 2>/dev/null)"
+    [ "$stack" = classic ] || exit 1
+    exec ${pkgs.mako}/bin/mako
+  '';
 in {
   home.packages = [
     pkgs.mako
@@ -36,6 +46,12 @@ in {
   ];
 
   services.mako.enable = false;
+
+  xdg.dataFile."dbus-1/services/fr.emersion.mako.service".text = ''
+    [D-BUS Service]
+    Name=org.freedesktop.Notifications
+    Exec=${makoDbusGuard}
+  '';
 
   # Upstream omarchy pattern: only include the current theme's mako.ini, which
   # itself includes core.ini via template-generated content. Themes can opt out

@@ -17,6 +17,10 @@ riso-apply "${1:-}"
 pkill -SIGUSR2 -f '(^|/)ghostty( |$)' 2>/dev/null || true
 pkill -SIGUSR1 -f '(^|/)kitty( |$)' 2>/dev/null || true
 
+# Mako only reads its config at startup; a running instance keeps the old
+# theme until told. No-op when mako is not the notification daemon.
+command -v makoctl >/dev/null 2>&1 && makoctl reload >/dev/null 2>&1 || true
+
 # Alacritty has no reload signal, and the swap of the theme tree kills the
 # watcher on the fragment. Its import chain ends in this stable override
 # file: touching it makes every live window re-read the chain and re-arm.
