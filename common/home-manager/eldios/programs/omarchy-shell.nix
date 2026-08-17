@@ -350,6 +350,22 @@ in {
     fi
   '';
 
+  # Caelestia ships a 600s suspendThenHibernate idle timeout by default
+  # (plugin/src/Caelestia/Config/generalconfig.hpp). On a desktop that means
+  # waking up to a suspended machine, so the seed keeps only lock and dpms.
+  # The shell rewrites this file from its settings UI: real file, written once.
+  home.activation.wireCaelestiaIdle = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    ccfg="${homeDir}/.config/caelestia/shell.json"
+    $DRY_RUN_CMD mkdir -p "${homeDir}/.config/caelestia"
+    [ -f "$ccfg" ] || $DRY_RUN_CMD sh -c "echo '{}' > '$ccfg'"
+    if ! ${pkgs.jq}/bin/jq -e '.general.idle.timeouts' "$ccfg" >/dev/null 2>&1; then
+      $DRY_RUN_CMD sh -c '${pkgs.jq}/bin/jq ".general.idle.timeouts = [
+          { timeout: 180, idleAction: \"lock\" },
+          { timeout: 300, idleAction: \"dpms off\", returnAction: \"dpms on\" }
+        ]" "'"$ccfg"'" > "'"$ccfg"'.tmp" && mv "'"$ccfg"'.tmp" "'"$ccfg"'"'
+    fi
+  '';
+
   # shell.json holds the bar layout and is rewritten by the shell whenever a
   # widget is added or the bar is dragged to another edge, so it must be a real
   # file. Seed it once and leave it alone afterwards.
