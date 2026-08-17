@@ -99,6 +99,7 @@
       echo '${lib.getExe pkgs.riso} bg set "$1"'
       echo "if pgrep -f 'dms run|dms-shell' >/dev/null 2>&1; then dms ipc call wallpaper set \"\$1\" >/dev/null 2>&1 || true; fi"
       echo "if pgrep -f 'caelestia-shell|quickshell.*caelestia' >/dev/null 2>&1; then caelestia-shell ipc call wallpaper set \"\$1\" >/dev/null 2>&1 || true; fi"
+      echo "if pgrep -f '^/[^[:space:]]*/\\.?noctalia(-wrapped)?\$' >/dev/null 2>&1; then noctalia msg wallpaper-set \"\$1\" >/dev/null 2>&1 || true; fi"
       echo "if pgrep -f '/bin/waybar' >/dev/null 2>&1; then $out/bin/desktop-switch classic-bg >/dev/null 2>&1 || true; fi"
     } > $out/bin/riso-background-apply
     chmod +x $out/bin/riso-background-apply
@@ -127,6 +128,17 @@
       echo '  case "$1" in fill) m=Fill ;; fit) m=Fit ;; center) m=Pad ;; stretch) m=Stretch ;; tile) m=Tile ;; *) m= ;; esac'
       echo '  if [ -n "$m" ]; then'
       echo '    ${pkgs.jq}/bin/jq --arg m "$m" ".wallpaperFillMode = \$m" "$dmscfg" > "$dmscfg.tmp" && mv "$dmscfg.tmp" "$dmscfg"'
+      echo '  fi'
+      echo 'fi'
+      # Noctalia keeps fill_mode in its TOML; the seeded line is rewritten in
+      # place and the shell told to reload. Its "crop" is everyone's "fill",
+      # its "repeat" is "tile".
+      echo 'ncfg="$HOME/.config/noctalia/settings.toml"'
+      echo 'if [ -n "''${1:-}" ] && [ -f "$ncfg" ]; then'
+      echo '  case "$1" in fill) n=crop ;; fit) n=fit ;; center) n=center ;; stretch) n=stretch ;; tile) n=repeat ;; *) n= ;; esac'
+      echo '  if [ -n "$n" ] && grep -q "^fill_mode" "$ncfg"; then'
+      echo '    ${pkgs.gnused}/bin/sed -i "s/^fill_mode *=.*/fill_mode = \"$n\"/" "$ncfg"'
+      echo '    noctalia msg config-reload >/dev/null 2>&1 || true'
       echo '  fi'
       echo 'fi'
       echo "exec $out/bin/desktop-switch classic-bg"
@@ -269,6 +281,7 @@ in {
     desktopTools
     inputs.dank-material-shell.packages.${pkgs.stdenv.hostPlatform.system}.default
     inputs.caelestia-shell.packages.${pkgs.stdenv.hostPlatform.system}.caelestia-shell
+    inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
     pkgs.swayosd
     pkgs.wlogout
     inputs.walker.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -363,6 +376,26 @@ in {
           { timeout: 180, idleAction: \"lock\" },
           { timeout: 300, idleAction: \"dpms off\", returnAction: \"dpms on\" }
         ]" "'"$ccfg"'" > "'"$ccfg"'.tmp" && mv "'"$ccfg"'.tmp" "'"$ccfg"'"'
+    fi
+  '';
+
+  # Noctalia owns settings.toml (its settings UI rewrites it), so it is a real
+  # file seeded once: theme source pinned to the riso palette, one fill_mode
+  # line for riso-background-mode to rewrite. The palette itself is a symlink
+  # into riso's state, re-read on every color-scheme-set.
+  home.activation.wireNoctalia = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    ncfg="${homeDir}/.config/noctalia/settings.toml"
+    $DRY_RUN_CMD mkdir -p "${homeDir}/.config/noctalia/palettes"
+    $DRY_RUN_CMD ln -sfn "${homeDir}/.local/state/riso/current/theme/noctalia.json" \
+      "${homeDir}/.config/noctalia/palettes/riso.json"
+    if [ ! -f "$ncfg" ]; then
+      $DRY_RUN_CMD sh -c 'printf "%s\n" \
+        "[theme]" \
+        "source         = \"custom\"" \
+        "custom_palette = \"riso\"" \
+        "" \
+        "[wallpaper]" \
+        "fill_mode = \"crop\"" > '"$ncfg"
     fi
   '';
 
