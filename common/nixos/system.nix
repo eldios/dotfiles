@@ -10,6 +10,8 @@ let
   binDir = "/etc/profiles/per-user/eldios/bin";
 in
 {
+  imports = [./suspend.nix];
+
   zramSwap = {
     enable = true;
     algorithm = "zstd";
