@@ -8,8 +8,9 @@
   upstream = inputs.omarchy-quattro;
   homeDir = config.home.homeDirectory;
 
-  # Theme applied on first run, when no theme is active yet.
-  defaultTheme = "tokyo-night";
+  # Theme applied on first run, when no theme is active yet: riso's
+  # compiled-in fallback, the only theme a clean machine has.
+  defaultTheme = "plain";
 
   # The tree OMARCHY_PATH points at. Upstream installs it at
   # /usr/share/omarchy from an Arch package; the shell reads its own QML from
@@ -26,9 +27,13 @@
   # to fail half-way is worse than one that is honestly absent. Chromium's
   # helpers are kept back out of the installer sweep: they write user
   # configuration, not packages.
+  # No bundled themes: riso carries its own fallback, and every other theme
+  # is installed by hand into ~/.config/riso/themes. Shipping Omarchy's
+  # defaults here would resurface them in every listing through the
+  # $OMARCHY_PATH/themes search path.
   omarchyRoot = pkgs.runCommandLocal "omarchy-root" {} ''
     mkdir -p $out
-    cp -r ${upstream}/shell ${upstream}/themes ${upstream}/default ${upstream}/config ${upstream}/bin $out/
+    cp -r ${upstream}/shell ${upstream}/default ${upstream}/config ${upstream}/bin $out/
     chmod -R u+w $out
     patchShebangs $out/bin
 
@@ -81,7 +86,6 @@
     # on screen, and that the classic stack repaints through swaybg.
     {
       echo '#!${pkgs.runtimeShell}'
-      echo 'export RISO_THEMES=${omarchyRoot}/themes'
       echo 'export OMARCHY_PATH=${omarchyRoot}'
       echo 'export RISO_CAROUSEL_APPLY=omarchy-theme-set'
       echo "export RISO_CAROUSEL_APPLY_BG=$out/bin/riso-background-apply"
@@ -149,7 +153,6 @@
       {
         echo '#!${pkgs.runtimeShell}'
         echo 'export OMARCHY_PATH=${omarchyRoot}'
-        echo 'export RISO_THEMES=${omarchyRoot}/themes'
         # The profile comes before the inherited PATH: a session started on an
         # older generation still carries the old root, where names this
         # generation removed on purpose would otherwise be found again.
@@ -201,8 +204,8 @@
     desktop=()
     [ -n "''${2:-}" ] && desktop=(--desktop "$2")
 
-    # Themes come from riso's own search path: the wrapper's RISO_THEMES
-    # points it at the shipped set, and themes the user installs win over it.
+    # Themes come from riso's own search path: what the user installed
+    # under ~/.config/riso/themes, plus the compiled-in fallback.
     exec ${lib.getExe pkgs.riso} set "$theme" \
       --templates "$HOME/.config/riso/themed" \
       --templates "${omarchyRoot}/default/themed" \
