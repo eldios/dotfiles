@@ -90,6 +90,11 @@
   # finger unlock set fprintAuth = true; hyprlock.nix follows it and
   # then runs password and fingerprint in parallel.
   security.pam.services.hyprlock.fprintAuth = lib.mkDefault false;
+  # Without this hyprlock's stack has no pam_gnome_keyring at all, so the login
+  # keyring stays locked for the rest of the session once the screen locks. Only
+  # a typed password feeds it: pam_fprintd is sufficient and sits ahead of
+  # pam_gnome_keyring, so finger unlock still leaves the keyring closed.
+  security.pam.services.hyprlock.enableGnomeKeyring = lib.mkDefault true;
 
   # Wayland env vars are set per-compositor (hyprland.nix, niri.nix, etc.)
   # Don't set them globally - breaks X11 sessions like i3
