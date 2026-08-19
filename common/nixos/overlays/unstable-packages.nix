@@ -7,8 +7,6 @@ let
   unstablePkgs = import nixpkgs-unstable {
     inherit (super.stdenv.hostPlatform) system;
     config = super.pkgs.config or {}; # Inherit config from main pkgs
-    # Fixes that belong to the unstable set itself, so every consumer sees them.
-    overlays = [ (import ./hyprland-glaze.nix) ];
   };
 in
 {
