@@ -7,6 +7,7 @@
 #   desktop-switch dms       DankMaterialShell
 #   desktop-switch caelestia Caelestia
 #   desktop-switch noctalia  Noctalia
+#   desktop-switch retheme   re-apply the theme to the running stack
 #   desktop-switch current   which one is running
 #   desktop-switch list      which ones are installed
 #
@@ -27,7 +28,7 @@ set -uo pipefail
 STATE="${XDG_STATE_HOME:-$HOME/.local/state}/desktop-stack"
 
 usage() {
-  sed -n '3,13p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '3,14p' "$0" | sed 's/^# \{0,1\}//'
   exit "${1:-0}"
 }
 
@@ -172,18 +173,18 @@ list() {
 
 # Re-render the current theme for whichever shell now owns the screen: each
 # reads its own format, so the files that were right a second ago are not.
-# riso-apply carries the theme and template directories; only the desktop to
-# notify differs between stacks.
+# omarchy-theme-set renders through riso and then hands the result to the
+# shells that need telling; only the desktop to notify differs between stacks.
 retheme() {
   local desktop
-  have riso-apply || return 0
+  have omarchy-theme-set || return 0
 
   case "$1" in
     omarchy) desktop=omarchy ;;
     *) desktop=hyprland ;;
   esac
 
-  riso-apply "" "$desktop" >/dev/null 2>&1 || true
+  omarchy-theme-set "" "$desktop" >/dev/null 2>&1 || true
 }
 
 case "${1:-current}" in
@@ -193,6 +194,10 @@ case "${1:-current}" in
   # Redraw the classic wallpaper from the current link and mode; a no-op
   # unless swaybg has anything to show.
   classic-bg) start_swaybg; exit 0 ;;
+  # Re-apply the theme to the stack already on screen. The session runs this
+  # once the shell is up: a shell started a moment ago has no IPC socket yet,
+  # so the theme handed over during the switch reaches nobody.
+  retheme) retheme "$(current)"; exit 0 ;;
 esac
 
 target="$1"
