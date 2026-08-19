@@ -8,7 +8,9 @@
 
 set -euo pipefail
 
-riso-apply "${1:-}"
+# The desktop to notify is the caller's to state: with OMARCHY_PATH pinned,
+# riso would otherwise take every stack for the Omarchy shell.
+riso-apply "${1:-}" "${2:-}"
 
 # Terminals only reload on a signal, and the upstream helper sends them with
 # killall by name, which never matches a Nix-wrapped binary: signal by
