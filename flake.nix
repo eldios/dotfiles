@@ -100,6 +100,13 @@
     # Ratspeak — Reticulum/LXMF desktop client, own packaging flake
     # (builds against its own nixpkgs-unstable pin, like herdr)
     nix-ratspeak.url = "github:eldios/nix-ratspeak";
+
+    # vm-curator — QEMU/KVM desktop VM TUI, packaged by its own upstream
+    # flake. Pinned to the release tag; bump deliberately.
+    vm-curator = {
+      url = "github:mroboff/vm-curator/v1.4.0";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs = {
@@ -121,6 +128,7 @@
     nixpkgs-unstable,
     riso,
     sops-nix,
+    vm-curator,
     xremap,
     zen-browser,
     ...
@@ -154,6 +162,7 @@
         nixpkgs-unstable
         riso
         sops-nix
+        vm-curator
         xremap
         zen-browser
         ;
