@@ -8,6 +8,9 @@ o.exec_on_start("dbus-update-activation-environment --systemd WAYLAND_DISPLAY DI
 -- one chosen last and falls back to a working stack if it cannot.
 o.exec_on_start(bin .. "desktop-switch \"$(cat \"${XDG_STATE_HOME:-$HOME/.local/state}/desktop-stack\" 2>/dev/null || echo classic)\"")
 
-o.exec_on_start("sleep 1 && " .. bin .. "omarchy-theme-bg-set \"${XDG_STATE_HOME:-$HOME/.local/state}/riso/current/background\"")
+-- The switch above hands the theme to a shell that is still starting, whose
+-- IPC socket does not exist yet. Re-apply once it is up, which is also what
+-- puts the wallpaper back on screen after a reboot.
+o.exec_on_start("sleep 2 && " .. bin .. "desktop-switch retheme")
 o.exec_on_start("wl-clip-persist --clipboard regular")
 o.exec_on_start("wl-paste --watch cliphist store")
