@@ -170,7 +170,7 @@
         dwarf-fortress # colony sim (free classic edition)
         lincity-ng # city/economy sim
         openttd # Transport Tycoon Deluxe
-        simutrans # transport simulation
+        simutrans_binaries # transport simulation
         the-powder-toy # physics sandbox
         widelands # Settlers-like economy RTS
 
