@@ -6,17 +6,17 @@
 # the hash-mismatch errors on rebuild.
 # Upstream tags: https://github.com/gitbutlerapp/gitbutler/tags
 final: _prev: let
-  version = "0.21.2";
+  version = "0.22.0";
   src = final.unstable.fetchFromGitHub {
     owner = "gitbutlerapp";
     repo = "gitbutler";
     tag = "release/${version}";
-    hash = "sha256-aFKy761lkcWbeGeET+RB+kjuyhaNK3qitptXC8i6Y9A=";
+    hash = "sha256-iiUgqpoLixyBG+MKQZBQbt4aCsRPrM8lPmwJHReAgPk=";
   };
   cargoDeps = final.unstable.rustPlatform.fetchCargoVendor {
     inherit src;
     name = "gitbutler-${version}-vendor";
-    hash = "sha256-f6Xz6PfF/wnOKc910tS88kXKWx7bvksfIFjQG5UWxgE=";
+    hash = "sha256-iuEDFrB/ZMhRAoHopuSwH1r7mE/0hLv/bnZzdYMWGRY=";
   };
 in {
   gitbutler = final.unstable.gitbutler.overrideAttrs (_finalAttrs: prev: {
@@ -25,12 +25,18 @@ in {
     # prev.pnpmDeps already tracks the new src/version via finalAttrs;
     # only its fixed-output hash needs refreshing.
     pnpmDeps = prev.pnpmDeps.overrideAttrs {
-      outputHash = "sha256-Tkfzpcsyg2aKiO/MOOuaF82qa3idE7mq5nPrXSqJMWs=";
+      outputHash = "sha256-dGYdphuTp3uTwuJR0JZDC9IdF07XqrAAnM6SPB6C+2s=";
     };
 
     # The `but` integration tests build git fixtures by running scripts at
     # check time; the Nix sandbox has no git for that.
     doCheck = false;
+
+    # 0.22.0 enables git2's unstable_sha256 feature: libgit2-sys then probes
+    # for a system libgit2-experimental (GIT_EXPERIMENTAL_SHA256), which
+    # nixpkgs does not ship. Build the vendored, sha256-enabled libgit2
+    # instead of forcing the system one.
+    env = prev.env // { LIBGIT2_NO_VENDOR = 0; };
 
     # nixpkgs' 0.19.9 postPatch lists `gitbutler-git-setsid` in externalBin, but
     # upstream dropped that binary; Linux release builds ship askpass only and
