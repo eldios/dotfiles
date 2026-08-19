@@ -14,13 +14,13 @@ self: super:
 {
   pi-coding-agent = super.buildNpmPackage {
     pname = "pi-coding-agent";
-    version = "0.66.1";
+    version = "0.73.1";
 
     src = ../overlays/pi-coding-agent;
 
     nodejs = super.nodejs_22;
 
-    npmDepsHash = "sha256-kMBCpkGpx5A5OcWnU3nvg7i6/kefZ8t4pG8wUfQGsoY=";
+    npmDepsHash = "sha256-AVZr5LHSOVgY5Iu6uOcZv7Fdp9dZyx0XYIYLsajGGnI=";
 
     # The wrapper has no build step — only runtime deps from npm registry
     dontNpmBuild = true;
