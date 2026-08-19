@@ -90,7 +90,12 @@
       echo 'export RISO_CAROUSEL_APPLY=omarchy-theme-set'
       echo "export RISO_CAROUSEL_APPLY_BG=$out/bin/riso-background-apply"
       echo 'export PATH=${omarchyRoot}/bin:/etc/profiles/per-user/${config.home.username}/bin:$PATH'
-      echo 'exec ${lib.getExe pkgs.riso} carousel "$@"'
+      # The wrapper's argument contract stays: no argument means themes,
+      # "backgrounds" means backgrounds; picking is a mode of set now.
+      echo 'case "''${1:-themes}" in'
+      echo '  backgrounds) exec ${lib.getExe pkgs.riso} backgrounds set --gui ;;'
+      echo '  *)           exec ${lib.getExe pkgs.riso} theme set --gui ;;'
+      echo 'esac'
     } > $out/bin/riso-carousel
     chmod +x $out/bin/riso-carousel
 
@@ -100,7 +105,7 @@
       echo '#!${pkgs.runtimeShell}'
       echo 'export OMARCHY_PATH=${omarchyRoot}'
       echo 'export PATH=${omarchyRoot}/bin:/etc/profiles/per-user/${config.home.username}/bin:$PATH'
-      echo '${lib.getExe pkgs.riso} bg set "$1"'
+      echo '${lib.getExe pkgs.riso} backgrounds set "$1"'
       echo "if pgrep -f 'dms run|dms-shell' >/dev/null 2>&1; then dms ipc call wallpaper set \"\$1\" >/dev/null 2>&1 || true; fi"
       echo "if pgrep -f 'caelestia-shell|quickshell.*caelestia' >/dev/null 2>&1; then caelestia-shell ipc call wallpaper set \"\$1\" >/dev/null 2>&1 || true; fi"
       echo "if pgrep -f '^/[^[:space:]]*/\\.?noctalia(-wrapped)?\$' >/dev/null 2>&1; then noctalia msg wallpaper-set \"\$1\" >/dev/null 2>&1 || true; fi"
@@ -113,7 +118,7 @@
       echo '#!${pkgs.runtimeShell}'
       echo 'export OMARCHY_PATH=${omarchyRoot}'
       echo 'export PATH=${omarchyRoot}/bin:/etc/profiles/per-user/${config.home.username}/bin:$PATH'
-      echo '${lib.getExe pkgs.riso} bg next --no-reload'
+      echo '${lib.getExe pkgs.riso} backgrounds next --no-reload'
       echo 'bg=$(readlink -f "''${XDG_STATE_HOME:-$HOME/.local/state}/riso/current/background")'
       echo "exec $out/bin/riso-background-apply \"\$bg\""
     } > $out/bin/riso-background-next
@@ -126,7 +131,7 @@
     {
       echo '#!${pkgs.runtimeShell}'
       echo 'export PATH=/etc/profiles/per-user/${config.home.username}/bin:$PATH'
-      echo '${lib.getExe pkgs.riso} bg mode "$@"'
+      echo '${lib.getExe pkgs.riso} backgrounds mode "$@"'
       echo 'dmscfg="$HOME/.config/DankMaterialShell/settings.json"'
       echo 'if [ -n "''${1:-}" ] && [ -f "$dmscfg" ]; then'
       echo '  case "$1" in fill) m=Fill ;; fit) m=Fit ;; center) m=Pad ;; stretch) m=Stretch ;; tile) m=Tile ;; *) m= ;; esac'
@@ -148,6 +153,20 @@
       echo "exec $out/bin/desktop-switch classic-bg"
     } > $out/bin/riso-background-mode
     chmod +x $out/bin/riso-background-mode
+
+    # riso itself gets the same coat: --tui and --gui read the apply hooks
+    # from the environment, and a bare terminal has none of them. Without
+    # this, a picker launched by hand applies through riso alone and skips
+    # the shim - no scheme copy, no terminal signals, no wallpaper handoff.
+    {
+      echo '#!${pkgs.runtimeShell}'
+      echo 'export OMARCHY_PATH=${omarchyRoot}'
+      echo 'export RISO_CAROUSEL_APPLY=omarchy-theme-set'
+      echo "export RISO_CAROUSEL_APPLY_BG=$out/bin/riso-background-apply"
+      echo 'export PATH=${omarchyRoot}/bin:/etc/profiles/per-user/${config.home.username}/bin:$PATH'
+      echo 'exec ${lib.getExe pkgs.riso} "$@"'
+    } > $out/bin/riso
+    chmod +x $out/bin/riso
 
     for tool in desktop-switch shell-dispatch riso-apply omarchy-theme-set riso-theme-menu; do
       {
@@ -206,7 +225,7 @@
 
     # Themes come from riso's own search path: what the user installed
     # under ~/.config/riso/themes, plus the compiled-in fallback.
-    exec ${lib.getExe pkgs.riso} set "$theme" \
+    exec ${lib.getExe pkgs.riso} theme set "$theme" \
       --templates "$HOME/.config/riso/themed" \
       --templates "${omarchyRoot}/default/themed" \
       "''${desktop[@]}"
@@ -286,8 +305,10 @@ in {
     # which affects omarchy-restart-shell rather than the running shell.
     pkgs.quickshell
 
-    # Renders themes into the files the shell reads.
-    pkgs.riso
+    # Renders themes into the files the shell reads. Low priority: the
+    # desktop-tools wrapper answers to the name riso on PATH, carrying the
+    # apply hooks; scripts that want the bare binary reference it directly.
+    (lib.lowPrio pkgs.riso)
 
     # The commands the shell and the menus call out to.
     omarchyBin
