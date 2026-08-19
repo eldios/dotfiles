@@ -187,6 +187,34 @@ retheme() {
   omarchy-theme-set "" "$desktop" >/dev/null 2>&1 || true
 }
 
+# Answering its own IPC is what makes a shell ready to be handed a theme: one
+# started a moment ago has a process but no socket yet, and the handover is
+# lost with it. The colour scheme reaches caelestia as a file it watches, so
+# it survives the race; the wallpaper is an IPC call, and does not.
+ready() {
+  case "$1" in
+    omarchy)   timeout 1 omarchy-shell shell ping ;;
+    caelestia) timeout 1 caelestia-shell ipc call drawers list ;;
+    noctalia)  timeout 1 noctalia msg status ;;
+    # `dms ipc` alone exits zero with no shell running at all, so the probe
+    # has to be a call: reading the wallpaper is the one that only answers
+    # for a shell that is up.
+    dms)       timeout 1 dms ipc call wallpaper get ;;
+    # The classic stack has no shell to ask; swaybg is started here.
+    *)         true ;;
+  esac >/dev/null 2>&1
+}
+
+# Bounded: a shell that never answers must not hold the session's startup.
+wait_ready() {
+  local waited=0
+  while ! ready "$1"; do
+    waited=$((waited + 1))
+    ((waited >= 40)) && return 1
+    sleep 0.5
+  done
+}
+
 case "${1:-current}" in
   -h | --help | help) usage 0 ;;
   current) current; exit 0 ;;
@@ -197,7 +225,12 @@ case "${1:-current}" in
   # Re-apply the theme to the stack already on screen. The session runs this
   # once the shell is up: a shell started a moment ago has no IPC socket yet,
   # so the theme handed over during the switch reaches nobody.
-  retheme) retheme "$(current)"; exit 0 ;;
+  retheme)
+    stack="$(current)"
+    wait_ready "$stack"
+    retheme "$stack"
+    exit 0
+    ;;
 esac
 
 target="$1"
@@ -221,5 +254,8 @@ if ! "start_$target"; then
 fi
 
 echo "$target" >"$STATE"
+# The shell was started a moment ago: hand it the theme only once it can
+# take it, or the wallpaper call lands on a socket that is not there yet.
+wait_ready "$target"
 retheme "$target"
 echo "switched to $target"
