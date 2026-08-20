@@ -27,9 +27,6 @@ command -v makoctl >/dev/null 2>&1 && makoctl reload >/dev/null 2>&1 || true
 # watcher on the fragment. Its import chain ends in this stable override
 # file: touching it makes every live window re-read the chain and re-arm.
 touch "$HOME/.config/riso/overrides/alacritty.toml" 2>/dev/null || true
-for helper in omarchy-restart-hyprctl omarchy-restart-btop; do
-  command -v "$helper" >/dev/null 2>&1 && "$helper" >/dev/null 2>&1 || true
-done
 
 # DMS colors follow the rendered dms.json on their own; the wallpaper needs
 # to be handed over.
