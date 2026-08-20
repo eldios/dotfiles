@@ -99,7 +99,7 @@
     } > $out/bin/riso-carousel
     chmod +x $out/bin/riso-carousel
 
-    # riso bg set moves the link and tells the Omarchy shell; the shells riso
+    # riso backgrounds set moves the link and tells the Omarchy shell; the shells riso
     # does not know, and swaybg on the classic stack, are this machine's.
     {
       echo '#!${pkgs.runtimeShell}'
