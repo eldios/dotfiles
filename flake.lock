@@ -982,11 +982,11 @@
         "nixpkgs": "nixpkgs_15"
       },
       "locked": {
-        "lastModified": 1787194560,
-        "narHash": "sha256-JcNWjv7TUflxl2LGDzcaoykCMBuOQPZb6UdsDAf5tM4=",
+        "lastModified": 1787235478,
+        "narHash": "sha256-g3EqSd7wLjKsjapG+w76eV1p/YWp8cukT50Msll/q8Y=",
         "owner": "eldios",
         "repo": "riso",
-        "rev": "a8b03d7562db7fa5abf4f2fda29b945ed534e6e3",
+        "rev": "9f0eb92cb1a4dd189469b6c552dcb0f2c7d2caf3",
         "type": "github"
       },
       "original": {
