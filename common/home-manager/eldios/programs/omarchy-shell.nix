@@ -403,6 +403,23 @@ in {
     fi
   '';
 
+  # btop saves its whole config back on exit, so it stays a real file and
+  # only color_theme is pointed, once idempotently, at the fragment riso
+  # renders; btop itself carries the value forward from then on.
+  home.activation.wireBtopTheme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    bcfg="${homeDir}/.config/btop/btop.conf"
+    fragment="${homeDir}/.local/state/riso/current/theme/btop.theme"
+    $DRY_RUN_CMD mkdir -p "${homeDir}/.config/btop"
+    [ -f "$bcfg" ] || $DRY_RUN_CMD touch "$bcfg"
+    if ! grep -qxF "color_theme = \"$fragment\"" "$bcfg" 2>/dev/null; then
+      if grep -q '^color_theme = ' "$bcfg" 2>/dev/null; then
+        $DRY_RUN_CMD sed -i "s|^color_theme = .*|color_theme = \"$fragment\"|" "$bcfg"
+      else
+        $DRY_RUN_CMD sh -c "printf 'color_theme = \"%s\"\n' \"$fragment\" >> \"$bcfg\""
+      fi
+    fi
+  '';
+
   # Caelestia ships a 600s suspendThenHibernate idle timeout by default
   # (plugin/src/Caelestia/Config/generalconfig.hpp). On a desktop that means
   # waking up to a suspended machine, so the seed keeps only lock and dpms.
