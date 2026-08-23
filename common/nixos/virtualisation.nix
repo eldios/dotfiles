@@ -32,7 +32,8 @@
       enable = true;
       autoPrune = {
         enable = true;
-        dates = "weekly";
+        # Not "weekly" (Mon 00:00): staggered after nix-gc at Mon 02:30.
+        dates = "Mon *-*-* 04:00:00";
       };
       # mkDefault so hosts on ZFS (e.g. sox1x) can override without mkForce.
       storageDriver = lib.mkDefault "overlay2";
