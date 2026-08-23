@@ -59,7 +59,9 @@ in
     gc = {
       automatic = true;
       persistent = true;
-      dates = "weekly";
+      # Not "weekly": that is Mon 00:00, the same instant as every other
+      # timer left at its daily/weekly default (fstrim, docker prune, scrub).
+      dates = "Mon *-*-* 02:30:00";
       options = "--delete-older-than 31d";
     };
     extraOptions = ''
@@ -130,7 +132,9 @@ in
 
     fstrim = {
       enable = true;
-      interval = "daily";
+      # Not "daily": that is 00:00, colliding with the weekly Mon 00:00
+      # timers. Trim through dm-crypt is slow when the disk is already busy.
+      interval = "*-*-* 01:30:00";
     };
 
     pcscd.enable = true;

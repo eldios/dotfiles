@@ -59,7 +59,10 @@
     btrfs = {
       autoScrub = {
         enable = true;
-        interval = "weekly";
+        # Not "weekly" (Mon 00:00): that collides with nix-gc, fstrim and
+        # docker prune. Scrub is the heaviest job (hours), so it gets its
+        # own day.
+        interval = "Sat *-*-* 05:30:00";
       };
     };
 
