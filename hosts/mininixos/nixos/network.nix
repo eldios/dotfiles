@@ -97,10 +97,11 @@
     firewall = {
       enable = true;
       allowedTCPPorts = [
-        8971 # Frigate authenticated UI, reached by traefik over the docker bridge
-        8095 # Music Assistant web UI (raggiunto da traefik su docker bridge)
-        9100 # node-exporter, scrapato da prometheus sul docker bridge
-        11434 # ollama, scrapato da prometheus sul docker bridge
+        8095 # Music Assistant web UI, used by traefik
+        8188 # ComfyUI firwall access
+        8971 # Frigate authenticated UI, reached by traefik
+        9100 # node-exporter, used by prometheus
+        11434 # ollama firewall access
       ];
       checkReversePath = false;
       trustedInterfaces = [ "br0" "br50" ];
