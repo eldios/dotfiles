@@ -204,6 +204,26 @@
     homeConfigurations = homeConfigurations; # All defined Home Manager user profiles
 
     formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+
+    # Tools for working on this repo (scripts/, Justfile): `nix develop`.
+    devShells = forAllSystems (
+      system: let
+        p = nixpkgs.legacyPackages.${system};
+      in {
+        default = p.mkShell {
+          packages = with p; [
+            alejandra
+            curl
+            jq
+            just
+            nodejs
+            prefetch-npm-deps
+            python3
+            shellcheck
+          ];
+        };
+      }
+    );
   };
 }
 # vim: set nu li sw=2 ts=2 expandtab
