@@ -6,17 +6,17 @@
 # the hash-mismatch errors on rebuild.
 # Upstream tags: https://github.com/gitbutlerapp/gitbutler/tags
 final: _prev: let
-  version = "0.22.1";
+  version = "0.22.2";
   src = final.unstable.fetchFromGitHub {
     owner = "gitbutlerapp";
     repo = "gitbutler";
     tag = "release/${version}";
-    hash = "sha256-UmpSSunZUS6sXRbwj2pMFKmbMlnKvOJE9nySx1LBBvg=";
+    hash = "sha256-HAEaxd2wNPyz8i1L78387Kr2Sc62HFX31I32DHeTwwg=";
   };
   cargoDeps = final.unstable.rustPlatform.fetchCargoVendor {
     inherit src;
     name = "gitbutler-${version}-vendor";
-    hash = "sha256-Gf9uB5n9KqVCAnbNsoyFCPxYqAnOw6Wlr/CRyT62BJ8=";
+    hash = "sha256-kIfcwNUp+0/kmg4Yilv/FvylyjhCdFGD5smuxB4hOlg=";
   };
 in {
   gitbutler = final.unstable.gitbutler.overrideAttrs (_finalAttrs: prev: {
@@ -25,7 +25,7 @@ in {
     # prev.pnpmDeps already tracks the new src/version via finalAttrs;
     # only its fixed-output hash needs refreshing.
     pnpmDeps = prev.pnpmDeps.overrideAttrs {
-      outputHash = "sha256-UxNlVMNx2sY8PZ3TleO0YoinSQiHELfR8bLin66SaTo=";
+      outputHash = "sha256-aqz9IbpvG0zOz7cQWpRzEtqLAgI250dN2bBTp1wBhkE=";
     };
 
     # The `but` integration tests build git fixtures by running scripts at
