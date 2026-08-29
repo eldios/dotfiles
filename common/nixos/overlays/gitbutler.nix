@@ -1,6 +1,6 @@
 # GitButler as one package. The Tauri GUI binary is multi-call (`builtin-but`),
 # so it also acts as the `but` CLI/TUI when invoked by that name. We add the
-# `but` and `gitbutler` symlinks to it — upstream's Linux .deb does the same
+# `but` and `gitbutler` symlinks to it - upstream's Linux .deb does the same
 # `but -> gitbutler-tauri` symlink; nixpkgs ships only `gitbutler-tauri`.
 # To bump: set `version`, then refresh the src/cargoDeps/pnpmDeps hashes from
 # the hash-mismatch errors on rebuild.

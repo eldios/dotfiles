@@ -11,12 +11,12 @@ outdated:
 
 # Update one custom version: overlay pin + hashes, atomically, hash by hash
 update pkg:
-    ./scripts/update-versions.sh {{pkg}}
+    nice -n 19 ./scripts/update-versions.sh {{pkg}}
 
 # Update every custom version in sequence (stops at the first failure;
 # hashes already written stay written)
 update-all:
-    ./scripts/update-versions.sh all
+    nice -n 19 ./scripts/update-versions.sh all
 
 # Evaluate every host toplevel: catches config errors before any switch
 eval-all:
