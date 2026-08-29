@@ -61,7 +61,7 @@ eval_ok() { # attr
 
 report() { # current latest -> returns 1 when already up to date
   if [[ "$1" == "$2" ]]; then
-    log "gia' aggiornato ($1)"
+    log "already up to date ($1)"
     return 1
   fi
   log "$1 -> $2"
@@ -116,7 +116,7 @@ update_pi() {
     "\"@mariozechner/pi-coding-agent\": \"$ver\""
   (cd "$d" && nix-shell -p nodejs --run \
     'npm install --package-lock-only --ignore-scripts' >/dev/null)
-  log "lockfile rigenerato"
+  log "lockfile regenerated"
   new=$(nix-shell -p prefetch-npm-deps --run "prefetch-npm-deps $d/package-lock.json" 2>/dev/null | tail -1)
   old=$(grep -oP 'npmDepsHash = "\Ksha256-[^"]+' "$f")
   replace "$f" "$old" "$new"
@@ -149,18 +149,18 @@ update_gitbutler() {
   replace "$f" "version = \"$cur\";" "version = \"$ver\";"
   new=$(prefetch_github "gitbutlerapp/gitbutler/$tag")
   replace "$f" "${hashes[0]}" "$new"
-  log "src ok, scopro cargoDeps (fetch dei vendor, qualche minuto)"
+  log "src ok, resolving cargoDeps (vendor fetch, a few minutes)"
   replace "$f" "${hashes[1]}" "$FAKE"
   new=$(fod_hash gitbutler.cargoDeps)
-  [[ -n "$new" ]] || { log "hash cargoDeps non trovato"; return 1; }
+  [[ -n "$new" ]] || { log "cargoDeps hash not found"; return 1; }
   replace "$f" "$FAKE" "$new"
-  log "cargoDeps ok, scopro pnpmDeps"
+  log "cargoDeps ok, resolving pnpmDeps"
   replace "$f" "${hashes[2]}" "$FAKE"
   new=$(fod_hash gitbutler.pnpmDeps)
-  [[ -n "$new" ]] || { log "hash pnpmDeps non trovato"; return 1; }
+  [[ -n "$new" ]] || { log "pnpmDeps hash not found"; return 1; }
   replace "$f" "$FAKE" "$new"
   eval_ok gitbutler
-  log "NOTA: hash aggiornati ed eval ok; la compilazione vera (pesante) parte al prossimo nixu"
+  log "hashes updated and eval ok; the (heavy) compile happens at the next switch"
 }
 
 update_vm_curator() {
@@ -171,7 +171,7 @@ update_vm_curator() {
   report "$cur" "$tag" || return 0
   replace "$f" "github:mroboff/vm-curator/$cur" "github:mroboff/vm-curator/$tag"
   nix flake update vm-curator >/dev/null
-  log "input rilockato"
+  log "input re-locked"
   eval_ok vm-curator
 }
 
@@ -187,11 +187,11 @@ run() {
       for p in buzz antigravity pi qbz vm-curator gitbutler; do run "$p"; done
       ;;
     *)
-      echo "uso: $0 [--check] {buzz|antigravity|pi|qbz|gitbutler|vm-curator|all}" >&2
+      echo "usage: $0 [--check] {buzz|antigravity|pi|qbz|gitbutler|vm-curator|all}" >&2
       exit 1
       ;;
   esac
 }
 
 run "$TARGET"
-[[ $CHECK == 1 ]] || echo "Fatto. Controlla con: git diff (o but diff), poi commit e nixu."
+[[ $CHECK == 1 ]] || echo "Done. Review with: but diff, then commit and switch."
