@@ -73,6 +73,11 @@ in
       # Cap intra-build parallelism: uncapped builds run make/cargo -j$(nproc)
       # and can starve the interactive desktop on CPU and RAM.
       cores = lib.mkDefault 8;
+      # One local build at a time: nearly everything comes from the caches,
+      # and the few local builds are the RAM-heavy Rust overlays (qbz,
+      # gitbutler), whose peaks must not overlap inside the daemon's
+      # MemoryHigh budget. Substitutions stay parallel regardless.
+      max-jobs = lib.mkDefault 1;
       experimental-features = [
         "nix-command"
         "flakes"
