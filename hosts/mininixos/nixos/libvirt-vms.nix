@@ -14,6 +14,7 @@
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock"
         "/srv/containers/portainer:/data"
+        "/srv/containers/:/srv/containers/:ro"
       ];
       extraOptions = [
         "--network=proxy"
