@@ -58,25 +58,33 @@ o.bind("SUPER + SHIFT + O", "Swap with previous window", hl.dsp.window.swap({ pr
 o.bind("SUPER + TAB", "Focus next monitor", hl.dsp.focus({ monitor = "+1" }))
 o.bind("SUPER + SHIFT + TAB", "Focus previous monitor", hl.dsp.focus({ monitor = "-1" }))
 for key, dir in pairs({ H = "l", J = "d", K = "u", L = "r" }) do
-  o.bind("SUPER + " .. key, "Focus " .. dir, hl.dsp.focus({ direction = dir }))
-  o.bind("SUPER + SHIFT + " .. key, "Move window " .. dir, hl.dsp.window.move({ direction = dir }))
-  o.bind("SUPER + CTRL + " .. key, "Move into group " .. dir, hl.dsp.window.move({ into_group = dir }))
-  -- out_of_group takes no direction: four deliberate aliases mirroring entry
-  o.bind("SUPER + CTRL + SHIFT + " .. key, "Move out of group", hl.dsp.window.move({ out_of_group = true }))
+	o.bind("SUPER + " .. key, "Focus " .. dir, hl.dsp.focus({ direction = dir }))
+	o.bind("SUPER + SHIFT + " .. key, "Move window " .. dir, hl.dsp.window.move({ direction = dir }))
+	o.bind("SUPER + CTRL + " .. key, "Move into group " .. dir, hl.dsp.window.move({ into_group = dir }))
+	-- out_of_group takes no direction: four deliberate aliases mirroring entry
+	o.bind("SUPER + CTRL + SHIFT + " .. key, "Move out of group", hl.dsp.window.move({ out_of_group = true }))
 end
 o.bind("SUPER + Z", "Focus urgent window", hl.dsp.focus({ urgent_or_last = true }))
 
 -- Workspaces and scratchpad
 for ws = 1, 10 do
-  local key = tostring(ws % 10)
-  o.bind("SUPER + " .. key, "Workspace " .. ws, hl.dsp.focus({ workspace = tostring(ws) }))
-  o.bind("SUPER + SHIFT + " .. key, "Move to workspace " .. ws, hl.dsp.window.move({ workspace = tostring(ws), follow = false }))
+	local key = tostring(ws % 10)
+	o.bind("SUPER + " .. key, "Workspace " .. ws, hl.dsp.focus({ workspace = tostring(ws) }))
+	o.bind(
+		"SUPER + SHIFT + " .. key,
+		"Move to workspace " .. ws,
+		hl.dsp.window.move({ workspace = tostring(ws), follow = false })
+	)
 end
 o.bind("SUPER + MINUS", "Toggle scratchpad", hl.dsp.workspace.toggle_special("scratchpad"))
 o.bind("SUPER + SHIFT + MINUS", "Move to scratchpad", hl.dsp.window.move({ workspace = "special:scratchpad" }))
 o.bind("SUPER + BACKSPACE", "Previous workspace", hl.dsp.focus({ workspace = "previous" }))
 for key, dir in pairs({ LEFT = "l", RIGHT = "r", UP = "u", DOWN = "d" }) do
-  o.bind("SUPER + SHIFT + ALT + " .. key, "Move workspace to monitor " .. dir, hl.dsp.workspace.move({ monitor = dir }))
+	o.bind(
+		"SUPER + SHIFT + ALT + " .. key,
+		"Move workspace to monitor " .. dir,
+		hl.dsp.workspace.move({ monitor = dir })
+	)
 end
 
 -- Screenshots and clipboard
@@ -102,9 +110,19 @@ o.bind("SUPER + CTRL + SHIFT + R", "Reload configuration", "hyprctl reload")
 
 -- Media and hardware (locked = also active on the lockscreen)
 o.bind("XF86AudioRaiseVolume", "Volume up", "swayosd-client --output-volume raise", { locked = true, repeating = true })
-o.bind("XF86AudioLowerVolume", "Volume down", "swayosd-client --output-volume lower", { locked = true, repeating = true })
+o.bind(
+	"XF86AudioLowerVolume",
+	"Volume down",
+	"swayosd-client --output-volume lower",
+	{ locked = true, repeating = true }
+)
 o.bind("XF86MonBrightnessUp", "Brightness up", "swayosd-client --brightness raise", { locked = true, repeating = true })
-o.bind("XF86MonBrightnessDown", "Brightness down", "swayosd-client --brightness lower", { locked = true, repeating = true })
+o.bind(
+	"XF86MonBrightnessDown",
+	"Brightness down",
+	"swayosd-client --brightness lower",
+	{ locked = true, repeating = true }
+)
 o.bind("XF86AudioMute", "Mute", "swayosd-client --output-volume mute-toggle", { locked = true })
 o.bind("XF86AudioMicMute", "Mute microphone", "swayosd-client --input-volume mute-toggle", { locked = true })
 o.bind("XF86AudioPlay", "Play/pause", "playerctl play-pause", { locked = true })
@@ -113,8 +131,18 @@ o.bind("XF86AudioPrev", "Previous track", "playerctl previous", { locked = true 
 
 -- Window resize (hold to repeat)
 for key, delta in pairs({ H = { -20, 0 }, L = { 20, 0 }, K = { 0, -20 }, J = { 0, 20 } }) do
-  o.bind("SUPER + ALT + " .. key, "Resize window", hl.dsp.window.resize({ x = delta[1], y = delta[2], relative = true }), { repeating = true })
-  o.bind("SUPER + SHIFT + ALT + " .. key, "Resize window (large)", hl.dsp.window.resize({ x = delta[1] * 5, y = delta[2] * 5, relative = true }), { repeating = true })
+	o.bind(
+		"SUPER + ALT + " .. key,
+		"Resize window",
+		hl.dsp.window.resize({ x = delta[1], y = delta[2], relative = true }),
+		{ repeating = true }
+	)
+	o.bind(
+		"SUPER + SHIFT + ALT + " .. key,
+		"Resize window (large)",
+		hl.dsp.window.resize({ x = delta[1] * 5, y = delta[2] * 5, relative = true }),
+		{ repeating = true }
+	)
 end
 
 -- Mouse
