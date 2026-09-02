@@ -23,6 +23,12 @@
   # GPU fan curves, power limits, clocking (daemon + CLI)
   services.lact.enable = true;
 
+  # Cap the R9700 at 210W (board max 300W) to keep temperatures in check on a
+  # 24/7 headless box. Matched by PCI id so the Raphael iGPU is untouched.
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="hwmon", ATTRS{vendor}=="0x1002", ATTRS{device}=="0x7551", ATTR{power1_cap}="210000000"
+  '';
+
   # AMD GPU monitoring and diagnostic tools (useful with Ollama ROCm)
   environment.systemPackages = with pkgs; [
     amdgpu_top              # TUI: VRAM, clocks, temps, GPU usage
