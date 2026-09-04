@@ -1,6 +1,15 @@
 {
   description = "Lele's nix conf - for macOS and nixOS";
 
+  # Every module under ./modules is a den module, auto-imported by
+  # import-tree; plain NixOS and Home Manager modules live under `_` paths,
+  # which import-tree skips. Hosts, users and features are declared there.
+  outputs = inputs:
+    (inputs.nixpkgs.lib.evalModules {
+      modules = [(inputs.import-tree ./modules)];
+      specialArgs = {inherit inputs;};
+    }).config.flake;
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     home-manager = {
@@ -15,6 +24,10 @@
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
+
+    # Aspect-oriented configuration framework and its module loader.
+    den.url = "github:denful/den";
+    import-tree.url = "github:denful/import-tree";
 
     # additional utils
     nixos-hardware.url = "github:nixos/nixos-hardware";
@@ -37,11 +50,6 @@
 
     mpc-hub = {
       url = "github:ravitemer/mcp-hub";
-    };
-
-    dgop = {
-      url = "github:AvengeMedia/dgop";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Launcher stack for the hosts still on the pre-Quickshell desktop.
@@ -108,123 +116,5 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
-
-  outputs = {
-    claude-code-overlay,
-    codex-cli-nix,
-    darwin,
-    dgop,
-    disko,
-    gws-cli,
-    herdr,
-    llm-agents-nix,
-    opencode-nix,
-    home-manager,
-    mpc-hub,
-    nix-ratspeak,
-    nixos-hardware,
-    nixpkgs,
-    nixpkgs-darwin,
-    nixpkgs-unstable,
-    riso,
-    sops-nix,
-    vm-curator,
-    xremap,
-    zen-browser,
-    ...
-  } @ inputs: let
-    forAllSystems = nixpkgs.lib.genAttrs [
-      "aarch64-darwin"
-      "aarch64-linux"
-      "x86_64-linux"
-    ];
-
-    # commonSpecialArgs: A set of common arguments passed to all system configurations.
-    # This helps avoid repetition and ensures consistency across different hosts.
-    # It includes inputs from other flakes (like home-manager, sops-nix) and nixpkgs instances.
-    commonSpecialArgs = {
-      inherit
-        claude-code-overlay
-        codex-cli-nix
-        dgop
-        disko
-        gws-cli
-        herdr
-        home-manager
-        llm-agents-nix
-        opencode-nix
-        inputs
-        mpc-hub
-        nix-ratspeak
-        nixos-hardware
-        nixpkgs
-        nixpkgs-darwin
-        nixpkgs-unstable
-        riso
-        sops-nix
-        vm-curator
-        xremap
-        zen-browser
-        ;
-    };
-
-    # NixOS hosts. Each host ships its own configuration.nix and shares disko and
-    # sops-nix, so they are all built from one helper.
-    mkHost = host:
-      nixpkgs.lib.nixosSystem {
-        specialArgs = commonSpecialArgs;
-        modules = [
-          ./hosts/${host}/nixos/configuration.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-        ];
-      };
-
-    nixosConfigurations = nixpkgs.lib.genAttrs [
-      "lele8845ace" # AMD 8845 AceMagic NUC
-      "lele9iyoga" # Yoga9i (Intel) laptop
-      "mininixos" # Minis NUC (storage / services)
-      "sox1x" # SOX1 Xtreme Gen2
-    ] mkHost;
-
-    # darwinConfigurations: Defines macOS system configurations using nix-darwin.
-    # Similar structure to nixosConfigurations, but for Apple systems.
-    # Currently empty, but structured for future macOS hosts.
-    darwinConfigurations = {};
-
-    # homeConfigurations: Defines user-specific environments using Home Manager.
-    # These can be applied on top of NixOS or darwin configurations, or even standalone.
-    # Allows managing dotfiles, user packages, and services.
-    # Currently empty, but structured for future user profiles not tied to a specific host system configuration.
-    homeConfigurations = {};
-  in {
-    # Return all the configurations
-    nixosConfigurations = nixosConfigurations; # All defined NixOS systems
-    darwinConfigurations = darwinConfigurations; # All defined macOS systems
-    homeConfigurations = homeConfigurations; # All defined Home Manager user profiles
-
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
-
-    # Tools for working on this repo (scripts/, Justfile): `nix develop`.
-    devShells = forAllSystems (
-      system: let
-        p = nixpkgs.legacyPackages.${system};
-      in {
-        default = p.mkShell {
-          packages = with p; [
-            alejandra
-            curl
-            jq
-            just
-            nodejs
-            prefetch-npm-deps
-            python3
-            shellcheck
-          ];
-        };
-      }
-    );
-  };
 }
 # vim: set nu li sw=2 ts=2 expandtab
-

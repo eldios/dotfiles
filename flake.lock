@@ -187,23 +187,18 @@
         "type": "github"
       }
     },
-    "dgop": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
+    "den": {
       "locked": {
-        "lastModified": 1788272949,
-        "narHash": "sha256-nTROtVuJL2cVxg5ApKzXoVje8xjuj68ri5jwu1dTYVk=",
-        "owner": "AvengeMedia",
-        "repo": "dgop",
-        "rev": "8841d925586ef3a36ba939e93999935b6188c520",
+        "lastModified": 1788469400,
+        "narHash": "sha256-2NVetxl+ycFWX4NZTCRqEnx4F37QajVpJe/b+n1Xw9I=",
+        "owner": "denful",
+        "repo": "den",
+        "rev": "36c8ba5c07e2aa7d4816c6314ff2b6656293dee4",
         "type": "github"
       },
       "original": {
-        "owner": "AvengeMedia",
-        "repo": "dgop",
+        "owner": "denful",
+        "repo": "den",
         "type": "github"
       }
     },
@@ -475,6 +470,21 @@
         "owner": "nix-community",
         "ref": "release-26.05",
         "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "import-tree": {
+      "locked": {
+        "lastModified": 1788467110,
+        "narHash": "sha256-ljEMTXP/rH0tOvDzc9gzwww6KcHRPRnEHzd9lK48V7s=",
+        "owner": "denful",
+        "repo": "import-tree",
+        "rev": "eb1b52eaecc57f7c136d07ae8a93e724dfecac46",
+        "type": "github"
+      },
+      "original": {
+        "owner": "denful",
+        "repo": "import-tree",
         "type": "github"
       }
     },
@@ -1008,12 +1018,13 @@
         "codex-cli-nix": "codex-cli-nix",
         "dank-material-shell": "dank-material-shell",
         "darwin": "darwin",
-        "dgop": "dgop",
+        "den": "den",
         "disko": "disko",
         "elephant": "elephant",
         "gws-cli": "gws-cli",
         "herdr": "herdr",
         "home-manager": "home-manager",
+        "import-tree": "import-tree",
         "llm-agents-nix": "llm-agents-nix",
         "mpc-hub": "mpc-hub",
         "nix-ratspeak": "nix-ratspeak",
