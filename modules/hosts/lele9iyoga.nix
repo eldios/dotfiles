@@ -14,6 +14,7 @@
       den.aspects.desktop-gui
       den.aspects.terminals
       den.aspects.hyprland
+      den.aspects.gdm
       den.aspects.gaming
       den.aspects.printing
       den.aspects.ai-tools
@@ -40,7 +41,6 @@
     # Host-specific Home Manager config for eldios: GPU env, HiDPI, key remap.
     provides.eldios.homeManager = {
       imports = [
-        ./_lele9iyoga/home.nix
         ./_lele9iyoga/display.nix
         ./_lele9iyoga/xremap.nix
       ];

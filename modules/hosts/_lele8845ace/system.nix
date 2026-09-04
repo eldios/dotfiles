@@ -8,11 +8,6 @@
   # common default.
   nix.settings.cores = 12;
 
-  systemd.services.fprintd = {
-    wantedBy = ["multi-user.target"];
-    serviceConfig.Type = "simple";
-  };
-
   services = {
     hardware = {
       openrgb = {
@@ -22,28 +17,8 @@
       };
     };
 
-    fprintd = {
-      enable = true;
-    };
-
     # don't shutdown when power button is short-pressed
     logind.settings.Login.HandlePowerKey = "ignore";
-
-    # Always on mains, so only the charger profile ever applies: performance
-    # governor with turbo, instead of the powersave governor set below.
-    auto-cpufreq = {
-      enable = true;
-      settings = {
-        battery = {
-          governor = "powersave";
-          turbo = "never";
-        };
-        charger = {
-          governor = "performance";
-          turbo = "auto";
-        };
-      };
-    };
 
     btrfs = {
       autoScrub = {
@@ -57,23 +32,7 @@
 
     cloudflared.enable = true;
 
-    displayManager = {
-      sddm.enable = false;
-      gdm.enable = true;
-    };
-
-    xserver = {
-      enable = true;
-      autorun = true;
-
-      videoDrivers = ["amdgpu"];
-    };
-  };
-
-  powerManagement = {
-    enable = true;
-    cpuFreqGovernor = "powersave";
-    powertop.enable = true;
+    xserver.videoDrivers = ["amdgpu"];
   };
 
   # https://wiki.archlinux.org/title/GPGPU#ICD_loader_(libOpenCL.so)
