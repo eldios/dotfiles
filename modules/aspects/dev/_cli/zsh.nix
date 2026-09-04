@@ -62,10 +62,9 @@ in {
         g = "${pkgs.git}/bin/git";
         gb = "${pkgs.gitbutler}/bin/but"; # GitButler CLI
         "gb-gui" = "${pkgs.gitbutler}/bin/gitbutler-tauri"; # GitButler GUI
-        # lazygit is the one programs.lazygit installs; `y` is yazi's own
-        # shell wrapper, from programs.yazi.
-        lg = "lazygit";
-        lazg = "lazygit";
+        # `y` is yazi's own shell wrapper, from programs.yazi.
+        lg = "${pkgs.lazygit}/bin/lazygit";
+        lazg = "${pkgs.lazygit}/bin/lazygit";
         lazd = "${pkgs.lazydocker}/bin/lazydocker";
 
         f = "${pkgs.superfile}/bin/superfile";

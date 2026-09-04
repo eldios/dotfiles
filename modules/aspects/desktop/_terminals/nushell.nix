@@ -122,7 +122,7 @@ in {
     alias k = ${pkgs.kubectl}/bin/kubectl
     alias l = ${pkgs.coreutils}/bin/ls # Using coreutils ls as lsd is not in nushell packages
     alias la = l -a
-    alias lg = lazygit
+    alias lg = ${pkgs.lazygit}/bin/lazygit
     alias ll = l -l
     alias nixU = sudo nix flake update $env.HOME/dotfiles and nixu # 'nix' assumed in PATH
     alias nixUo = sudo nix flake update $env.HOME/dotfiles and nixuo # outside network - skip local cache
