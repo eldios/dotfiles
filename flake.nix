@@ -58,14 +58,6 @@
     walker.url = "github:abenz1267/walker/v2.16.2";
     elephant.url = "github:abenz1267/elephant";
 
-    # Upstream omarchy, pre-Quickshell. Source of the scripts, themes and
-    # configs vendored by omarchy.nix, which hosts still on Waybar and Walker
-    # import. Drop it, and omarchy.nix with it, once every host runs the shell.
-    omarchy = {
-      url = "github:basecamp/omarchy/9cf1852525a5f7de26d3162db9d61e2f5c1d5523";
-      flake = false;
-    };
-
     # Omarchy 4, whose desktop is a single Quickshell process. Consumed by
     # omarchy-shell.nix, which takes the QML, themes, templates and scripts
     # straight from the tree rather than vendoring a curated list.
@@ -99,17 +91,17 @@
     gws-cli.url = "github:googleworkspace/cli";
     herdr.url = "github:ogulcancelik/herdr"; # agent multiplexer for AI CLIs (uses its own nixpkgs-unstable)
 
-    # Zen Browser — community flake (per https://wiki.nixos.org/wiki/Zen_Browser)
+    # Zen Browser: community flake (per https://wiki.nixos.org/wiki/Zen_Browser)
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Ratspeak — Reticulum/LXMF desktop client, own packaging flake
+    # Ratspeak: Reticulum/LXMF desktop client, own packaging flake
     # (builds against its own nixpkgs-unstable pin, like herdr)
     nix-ratspeak.url = "github:eldios/nix-ratspeak";
 
-    # vm-curator — QEMU/KVM desktop VM TUI, packaged by its own upstream
+    # vm-curator: QEMU/KVM desktop VM TUI, packaged by its own upstream
     # flake. Pinned to the release tag; bump deliberately.
     vm-curator = {
       url = "github:mroboff/vm-curator/v1.4.0";
@@ -118,3 +110,4 @@
   };
 }
 # vim: set nu li sw=2 ts=2 expandtab
+

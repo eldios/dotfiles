@@ -1,0 +1,76 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  system = {
+    stateVersion = "25.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+    autoUpgrade.enable = true;
+  };
+
+  # Laptop: sleep allowed, lid behavior from the base suspend module
+  machine.suspend.enable = true;
+
+  # 25.11 user creation backend: faster, no passwd file flapping on
+  # rebuild. Drop-in replacement for the default useradd/groupadd path.
+  services.userborn.enable = true;
+
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+  # Finger unlock on the lockscreen: keeps pam_fprintd in hyprlock's stack;
+  # hyprlock.nix follows this and runs password and fingerprint in parallel.
+  security.pam.services.hyprlock.fprintAuth = true;
+
+  services = {
+    btrfs = {
+      autoScrub = {
+        enable = true;
+        # Not "weekly" (Mon 00:00): that collides with nix-gc, fstrim and
+        # docker prune. Scrub is the heaviest job (hours), so it gets its
+        # own day.
+        interval = "Sat *-*-* 05:30:00";
+      };
+    };
+
+    libinput = {
+      enable = true;
+      touchpad = {
+        clickMethod = "clickfinger";
+        #clickMethod = "buttonareas";
+        disableWhileTyping = true;
+        middleEmulation = false;
+        tappingDragLock = false;
+        tappingButtonMap = "lrm";
+        scrollMethod = "twofinger";
+      };
+    };
+
+    displayManager = {
+      sddm.enable = false;
+      gdm.enable = true;
+    };
+
+    xserver = {
+      enable = true;
+      autorun = true;
+
+      videoDrivers = ["modesetting"];
+    };
+
+    blueman.enable = true;
+  };
+
+  environment.systemPackages = with pkgs; [
+    proton-vpn
+  ];
+
+  hardware = {
+    enableAllFirmware = true;
+    enableRedistributableFirmware = true;
+
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  };
+}
+# vim: set ts=2 sw=2 et ai list nu
+

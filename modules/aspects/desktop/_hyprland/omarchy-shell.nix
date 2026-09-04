@@ -1,0 +1,478 @@
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}: let
+  upstream = inputs.omarchy-quattro;
+  homeDir = config.home.homeDirectory;
+
+  # Theme applied on first run, when no theme is active yet: riso's
+  # compiled-in fallback, the only theme a clean machine has.
+  defaultTheme = "plain";
+
+  # The tree OMARCHY_PATH points at. Upstream installs it at
+  # /usr/share/omarchy from an Arch package; the shell reads its own QML from
+  # $OMARCHY_PATH/shell and the scripts resolve through $OMARCHY_PATH/bin, so
+  # pointing the variable at the store is all the relocation that is needed.
+  #
+  # bin/ is taken nearly whole rather than curated one by one: the shell
+  # shells out to some 80 of those scripts for network, bluetooth, audio,
+  # brightness, lock and weather, and a missing one is a dead panel.
+  #
+  # What does not come along is Arch's package management: everything that
+  # drives pacman or the AUR, and the installer families built on it. On
+  # NixOS software enters through Nix, and an installer that survives only
+  # to fail half-way is worse than one that is honestly absent. Chromium's
+  # helpers are kept back out of the installer sweep: they write user
+  # configuration, not packages.
+  # No bundled themes: riso carries its own fallback, and every other theme
+  # is installed by hand into ~/.config/riso/themes. Shipping Omarchy's
+  # defaults here would resurface them in every listing through the
+  # $OMARCHY_PATH/themes search path.
+  omarchyRoot = pkgs.runCommandLocal "omarchy-root" {} ''
+    mkdir -p $out
+    cp -r ${upstream}/shell ${upstream}/default ${upstream}/config ${upstream}/bin $out/
+    chmod -R u+w $out
+    patchShebangs $out/bin
+
+    cd $out/bin
+    mkdir -p .keep
+    mv omarchy-install-chromium-* .keep/
+    rm -f $(grep -lE '\b(pacman|yay|paru|makepkg|pacstrap)\b' * || true)
+    rm -f omarchy-pkg-* omarchy-install-* omarchy-remove-gaming-* \
+      omarchy-remove-service-* omarchy-remove-browser omarchy-remove-preinstalls \
+      omarchy-remove-dev-env omarchy-remove-security-* omarchy-provision-* \
+      omarchy-migrate* omarchy-upgrade-* omarchy-reinstall* omarchy-channel-* \
+      omarchy-update-* omarchy-system-factory-reset* omarchy-snapshot \
+      omarchy-dev-pkg-test omarchy-voxtype-install omarchy-voxtype-remove \
+      omarchy-setup-security-*
+    # Theme switching is riso's: the original pipeline copies store
+    # permissions into the state tree, which no later run can remove. The
+    # profile answers to this name with a riso-backed stand-in.
+    rm -f omarchy-theme-set
+    mv .keep/* . && rmdir .keep
+  '';
+
+  # The scripts have to be in the profile, not only on the session PATH.
+  # home.sessionPath applies at the next login, which leaves a rebuild with
+  # neither the old commands nor the new ones until the user logs out.
+  omarchyBin = pkgs.runCommandLocal "omarchy-bin" {} ''
+    mkdir -p $out/bin
+    for script in ${omarchyRoot}/bin/*; do
+      ln -s "$script" "$out/bin/$(basename "$script")"
+    done
+  '';
+
+  # Switching shells, dispatching keybindings and applying a theme are session
+  # tools, so they live in the profile like any other command.
+  #
+  # Each one gets a wrapper that pins OMARCHY_PATH and PATH to the store: these
+  # commands run from keybindings, whose environment is whatever the session
+  # was started with, and an env keyword only applies at session launch. The
+  # store path is the one fact Nix knows better than the environment does.
+  desktopTools = pkgs.runCommandLocal "desktop-tools" {} ''
+    mkdir -p $out/bin $out/libexec
+    install -m755 ${./hypr/desktop-switch.sh} $out/libexec/desktop-switch
+    install -m755 ${./hypr/shell-dispatch.sh} $out/libexec/shell-dispatch
+    install -m755 ${risoApply} $out/libexec/riso-apply
+    install -m755 ${./hypr/omarchy-theme-set.sh} $out/libexec/omarchy-theme-set
+    install -m755 ${./hypr/riso-theme-menu.sh} $out/libexec/riso-theme-menu
+
+    # The carousel, the background link, its cycle and its mode all live in
+    # the riso binary now; these wrappers only pin this machine's facts and
+    # add what the binary rightly does not know: which other shells might be
+    # on screen, and that the classic stack repaints through swaybg.
+    {
+      echo '#!${pkgs.runtimeShell}'
+      echo 'export OMARCHY_PATH=${omarchyRoot}'
+      echo 'export RISO_CAROUSEL_APPLY=omarchy-theme-set'
+      echo "export RISO_CAROUSEL_APPLY_BG=$out/bin/riso-background-apply"
+      echo 'export PATH=${omarchyRoot}/bin:/etc/profiles/per-user/${config.home.username}/bin:$PATH'
+      # The wrapper's argument contract stays: no argument means themes,
+      # "backgrounds" means backgrounds; picking is a mode of set now.
+      echo 'case "''${1:-themes}" in'
+      echo '  backgrounds) exec ${lib.getExe pkgs.riso} backgrounds set --gui ;;'
+      echo '  *)           exec ${lib.getExe pkgs.riso} theme set --gui ;;'
+      echo 'esac'
+    } > $out/bin/riso-carousel
+    chmod +x $out/bin/riso-carousel
+
+    # riso backgrounds set moves the link and tells the Omarchy shell; the shells riso
+    # does not know, and swaybg on the classic stack, are this machine's.
+    {
+      echo '#!${pkgs.runtimeShell}'
+      echo 'export OMARCHY_PATH=${omarchyRoot}'
+      echo 'export PATH=${omarchyRoot}/bin:/etc/profiles/per-user/${config.home.username}/bin:$PATH'
+      echo '${lib.getExe pkgs.riso} backgrounds set "$1"'
+      echo "if pgrep -f 'dms run|dms-shell' >/dev/null 2>&1; then dms ipc call wallpaper set \"\$1\" >/dev/null 2>&1 || true; fi"
+      echo "if pgrep -f 'caelestia-shell|quickshell.*caelestia' >/dev/null 2>&1; then caelestia-shell ipc call wallpaper set \"\$1\" >/dev/null 2>&1 || true; fi"
+      echo "if pgrep -f '^/[^[:space:]]*/\\.?noctalia(-wrapped)?\$' >/dev/null 2>&1; then noctalia msg wallpaper-set \"\$1\" >/dev/null 2>&1 || true; fi"
+      echo "if pgrep -f '/bin/waybar' >/dev/null 2>&1; then $out/bin/desktop-switch classic-bg >/dev/null 2>&1 || true; fi"
+    } > $out/bin/riso-background-apply
+    chmod +x $out/bin/riso-background-apply
+
+    # Cycle to the theme's next background with the same handoff a pick gets.
+    {
+      echo '#!${pkgs.runtimeShell}'
+      echo 'export OMARCHY_PATH=${omarchyRoot}'
+      echo 'export PATH=${omarchyRoot}/bin:/etc/profiles/per-user/${config.home.username}/bin:$PATH'
+      echo '${lib.getExe pkgs.riso} backgrounds next --no-reload'
+      echo 'bg=$(readlink -f "''${XDG_STATE_HOME:-$HOME/.local/state}/riso/current/background")'
+      echo "exec $out/bin/riso-background-apply \"\$bg\""
+    } > $out/bin/riso-background-next
+    chmod +x $out/bin/riso-background-next
+
+    # riso validates and records the mode; the consumers that can honour it
+    # are told. DMS reads wallpaperFillMode from the settings file it watches
+    # (Pad is its name for centred); swaybg is restarted on the classic
+    # stack; the Omarchy shell has no such knob.
+    {
+      echo '#!${pkgs.runtimeShell}'
+      echo 'export PATH=/etc/profiles/per-user/${config.home.username}/bin:$PATH'
+      echo '${lib.getExe pkgs.riso} backgrounds mode "$@"'
+      echo 'dmscfg="$HOME/.config/DankMaterialShell/settings.json"'
+      echo 'if [ -n "''${1:-}" ] && [ -f "$dmscfg" ]; then'
+      echo '  case "$1" in fill) m=Fill ;; fit) m=Fit ;; center) m=Pad ;; stretch) m=Stretch ;; tile) m=Tile ;; *) m= ;; esac'
+      echo '  if [ -n "$m" ]; then'
+      echo '    ${pkgs.jq}/bin/jq --arg m "$m" ".wallpaperFillMode = \$m" "$dmscfg" > "$dmscfg.tmp" && mv "$dmscfg.tmp" "$dmscfg"'
+      echo '  fi'
+      echo 'fi'
+      # Noctalia keeps fill_mode in its TOML; the seeded line is rewritten in
+      # place and the shell told to reload. Its "crop" is everyone's "fill",
+      # its "repeat" is "tile".
+      echo 'ncfg="$HOME/.config/noctalia/settings.toml"'
+      echo 'if [ -n "''${1:-}" ] && [ -f "$ncfg" ]; then'
+      echo '  case "$1" in fill) n=crop ;; fit) n=fit ;; center) n=center ;; stretch) n=stretch ;; tile) n=repeat ;; *) n= ;; esac'
+      echo '  if [ -n "$n" ] && grep -q "^fill_mode" "$ncfg"; then'
+      echo '    ${pkgs.gnused}/bin/sed -i "s/^fill_mode *=.*/fill_mode = \"$n\"/" "$ncfg"'
+      echo '    noctalia msg config-reload >/dev/null 2>&1 || true'
+      echo '  fi'
+      echo 'fi'
+      echo "exec $out/bin/desktop-switch classic-bg"
+    } > $out/bin/riso-background-mode
+    chmod +x $out/bin/riso-background-mode
+
+    # riso itself gets the same coat: --tui and --gui read the apply hooks
+    # from the environment, and a bare terminal has none of them. Without
+    # this, a picker launched by hand applies through riso alone and skips
+    # the shim - no scheme copy, no terminal signals, no wallpaper handoff.
+    {
+      echo '#!${pkgs.runtimeShell}'
+      echo 'export OMARCHY_PATH=${omarchyRoot}'
+      echo 'export RISO_CAROUSEL_APPLY=omarchy-theme-set'
+      echo "export RISO_CAROUSEL_APPLY_BG=$out/bin/riso-background-apply"
+      echo 'export PATH=${omarchyRoot}/bin:/etc/profiles/per-user/${config.home.username}/bin:$PATH'
+      echo 'exec ${lib.getExe pkgs.riso} "$@"'
+    } > $out/bin/riso
+    chmod +x $out/bin/riso
+
+    for tool in desktop-switch shell-dispatch riso-apply omarchy-theme-set riso-theme-menu; do
+      {
+        echo '#!${pkgs.runtimeShell}'
+        echo 'export OMARCHY_PATH=${omarchyRoot}'
+        # The profile comes before the inherited PATH: a session started on an
+        # older generation still carries the old root, where names this
+        # generation removed on purpose would otherwise be found again.
+        echo 'export PATH=${omarchyRoot}/bin:/etc/profiles/per-user/${config.home.username}/bin:$PATH'
+        echo "exec $out/libexec/$tool \"\$@\""
+      } > "$out/bin/$tool"
+      chmod +x "$out/bin/$tool"
+    done
+  '';
+
+  # Monitors stay declarative in Nix and are emitted as Lua, so a host keeps
+  # describing its layout through wayland.windowManager.hyprland.settings.monitor
+  # whichever desktop it runs. Hyprland's string form is
+  # "<output>,<mode>,<position>,<scale>".
+  monitorLine = spec: let
+    parts = lib.splitString "," spec;
+    field = index: lib.elemAt parts index;
+  in
+    if builtins.length parts < 4
+    then "-- unparsed monitor spec: ${spec}"
+    else
+      "hl.monitor({ output = \"${field 0}\", mode = \"${field 1}\", "
+      + "position = \"${field 2}\", scale = ${field 3} })";
+
+  monitorsLua = ''
+    -- Generated from desktop.hyprland.monitors.
+    -- Edit the host's Nix configuration, not this file.
+    ${lib.concatMapStringsSep "\n" monitorLine config.desktop.hyprland.monitors}
+  '';
+
+  # Applying a theme means pointing riso at this machine's directories, and the
+  # activation, the shell switcher and a hand invocation all need the same
+  # ones. One command owns them so the three cannot drift apart.
+  #
+  #   riso-apply [theme] [desktop]
+  #
+  # Both arguments are optional: the theme defaults to the one in use, the
+  # desktop to whatever riso detects from the session. State lives in riso's
+  # own tree; the Omarchy shell reads it through the ~/.local/state/omarchy
+  # alias the activation below maintains.
+  risoApply = pkgs.writeShellScript "riso-apply" ''
+    set -euo pipefail
+
+    state="''${XDG_STATE_HOME:-$HOME/.local/state}/riso"
+    theme="''${1:-}"
+    [ -n "$theme" ] ||
+      theme="$(cat "$state/current/theme.name" 2>/dev/null || echo "${defaultTheme}")"
+
+    desktop=()
+    [ -n "''${2:-}" ] && desktop=(--desktop "$2")
+
+    # Themes come from riso's own search path: what the user installed
+    # under ~/.config/riso/themes, plus the compiled-in fallback.
+    exec ${lib.getExe pkgs.riso} theme set "$theme" \
+      --templates "$HOME/.config/riso/themed" \
+      --templates "${omarchyRoot}/default/themed" \
+      "''${desktop[@]}"
+  '';
+
+  # Upstream's hyprland.lua resolves Omarchy through $OMARCHY_PATH and falls
+  # back to /usr/share/omarchy. The display manager starts the session without
+  # reading the profile, so the variable is absent, the fallback does not exist
+  # here, and the failing dofile aborts the whole config: no bindings, no
+  # autostart. The store path is known at build time, so nothing below depends
+  # on the environment. envs.lua exports it again for child processes.
+  hyprlandLua = ''
+    local home = os.getenv("HOME")
+
+    package.path = home .. "/.config/?.lua;"
+      .. home .. "/.local/state/?.lua;"
+      .. "${omarchyRoot}/?.lua;"
+      .. package.path
+
+    -- Their shell and its scripts resolve themselves through OMARCHY_PATH and
+    -- expect their own bin/ on PATH. Only their envs.lua sets those, and it is
+    -- not loaded here, so declare them: without OMARCHY_PATH the shell starts
+    -- with an empty -p argument and dies.
+    hl.env("OMARCHY_PATH", "${omarchyRoot}")
+    hl.env("PATH", "${omarchyRoot}/bin:" .. (os.getenv("PATH") or ""))
+
+    -- The `o.*` helper layer only. None of their default bindings or settings
+    -- are loaded: every key and every rule in this session comes from the
+    -- files below.
+    require("default.hypr.helpers")
+
+    require("hypr.lua.monitors")
+    require("hypr.lua.settings")
+    require("hypr.lua.bindings")
+    require("hypr.lua.windows")
+    require("hypr.lua.autostart")
+
+    -- Their toggle loader: the shell writes small Lua files under the state
+    -- tree when a toggle flips, and this is what reads them back. Without it
+    -- a toggle writes its file and nothing changes on screen.
+    require("default.hypr.toggles")
+
+    -- The theme riso renders, then hand-written overrides; both optional.
+    pcall(require, "riso.current.theme.hyprland")
+
+    -- Omarchy themes carry their WM styling as a hyprlang fragment; the
+    -- translator applies it after the template so the theme's own style
+    -- (rounding, borders, opacity, animations, rules) wins over the
+    -- palette-derived defaults. Re-read on every reload, so a theme
+    -- switch only needs the hyprctl reload it already does. dofile, not
+    -- require: the runtime's require does not hand back the chunk's
+    -- return value, and swallows load errors into an empty table.
+    local compat_ok, compat = pcall(dofile, home .. "/.config/hypr/lua/hyprlang_compat.lua")
+    if compat_ok and type(compat) == "table" and compat.apply then
+      local applied, err = pcall(compat.apply, home .. "/.local/state/riso/current/theme/hyprland.conf")
+      if not applied then print("hyprlang-compat failed: " .. tostring(err)) end
+    else
+      print("hyprlang-compat did not load: " .. tostring(compat))
+    end
+
+    pcall(require, "riso.overrides.hypr")
+  '';
+in {
+  # Hyprland's monitor layout, declared per host and emitted as monitors.lua.
+  # Our own option: the home-manager hyprland module and its hyprlang
+  # generation are not used at all.
+  options.desktop.hyprland.monitors = lib.mkOption {
+    type = lib.types.listOf lib.types.str;
+    default = [];
+    description = "Monitor specs in Hyprland's string form: output,mode,position,scale.";
+  };
+
+  config = {
+    home.packages = [
+      # The desktop shell itself. Upstream builds against quickshell-git; 0.3.0
+      # is what nixpkgs carries, and only `quickshell kill` is known to differ,
+      # which affects omarchy-restart-shell rather than the running shell.
+      pkgs.quickshell
+
+      # Renders themes into the files the shell reads. Low priority: the
+      # desktop-tools wrapper answers to the name riso on PATH, carrying the
+      # apply hooks; scripts that want the bare binary reference it directly.
+      (lib.lowPrio pkgs.riso)
+
+      # The commands the shell and the menus call out to.
+      omarchyBin
+
+      # Switching between shells at runtime only works if they are all here.
+      # Exactly one runs; having the others installed is what makes falling
+      # back instant instead of a rebuild away. Waybar, mako and hyprlock come
+      # from their own modules, imported next to this one, so the classic stack
+      # is configured rather than merely present.
+      desktopTools
+      inputs.dank-material-shell.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.caelestia-shell.packages.${pkgs.stdenv.hostPlatform.system}.caelestia-shell
+      inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+      pkgs.swayosd
+      pkgs.wlogout
+      inputs.walker.packages.${pkgs.stdenv.hostPlatform.system}.default
+      # Walker 2.x is a UI over the elephant data daemon; without the binary on
+      # PATH the service exits at startup with only a hint on stderr.
+      pkgs.elephant
+
+      # What shell-dispatch opens for the network and bluetooth panels when the
+      # classic stack is running.
+      pkgs.networkmanagerapplet
+      pkgs.blueman
+
+      # omarchy-notification-send resolves notify-send from PATH. Low priority
+      # because pcloud ships its own libnotify.so and would otherwise collide.
+      (lib.lowPrio pkgs.libnotify)
+    ];
+
+    home.sessionVariables = {
+      OMARCHY_PATH = "${omarchyRoot}";
+    };
+
+    # Upstream's env-bootstrap prepends this whenever OMARCHY_PATH is not the
+    # packaged location, which is exactly our case.
+    home.sessionPath = ["${omarchyRoot}/bin"];
+
+    # Hyprland configuration follows upstream's layering rather than replacing
+    # it: hyprland.lua bootstraps the Lua path, loads Omarchy's defaults, then
+    # loads these five files. Defaults improve with each release without
+    # rewriting anything here, which is the whole point of the arrangement.
+    xdg.configFile = {
+      # This module owns the entrypoint because only it knows the helper
+      # layer's store path; the modules it loads come from hyprland.nix.
+      "hypr/hyprland.lua".source = pkgs.writeText "hyprland.lua" hyprlandLua;
+      "hypr/lua/monitors.lua".text = monitorsLua;
+    };
+
+    # riso's tree is the source of truth; ~/.local/state/omarchy is an alias
+    # for the one consumer that cannot move, the Omarchy shell and its scripts,
+    # which hardcode that location. A tree the old pipeline wrote is migrated
+    # into riso's on first switch, so the active theme and the ownership
+    # registry survive the move.
+    home.activation.migrateStateToRiso = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      state="${homeDir}/.local/state"
+      if [ -d "$state/omarchy" ] && [ ! -L "$state/omarchy" ]; then
+        if [ ! -e "$state/riso" ]; then
+          $DRY_RUN_CMD mv "$state/omarchy" "$state/riso"
+        else
+          $DRY_RUN_CMD mv "$state/omarchy" "$state/omarchy.pre-riso.bak"
+        fi
+      fi
+      $DRY_RUN_CMD mkdir -p "$state/riso"
+      $DRY_RUN_CMD ln -sfn "$state/riso" "$state/omarchy"
+    '';
+
+    # Override slots the user edits and tools rewrite at runtime, so they must
+    # be real files rather than store links. Seeded once, then left alone.
+    home.activation.seedRisoOverrides = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      overrides="${homeDir}/.config/riso/overrides"
+      $DRY_RUN_CMD mkdir -p "$overrides"
+      [ -f "$overrides/waybar-config.json" ] || $DRY_RUN_CMD sh -c "echo '{}' > '$overrides/waybar-config.json'"
+      [ -f "$overrides/waybar.css" ] || $DRY_RUN_CMD touch "$overrides/waybar.css"
+      [ -f "$overrides/alacritty.toml" ] || $DRY_RUN_CMD touch "$overrides/alacritty.toml"
+    '';
+
+    # DMS keeps its settings in a file it rewrites at runtime, so it stays a
+    # real file and only the two theme keys are set, once idempotently: the
+    # custom theme points at the dms.json riso renders, which DMS watches and
+    # repaints from on every theme change.
+    home.activation.wireDmsTheme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      dmscfg="${homeDir}/.config/DankMaterialShell/settings.json"
+      fragment="${homeDir}/.local/state/riso/current/theme/dms.json"
+      $DRY_RUN_CMD mkdir -p "${homeDir}/.config/DankMaterialShell"
+      [ -f "$dmscfg" ] || $DRY_RUN_CMD sh -c "echo '{}' > '$dmscfg'"
+      if ! ${pkgs.jq}/bin/jq -e --arg f "$fragment" \
+          '.currentThemeName == "custom" and .customThemeFile == $f' "$dmscfg" >/dev/null 2>&1; then
+        $DRY_RUN_CMD sh -c '${pkgs.jq}/bin/jq --arg f "'"$fragment"'" \
+          ".currentThemeName = \"custom\" | .customThemeFile = \$f" "'"$dmscfg"'" \
+          > "'"$dmscfg"'.tmp" && mv "'"$dmscfg"'.tmp" "'"$dmscfg"'"'
+      fi
+    '';
+
+    # btop saves its whole config back on exit, so it stays a real file and
+    # only color_theme is pointed, once idempotently, at the fragment riso
+    # renders; btop itself carries the value forward from then on.
+    home.activation.wireBtopTheme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      bcfg="${homeDir}/.config/btop/btop.conf"
+      fragment="${homeDir}/.local/state/riso/current/theme/btop.theme"
+      $DRY_RUN_CMD mkdir -p "${homeDir}/.config/btop"
+      [ -f "$bcfg" ] || $DRY_RUN_CMD touch "$bcfg"
+      if ! grep -qxF "color_theme = \"$fragment\"" "$bcfg" 2>/dev/null; then
+        if grep -q '^color_theme = ' "$bcfg" 2>/dev/null; then
+          $DRY_RUN_CMD sed -i "s|^color_theme = .*|color_theme = \"$fragment\"|" "$bcfg"
+        else
+          $DRY_RUN_CMD sh -c "printf 'color_theme = \"%s\"\n' \"$fragment\" >> \"$bcfg\""
+        fi
+      fi
+    '';
+
+    # Caelestia ships a 600s suspendThenHibernate idle timeout by default
+    # (plugin/src/Caelestia/Config/generalconfig.hpp). On a desktop that means
+    # waking up to a suspended machine, so the seed keeps only lock and dpms.
+    # The shell rewrites this file from its settings UI: real file, written once.
+    home.activation.wireCaelestiaIdle = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      ccfg="${homeDir}/.config/caelestia/shell.json"
+      $DRY_RUN_CMD mkdir -p "${homeDir}/.config/caelestia"
+      [ -f "$ccfg" ] || $DRY_RUN_CMD sh -c "echo '{}' > '$ccfg'"
+      if ! ${pkgs.jq}/bin/jq -e '.general.idle.timeouts' "$ccfg" >/dev/null 2>&1; then
+        $DRY_RUN_CMD sh -c '${pkgs.jq}/bin/jq ".general.idle.timeouts = [
+            { timeout: 180, idleAction: \"lock\" },
+            { timeout: 300, idleAction: \"dpms off\", returnAction: \"dpms on\" }
+          ]" "'"$ccfg"'" > "'"$ccfg"'.tmp" && mv "'"$ccfg"'.tmp" "'"$ccfg"'"'
+      fi
+    '';
+
+    # Noctalia owns settings.toml (its settings UI rewrites it), so it is a real
+    # file seeded once: theme source pinned to the riso palette, one fill_mode
+    # line for riso-background-mode to rewrite. The palette itself is a symlink
+    # into riso's state, re-read on every color-scheme-set.
+    home.activation.wireNoctalia = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      ncfg="${homeDir}/.config/noctalia/settings.toml"
+      $DRY_RUN_CMD mkdir -p "${homeDir}/.config/noctalia/palettes"
+      $DRY_RUN_CMD ln -sfn "${homeDir}/.local/state/riso/current/theme/noctalia.json" \
+        "${homeDir}/.config/noctalia/palettes/riso.json"
+      if [ ! -f "$ncfg" ]; then
+        $DRY_RUN_CMD sh -c 'printf "%s\n" \
+          "[theme]" \
+          "source         = \"custom\"" \
+          "custom_palette = \"riso\"" \
+          "" \
+          "[wallpaper]" \
+          "fill_mode = \"crop\"" > '"$ncfg"
+      fi
+    '';
+
+    # shell.json holds the bar layout and is rewritten by the shell whenever a
+    # widget is added or the bar is dragged to another edge, so it must be a real
+    # file. Seed it once and leave it alone afterwards.
+    home.activation.seedOmarchyShellConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      if [ ! -f "${homeDir}/.config/omarchy/shell.json" ]; then
+        $DRY_RUN_CMD mkdir -p "${homeDir}/.config/omarchy"
+        $DRY_RUN_CMD install -m 0644 ${upstream}/config/omarchy/shell.json \
+          "${homeDir}/.config/omarchy/shell.json"
+      fi
+    '';
+
+    # Re-render on every activation: a nixpkgs bump or a theme edit changes the
+    # templates, and the generated files are not tracked anywhere else.
+    home.activation.applyOmarchyTheme = lib.hm.dag.entryAfter ["seedOmarchyShellConfig" "migrateStateToRiso"] ''
+      $DRY_RUN_CMD ${desktopTools}/bin/riso-apply || true
+    '';
+  };
+}
+# vim: set ts=2 sw=2 et ai list nu
+
