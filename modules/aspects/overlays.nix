@@ -17,7 +17,6 @@
     (import ./_overlays/vm-curator.nix {inherit (inputs) vm-curator;})
     (import ./_overlays/gitbutler.nix)
     (import ./_overlays/qbz.nix)
-    (import ./_overlays/pi-coding-agent.nix)
     (import ./_overlays/buzz-desktop.nix)
   ];
 }
