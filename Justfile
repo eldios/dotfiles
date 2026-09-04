@@ -20,7 +20,7 @@ update-all:
 
 # Evaluate every host toplevel: catches config errors before any switch
 eval-all:
-    for h in lele8845ace lele9iyoga sox1x mininixos; do \
+    for h in $(nix eval --json .#nixosConfigurations --apply builtins.attrNames | jq -r '.[]'); do \
       nice -n 19 nix eval ".#nixosConfigurations.$h.config.system.build.toplevel.drvPath"; \
     done
 

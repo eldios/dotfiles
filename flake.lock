@@ -918,23 +918,6 @@
         "type": "github"
       }
     },
-    "omarchy": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1780929365,
-        "narHash": "sha256-9zkIEgD/L5+eK5fuQNXbBd5XXO+NwH6QWGiDI//kGas=",
-        "owner": "basecamp",
-        "repo": "omarchy",
-        "rev": "9cf1852525a5f7de26d3162db9d61e2f5c1d5523",
-        "type": "github"
-      },
-      "original": {
-        "owner": "basecamp",
-        "repo": "omarchy",
-        "rev": "9cf1852525a5f7de26d3162db9d61e2f5c1d5523",
-        "type": "github"
-      }
-    },
     "omarchy-quattro": {
       "flake": false,
       "locked": {
@@ -1033,7 +1016,6 @@
         "nixpkgs-darwin": "nixpkgs-darwin",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "noctalia": "noctalia",
-        "omarchy": "omarchy",
         "omarchy-quattro": "omarchy-quattro",
         "opencode-nix": "opencode-nix",
         "riso": "riso",
