@@ -14,14 +14,7 @@
   virtualisation.docker.storageDriver = "zfs";
 
   services = {
-    xserver = {
-      enable = true;
-      autorun = true;
-
-      desktopManager = {
-        cinnamon.enable = true;
-      };
-    };
+    xserver.desktopManager.cinnamon.enable = true;
 
     # Gnome (latest) available alongside Cinnamon: user picks at GDM login
     desktopManager.gnome.enable = true;
@@ -47,13 +40,10 @@
 
     displayManager = {
       defaultSession = "cinnamon";
-      gdm.enable = true;
       sessionPackages = with pkgs; [
         hyprland
       ];
     };
-
-    blueman.enable = true;
   };
 
   # Trim Gnome default bloat (keeps Gnome lean when user picks it at GDM)

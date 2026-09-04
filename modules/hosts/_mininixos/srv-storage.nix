@@ -1,32 +1,5 @@
-# 1.8TB secondary disk: LUKS + BTRFS -> /srv
-#
-# Initial setup (run ONCE on mininixos):
-#
-#   # 1. Identify disk
-#   ls -l /dev/disk/by-id/ | grep sd
-#
-#   # 2. LUKS format (interactive passphrase)
-#   sudo cryptsetup luksFormat /dev/disk/by-id/<DISK_ID>
-#
-#   # 3. Generate key file and add as second LUKS slot
-#   sudo dd if=/dev/urandom of=/root/srv.key bs=4096 count=1
-#   sudo chmod 400 /root/srv.key
-#   sudo cryptsetup luksAddKey /dev/disk/by-id/<DISK_ID> /root/srv.key
-#
-#   # 4. Open, format, create subvolumes
-#   sudo cryptsetup open /dev/disk/by-id/<DISK_ID> Ksrv --key-file /root/srv.key
-#   sudo mkfs.btrfs -L srv -f /dev/mapper/Ksrv
-#   sudo mount /dev/mapper/Ksrv /mnt
-#   sudo btrfs subvolume create /mnt/@docker
-#   sudo btrfs subvolume create /mnt/@containers
-#   sudo umount /mnt
-#   sudo cryptsetup close Ksrv
-#
-#   # 5. nixos-rebuild switch, then reboot
-#
-# After RAID /data is back:
-#   Move Portainer volume back to /data/containers/portainer if desired,
-#   or keep on /srv/containers/portainer permanently.
+# 2TB NVMe secondary disk: one LUKS container with a btrfs volume whose
+# @docker and @containers subvolumes back /srv/docker and /srv/containers.
 {...}: {
   # Post-boot LUKS decryption via crypttab. The key file sits on the encrypted
   # root, so the disk opens on its own once root is unlocked.

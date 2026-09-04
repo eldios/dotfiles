@@ -14,6 +14,7 @@
       den.aspects.desktop-gui
       den.aspects.terminals
       den.aspects.hyprland
+      den.aspects.gdm
       den.aspects.gaming
       den.aspects.printing
       den.aspects.ai-tools
@@ -43,7 +44,6 @@
     # Host-specific Home Manager config for eldios: GPU env, monitors, packages.
     provides.eldios.homeManager = {
       imports = [
-        ./_lele8845ace/home.nix
         ./_lele8845ace/display.nix
         ./_lele8845ace/pkgs.nix
       ];

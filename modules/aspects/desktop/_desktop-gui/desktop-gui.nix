@@ -5,7 +5,8 @@
   lib,
   ...
 }: {
-  # Bluetooth
+  # Bluetooth, with the blueman tray applet on every graphical host.
+  services.blueman.enable = true;
   hardware.bluetooth = {
     enable = lib.mkDefault true;
     powerOnBoot = lib.mkDefault true;
