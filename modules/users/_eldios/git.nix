@@ -7,6 +7,7 @@
     packages = with pkgs;
       [
         github-cli
+        lazygit
       ]
       ++ (with pkgs.unstable; [
         entire
@@ -14,8 +15,6 @@
   };
 
   programs = {
-    lazygit.enable = true;
-
     delta = {
       enable = true;
       enableGitIntegration = true;
