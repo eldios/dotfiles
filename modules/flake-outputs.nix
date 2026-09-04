@@ -23,8 +23,6 @@ in {
           curl
           jq
           just
-          nodejs
-          prefetch-npm-deps
           python3
           shellcheck
         ];

@@ -8,7 +8,6 @@
     fabric-ai # Fabric is an open-source AI CLI tool
     gws # Google Workspace CLI (via gws-cli overlay)
     opencode # OpenCode (via opencode-nix flake)
-    pi-coding-agent # Pi (via local overlay from npm registry)
     ollama # CPU build, used as a client (OLLAMA_HOST); no ROCm
   ];
 }
