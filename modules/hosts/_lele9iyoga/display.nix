@@ -6,7 +6,7 @@
     ",preferred,auto,1.8"
   ];
 
-  # Cursor sized for scale 2.5: GTK/Qt/Wayland clients pick up the
+  # Cursor sized for scale 1.8: GTK/Qt/Wayland clients pick up the
   # home-manager pointerCursor; XCURSOR_SIZE covers XWayland apps.
   home.pointerCursor = {
     package = pkgs.bibata-cursors;

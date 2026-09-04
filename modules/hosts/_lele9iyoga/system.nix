@@ -7,10 +7,6 @@
   # Laptop: sleep allowed, lid behavior from the base suspend module
   machine.suspend.enable = true;
 
-  # 25.11 user creation backend: faster, no passwd file flapping on
-  # rebuild. Drop-in replacement for the default useradd/groupadd path.
-  services.userborn.enable = true;
-
   # Finger unlock on the lockscreen: keeps pam_fprintd in hyprlock's stack;
   # hyprlock.nix follows this and runs password and fingerprint in parallel.
   security.pam.services.hyprlock.fprintAuth = true;
@@ -39,19 +35,7 @@
       };
     };
 
-    displayManager = {
-      sddm.enable = false;
-      gdm.enable = true;
-    };
-
-    xserver = {
-      enable = true;
-      autorun = true;
-
-      videoDrivers = ["modesetting"];
-    };
-
-    blueman.enable = true;
+    xserver.videoDrivers = ["modesetting"];
   };
 
   environment.systemPackages = with pkgs; [

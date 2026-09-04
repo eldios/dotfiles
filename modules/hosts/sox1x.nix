@@ -15,6 +15,7 @@
       den.aspects.desktop-gui
       den.aspects.terminals
       den.aspects.hyprland
+      den.aspects.gdm
       den.aspects.printing
       den.aspects.ai-tools
       den.aspects.gpu-nvidia
