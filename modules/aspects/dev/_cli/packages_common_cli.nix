@@ -140,7 +140,6 @@
       ripgrep-all # ripgrep for PDFs, archives, etc.
       superfile # modern terminal file manager with TUI
       tree # directory listing as a tree
-      yazi # fast terminal file manager
 
       # Disk & Storage
       bc # arbitrary precision calculator
