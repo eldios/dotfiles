@@ -70,7 +70,7 @@ report() { # current latest -> returns 1 when already up to date
 }
 
 update_buzz() {
-  PKG=buzz f=common/nixos/overlays/buzz-desktop.nix
+  PKG=buzz f=modules/aspects/_overlays/buzz-desktop.nix
   local cur latest ver url old new
   cur=$(file_version "$f")
   latest=$(curl -sf 'https://api.github.com/repos/block/buzz/releases?per_page=15' \
@@ -86,7 +86,7 @@ update_buzz() {
 }
 
 update_antigravity() {
-  PKG=antigravity f=common/nixos/overlays/antigravity-cli.nix
+  PKG=antigravity f=modules/aspects/_overlays/antigravity-cli.nix
   local cur ver base old_hashes new
   cur=$(file_version "$f")
   ver=$(gh_latest_release google-antigravity/antigravity-cli)
@@ -103,8 +103,8 @@ update_antigravity() {
 }
 
 update_pi() {
-  PKG=pi f=common/nixos/overlays/pi-coding-agent.nix
-  local d=common/nixos/overlays/pi-coding-agent
+  PKG=pi f=modules/aspects/_overlays/pi-coding-agent.nix
+  local d=modules/aspects/_overlays/pi-coding-agent
   local cur ver old new
   cur=$(file_version "$f")
   ver=$(curl -sf https://registry.npmjs.org/@mariozechner/pi-coding-agent/latest | jq -r .version)
@@ -124,7 +124,7 @@ update_pi() {
 }
 
 update_qbz() {
-  PKG=qbz f=common/nixos/overlays/qbz.nix
+  PKG=qbz f=modules/aspects/_overlays/qbz.nix
   local cur tag ver old new
   cur=$(file_version "$f")
   tag=$(gh_latest_tag vicrodh/qbz v)
@@ -138,7 +138,7 @@ update_qbz() {
 }
 
 update_gitbutler() {
-  PKG=gitbutler f=common/nixos/overlays/gitbutler.nix
+  PKG=gitbutler f=modules/aspects/_overlays/gitbutler.nix
   local cur tag ver hashes new
   cur=$(file_version "$f")
   tag=$(gh_latest_release gitbutlerapp/gitbutler)
