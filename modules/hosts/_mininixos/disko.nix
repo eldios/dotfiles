@@ -2,11 +2,11 @@
 #
 # Partition scheme:
 #   p1: 1M   BIOS boot (EF02)
-#   p2: 1G   ESP/vfat  -> /boot (also stores Yubikey HMAC salt)
-#   p3: rest  LUKS "K" -> BTRFS with subvolumes
+#   p2: 1G   ESP/vfat  -> /boot
+#   p3: rest  LUKS "M" -> BTRFS with subvolumes
 #
-# Yubikey PBA settings are in boot.nix (merged via NixOS module system).
-# disko handles partition layout + LUKS device declaration + BTRFS subvolumes.
+# disko handles partition layout + LUKS device declaration + BTRFS subvolumes;
+# how "M" is unlocked at boot is declared in boot.nix.
 {lib, ...}: {
   disko.devices = {
     disk = {

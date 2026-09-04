@@ -52,11 +52,10 @@
       url = "github:ravitemer/mcp-hub";
     };
 
-    # Launcher stack for the hosts still on the pre-Quickshell desktop.
-    # Drop both once every host imports omarchy-shell.nix, which carries its
-    # own launcher inside the shell.
+    # Launcher of the classic desktop stack (waybar, walker, mako, swayosd),
+    # installed by omarchy-shell.nix next to the Quickshell desktops so
+    # desktop-switch can still bring it up.
     walker.url = "github:abenz1267/walker/v2.16.2";
-    elephant.url = "github:abenz1267/elephant";
 
     # Omarchy 4, whose desktop is a single Quickshell process. Consumed by
     # omarchy-shell.nix, which takes the QML, themes, templates and scripts

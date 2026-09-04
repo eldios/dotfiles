@@ -1,7 +1,6 @@
 {
   inputs,
   pkgs,
-  nixpkgs-unstable,
   config,
   lib,
   ...
@@ -208,7 +207,7 @@ in {
     yubikey-manager # `ykman`: FIDO2/PIV/OATH/OTP management (PIN, reset, info)
     yubikey-personalization
 
-    # WAYLAND + SWAY
+    # Wayland session plumbing
     dbus # make dbus-update-activation-environment available in the path
     glib # gsettings
 
@@ -224,7 +223,13 @@ in {
     vial
   ];
 
-  hardware.keyboard.qmk.enable = true;
+  hardware = {
+    # All firmware, the non-redistributable blobs included.
+    enableAllFirmware = true;
+    enableRedistributableFirmware = true;
+
+    keyboard.qmk.enable = true;
+  };
   services.udev.packages = with pkgs; [
     qmk
     qmk-udev-rules

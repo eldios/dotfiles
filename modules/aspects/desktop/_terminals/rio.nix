@@ -1,10 +1,4 @@
-# common/home-manager/eldios/programs/rio.nix
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{config, ...}: {
   programs = {
     rio = {
       enable = true;

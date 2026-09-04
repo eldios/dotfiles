@@ -69,7 +69,7 @@
         vm-curator # QEMU/KVM desktop VM TUI (3D accel, no libvirt)
         # mailspring wrapped to force the gnome-libsecret password backend.
         # Electron can't auto-detect the Secret Service on wlroots compositors
-        # (hyprland/i3), so the app menu launch fails without this flag.
+        # (hyprland), so the app menu launch fails without this flag.
         (pkgs.symlinkJoin {
           name = "mailspring-libsecret";
           paths = [mailspring];
