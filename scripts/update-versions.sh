@@ -6,7 +6,7 @@
 #
 # Usage:
 #   scripts/update-versions.sh [--check] <package>|all
-# Packages: buzz antigravity pi qbz gitbutler vm-curator
+# Packages: buzz antigravity qbz gitbutler vm-curator
 # --check only reports current vs latest, writes nothing.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -102,27 +102,6 @@ update_antigravity() {
   eval_ok antigravity-cli
 }
 
-update_pi() {
-  PKG=pi f=modules/aspects/_overlays/pi-coding-agent.nix
-  local d=modules/aspects/_overlays/pi-coding-agent
-  local cur ver old new
-  cur=$(file_version "$f")
-  ver=$(curl -sf https://registry.npmjs.org/@mariozechner/pi-coding-agent/latest | jq -r .version)
-  report "$cur" "$ver" || return 0
-  replace "$f" "version = \"$cur\";" "version = \"$ver\";"
-  replace "$d/package.json" "\"version\": \"$cur\"" "\"version\": \"$ver\""
-  replace "$d/package.json" \
-    "\"@mariozechner/pi-coding-agent\": \"$cur\"" \
-    "\"@mariozechner/pi-coding-agent\": \"$ver\""
-  (cd "$d" && nix-shell -p nodejs --run \
-    'npm install --package-lock-only --ignore-scripts' >/dev/null)
-  log "lockfile regenerated"
-  new=$(nix-shell -p prefetch-npm-deps --run "prefetch-npm-deps $d/package-lock.json" 2>/dev/null | tail -1)
-  old=$(grep -oP 'npmDepsHash = "\Ksha256-[^"]+' "$f")
-  replace "$f" "$old" "$new"
-  eval_ok pi-coding-agent
-}
-
 update_qbz() {
   PKG=qbz f=modules/aspects/_overlays/qbz.nix
   local cur tag ver old new
@@ -179,15 +158,14 @@ run() {
   case "$1" in
     buzz) update_buzz ;;
     antigravity) update_antigravity ;;
-    pi) update_pi ;;
     qbz) update_qbz ;;
     gitbutler) update_gitbutler ;;
     vm-curator) update_vm_curator ;;
     all)
-      for p in buzz antigravity pi qbz vm-curator gitbutler; do run "$p"; done
+      for p in buzz antigravity qbz vm-curator gitbutler; do run "$p"; done
       ;;
     *)
-      echo "usage: $0 [--check] {buzz|antigravity|pi|qbz|gitbutler|vm-curator|all}" >&2
+      echo "usage: $0 [--check] {buzz|antigravity|qbz|gitbutler|vm-curator|all}" >&2
       exit 1
       ;;
   esac
