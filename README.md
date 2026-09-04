@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <b>NixOS + Home Manager configs for my machines</b>
+  <b>NixOS + Home Manager configs for my machines, composed with <a href="https://github.com/denful/den">den</a></b>
 </p>
 
 ## Setup
@@ -27,31 +27,55 @@ cd ~/dotfiles
 sudo nixos-rebuild switch --flake .#$(hostname)
 ```
 
+Once the config is active, the `nixu` alias does the same through
+`nh os switch` (built as the regular user, activated with sudo).
+
 ## Structure
 
 ```
 dotfiles/
-├── flake.nix          # Entrypoint
-├── common/            # Shared config (nixos, home-manager, omarchy, themes)
-├── hosts/             # Per-machine config
-└── docs/              # Guides
+├── flake.nix                # Inputs; every file under modules/ is a den module
+├── modules/
+│   ├── den.nix              # den wiring shared by every host and user
+│   ├── hosts.nix            # The hosts that exist, with their users
+│   ├── flake-outputs.nix    # formatter and dev shell
+│   ├── aspects/             # One aspect per feature (base, sops, hyprland, ...)
+│   ├── hosts/<host>.nix     # Which aspects each host includes
+│   ├── users/<user>.nix     # Users are aspects too
+│   └── _assets/             # Files read by modules (ssh keys)
+├── docs/                    # Guides
+├── scripts/                 # Version bumps for the pinned overlays
+└── Justfile                 # Routine commands
 ```
 
-Secrets are pulled from a private repo via the `secrets` flake input
-(`git+ssh://…/eldios/secrets`), consumed through sops-nix — there is no
-`secrets/` directory in this repo.
+Any path starting with `_` is skipped by the module loader and holds plain
+NixOS or Home Manager modules, imported by the aspect or host next to it.
+
+## The model
+
+A host is a list of aspects. An aspect bundles the NixOS and Home Manager
+halves of one feature: `den.aspects.neovim` carries the system editor in its
+`nixos` class and the LazyVim setup in its `homeManager` class, and a host
+that includes it gets both. Users are aspects as well: `modules/users/eldios.nix`
+includes den's `define-user`, `primary-user` and `user-shell` batteries for the
+account itself, and `host-aspects`, which hands the user the Home Manager half
+of every aspect the host includes. Configuration that belongs to one user on
+one host goes through `provides.<user>.homeManager` in the host's aspect.
+
+Secrets come from a private repo through the `secrets` flake input, consumed
+by sops-nix; there is no `secrets/` directory here.
 
 ## Hosts
 
-| Host | Type | Purpose |
-|------|------|---------|
-| `lele8845ace` | Desktop (AMD 8845 AceMagic NUC) | Main workstation |
-| `lele9iyoga` | Laptop (Yoga9i, Intel) | Portable dev |
-| `mininixos` | Server (Minis NUC) | Storage / self-hosted services |
-| `sox1x` | Server (SOX1 Xtreme Gen2) | Remote server |
+| Host | Role |
+|------|------|
+| `lele8845ace` | Desktop workstation |
+| `lele9iyoga` | Laptop |
+| `sox1x` | Laptop, shared with a second account |
+| `mininixos` | Headless server: storage and services |
 
 ## Docs
 
 - [Commands](docs/nixos-commands.md)
 - [Theming](docs/theming.md)
-- [New Host](docs/new-host.md)
+- [New host](docs/new-host.md)
