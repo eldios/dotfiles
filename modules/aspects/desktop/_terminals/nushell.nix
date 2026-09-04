@@ -9,7 +9,6 @@ in {
       fastfetch
       nnn
       nufmt
-      yazi
       zoxide
     ];
   }; # EOM nushell deps
@@ -123,7 +122,7 @@ in {
     alias k = ${pkgs.kubectl}/bin/kubectl
     alias l = ${pkgs.coreutils}/bin/ls # Using coreutils ls as lsd is not in nushell packages
     alias la = l -a
-    alias lg = ${pkgs.lazygit}/bin/lazygit
+    alias lg = lazygit
     alias ll = l -l
     alias nixU = sudo nix flake update $env.HOME/dotfiles and nixu # 'nix' assumed in PATH
     alias nixUo = sudo nix flake update $env.HOME/dotfiles and nixuo # outside network - skip local cache
@@ -135,7 +134,6 @@ in {
     alias tfd = tf destroy -auto-approve
     alias tfp = tf plan
     alias v = ${pkgs.neovim}/bin/nvim
-    alias y = ${pkgs.yazi}/bin/yazi
 
     ${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}
   '';

@@ -2,18 +2,7 @@
   pkgs,
   lib,
   ...
-}: let
-  eldios_lazygit = pkgs.lazygit.overrideAttrs (oa: {
-    version = "0.41.0";
-
-    src = pkgs.fetchFromGitHub {
-      owner = "jesseduffield";
-      repo = "lazygit";
-      rev = "4ba85608c8f3f25051994d3a7dd45647f58b119c";
-      hash = "sha256-Ok6QnXw3oDeSzBekft8cDXM/YsADgF1NZznfNoGNvck=";
-    };
-  });
-in {
+}: {
   home = {
     packages = with pkgs;
       [
@@ -25,10 +14,7 @@ in {
   };
 
   programs = {
-    lazygit = {
-      enable = true;
-      package = eldios_lazygit;
-    }; # EOM lazygit
+    lazygit.enable = true;
 
     delta = {
       enable = true;
