@@ -14,7 +14,6 @@
       den.aspects.desktop-gui
       den.aspects.terminals
       den.aspects.hyprland
-      den.aspects.walker
       den.aspects.gaming
       den.aspects.printing
       den.aspects.ai-tools

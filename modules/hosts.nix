@@ -2,18 +2,18 @@
 # modules/hosts/<name>.nix; this file only says what exists.
 {
   den.hosts.x86_64-linux = {
-    # AMD 8845 AceMagic NUC, desktop workstation
+    # desktop workstation
     lele8845ace = {
-      users.eldios = {};
       luksRoot = "data";
+      users.eldios = {};
     };
 
-    # Yoga 9i Intel laptop
+    # Lenovo Yoga 9i Intel laptop
     lele9iyoga = {
       users.eldios = {};
     };
 
-    # SOX1 Xtreme Gen2 laptop, shared with a second local account
+    # SOX1 Lenovo Xtreme Gen2 laptop
     sox1x = {
       users.eldios = {};
       users.nimbina.classes = ["user"];
@@ -21,8 +21,8 @@
 
     # Minis NUC: storage and services, headless
     mininixos = {
-      users.eldios = {};
       luksRoot = "M";
+      users.eldios = {};
     };
   };
 }
