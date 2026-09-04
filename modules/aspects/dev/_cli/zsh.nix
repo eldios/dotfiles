@@ -10,6 +10,9 @@ in {
       pay-respects
       zoxide
     ];
+
+    # Session-wide, not only inside zsh: every terminal and login on every host.
+    sessionVariables.TERM = "xterm-256color";
   }; # EOM ZSH deps
 
   programs = {

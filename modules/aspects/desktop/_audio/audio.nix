@@ -1,9 +1,4 @@
 {
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
   # Audio subsystem configuration for high-quality audio playback
   # Optimized for audiophile-grade DACs and high-resolution audio
 

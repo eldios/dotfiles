@@ -4,8 +4,6 @@
 
     dhcpcd.enable = true;
 
-    interfaces = {};
-
     hostId = "d34d0004"; # random chars
 
     firewall.enable = true;

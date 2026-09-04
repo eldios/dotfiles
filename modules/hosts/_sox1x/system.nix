@@ -18,11 +18,6 @@
       enable = true;
       autorun = true;
 
-      xkb = {
-        layout = "us"; #"it"
-        variant = "";
-      };
-
       desktopManager = {
         cinnamon.enable = true;
       };
@@ -60,9 +55,6 @@
 
     blueman.enable = true;
   };
-
-  # dconf is used by both Cinnamon and Gnome for settings persistence
-  programs.dconf.enable = true;
 
   # Trim Gnome default bloat (keeps Gnome lean when user picks it at GDM)
   environment.gnome.excludePackages = with pkgs; [
@@ -103,14 +95,10 @@
     powertop.enable = true;
   };
 
-  hardware = {
-    enableAllFirmware = true;
-
-    # PCI ids of the iGPU and the dGPU for PRIME offload.
-    nvidia.prime = {
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:01:0:0";
-    };
+  # PCI ids of the iGPU and the dGPU for PRIME offload.
+  hardware.nvidia.prime = {
+    intelBusId = "PCI:0:2:0";
+    nvidiaBusId = "PCI:01:0:0";
   };
 }
 # vim: set ts=2 sw=2 et ai list nu

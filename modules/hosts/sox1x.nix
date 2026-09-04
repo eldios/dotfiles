@@ -15,10 +15,8 @@
       den.aspects.desktop-gui
       den.aspects.terminals
       den.aspects.hyprland
-      den.aspects.walker
       den.aspects.printing
       den.aspects.ai-tools
-      den.aspects.cli
       den.aspects.gpu-nvidia
     ];
 
@@ -35,8 +33,6 @@
         ./_sox1x/network.nix
       ];
     };
-
-    provides.eldios.homeManager = ./_sox1x/home.nix;
   };
 }
 # vim: set ts=2 sw=2 et ai list nu

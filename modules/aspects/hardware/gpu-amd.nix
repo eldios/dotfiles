@@ -5,11 +5,9 @@
     imports = [inputs.nixos-hardware.nixosModules.common-gpu-amd];
 
     hardware = {
-      graphics = {
-        enable = true;
-        extraPackages = [pkgs.rocmPackages.clr.icd];
-      };
+      graphics.enable = true;
 
+      # opencl brings the ROCm CLR and its ICD into hardware.graphics.
       amdgpu = {
         opencl.enable = true;
         initrd.enable = true;

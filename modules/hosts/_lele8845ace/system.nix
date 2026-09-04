@@ -1,15 +1,8 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   system = {
     stateVersion = "25.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = true;
   };
-
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   # 24 threads and 64GB here: allow more build parallelism than the
   # common default.
@@ -86,21 +79,11 @@
   # https://wiki.archlinux.org/title/GPGPU#ICD_loader_(libOpenCL.so)
   environment.etc."ld.so.conf.d/00-usrlib.conf".text = "/usr/lib";
 
-  hardware = {
-    enableAllFirmware = true;
-    enableRedistributableFirmware = true;
-
-    cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-    # VDPAU on top of the VA-API stack the gpu-amd aspect installs.
-    graphics = {
-      enable32Bit = true;
-      extraPackages = with pkgs; [
-        libvdpau-va-gl
-        libva-vdpau-driver
-      ];
-    };
-  };
+  # VDPAU on top of the VA-API stack the gpu-amd aspect installs.
+  hardware.graphics.extraPackages = with pkgs; [
+    libvdpau-va-gl
+    libva-vdpau-driver
+  ];
 }
 # vim: set ts=2 sw=2 et ai list nu
 

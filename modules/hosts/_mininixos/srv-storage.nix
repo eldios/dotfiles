@@ -1,4 +1,4 @@
-# 1.8TB secondary disk: LUKS + BTRFS → /srv
+# 1.8TB secondary disk: LUKS + BTRFS -> /srv
 #
 # Initial setup (run ONCE on mininixos):
 #
@@ -28,8 +28,8 @@
 #   Move Portainer volume back to /data/containers/portainer if desired,
 #   or keep on /srv/containers/portainer permanently.
 {...}: {
-  # Post-boot LUKS decryption via crypttab
-  # Key file on encrypted root → auto-unlock after Yubikey unlocks root
+  # Post-boot LUKS decryption via crypttab. The key file sits on the encrypted
+  # root, so the disk opens on its own once root is unlocked.
   environment.etc."crypttab".text = ''
     Ksrv /dev/disk/by-id/nvme-Samsung_SSD_980_PRO_2TB_S69ENF0W729659E /root/data.key luks,nofail
   '';
