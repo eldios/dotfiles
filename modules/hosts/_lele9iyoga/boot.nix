@@ -20,7 +20,6 @@
       systemd.enable = true;
 
       supportedFilesystems = ["btrfs"];
-      kernelModules = [];
       availableKernelModules = [
         "nls_cp437"
         "nls_iso8859_1"

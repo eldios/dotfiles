@@ -23,7 +23,7 @@ in {
     # Must run before cryptsetup, which is ordered before sysinit/basic:
     # with default dependencies (implicit After=basic.target) this is an
     # ordering cycle, and systemd breaks cycles by deleting an arbitrary
-    # job — some boots that job is this one and /data never comes up.
+    # job; some boots that job is this one and /data never comes up.
     # udev-settle is required so the USB enclosure disks are enumerated
     # before the mdadm scan.
     after = ["systemd-udev-settle.service" "local-fs-pre.target"];
@@ -47,8 +47,8 @@ in {
     };
   };
 
-  # Post-boot LUKS decryption (systemd-cryptsetup via /etc/crypttab)
-  # Kdata depends on RAID assembly, KMa/KMb are independent disks
+  # Post-boot LUKS decryption (systemd-cryptsetup via /etc/crypttab), ordered
+  # after the RAID assembly above.
   environment.etc."crypttab".text = ''
     ${luksName} /dev/${mdDevice} ${luksKeyFile} luks,x-systemd.requires=mdadm-assemble-${mdDevice}.service
   '';

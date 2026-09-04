@@ -1,14 +1,7 @@
-{lib, ...}: {
+{
   system = {
     stateVersion = "25.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = false;
-  };
-
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-
-  hardware = {
-    enableAllFirmware = true;
-    enableRedistributableFirmware = true;
   };
 
   # Docker data on dedicated 1.8TB disk

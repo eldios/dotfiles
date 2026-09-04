@@ -81,7 +81,7 @@
   # set system-wide via programs.ssh.askPassword (not just session vars)
   programs.ssh.askPassword = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
 
-  # UPower for battery/power monitoring (used by ironbar, etc.)
+  # UPower for battery/power monitoring (waybar's battery module reads it)
   services.upower.enable = lib.mkDefault true;
 
   # Security - PAM services for screen lockers
@@ -98,8 +98,8 @@
   # pam_gnome_keyring, so finger unlock still leaves the keyring closed.
   security.pam.services.hyprlock.enableGnomeKeyring = lib.mkDefault true;
 
-  # Wayland env vars are set per-compositor (hyprland.nix, niri.nix, etc.)
-  # Don't set them globally - breaks X11 sessions like i3
+  # Wayland env vars belong to the compositor module (the hyprland aspect),
+  # not here: set globally they break the X11 sessions sox1x still offers.
 }
 # vim: set ts=2 sw=2 et ai list nu
 

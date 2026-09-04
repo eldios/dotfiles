@@ -10,7 +10,6 @@
       den.aspects.nix-cache
       den.aspects.virtualisation
       den.aspects.neovim
-      den.aspects.cli
       den.aspects.gpu-amd
       den.aspects.tang-server
       den.aspects.clevis-unlock
@@ -36,13 +35,13 @@
         ./_mininixos/srv-storage.nix
         ./_mininixos/archive-storage.nix
         ./_mininixos/libvirt-vms.nix
+        ./_mininixos/portainer.nix
       ];
     };
 
     # Host-specific Home Manager config for eldios: ROCm packages, signing key.
     provides.eldios.homeManager = {
       imports = [
-        ./_mininixos/home.nix
         ./_mininixos/pkgs.nix
         ./_mininixos/git.nix
       ];

@@ -17,7 +17,6 @@
       den.aspects.gaming
       den.aspects.printing
       den.aspects.ai-tools
-      den.aspects.cli
       den.aspects.gpu-amd
       den.aspects.tang-server
       den.aspects.clevis-unlock
@@ -45,7 +44,7 @@
     provides.eldios.homeManager = {
       imports = [
         ./_lele8845ace/home.nix
-        ./_lele8845ace/hyprland-monitors.nix
+        ./_lele8845ace/display.nix
         ./_lele8845ace/pkgs.nix
       ];
     };

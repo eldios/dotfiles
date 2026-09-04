@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   system = {
     stateVersion = "25.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = true;
@@ -15,8 +10,6 @@
   # 25.11 user creation backend: faster, no passwd file flapping on
   # rebuild. Drop-in replacement for the default useradd/groupadd path.
   services.userborn.enable = true;
-
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   # Finger unlock on the lockscreen: keeps pam_fprintd in hyprlock's stack;
   # hyprlock.nix follows this and runs password and fingerprint in parallel.
@@ -64,13 +57,6 @@
   environment.systemPackages = with pkgs; [
     proton-vpn
   ];
-
-  hardware = {
-    enableAllFirmware = true;
-    enableRedistributableFirmware = true;
-
-    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  };
 }
 # vim: set ts=2 sw=2 et ai list nu
 

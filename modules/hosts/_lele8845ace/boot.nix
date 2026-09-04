@@ -22,7 +22,6 @@
 
     initrd = {
       supportedFilesystems = ["btrfs"];
-      kernelModules = ["amdgpu"];
       availableKernelModules = [
         "ahci"
         "nls_cp437"
