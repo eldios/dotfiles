@@ -1,5 +1,5 @@
 {
-  description = "Lele's nix conf - for macOS and nixOS";
+  description = "Lele's nix conf - for NixOS and MacOS";
 
   # Every module under ./modules is a den module, auto-imported by
   # import-tree; plain NixOS and Home Manager modules live under `_` paths,

@@ -16,7 +16,6 @@
       den.aspects.hyprland
       den.aspects.gaming
       den.aspects.printing
-      den.aspects.vr
       den.aspects.ai-tools
       den.aspects.cli
       den.aspects.gpu-amd
