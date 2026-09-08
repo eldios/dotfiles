@@ -8,12 +8,12 @@
 # Upstream tags: https://github.com/vicrodh/qbz/tags
 final: _prev: let
   pkgs = final.unstable;
-  version = "2.0.2";
+  version = "2.1.0";
   src = pkgs.fetchFromGitHub {
     owner = "vicrodh";
     repo = "qbz";
     tag = "v${version}";
-    hash = "sha256-zseGL7IcH/fdc4TDVwU3Tml1X6wCvSaYCji5D5RxAuA=";
+    hash = "sha256-Yc5f7DjAFAjYgTnT2yv7zjIxmXPJ8ZdLaoPnHJoFRX0=";
   };
   # winit/wgpu/glutin dlopen these at runtime; a Nix binary cannot find
   # system copies, so the installed program is wrapped with this path.
