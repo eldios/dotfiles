@@ -1,10 +1,11 @@
-# QBZ v2 replaced the v1 Tauri app with a Rust/Slint `crates/` workspace,
-# so nixpkgs' qbz (still 1.2.x) cannot be overridden; this overlay rebuilds
-# the package from the upstream tag, ported from the flake.nix in
+# QBZ v2 replaced the v1 Tauri app with a Rust `crates/` workspace, so
+# nixpkgs' qbz (still 1.2.x) cannot be overridden; this overlay rebuilds the
+# package from the upstream tag, ported from the flake.nix in
 # github.com/vicrodh/qbz.
 # To bump: set `version`, then refresh `hash` from the hash-mismatch error
 # on rebuild. The cargo lockfile is read from the fetched src, so there is
-# no vendor hash to refresh.
+# no vendor hash to refresh. Re-read the upstream flake.nix on every bump:
+# 2.1.0 swapped the Slint frontend for Qt/QML and renamed the app crate.
 # Upstream tags: https://github.com/vicrodh/qbz/tags
 final: _prev: let
   pkgs = final.unstable;
@@ -15,18 +16,34 @@ final: _prev: let
     tag = "v${version}";
     hash = "sha256-Yc5f7DjAFAjYgTnT2yv7zjIxmXPJ8ZdLaoPnHJoFRX0=";
   };
-  # winit/wgpu/glutin dlopen these at runtime; a Nix binary cannot find
-  # system copies, so the installed program is wrapped with this path.
-  # X11 libs included so the app is not Wayland-only.
-  runtimeLibs = with pkgs; [
-    wayland
-    libxkbcommon
-    libglvnd
-    vulkan-loader
-    libx11
-    libxcursor
-    libxi
-  ];
+  # Opened by name at run time rather than linked in. Qt's own graphics and
+  # plugin closure is handled by wrapQtAppsHook.
+  runtimeLibs = with pkgs; [libjack2];
+  runtimeBins = with pkgs; [pipewire pulseaudio xdg-utils];
+
+  # cxx-qt's qt-build-utils locates moc/qmltyperegistrar/qmlcachegen only
+  # through `qmake -query`, which reports qtbase's prefix. nixpkgs ships each
+  # Qt module as its own store path, so the qtdeclarative tools are invisible
+  # there and the build dies with "Could not find qmltyperegistrar". Hand
+  # qmake a qt.conf pointing at one libexec that holds both toolsets; every
+  # other path stays pinned to its real value, since cxx-qt also queries
+  # QT_INSTALL_{PREFIX,HEADERS,LIBS,PLUGINS} to drive the C++ compile.
+  qtLibexec = pkgs.runCommand "qbz-qt-libexec" {} ''
+    mkdir -p $out/libexec
+    ln -s ${pkgs.qt6.qtbase}/libexec/* ${pkgs.qt6.qtdeclarative}/libexec/* $out/libexec/
+  '';
+  qtConf = pkgs.writeText "qbz-qt.conf" ''
+    [Paths]
+    Prefix = ${pkgs.qt6.qtbase}
+    Plugins = lib/qt-6/plugins
+    Qml2Imports = lib/qt-6/qml
+    Translations = ${pkgs.qt6.qttranslations}/translations
+    LibraryExecutables = ${qtLibexec}/libexec
+    HostLibraryExecutables = ${qtLibexec}/libexec
+  '';
+  qmakeForCxxQt = pkgs.writeShellScriptBin "qmake" ''
+    exec ${pkgs.qt6.qtbase}/bin/qmake -qtconf ${qtConf} "$@"
+  '';
 in {
   qbz = pkgs.rustPlatform.buildRustPackage {
     pname = "qbz";
@@ -34,38 +51,51 @@ in {
 
     cargoRoot = "crates";
     buildAndTestSubdir = "crates";
-    # Build only the app binary, not every workspace member.
-    cargoBuildFlags = ["-p" "qbz"];
+    # Build only the app binary, not every workspace member. The crate is
+    # `qbz-qt`; the executable it installs is still `qbz`.
+    cargoBuildFlags = ["-p" "qbz-qt"];
     cargoLock.lockFile = "${src}/crates/Cargo.lock";
 
-    env.LIBCLANG_PATH = "${pkgs.lib.getLib pkgs.llvmPackages.libclang}/lib";
+    # qtbase's setup hook exports QMAKE unconditionally, so it would clobber
+    # this as an `env` attribute; setup hooks run before preBuild.
+    preBuild = ''
+      export QMAKE=${qmakeForCxxQt}/bin/qmake
+    '';
 
+    # cxx-qt needs qtbase + qtdeclarative with their private headers (the RHI
+    # items include <rhi/qrhi.h>). qtwayland provides the Wayland platform
+    # plugin, qtsvg the SVG image plugin, and wrapQtAppsHook sets the
+    # plugin/QML paths the binary needs at run time.
     nativeBuildInputs = with pkgs; [
-      clang
       pkg-config
       cmake
       nasm
-      makeWrapper
+      qt6.qmake
+      qt6.wrapQtAppsHook
     ];
 
     buildInputs = with pkgs; [
       alsa-lib
-      fontconfig
-      freetype
       libjack2
+      qt6.qtbase
+      qt6.qtdeclarative
+      qt6.qtsvg
+      qt6.qtwayland
     ];
 
-    # The qbz_ui rustc alone peaks ~30 GB; running the test profile on top
-    # doubles wall time and memory for no packaging value. Engine crates
-    # are tested in the repo's CI.
+    # Tests need an offscreen QPA plus a D-Bus the sandbox does not have, and
+    # the UI rustc alone is RAM-heavy enough without a second profile. Engine
+    # crates are tested in the repo's CI.
     doCheck = false;
 
     postInstall = ''
-      wrapProgram $out/bin/qbz \
-        --prefix LD_LIBRARY_PATH : ${pkgs.lib.makeLibraryPath runtimeLibs}
+      qtWrapperArgs+=(--prefix PATH : ${pkgs.lib.makeBinPath runtimeBins})
+      qtWrapperArgs+=(--prefix LD_LIBRARY_PATH : ${pkgs.lib.makeLibraryPath runtimeLibs})
 
       install -Dm644 $src/packaging/linux/qbz.desktop \
-        $out/share/applications/qbz.desktop
+        $out/share/applications/com.blitzfc.qbz.desktop
+      install -Dm644 $src/packaging/flatpak/com.blitzfc.qbz.metainfo.xml \
+        $out/share/metainfo/com.blitzfc.qbz.metainfo.xml
       for size in 32 48 64 128 256 512; do
         install -Dm644 $src/packaging/icons/"$size"x"$size".png \
           $out/share/icons/hicolor/"$size"x"$size"/apps/qbz.png
@@ -82,4 +112,3 @@ in {
   };
 }
 # vim: set ts=2 sw=2 et ai list nu
-
