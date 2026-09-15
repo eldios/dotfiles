@@ -26,7 +26,6 @@
       enable = true;
       touchpad = {
         clickMethod = "clickfinger";
-        #clickMethod = "buttonareas";
         disableWhileTyping = true;
         middleEmulation = false;
         tappingDragLock = false;

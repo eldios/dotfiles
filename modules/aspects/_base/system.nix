@@ -41,11 +41,9 @@ in {
 
   # nix
   nix = {
-    # This will add each flake input as a registry
-    # To make nix3 commands consistent with your flake
+    # Every flake input is a registry entry and a NIX_PATH entry, so
+    # `nix run nixpkgs#foo` and `<nixpkgs>` both resolve to the pinned inputs.
     registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
-    # This will additionally add your inputs to the system's legacy channels
-    # Making legacy nix commands consistent as well, awesome!
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
     # Builds run inside nix-daemon, so client-side `nice` never reaches them;
     # idle scheduling keeps big compiles from freezing the interactive desktop.
