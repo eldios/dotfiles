@@ -9,12 +9,12 @@
 # Upstream tags: https://github.com/vicrodh/qbz/tags
 final: _prev: let
   pkgs = final.unstable;
-  version = "2.1.0";
+  version = "2.1.1";
   src = pkgs.fetchFromGitHub {
     owner = "vicrodh";
     repo = "qbz";
     tag = "v${version}";
-    hash = "sha256-Yc5f7DjAFAjYgTnT2yv7zjIxmXPJ8ZdLaoPnHJoFRX0=";
+    hash = "sha256-yjTrKABYX2/fv8j32JEtEF9DQxjO6ebEto2xR3GsALg=";
   };
   # Opened by name at run time rather than linked in. Qt's own graphics and
   # plugin closure is handled by wrapQtAppsHook.
@@ -112,3 +112,4 @@ in {
   };
 }
 # vim: set ts=2 sw=2 et ai list nu
+
