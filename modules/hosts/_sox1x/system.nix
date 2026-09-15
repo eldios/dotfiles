@@ -33,7 +33,6 @@
       enable = true;
       touchpad = {
         clickMethod = "buttonareas";
-        #clickMethod = "clickfinger";
         disableWhileTyping = true;
       };
     };
