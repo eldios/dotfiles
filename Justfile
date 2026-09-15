@@ -1,6 +1,5 @@
-# Routine commands for this repo. `just` comes from common/nixos/system.nix;
-# the exotic tools the scripts need are wrapped in nix-shell or provided by
-# the dev shell (nix develop).
+# Routine commands for this repo. Every tool they need is in the dev shell
+# (nix develop) and in the fleet's base profile (modules/aspects/_base).
 
 default:
     @just --list
@@ -24,10 +23,18 @@ eval-all:
       nice -n 19 nix eval ".#nixosConfigurations.$h.config.system.build.toplevel.drvPath"; \
     done
 
-# Format nix files with the flake formatter
+# Format nix files with the flake formatter (alejandra reads stdin when
+# given no path, so the tree is passed explicitly)
 fmt:
-    nix fmt
+    nix fmt -- .
+
+# Check formatting without writing anything
+fmt-check:
+    nix fmt -- --check .
 
 # Lint the repo scripts
 lint:
-    nix-shell -p shellcheck --run 'shellcheck scripts/*.sh'
+    shellcheck scripts/*.sh
+
+# Everything a change has to pass before it is landed
+ci: fmt-check lint eval-all
