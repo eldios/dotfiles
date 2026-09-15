@@ -97,17 +97,17 @@ in {
 
     alias TF = ${pkgs.terraform}/bin/terraform
     alias cg = ${pkgs.cargo}/bin/cargo
-    alias cgb = cg build
-    alias cgc = cg check
+    alias cgb = nice -n 19 ${pkgs.cargo}/bin/cargo build
+    alias cgc = nice -n 19 ${pkgs.cargo}/bin/cargo check
     alias cgn = cg new
     alias cgr = cg run
-    alias cgt = cg test
+    alias cgt = nice -n 19 ${pkgs.cargo}/bin/cargo test
     alias ff = ${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}
     alias g = ${pkgs.git}/bin/git
     alias hm = ${pkgs.home-manager}/bin/home-manager
     alias hm-cleanup = hm expire-generations '-7 days' and nix-store --gc # nix-store is usually in PATH
     alias hm-edit = hm edit
-    alias hm-update = hm switch -b backup --flake $env.HOME/dotfiles
+    alias hm-update = nice -n 19 nh home switch -b backup
     alias hmA = hme and hmU
     alias hmU = nixu and hm-update
     alias hma = hme and hmu
@@ -124,11 +124,13 @@ in {
     alias la = l -a
     alias lg = ${pkgs.lazygit}/bin/lazygit
     alias ll = l -l
-    alias nixU = sudo nix flake update $env.HOME/dotfiles and nixu # 'nix' assumed in PATH
-    alias nixUo = sudo nix flake update $env.HOME/dotfiles and nixuo # outside network - skip local cache
-    alias nixs = nix search nixpkgs # 'nix' assumed in PATH
-    alias nixu = sudo nixos-rebuild switch --flake $env.HOME/dotfiles # nixos-rebuild assumed in PATH
-    alias nixuo = sudo nixos-rebuild switch --flake $env.HOME/dotfiles --option substituters 'https://cache.nixos.org https://nix-community.cachix.org' # outside - skip local cache
+    # Same nh commands as the zsh aliases: builds go through nix-daemon at
+    # idle priority and sudo is only used for the activation step.
+    alias nixU = nice -n 19 nh os switch --update
+    alias nixUo = nice -n 19 nh os switch --update -- --option substituters 'https://cache.nixos.org https://nix-community.cachix.org'
+    alias nixs = nice -n 19 nix search nixpkgs
+    alias nixu = nice -n 19 nh os switch
+    alias nixuo = nice -n 19 nh os switch -- --option substituters 'https://cache.nixos.org https://nix-community.cachix.org'
     alias tf = ${pkgs.opentofu}/bin/tofu
     alias tfa = tf apply -auto-approve
     alias tfd = tf destroy -auto-approve
