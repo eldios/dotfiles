@@ -16,9 +16,6 @@
 
           enable_wayland = true,
 
-          -- INFO: Color scheme is now managed by Stylix
-          -- color_scheme = "Gruvbox Dark",
-
           window_background_opacity = 0.90,
         }
 
