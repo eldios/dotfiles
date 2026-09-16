@@ -111,8 +111,9 @@ in {
         nixUo = "nice -n 19 nh os switch --update -- --option substituters 'https://cache.nixos.org https://nix-community.cachix.org'"; # outside network
         "nixu.old" = "sudo nice -n 19 nixos-rebuild switch --flake $HOME/dotfiles"; # 'sudo' and 'nixos-rebuild' assumed in PATH
         "nixuo.old" = "sudo nice -n 19 nixos-rebuild switch --flake $HOME/dotfiles --option substituters 'https://cache.nixos.org https://nix-community.cachix.org'"; # offline/outside - skip local cache
-        "nixU.old" = "sudo nix flake update $HOME/dotfiles && nixu.old"; # 'sudo', 'nix', and 'nixu.old' alias
-        "nixUo.old" = "sudo nix flake update $HOME/dotfiles && nixuo.old"; # 'sudo', 'nix', and 'nixuo.old' alias - outside network
+        # flake update as the user: a root-owned flake.lock cannot be committed
+        "nixU.old" = "nix flake update --flake $HOME/dotfiles && nixu.old"; # 'nix', and 'nixu.old' alias
+        "nixUo.old" = "nix flake update --flake $HOME/dotfiles && nixuo.old"; # 'nix', and 'nixuo.old' alias - outside network
 
         nixa = "nixe && nixu"; # Uses aliases
         nixA = "nixe && nixU"; # Uses aliases
