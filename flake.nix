@@ -48,9 +48,10 @@
 
     # Omarchy 4, whose desktop is a single Quickshell process. Consumed by
     # omarchy-shell.nix, which takes the QML, themes, templates and scripts
-    # straight from the tree rather than vendoring a curated list.
+    # straight from the tree rather than vendoring a curated list. Pinned to
+    # the release tag; scripts/update-versions.sh bumps it.
     omarchy-quattro = {
-      url = "github:basecamp/omarchy/v4.0.0";
+      url = "github:omacom/omarchy/v4.0.0";
       flake = false;
     };
 
