@@ -6,7 +6,7 @@
 #
 # Usage:
 #   scripts/update-versions.sh [--check] <package>|all
-# Packages: buzz antigravity qbz gitbutler vm-curator
+# Packages: buzz antigravity qbz gitbutler vm-curator omarchy
 # --check only reports current vs latest, writes nothing.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -142,6 +142,18 @@ update_gitbutler() {
   log "hashes updated and eval ok; the (heavy) compile happens at the next switch"
 }
 
+update_omarchy() {
+  PKG=omarchy f=flake.nix
+  local cur tag
+  cur=$(grep -oP 'github:omacom/omarchy/\K[^"]+' "$f")
+  tag=$(gh_latest_release omacom/omarchy)
+  report "$cur" "$tag" || return 0
+  replace "$f" "github:omacom/omarchy/$cur" "github:omacom/omarchy/$tag"
+  nix flake update omarchy-quattro >/dev/null
+  log "input re-locked"
+  eval_ok quickshell
+}
+
 update_vm_curator() {
   PKG=vm-curator f=flake.nix
   local cur tag
@@ -161,11 +173,12 @@ run() {
     qbz) update_qbz ;;
     gitbutler) update_gitbutler ;;
     vm-curator) update_vm_curator ;;
+    omarchy) update_omarchy ;;
     all)
-      for p in buzz antigravity qbz vm-curator gitbutler; do run "$p"; done
+      for p in buzz antigravity qbz vm-curator omarchy gitbutler; do run "$p"; done
       ;;
     *)
-      echo "usage: $0 [--check] {buzz|antigravity|qbz|gitbutler|vm-curator|all}" >&2
+      echo "usage: $0 [--check] {buzz|antigravity|qbz|gitbutler|vm-curator|omarchy|all}" >&2
       exit 1
       ;;
   esac

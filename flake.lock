@@ -811,13 +811,13 @@
       "locked": {
         "lastModified": 1786719479,
         "narHash": "sha256-tge1Sp/Gn6ZNk/I0i4QjIXp+hNuBN2nZCPvcqVLum5Q=",
-        "owner": "basecamp",
+        "owner": "omacom",
         "repo": "omarchy",
         "rev": "f0020448ca87329199de7cb12f2015ebc4a3e5e7",
         "type": "github"
       },
       "original": {
-        "owner": "basecamp",
+        "owner": "omacom",
         "ref": "v4.0.0",
         "repo": "omarchy",
         "type": "github"
