@@ -96,7 +96,6 @@ o.bind("SUPER + SHIFT + V", "Save clipboard to file", bin .. "clip-save")
 
 -- Notifications
 o.bind("SUPER + N", "Notifications", ask .. "notifications")
-o.bind("SUPER + SHIFT + N", "Notification history", bin .. "notif-history")
 
 -- Window groups
 o.bind("SUPER + G", "Toggle group", hl.dsp.group.toggle())

@@ -98,7 +98,6 @@ in {
       kitty
       lavalauncher
       libva-utils
-      mako
       papirus-icon-theme
       pinentry-bemenu
       polkit_gnome
@@ -107,7 +106,6 @@ in {
       qt6.qtwayland
       shotman
       slurp
-      swaybg
       swayr
       swayrbar
       tofi

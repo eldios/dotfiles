@@ -82,7 +82,7 @@
   # set system-wide via programs.ssh.askPassword (not just session vars)
   programs.ssh.askPassword = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
 
-  # UPower for battery/power monitoring (waybar's battery module reads it)
+  # UPower for battery/power monitoring (the desktop shells' battery widgets read it)
   services.upower.enable = lib.mkDefault true;
 
   # Security - PAM services for screen lockers
