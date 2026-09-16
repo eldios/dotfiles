@@ -46,11 +46,6 @@
       url = "github:ravitemer/mcp-hub";
     };
 
-    # Launcher of the classic desktop stack (waybar, walker, mako, swayosd),
-    # installed by omarchy-shell.nix next to the Quickshell desktops so
-    # desktop-switch can still bring it up.
-    walker.url = "github:abenz1267/walker/v2.16.2";
-
     # Omarchy 4, whose desktop is a single Quickshell process. Consumed by
     # omarchy-shell.nix, which takes the QML, themes, templates and scripts
     # straight from the tree rather than vendoring a curated list.

@@ -37,8 +37,6 @@ in {
       "${cacheUrl}" # Local NCPS cache
       "https://cache.nixos.org" # Upstream fallback
       "https://nix-community.cachix.org"
-      "https://walker.cachix.org"
-      "https://walker-git.cachix.org"
       "https://noctalia.cachix.org"
     ];
 
@@ -48,8 +46,6 @@ in {
       "nix-cache.casa.lele.rip:MIX0pJiXpRwrpCmg4sV804gXPkohMs2+EroVLSOqHKg="
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "walker.cachix.org-1:fG8q+uAaMqhsMxWjwvk0IMb4mFPFLqHjuvfwQxE4oJM="
-      "walker-git.cachix.org-1:vmC0ocfPWh0S/vRAQGtChuiZBTAe4wiKDeyyXM0/7pM="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       # Per-host push keys (paths built and uploaded by sibling hosts)
       "lele8845ace-nix-push-1:Tqs2nfkjeSpDMOOHCDtzjDtpuOD4cWi05k7/lGkXU7E="
