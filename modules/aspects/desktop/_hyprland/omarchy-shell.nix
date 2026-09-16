@@ -78,12 +78,11 @@
     install -m755 ${./hypr/shell-dispatch.sh} $out/libexec/shell-dispatch
     install -m755 ${risoApply} $out/libexec/riso-apply
     install -m755 ${./hypr/omarchy-theme-set.sh} $out/libexec/omarchy-theme-set
-    install -m755 ${./hypr/riso-theme-menu.sh} $out/libexec/riso-theme-menu
 
     # The carousel, the background link, its cycle and its mode all live in
-    # the riso binary now; these wrappers only pin this machine's facts and
-    # add what the binary rightly does not know: which other shells might be
-    # on screen, and that the classic stack repaints through swaybg.
+    # the riso binary; these wrappers only pin this machine's facts and add
+    # what the binary rightly does not know: which other shells might be on
+    # screen.
     {
       echo '#!${pkgs.runtimeShell}'
       echo 'export OMARCHY_PATH=${omarchyRoot}'
@@ -99,8 +98,8 @@
     } > $out/bin/riso-carousel
     chmod +x $out/bin/riso-carousel
 
-    # riso backgrounds set moves the link and tells the Omarchy shell; the shells riso
-    # does not know, and swaybg on the classic stack, are this machine's.
+    # riso backgrounds set moves the link and tells the Omarchy shell; the
+    # shells riso does not know are this machine's.
     {
       echo '#!${pkgs.runtimeShell}'
       echo 'export OMARCHY_PATH=${omarchyRoot}'
@@ -109,7 +108,6 @@
       echo "if pgrep -f 'dms run|dms-shell' >/dev/null 2>&1; then dms ipc call wallpaper set \"\$1\" >/dev/null 2>&1 || true; fi"
       echo "if pgrep -f 'caelestia-shell|quickshell.*caelestia' >/dev/null 2>&1; then caelestia-shell ipc call wallpaper set \"\$1\" >/dev/null 2>&1 || true; fi"
       echo "if pgrep -f '^/[^[:space:]]*/\\.?noctalia(-wrapped)?\$' >/dev/null 2>&1; then noctalia msg wallpaper-set \"\$1\" >/dev/null 2>&1 || true; fi"
-      echo "if pgrep -f '/bin/waybar' >/dev/null 2>&1; then $out/bin/desktop-switch classic-bg >/dev/null 2>&1 || true; fi"
     } > $out/bin/riso-background-apply
     chmod +x $out/bin/riso-background-apply
 
@@ -126,8 +124,7 @@
 
     # riso validates and records the mode; the consumers that can honour it
     # are told. DMS reads wallpaperFillMode from the settings file it watches
-    # (Pad is its name for centred); swaybg is restarted on the classic
-    # stack; the Omarchy shell has no such knob.
+    # (Pad is its name for centred); the Omarchy shell has no such knob.
     {
       echo '#!${pkgs.runtimeShell}'
       echo 'export PATH=/etc/profiles/per-user/${config.home.username}/bin:$PATH'
@@ -150,7 +147,6 @@
       echo '    noctalia msg config-reload >/dev/null 2>&1 || true'
       echo '  fi'
       echo 'fi'
-      echo "exec $out/bin/desktop-switch classic-bg"
     } > $out/bin/riso-background-mode
     chmod +x $out/bin/riso-background-mode
 
@@ -168,7 +164,7 @@
     } > $out/bin/riso
     chmod +x $out/bin/riso
 
-    for tool in desktop-switch shell-dispatch riso-apply omarchy-theme-set riso-theme-menu; do
+    for tool in desktop-switch shell-dispatch riso-apply omarchy-theme-set; do
       {
         echo '#!${pkgs.runtimeShell}'
         echo 'export OMARCHY_PATH=${omarchyRoot}'
@@ -315,24 +311,12 @@ in {
 
       # Switching between shells at runtime only works if they are all here.
       # Exactly one runs; having the others installed is what makes falling
-      # back instant instead of a rebuild away. Waybar, mako and hyprlock come
-      # from their own modules, imported next to this one, so the classic stack
-      # is configured rather than merely present.
+      # back instant instead of a rebuild away.
       desktopTools
       inputs.dank-material-shell.packages.${pkgs.stdenv.hostPlatform.system}.default
       inputs.caelestia-shell.packages.${pkgs.stdenv.hostPlatform.system}.caelestia-shell
       inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
-      pkgs.swayosd
       pkgs.wlogout
-      inputs.walker.packages.${pkgs.stdenv.hostPlatform.system}.default
-      # Walker 2.x is a UI over the elephant data daemon; without the binary on
-      # PATH the service exits at startup with only a hint on stderr.
-      pkgs.elephant
-
-      # What shell-dispatch opens for the network and bluetooth panels when the
-      # classic stack is running.
-      pkgs.networkmanagerapplet
-      pkgs.blueman
 
       # omarchy-notification-send resolves notify-send from PATH. Low priority
       # because pcloud ships its own libnotify.so and would otherwise collide.
@@ -381,8 +365,6 @@ in {
     home.activation.seedRisoOverrides = lib.hm.dag.entryAfter ["writeBoundary"] ''
       overrides="${homeDir}/.config/riso/overrides"
       $DRY_RUN_CMD mkdir -p "$overrides"
-      [ -f "$overrides/waybar-config.json" ] || $DRY_RUN_CMD sh -c "echo '{}' > '$overrides/waybar-config.json'"
-      [ -f "$overrides/waybar.css" ] || $DRY_RUN_CMD touch "$overrides/waybar.css"
       [ -f "$overrides/alacritty.toml" ] || $DRY_RUN_CMD touch "$overrides/alacritty.toml"
     '';
 
