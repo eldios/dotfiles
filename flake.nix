@@ -1,5 +1,5 @@
 {
-  description = "Lele's nix conf - for NixOS and MacOS";
+  description = "Lele's NixOS fleet";
 
   # Every module under ./modules is a den module, auto-imported by
   # import-tree; plain NixOS and Home Manager modules live under `_` paths,
@@ -18,12 +18,6 @@
     };
 
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
-
-    darwin = {
-      url = "github:lnl7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs-darwin";
-    };
 
     # Aspect-oriented configuration framework and its module loader.
     den.url = "github:denful/den";

@@ -167,26 +167,6 @@
         "type": "github"
       }
     },
-    "darwin": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-darwin"
-        ]
-      },
-      "locked": {
-        "lastModified": 1786845137,
-        "narHash": "sha256-oQFip+v0luP8NIxJzmiW4Wu8bILsbFWom5l0zonl8hQ=",
-        "owner": "lnl7",
-        "repo": "nix-darwin",
-        "rev": "4cff07de74b50e64bdd68cd4e722ab5b6b35ee48",
-        "type": "github"
-      },
-      "original": {
-        "owner": "lnl7",
-        "repo": "nix-darwin",
-        "type": "github"
-      }
-    },
     "den": {
       "locked": {
         "lastModified": 1788557660,
@@ -584,22 +564,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-darwin": {
-      "locked": {
-        "lastModified": 1789155820,
-        "narHash": "sha256-cTHZTeYRV42p62ss3ZEFnBXrW3WpLgDpYWYyat4V2b8=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "8029b6c369415ee1ef02a86f352806348f104db9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixpkgs-26.05-darwin",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1785031560,
@@ -965,7 +929,6 @@
         "claude-code-overlay": "claude-code-overlay",
         "codex-cli-nix": "codex-cli-nix",
         "dank-material-shell": "dank-material-shell",
-        "darwin": "darwin",
         "den": "den",
         "disko": "disko",
         "gws-cli": "gws-cli",
@@ -977,7 +940,6 @@
         "nix-ratspeak": "nix-ratspeak",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_11",
-        "nixpkgs-darwin": "nixpkgs-darwin",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "noctalia": "noctalia",
         "omarchy-quattro": "omarchy-quattro",
