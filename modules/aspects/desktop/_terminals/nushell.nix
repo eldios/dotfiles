@@ -7,6 +7,7 @@ in {
     packages = with pkgs; [
       carapace
       fastfetch
+      lsd
       nnn
       nufmt
       zoxide
@@ -105,13 +106,8 @@ in {
     alias ff = ${pkgs.fastfetch}/bin/fastfetch ${myFastFetchOpt}
     alias g = ${pkgs.git}/bin/git
     alias hm = ${pkgs.home-manager}/bin/home-manager
-    alias hm-cleanup = hm expire-generations '-7 days' and nix-store --gc # nix-store is usually in PATH
     alias hm-edit = hm edit
     alias hm-update = nice -n 19 nh home switch -b backup
-    alias hmA = hme and hmU
-    alias hmU = nixu and hm-update
-    alias hma = hme and hmu
-    alias hmc = hm-cleanup
     alias hme = hm-edit
     alias hmu = hm-update
     alias ipcalc = ${pkgs.sipcalc}/bin/sipcalc
@@ -120,10 +116,11 @@ in {
     alias jil = ji list
     alias jim = ji list -a 'lele@switchboard.xyz' --order-by STATUS
     alias k = ${pkgs.kubectl}/bin/kubectl
-    alias l = ${pkgs.coreutils}/bin/ls # Using coreutils ls as lsd is not in nushell packages
-    alias la = l -a
+    alias ls = ${pkgs.lsd}/bin/lsd
+    alias ll = ${pkgs.lsd}/bin/lsd -lh
+    alias l = ${pkgs.lsd}/bin/lsd -lhtra
+    alias la = ${pkgs.lsd}/bin/lsd -a
     alias lg = ${pkgs.lazygit}/bin/lazygit
-    alias ll = l -l
     # Same nh commands as the zsh aliases: builds go through nix-daemon at
     # idle priority and sudo is only used for the activation step.
     alias nixU = nice -n 19 nh os switch --update
@@ -131,6 +128,15 @@ in {
     alias nixs = nice -n 19 nix search nixpkgs
     alias nixu = nice -n 19 nh os switch
     alias nixuo = nice -n 19 nh os switch -- --option substituters 'https://cache.nixos.org https://nix-community.cachix.org'
+
+    # Command sequences are defs, not aliases: an alias body is one command
+    # line, so `a and b` would hand "and b" to a as arguments. A failing
+    # external stops the block, which gives these the zsh `&&` behaviour.
+    def hm-cleanup [] { hm expire-generations '-7 days'; nix-store --gc }
+    def hmc [] { hm-cleanup }
+    def hmU [] { nixu; hm-update }
+    def hma [] { hme; hmu }
+    def hmA [] { hme; hmU }
     alias tf = ${pkgs.opentofu}/bin/tofu
     alias tfa = tf apply -auto-approve
     alias tfd = tf destroy -auto-approve
