@@ -20,7 +20,7 @@ o.bind("SUPER + CTRL + Q", "Lock screen", "hyprlock")
 
 -- WM launchers
 o.bind("SUPER + D", "App menu", ask .. "launcher")
-o.bind("SUPER + SHIFT + D", "Runner", ask .. "menu")
+o.bind("SUPER + SHIFT + D", "Run command", ask .. "run")
 o.bind("SUPER + F", "Files", "ghostty -e yazi")
 o.bind("SUPER + E", "Emoji / symbols", ask .. "emoji")
 o.bind("SUPER + W", "Window menu", ask .. "menu")
@@ -107,23 +107,15 @@ o.bind("SUPER + CTRL + SHIFT + TAB", "Previous tab in group", hl.dsp.group.prev(
 o.bind("SUPER + SHIFT + R", "Force renderer reload", hl.dsp.force_renderer_reload())
 o.bind("SUPER + CTRL + SHIFT + R", "Reload configuration", "hyprctl reload")
 
--- Media and hardware (locked = also active on the lockscreen)
-o.bind("XF86AudioRaiseVolume", "Volume up", "swayosd-client --output-volume raise", { locked = true, repeating = true })
-o.bind(
-	"XF86AudioLowerVolume",
-	"Volume down",
-	"swayosd-client --output-volume lower",
-	{ locked = true, repeating = true }
-)
-o.bind("XF86MonBrightnessUp", "Brightness up", "swayosd-client --brightness raise", { locked = true, repeating = true })
-o.bind(
-	"XF86MonBrightnessDown",
-	"Brightness down",
-	"swayosd-client --brightness lower",
-	{ locked = true, repeating = true }
-)
-o.bind("XF86AudioMute", "Mute", "swayosd-client --output-volume mute-toggle", { locked = true })
-o.bind("XF86AudioMicMute", "Mute microphone", "swayosd-client --input-volume mute-toggle", { locked = true })
+-- Media and hardware (locked = also active on the lockscreen). The level
+-- and its OSD belong to whichever shell is running, so these go through
+-- shell-dispatch like the panels.
+o.bind("XF86AudioRaiseVolume", "Volume up", ask .. "volume-up", { locked = true, repeating = true })
+o.bind("XF86AudioLowerVolume", "Volume down", ask .. "volume-down", { locked = true, repeating = true })
+o.bind("XF86MonBrightnessUp", "Brightness up", ask .. "brightness-up", { locked = true, repeating = true })
+o.bind("XF86MonBrightnessDown", "Brightness down", ask .. "brightness-down", { locked = true, repeating = true })
+o.bind("XF86AudioMute", "Mute", ask .. "volume-mute", { locked = true })
+o.bind("XF86AudioMicMute", "Mute microphone", ask .. "mic-mute", { locked = true })
 o.bind("XF86AudioPlay", "Play/pause", "playerctl play-pause", { locked = true })
 o.bind("XF86AudioNext", "Next track", "playerctl next", { locked = true })
 o.bind("XF86AudioPrev", "Previous track", "playerctl previous", { locked = true })
