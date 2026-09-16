@@ -18,5 +18,7 @@
     (import ./_overlays/gitbutler.nix)
     (import ./_overlays/qbz.nix)
     (import ./_overlays/buzz-desktop.nix)
+    # Last, so a hotfix wins over anything above.
+    (import ./_overlays/tmp-hotfix.nix)
   ];
 }
