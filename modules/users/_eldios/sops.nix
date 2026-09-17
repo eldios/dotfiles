@@ -62,6 +62,7 @@ in {
       "tokens/mcp/unifi_api_site" = {};
       "tokens/mcp/unifi_api_verify_ssl" = {};
       "tokens/mcp/unifi_gateway_ip" = {};
+      "tokens/mcp/browser_url" = {};
       "tokens/mcp/anytype_headers" = {};
     };
 
