@@ -318,12 +318,21 @@
     )}
   '';
 
+  # MCP servers that run elsewhere (homelab stacks), reached by URL only. The
+  # URLs are hostnames of the private network, so they live in sops.
+  remoteMcpServers = {
+    browser = {
+      url = config.sops.placeholder."tokens/mcp/browser_url";
+    };
+  };
+
   # Generate mcphub servers.json for nvim
   mcphubServers =
     builtins.mapAttrs (name: cfg: {
       url = "http://localhost:${toString cfg.port}${cfg.mcpPath or "/sse"}";
     })
-    mcpServers;
+    mcpServers
+    // remoteMcpServers;
 
   mcphubContent = builtins.toJSON {mcpServers = mcphubServers;};
 in {
@@ -339,9 +348,12 @@ in {
     mode = "0600";
   };
 
-  # Generate mcphub servers.json for nvim
-  xdg.configFile."mcphub/servers.json" = {
-    text = mcphubContent;
+  # Generate mcphub servers.json for nvim; a sops template, since the remote
+  # entries carry secret URLs.
+  sops.templates."mcphub/servers.json" = {
+    content = mcphubContent;
+    path = "/home/eldios/.config/mcphub/servers.json";
+    mode = "0600";
   };
 
   # Ensure .mcp directory exists with proper permissions
