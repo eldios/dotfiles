@@ -7,6 +7,15 @@
   # Docker data on dedicated 1.8TB disk
   virtualisation.docker.daemon.settings = {
     data-root = "/srv/docker";
+    # Networks without an explicit subnet get a /28 from here. The built-in
+    # pools hand out /16 and then /20 slices of 192.168.0.0/16, which
+    # overlap the LAN ranges; compose networks pin theirs in 172.16.0.0/16.
+    default-address-pools = [
+      {
+        base = "172.17.0.0/16";
+        size = 28;
+      }
+    ];
   };
 
   # dockerd must wait for its data-root AND every bind-mount source before
