@@ -340,6 +340,13 @@ in {
       # layer's store path; the modules it loads come from hyprland.nix.
       "hypr/hyprland.lua".source = pkgs.writeText "hyprland.lua" hyprlandLua;
       "hypr/lua/monitors.lua".text = monitorsLua;
+
+      # Neovim's colorscheme is the lazy.nvim spec riso renders for the active
+      # theme, picked up by the `plugins` import. Out-of-store symlink so a
+      # theme swap applies at the next start without a rebuild.
+      "nvim/lua/plugins/theme.lua".source =
+        config.lib.file.mkOutOfStoreSymlink
+        "${homeDir}/.local/state/riso/current/theme/neovim.lua";
     };
 
     # riso's tree is the source of truth; ~/.local/state/omarchy is an alias
