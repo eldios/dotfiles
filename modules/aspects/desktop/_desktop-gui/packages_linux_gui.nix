@@ -194,7 +194,6 @@
         # Media & Music
         feishin # multi-app open source music player
         sonixd # Subsonic/Jellyfin music client
-        spotify # music streaming service
 
         # Cloud Storage
         # pCloud client wrapped with libglvnd + opengl-driver in LD_LIBRARY_PATH
@@ -231,6 +230,9 @@
 
         # VPN
         proton-vpn # ProtonVPN official GUI client
+
+        # GUI media apps
+        spotify # Official Spotify app
       ]);
   }; # EOM home
 }
