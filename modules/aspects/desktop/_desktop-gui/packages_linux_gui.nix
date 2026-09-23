@@ -92,7 +92,6 @@
 
         # Media Players
         mpv # lightweight media player
-        qbz # Qobuz native app (v2 via overlay)
         vlc # versatile multimedia player
 
         # Streaming & Recording
