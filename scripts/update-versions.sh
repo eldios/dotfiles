@@ -6,7 +6,7 @@
 #
 # Usage:
 #   scripts/update-versions.sh [--check] <package>|all
-# Packages: buzz antigravity qbz gitbutler vm-curator omarchy
+# Packages: buzz gitbutler vm-curator omarchy
 # --check only reports current vs latest, writes nothing.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -85,37 +85,6 @@ update_buzz() {
   eval_ok buzz-desktop
 }
 
-update_antigravity() {
-  PKG=antigravity f=modules/aspects/_overlays/antigravity-cli.nix
-  local cur ver base old_hashes new
-  cur=$(file_version "$f")
-  ver=$(gh_latest_release google-antigravity/antigravity-cli)
-  report "$cur" "$ver" || return 0
-  base="https://github.com/google-antigravity/antigravity-cli/releases/download/${ver}"
-  mapfile -t old_hashes < <(grep -oP 'hash = "\Ksha256-[^"]+' "$f")
-  replace "$f" "version = \"$cur\";" "version = \"$ver\";"
-  # hash order in the file: x64 first, arm64 second
-  new=$(prefetch_url "$base/agy_cli_linux_x64.tar.gz")
-  replace "$f" "${old_hashes[0]}" "$new"
-  new=$(prefetch_url "$base/agy_cli_linux_arm64.tar.gz")
-  replace "$f" "${old_hashes[1]}" "$new"
-  eval_ok antigravity-cli
-}
-
-update_qbz() {
-  PKG=qbz f=modules/aspects/_overlays/qbz.nix
-  local cur tag ver old new
-  cur=$(file_version "$f")
-  tag=$(gh_latest_tag vicrodh/qbz v)
-  ver="${tag#v}"
-  report "$cur" "$ver" || return 0
-  new=$(prefetch_github "vicrodh/qbz/$tag")
-  old=$(grep -oP 'hash = "\Ksha256-[^"]+' "$f" | head -1)
-  replace "$f" "version = \"$cur\";" "version = \"$ver\";"
-  replace "$f" "$old" "$new"
-  eval_ok qbz
-}
-
 update_gitbutler() {
   PKG=gitbutler f=modules/aspects/_overlays/gitbutler.nix
   local cur tag ver hashes new
@@ -169,16 +138,14 @@ update_vm_curator() {
 run() {
   case "$1" in
     buzz) update_buzz ;;
-    antigravity) update_antigravity ;;
-    qbz) update_qbz ;;
     gitbutler) update_gitbutler ;;
     vm-curator) update_vm_curator ;;
     omarchy) update_omarchy ;;
     all)
-      for p in buzz antigravity qbz vm-curator omarchy gitbutler; do run "$p"; done
+      for p in buzz vm-curator omarchy gitbutler; do run "$p"; done
       ;;
     *)
-      echo "usage: $0 [--check] {buzz|antigravity|qbz|gitbutler|vm-curator|omarchy|all}" >&2
+      echo "usage: $0 [--check] {buzz|gitbutler|vm-curator|omarchy|all}" >&2
       exit 1
       ;;
   esac
