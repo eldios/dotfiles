@@ -26,10 +26,6 @@ final: _prev: let
     inherit pname version src;
 
     postExtract = ''
-      # Use the FHS environment's OpenSSL for both Buzz and GStreamer. Keeping
-      # the older bundled copy makes Nixpkgs' GStreamer plugins fail to load.
-      rm $out/usr/lib/lib{crypto,ssl}.so.3
-
       substituteInPlace $out/usr/bin/buzz-desktop \
         --replace-fail \
           'exec -a "buzz-desktop" "$here/buzz-desktop.bin" "$@"' \
