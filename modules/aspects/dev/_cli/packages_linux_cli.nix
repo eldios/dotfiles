@@ -28,6 +28,9 @@
 
       # Virtualization
       quickemu # quick QEMU VM manager
+
+      # Programming & Nix
+      devenv
     ];
   };
 }
