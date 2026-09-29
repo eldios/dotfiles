@@ -26,7 +26,7 @@
 
   # Hardware watchdog: auto-reboot if the host hard-freezes (a btrfs commit
   # stall wedged it 2026-06-22 and needed a manual power-cycle). /dev/watchdog exists.
-  systemd.watchdog.runtimeTime = "30s";
+  systemd.settings.Manager.RuntimeWatchdogSec = "30s";
 
   services.btrfs.autoScrub = {
     enable = true;
