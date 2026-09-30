@@ -37,6 +37,7 @@
       shellcheck # shell script linter
 
       # Cloud CLIs
+      aws-vault # store AWS credentials safely in keychain
       awscli2 # Amazon Web Services CLI
       azure-cli # Microsoft Azure CLI
       doctl # DigitalOcean CLI
