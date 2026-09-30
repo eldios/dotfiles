@@ -13,15 +13,15 @@
 {
   services.dnsmasq = {
     enable = true;
-    # Points /etc/resolv.conf at 127.0.0.1 and keeps the real upstream list in
-    # /etc/dnsmasq-resolv.conf.
+    # Points /etc/resolv.conf at 127.0.0.1 (and ::1 with IPv6 on) and keeps the
+    # real upstream list in /etc/dnsmasq-resolv.conf.
     resolveLocalQueries = true;
     alwaysKeepRunning = true;
 
     settings = {
       # libvirt runs its own dnsmasq on virbr0:53, so never bind the wildcard.
       # bind-dynamic also copes with docker0 appearing after this service starts.
-      listen-address = ["127.0.0.1" "172.17.0.1"];
+      listen-address = ["127.0.0.1" "::1" "172.17.0.1"];
       bind-dynamic = true;
 
       # No `no-resolv` on purpose: upstream comes from resolvconf, so
