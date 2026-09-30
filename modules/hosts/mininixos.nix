@@ -35,7 +35,6 @@
         ./_mininixos/srv-storage.nix
         ./_mininixos/archive-storage.nix
         ./_mininixos/libvirt-vms.nix
-        ./_mininixos/auto-bump.nix
         ./_mininixos/portainer.nix
       ];
     };
