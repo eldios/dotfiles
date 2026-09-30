@@ -186,6 +186,7 @@
         # Communication
         beeper # unified messaging (all chats in one app)
         vesktop # Discord client with Vencord fixes
+        element-desktop # Matrix desktop client
 
         # Password Management
         bitwarden-cli # password manager CLI
