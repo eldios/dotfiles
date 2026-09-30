@@ -195,6 +195,9 @@
       sl # steam locomotive (typo catcher for ls)
       toilet # ASCII art text with colors
     ];
+
+    # aws-vault defaults to its own "awsvault" secret-service collection; use the login keyring instead
+    sessionVariables.AWS_VAULT_SECRET_SERVICE_COLLECTION_NAME = "login";
   };
 }
 # EOF
