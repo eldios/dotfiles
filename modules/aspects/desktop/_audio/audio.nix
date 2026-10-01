@@ -60,6 +60,19 @@
       };
     };
 
+    # The graph only switches to a stream's sample rate (allowed-rates above)
+    # while the sink is idle. cava, spawned by the shell's visualizer, captures
+    # the sink monitor at all times and would pin the graph at 48 kHz, so
+    # 44.1 kHz music gets resampled. A passive link does not keep the sink busy.
+    extraConfig.client."60-cava-passive" = {
+      "stream.rules" = [
+        {
+          matches = [{"application.process.binary" = "cava";}];
+          actions.update-props."node.passive" = true;
+        }
+      ];
+    };
+
     # Device rules: keep DACs from suspending and let them follow the graph
     # sample rate. These are WirePlumber rules and MUST go through
     # wireplumber.extraConfig (loaded via the WirePlumber config search path).
