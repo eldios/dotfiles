@@ -30,7 +30,8 @@
       quickemu # quick QEMU VM manager
 
       # Programming & Nix
-      devenv
+      devenv # manage dev env like a ninja... they were good right?
+      secretspec # manage secrets like a ninja... they were def good at this
     ];
   };
 }
