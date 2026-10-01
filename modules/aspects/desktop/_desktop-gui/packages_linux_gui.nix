@@ -233,7 +233,21 @@
         proton-vpn # ProtonVPN official GUI client
 
         # GUI media apps
-        spotify # Official Spotify app
+        # Official Spotify app, launched without a system D-Bus. Spotify goes
+        # offline whenever NetworkManager reports less than global connectivity,
+        # and NM reports "local only" on hosts whose wired bridge it does not
+        # manage. With no NM on the bus Spotify assumes ethernet. MPRIS media
+        # controls use the session bus and are unaffected.
+        (pkgs.symlinkJoin {
+          name = "spotify-no-system-dbus";
+          paths = [spotify];
+          nativeBuildInputs = [pkgs.makeBinaryWrapper];
+          postBuild = ''
+            rm $out/bin/spotify
+            makeWrapper ${spotify}/bin/spotify $out/bin/spotify \
+              --set DBUS_SYSTEM_BUS_ADDRESS unix:path=/nonexistent
+          '';
+        })
       ]);
   }; # EOM home
 }
