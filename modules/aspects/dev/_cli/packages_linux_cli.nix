@@ -1,7 +1,7 @@
 # Packages for Linux-specific command-line interface tools.
 {pkgs, ...}: {
   home = {
-    packages = with pkgs; [
+    packages = (with pkgs; [
       # System Monitoring
       atop # advanced system and process monitor
       iotop # I/O usage monitor per process
@@ -28,11 +28,10 @@
 
       # Virtualization
       quickemu # quick QEMU VM manager
-
+    ]) ++ (with pkgs.unstable; [
       # Programming & Nix
       devenv # manage dev env like a ninja... they were good right?
-      secretspec # manage secrets like a ninja... they were def good at this
-    ];
+    ]);
   };
 }
 # EOF
