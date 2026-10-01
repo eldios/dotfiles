@@ -62,13 +62,17 @@
 
     # The graph only switches to a stream's sample rate (allowed-rates above)
     # while the sink is idle. cava, spawned by the shell's visualizer, captures
-    # the sink monitor at all times and would pin the graph at 48 kHz, so
-    # 44.1 kHz music gets resampled. A passive link does not keep the sink busy.
+    # the sink monitor and would pin the graph at its current rate, so 44.1 kHz
+    # music gets resampled. A passive link without always-process lets the sink
+    # go idle. The stream node carries no application.* keys: match node.name.
     extraConfig.client."60-cava-passive" = {
       "stream.rules" = [
         {
-          matches = [{"application.process.binary" = "cava";}];
-          actions.update-props."node.passive" = true;
+          matches = [{"node.name" = "cava";}];
+          actions.update-props = {
+            "node.passive" = true;
+            "node.always-process" = false;
+          };
         }
       ];
     };
