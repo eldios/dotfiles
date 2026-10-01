@@ -112,9 +112,6 @@ in {
     alias hmu = hm-update
     alias ipcalc = ${pkgs.sipcalc}/bin/sipcalc
     alias j = ${pkgs.just}/bin/just
-    alias ji = ${pkgs.jira-cli-go}/bin/jira issue
-    alias jil = ji list
-    alias jim = ji list -a 'lele@switchboard.xyz' --order-by STATUS
     alias k = ${pkgs.kubectl}/bin/kubectl
     alias ls = ${pkgs.lsd}/bin/lsd
     alias ll = ${pkgs.lsd}/bin/lsd -lh

@@ -75,10 +75,6 @@ in {
         k = "${pkgs.kubectl}/bin/kubectl";
         j = "${pkgs.just}/bin/just";
 
-        ji = "${pkgs.jira-cli-go}/bin/jira issue";
-        jil = "ji list"; # Uses the 'ji' alias
-        jim = "ji list -a lele@switchboard.xyz --order-by STATUS"; # Uses the 'ji' alias
-
         TF = "${pkgs.terraform}/bin/terraform";
         tf = "${pkgs.opentofu}/bin/tofu";
         tfp = "tf plan"; # Uses the 'tf' alias
@@ -145,7 +141,6 @@ in {
         tmp = "$HOME/tmp";
         gh = "$HOME/go/src/github.com";
         gheldios = "$HOME/go/src/github.com/eldios";
-        ghsw = "$HOME/go/src/github.com/switchboard-xyz";
         ghlinera = "$HOME/go/src/github.com/linera-io";
       };
 
