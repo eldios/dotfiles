@@ -95,7 +95,7 @@
       };
 
       includes = [
-        { path = "~/.config/git/local.inc"; }
+        {path = "~/.config/git/local.inc";}
       ];
 
       ignores = [
