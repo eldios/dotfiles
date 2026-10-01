@@ -198,6 +198,8 @@
 
     # aws-vault defaults to its own "awsvault" secret-service collection; use the login keyring instead
     sessionVariables.AWS_VAULT_SECRET_SERVICE_COLLECTION_NAME = "login";
+    # MFA sessions (GetSessionToken) last a working day instead of aws-vault's 1h default
+    sessionVariables.AWS_SESSION_TOKEN_TTL = "12h";
   };
 }
 # EOF
