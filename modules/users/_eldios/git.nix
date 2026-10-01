@@ -94,6 +94,10 @@
         };
       };
 
+      includes = [
+        { path = "~/.config/git/local.inc"; }
+      ];
+
       ignores = [
         ".DS_Store"
         "*.pyc"
