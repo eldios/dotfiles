@@ -1,4 +1,3 @@
-{...}:
 # Caching DNS resolver on every host.
 #
 # Chosen over systemd-resolved and unbound for one reason: only dnsmasq lets you
@@ -10,7 +9,9 @@
 # once, otherwise tailscaled and dnsmasq both rewrite /etc/resolv.conf. It
 # cannot be declared here: services.tailscale.extraUpFlags only takes effect
 # through tailscaled-autoconnect, which never runs without an authKeyFile.
-{
+{inputs, ...}: let
+  inherit (import "${inputs.secrets}/network.nix") tailnet;
+in {
   services.dnsmasq = {
     enable = true;
     # Points /etc/resolv.conf at 127.0.0.1 (and ::1 with IPv6 on) and keeps the
@@ -29,12 +30,13 @@
       # keeps roaming laptops working on networks that mandate their resolver.
 
       # Split-DNS for the tailnet, so MagicDNS names resolve without handing
-      # /etc/resolv.conf to systemd-resolved. Matching the whole ts.net TLD
-      # avoids naming this tailnet and survives a rename; MagicDNS only ever
-      # answers for our own tailnet anyway. The second entry is a wildcard over
-      # the 100.x reverse space, so `dig -x` on a tailnet IP works.
+      # /etc/resolv.conf to systemd-resolved. Only our own tailnet: MagicDNS
+      # answers SERVFAIL for other tailnets, whose public ts.net names (Funnel
+      # homeservers Synapse federates with) must go to the normal upstream.
+      # The second entry is a wildcard over the 100.x reverse space, so
+      # `dig -x` on a tailnet IP works.
       server = [
-        "/ts.net/100.100.100.100"
+        "/${tailnet}/100.100.100.100"
         "/100.in-addr.arpa/100.100.100.100"
       ];
 
@@ -56,14 +58,13 @@
     };
   };
 
-  # Short names for tailnet-only nodes. A search domain cannot be a wildcard the
-  # way the ts.net forward above is, so the tailnet is spelled out here.
+  # Short names for tailnet-only nodes.
   # `_append` and not networking.search: the latter goes in through resolvconf's
   # static record at metric 1, which would put the tailnet ahead of the
   # DHCP-supplied domains and send `ssh mininixos` over the tailnet instead of
   # the LAN. See search_domains vs search_domains_append in resolvconf.conf(5).
   networking.resolvconf.extraConfig = ''
-    search_domains_append='TAILNET.ts.net'
+    search_domains_append='${tailnet}'
   '';
 
   systemd.tmpfiles.rules = [
