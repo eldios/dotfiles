@@ -43,7 +43,6 @@
       doctl # DigitalOcean CLI
       (google-cloud-sdk.withExtraComponents [google-cloud-sdk.components.gke-gcloud-auth-plugin]) # GCP CLI with GKE auth
       infisical # secrets management platform CLI
-      jira-cli-go # Jira CLI
       linode-cli # Linode cloud CLI
       metal-cli # Equinix Metal CLI
       vultr-cli # Vultr cloud CLI
