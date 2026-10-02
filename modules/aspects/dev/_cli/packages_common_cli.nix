@@ -182,6 +182,7 @@
       tldr # simplified community-driven man pages
       tmux # terminal multiplexer
       wget # download files from the web
+      yq # jq but for YAML
 
       # Terminal Fun
       asciiquarium # aquarium animation in terminal
