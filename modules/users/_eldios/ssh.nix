@@ -1,4 +1,6 @@
-{
+{inputs, ...}: let
+  inherit (import "${inputs.secrets}/network.nix") tailnet;
+in {
   home.file.".ssh/authorized_keys".source = ../../_assets/authorized_keys;
 
   home.file.".ssh/config".text = ''
@@ -19,7 +21,7 @@
       User aur
       IdentityFile ~/.ssh/aur_id_ed25519
 
-    Host *.lan *.TAILNET.ts.net
+    Host *.lan *.${tailnet}
       User eldios
       IdentityFile ~/.ssh/id_ed25519
       AddKeysToAgent yes
