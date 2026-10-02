@@ -1,8 +1,8 @@
 {lib, ...}: {
   # Public fallback resolvers, kept because DNS on the LAN gateways has proven
-  # unreliable here. They belong on dnsmasq rather than in resolv.conf: dnsmasq
-  # tracks upstream latency and prefers the fastest, so the LAN servers still
-  # win in practice and local zones keep resolving.
+  # unreliable here. Last in the list: with strict-order (dns aspect) they are
+  # asked only when the LAN servers do not answer, so local zones keep
+  # resolving.
   services.dnsmasq.settings.server = lib.mkAfter ["1.1.1.1" "9.9.9.9"];
 
   # Rename interfaces based on MAC address to predictable names
