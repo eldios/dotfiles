@@ -2,7 +2,9 @@
 
 hl.env("NIXOS_OZONE_WL", "1")
 hl.env("MOZ_ENABLE_WAYLAND", "1")
-hl.env("QT_QPA_PLATFORM", "wayland")
+-- Wayland first, X11 as fallback: apps bundling their own Qt often ship
+-- only the xcb plugin and abort when wayland is the sole choice.
+hl.env("QT_QPA_PLATFORM", "wayland;xcb")
 hl.env("GDK_BACKEND", "wayland,x11")
 hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_TYPE", "wayland")
