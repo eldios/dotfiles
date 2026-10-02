@@ -2,10 +2,30 @@
   pkgs,
   lib,
   ...
-}: {
+}: let
+  # `but pr new` has no assignee option: open the PR, then self-assign it.
+  # Without extra options -t takes title and body from the commit, no prompt.
+  bpn = pkgs.writeShellApplication {
+    name = "bpn";
+    runtimeInputs = [
+      pkgs.gitbutler
+      pkgs.github-cli
+    ];
+    text = ''
+      branch="''${1:?usage: bpn <branch> [but pr new options]}"
+      shift
+      if [ "$#" -eq 0 ]; then
+        set -- -t
+      fi
+      but pr new "$branch" "$@"
+      gh pr edit "$branch" --add-assignee @me
+    '';
+  };
+in {
   home = {
     packages = with pkgs;
       [
+        bpn
         github-cli
         lazygit
       ]
