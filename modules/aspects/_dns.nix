@@ -28,6 +28,12 @@ in {
       # No `no-resolv` on purpose: upstream comes from resolvconf, so
       # DHCP/VPN-provided servers survive. That keeps LAN names resolvable and
       # keeps roaming laptops working on networks that mandate their resolver.
+      #
+      # In resolv.conf order, not fastest-first: DHCP hands out the gateway
+      # followed by public resolvers, and the public ones answer NXDOMAIN for
+      # LAN names faster than the gateway answers them. Later servers are
+      # only asked when an earlier one does not answer.
+      strict-order = true;
 
       # Split-DNS for the tailnet, so MagicDNS names resolve without handing
       # /etc/resolv.conf to systemd-resolved. Only our own tailnet: MagicDNS
