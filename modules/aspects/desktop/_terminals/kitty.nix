@@ -14,6 +14,9 @@
       settings = {
         font_size = "12.0";
         dynamic_background_opacity = "yes";
+        # The default also remembers the maximize state, so one maximized
+        # window made every later one open maximized under Hyprland.
+        remember_window_size = "no";
         shell = "${pkgs.zsh}/bin/zsh -l";
       };
     }; # EOM kitty

@@ -1,5 +1,10 @@
 -- Window rules (port of the hyprlang windowrule blocks in extraConfig).
 
+-- Tiling decides the layout: an app asking to open maximized (kitty does
+-- when its remembered state is maximized) is ignored, as in Omarchy's own
+-- defaults.
+o.window(".*", { suppress_event = "maximize" })
+
 o.window("^(org\\.omarchy\\.terminal)$", { float = true, size = { 1120, 720 }, center = true })
 o.window("^(lxqt-openssh-askpass|ssh-askpass)$", { float = true, size = { 400, 150 }, center = true })
 hl.window_rule({ match = { title = "^(OpenSSH)(.*)$" }, float = true, size = { 400, 150 }, center = true })
