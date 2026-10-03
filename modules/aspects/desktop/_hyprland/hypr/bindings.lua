@@ -21,7 +21,7 @@ o.bind("SUPER + CTRL + Q", "Lock screen", "hyprlock")
 -- WM launchers
 o.bind("SUPER + D", "App menu", ask .. "launcher")
 o.bind("SUPER + SHIFT + D", "Run command", ask .. "run")
-o.bind("SUPER + F", "Files", "ghostty -e yazi")
+o.bind("SUPER + F", "Files", "kitty -e yazi")
 o.bind("SUPER + E", "Emoji / symbols", ask .. "emoji")
 o.bind("SUPER + W", "Window menu", ask .. "menu")
 o.bind("SUPER + M", "Main menu", ask .. "menu")
@@ -31,11 +31,11 @@ o.bind("SUPER + SHIFT + T", "Theme picker", bin .. "riso-carousel")
 o.bind("SUPER + SHIFT + B", "Background picker", bin .. "riso-carousel backgrounds")
 
 -- Applications
-o.bind("SUPER + RETURN", "Terminal", "ghostty")
+o.bind("SUPER + RETURN", "Terminal", "kitty")
 o.bind("SUPER + CTRL + M", "Mail", "mailspring")
 o.bind("SUPER + CTRL + A", "Audio mixer", "pavucontrol")
 o.bind("SUPER + CTRL + B", "Bluetooth", "blueman-manager")
-o.bind("SUPER + CTRL + T", "System monitor", "ghostty -e btop")
+o.bind("SUPER + CTRL + T", "System monitor", "kitty -e btop")
 
 -- Window state
 o.bind("SUPER + SHIFT + C", "Close window", hl.dsp.window.close())
