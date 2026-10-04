@@ -141,7 +141,6 @@ in {
         tmp = "$HOME/tmp";
         gh = "$HOME/go/src/github.com";
         gheldios = "$HOME/go/src/github.com/eldios";
-        ghlinera = "$HOME/go/src/github.com/linera-io";
       };
 
       initContent = ''
