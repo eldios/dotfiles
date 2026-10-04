@@ -62,7 +62,7 @@
         # Performance settings
         renderer = {
           performance = "High";
-          backend = "Automatic";
+          backend = "Vulkan";
         };
 
         # Shell integration
