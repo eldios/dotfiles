@@ -139,6 +139,7 @@
 
         # Document Viewers
         zathura # minimal PDF/document viewer
+        simple-scan # scanner frontend, finds the network MFCs through SANE
 
         # Handwriting & Notes
         krita # digital painting application
