@@ -8,10 +8,4 @@
       set escape-time 1
     '';
   };
-
-  home = {
-    packages = with pkgs; [
-      tmate
-    ];
-  };
 }
