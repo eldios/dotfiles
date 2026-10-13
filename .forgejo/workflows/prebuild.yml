@@ -1,0 +1,93 @@
+# Weekly cache warm-up: update the flake inputs, build every host's system
+# closure on mininixos (the runner hands builds to the host nix-daemon, whose
+# post-build-hook uploads them to ncps) and publish the new lock on the
+# flake-update branch. Fast-forwarding main to it makes the next rebuild on
+# every host a cache hit.
+#
+# Repository secrets: SECRETS_DEPLOY_KEY (read-only deploy key of the
+# secrets repository, a flake input fetched over ssh) and BOT_SIGNING_KEY
+# (the agent account's SSH signing key, so the lock commit is verified).
+# Either as the key file itself or base64-encoded on one line, which
+# survives the secret form.
+
+name: prebuild
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+      timezone: Europe/Rome
+  workflow_dispatch:
+
+concurrency:
+  group: prebuild
+  cancel-in-progress: false
+
+jobs:
+  prebuild:
+    runs-on: nix
+    env:
+      HOSTS: lele8845ace lele9iyoga sox1x mininixos
+    steps:
+      - name: Clone main
+        run: |
+          git config --global credential.helper '!f() { echo username=x; echo "password=$FORGEJO_TOKEN"; }; f'
+          git clone --branch main --single-branch http://forgejo:3000/eldios/dotfiles.git repo
+        env:
+          FORGEJO_TOKEN: ${{ github.token }}
+
+      - name: SSH keys for the secrets input and for signing
+        run: |
+          umask 077
+          mkdir -p ~/.ssh
+          # A key pasted into the secret form may arrive base64-encoded or with
+          # CRLF line ends; both are turned back into the key file.
+          unwrap() {
+            if printf '%s' "$1" | grep -q 'BEGIN OPENSSH PRIVATE KEY'; then
+              printf '%s\n' "$1" | tr -d '\r'
+            else
+              printf '%s' "$1" | tr -d '\r\n ' | base64 -d
+            fi
+          }
+          echo "secret lengths: deploy=${#DEPLOY_KEY} signing=${#SIGNING_KEY}"
+          unwrap "$DEPLOY_KEY" > ~/.ssh/id_ed25519
+          unwrap "$SIGNING_KEY" > ~/.ssh/signing_key
+          for f in id_ed25519 signing_key; do
+            echo "$f: $(wc -c < ~/.ssh/$f) bytes, first line: $(head -1 ~/.ssh/$f)"
+          done
+          ssh-keygen -y -f ~/.ssh/id_ed25519 > /dev/null
+          ssh-keygen -y -f ~/.ssh/signing_key > ~/.ssh/signing_key.pub
+          echo 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl' > ~/.ssh/known_hosts
+        env:
+          DEPLOY_KEY: ${{ secrets.SECRETS_DEPLOY_KEY }}
+          SIGNING_KEY: ${{ secrets.BOT_SIGNING_KEY }}
+
+      - name: Update the flake inputs
+        working-directory: repo
+        run: nix flake update
+
+      - name: Build every host
+        working-directory: repo
+        run: |
+          targets=""
+          for h in $HOSTS; do
+            targets="$targets .#nixosConfigurations.$h.config.system.build.toplevel"
+          done
+          nix build --no-link --print-out-paths --max-jobs 2 --cores 16 $targets
+
+      - name: Publish the lock on flake-update
+        working-directory: repo
+        run: |
+          if git diff --quiet -- flake.lock; then
+            echo "inputs already current, nothing to publish"
+            exit 0
+          fi
+          git config user.name agent
+          git config user.email agent@lele.rip
+          git config gpg.format ssh
+          git config user.signingkey ~/.ssh/signing_key
+          git config commit.gpgsign true
+          git add flake.lock
+          git commit -m "chore(flake): update inputs"
+          git push --force origin HEAD:refs/heads/flake-update
+        env:
+          FORGEJO_TOKEN: ${{ github.token }}
