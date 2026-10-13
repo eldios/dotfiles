@@ -93,7 +93,7 @@
     # vm-curator: QEMU/KVM desktop VM TUI, packaged by its own upstream
     # flake. Pinned to the release tag; bump deliberately.
     vm-curator = {
-      url = "github:mroboff/vm-curator/v1.4.0";
+      url = "github:mroboff/vm-curator/v1.5.0";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
