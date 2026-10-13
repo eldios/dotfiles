@@ -39,10 +39,20 @@ in {
       # /etc/resolv.conf to systemd-resolved. Only our own tailnet: MagicDNS
       # answers SERVFAIL for other tailnets, whose public ts.net names (Funnel
       # homeservers Synapse federates with) must go to the normal upstream.
-      # The second entry is a wildcard over the 100.x reverse space, so
+      #
+      # MagicDNS answers SERVFAIL for unknown names in our own tailnet too, and
+      # with strict-order dnsmasq never replies when the only server of a domain
+      # fails. The public resolver listed after it turns that into a prompt
+      # NXDOMAIN. This matters for every name that does not exist: the tailnet
+      # is a search domain (see below), so glibc retries any failed lookup with
+      # it appended. Order matters: strict-order asks a domain's servers in the
+      # order written, and 1.1.1.1 first would hide the tailnet nodes.
+      #
+      # The last entry is a wildcard over the 100.x reverse space, so
       # `dig -x` on a tailnet IP works.
       server = [
         "/${tailnet}/100.100.100.100"
+        "/${tailnet}/1.1.1.1"
         "/100.in-addr.arpa/100.100.100.100"
       ];
 
