@@ -71,12 +71,14 @@ jobs:
           nix build --no-link --print-out-paths --max-jobs 2 --cores 16 $targets
 
       - name: Publish the lock on flake-update
+        id: publish
         working-directory: repo
         run: |
           if git diff --quiet -- flake.lock; then
             echo "inputs already current, nothing to publish"
             exit 0
           fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
           git config user.name agent
           git config user.email agent@lele.rip
           git config gpg.format ssh
@@ -85,5 +87,21 @@ jobs:
           git add flake.lock
           git commit -m "chore(flake): update inputs"
           git push --force origin HEAD:refs/heads/flake-update
+        env:
+          FORGEJO_TOKEN: ${{ github.token }}
+
+      # One pull request follows the branch: a force push updates it, so a
+      # new one is opened only when none is open.
+      - name: Open the pull request unless one is already open
+        if: steps.publish.outputs.changed == 'true'
+        run: |
+          api="http://forgejo:3000/api/v1/repos/${{ github.repository }}"
+          auth="Authorization: token $FORGEJO_TOKEN"
+          if curl -sf -H "$auth" "$api/pulls?state=open&head=flake-update&base=main" | grep -q '"number"'; then
+            echo "an open pull request already tracks flake-update"
+            exit 0
+          fi
+          curl -sf -o /dev/null -H "$auth" -H 'Content-Type: application/json' -X POST "$api/pulls" \
+            -d '{"head":"flake-update","base":"main","title":"chore(flake): update inputs","body":"Inputs updated by the nightly prebuild. Every host closure is built on mininixos and in the cache, so switching to this lock is a download."}'
         env:
           FORGEJO_TOKEN: ${{ github.token }}
