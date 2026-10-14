@@ -1,4 +1,4 @@
-# Weekly cache warm-up: update the flake inputs, build every host's system
+# Nightly cache warm-up: update the flake inputs, build every host's system
 # closure on mininixos (the runner hands builds to the host nix-daemon, whose
 # post-build-hook uploads them to ncps) and publish the new lock on the
 # flake-update branch. Fast-forwarding main to it makes the next rebuild on
@@ -14,7 +14,7 @@ name: prebuild
 
 on:
   schedule:
-    - cron: "0 6 * * 1"
+    - cron: "0 6 * * *"
       timezone: Europe/Rome
   workflow_dispatch:
 
@@ -48,12 +48,8 @@ jobs:
               printf '%s' "$1" | tr -d '\r\n ' | base64 -d
             fi
           }
-          echo "secret lengths: deploy=${#DEPLOY_KEY} signing=${#SIGNING_KEY}"
           unwrap "$DEPLOY_KEY" > ~/.ssh/id_ed25519
           unwrap "$SIGNING_KEY" > ~/.ssh/signing_key
-          for f in id_ed25519 signing_key; do
-            echo "$f: $(wc -c < ~/.ssh/$f) bytes, first line: $(head -1 ~/.ssh/$f)"
-          done
           ssh-keygen -y -f ~/.ssh/id_ed25519 > /dev/null
           ssh-keygen -y -f ~/.ssh/signing_key > ~/.ssh/signing_key.pub
           echo 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl' > ~/.ssh/known_hosts
