@@ -138,11 +138,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1791863975,
-        "narHash": "sha256-2FUDz7DLE+YPGNFHnCF6ObgIJQV3Bfn2UT0+DN+sP+8=",
+        "lastModified": 1791934512,
+        "narHash": "sha256-/ECCMIIfuNyC09eo459zEK1Hbw/5sDXbGrT3vWB04aU=",
         "owner": "AvengeMedia",
         "repo": "DankMaterialShell",
-        "rev": "c3e93ee39a3a4b79c59076176a44cde389458380",
+        "rev": "35041d03e19415d9df1ff9b0015820dae44d2f6d",
         "type": "github"
       },
       "original": {
@@ -169,11 +169,11 @@
     },
     "den": {
       "locked": {
-        "lastModified": 1791846277,
-        "narHash": "sha256-a7E9QoEt5WcYoUGQyRWHm8QVUrKxTcSyNND3LLCs/KI=",
+        "lastModified": 1791929767,
+        "narHash": "sha256-uGVqoCihznnzOQa0OPf5d5R+x0slXWPcBQomw/r20Po=",
         "owner": "denful",
         "repo": "den",
-        "rev": "dd59a4c7aa7e2d6d2743814da6bf68ead985e793",
+        "rev": "05619dce914a4166a799277de8396e35a3cabb8e",
         "type": "github"
       },
       "original": {
@@ -375,11 +375,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1791854738,
-        "narHash": "sha256-hGBBskOq1YwMgr2aC3eLuscQSTnLCZ9Ll7J45Z8xUT8=",
+        "lastModified": 1791932050,
+        "narHash": "sha256-LBO0EDarOuxWNbUwFidUGIvCThOy2sPWBsHFk61gkN0=",
         "owner": "ogulcancelik",
         "repo": "herdr",
-        "rev": "241b99cd397bb642eaabcfee1647bcecffb26be1",
+        "rev": "dec3156a6f795450d1b1b634f0a0d5cefd056ee3",
         "type": "github"
       },
       "original": {
@@ -433,11 +433,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1791895923,
-        "narHash": "sha256-XxGPHDTwN57LtQTFldjmJ8Riq3jE0tl3tdI0G1tQlL0=",
+        "lastModified": 1791932383,
+        "narHash": "sha256-9XIIlEn0VnudFT+LvHSHbD6pLD+YqvAX6mbUbrUe0M0=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "174d851a8a4923e274aa49c44d2ba7853acb87f3",
+        "rev": "c643221512459e849ac762ead83c6620d15be90e",
         "type": "github"
       },
       "original": {
@@ -793,11 +793,11 @@
         "nixpkgs": "nixpkgs_12"
       },
       "locked": {
-        "lastModified": 1791852984,
-        "narHash": "sha256-dxH7jjA9EZDo1x5P8wgJbykOSWQj1Q2AgxQhdN/NeyM=",
+        "lastModified": 1791934983,
+        "narHash": "sha256-T5Vrf5Y8qzJRKys8BR3wTu/uJMPVon+UKNwBdgIa1B4=",
         "owner": "noctalia-dev",
         "repo": "noctalia",
-        "rev": "0c8808e8392b49385459422ce14ff28e2c2aed83",
+        "rev": "61e938d87be20e38c9f93884cd726957a23df036",
         "type": "github"
       },
       "original": {
@@ -935,10 +935,10 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1791072210,
-        "narHash": "sha256-ihG1+tNBLC+W3k5pfLI/plhjXY6OaqjmpSeuQeAnVy4=",
+        "lastModified": 1791902098,
+        "narHash": "sha256-e/b5VZVxAJR0orNtOvPiwHRlEWaMIHVPKzSi4haRDHI=",
         "ref": "main",
-        "rev": "6288551a41d1ab19773064494c34f2567485afae",
+        "rev": "fd881e7d1b02b6812a1edf89f87bb32adb5cd44c",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/eldios/secrets.git"
