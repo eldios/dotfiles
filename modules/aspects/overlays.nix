@@ -10,6 +10,8 @@
     inputs.herdr.overlays.default
     inputs.riso.overlays.default
     (import ./_overlays/crush.nix {inherit (inputs) llm-agents-nix;})
+    (import ./_overlays/multica.nix {inherit (inputs) llm-agents-nix;})
+    (import ./_overlays/omnigent.nix)
     (import ./_overlays/gws-cli.nix {inherit (inputs) gws-cli;})
     (import ./_overlays/zen-browser.nix {inherit (inputs) zen-browser;})
     (import ./_overlays/ratspeak.nix {inherit (inputs) nix-ratspeak;})
