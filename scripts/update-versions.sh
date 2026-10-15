@@ -6,7 +6,7 @@
 #
 # Usage:
 #   scripts/update-versions.sh [--check] <package>|all
-# Packages: buzz gitbutler vm-curator omarchy
+# Packages: buzz gitbutler vm-curator omarchy multica omnigent
 # --check only reports current vs latest, writes nothing.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -111,6 +111,37 @@ update_gitbutler() {
   log "hashes updated and eval ok; the (heavy) compile happens at the next switch"
 }
 
+update_multica() {
+  PKG=multica f=modules/aspects/_overlays/multica.nix
+  local cur tag ver hashes new
+  cur=$(file_version "$f")
+  tag=$(gh_latest_release multica-ai/multica)
+  ver="${tag#v}"
+  report "$cur" "$ver" || return 0
+  # hash order in the file: src, vendorHash
+  mapfile -t hashes < <(grep -oP '(hash|vendorHash) = "\Ksha256-[^"]+' "$f")
+  replace "$f" "version = \"$cur\";" "version = \"$ver\";"
+  replace "$f" "tag = \"v$cur\";" "tag = \"v$ver\";"
+  new=$(prefetch_github "multica-ai/multica/$tag")
+  replace "$f" "${hashes[0]}" "$new"
+  log "src ok, resolving vendorHash"
+  replace "$f" "${hashes[1]}" "$FAKE"
+  new=$(fod_hash multica.goModules)
+  [[ -n "$new" ]] || { log "vendorHash not found (check the go.mod postPatch)"; return 1; }
+  replace "$f" "$FAKE" "$new"
+  eval_ok multica
+}
+
+update_omnigent() {
+  PKG=omnigent f=modules/aspects/_overlays/omnigent.nix
+  local cur ver
+  cur=$(file_version "$f")
+  ver=$(curl -sf https://pypi.org/pypi/omnigent/json | jq -r .info.version)
+  report "$cur" "$ver" || return 0
+  replace "$f" "version = \"$cur\";" "version = \"$ver\";"
+  eval_ok omnigent
+}
+
 update_omarchy() {
   PKG=omarchy f=flake.nix
   local cur tag
@@ -141,11 +172,13 @@ run() {
     gitbutler) update_gitbutler ;;
     vm-curator) update_vm_curator ;;
     omarchy) update_omarchy ;;
+    multica) update_multica ;;
+    omnigent) update_omnigent ;;
     all)
-      for p in buzz vm-curator omarchy gitbutler; do run "$p"; done
+      for p in buzz vm-curator omarchy multica omnigent gitbutler; do run "$p"; done
       ;;
     *)
-      echo "usage: $0 [--check] {buzz|gitbutler|vm-curator|omarchy|all}" >&2
+      echo "usage: $0 [--check] {buzz|gitbutler|vm-curator|omarchy|multica|omnigent|all}" >&2
       exit 1
       ;;
   esac
