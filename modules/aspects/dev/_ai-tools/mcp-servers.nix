@@ -356,6 +356,21 @@ in {
     mode = "0600";
   };
 
+  # Bearer token for the Hindsight MCP server (shared agent memory). Claude,
+  # Codex and Pi read HINDSIGHT_TOKEN from the environment through their own
+  # MCP config, so interactive shells, and the agents they start, export it.
+  sops.templates."agents/hindsight.env" = {
+    content = "export HINDSIGHT_TOKEN=${config.sops.placeholder."tokens/mcp/hindsight_token"}\n";
+    path = "/home/eldios/.config/agents/hindsight.env";
+    mode = "0600";
+  };
+
+  programs.zsh.initContent = ''
+    if [[ -r "$HOME/.config/agents/hindsight.env" ]]; then
+      source "$HOME/.config/agents/hindsight.env"
+    fi
+  '';
+
   # Ensure .mcp directory exists with proper permissions
   home.file.".mcp/.keep" = {
     text = "";

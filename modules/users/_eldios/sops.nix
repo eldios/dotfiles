@@ -61,6 +61,7 @@ in {
       "tokens/mcp/unifi_api_verify_ssl" = {};
       "tokens/mcp/unifi_gateway_ip" = {};
       "tokens/mcp/browser_url" = {};
+      "tokens/mcp/hindsight_token" = {};
 
       # TypeSafe (System One / Jev) API key
       "tokens/typesafe/jev_api_key" = {};
