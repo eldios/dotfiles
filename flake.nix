@@ -75,7 +75,6 @@
     # AI tool overlays (auto-updated by maintainers)
     claude-code-overlay.url = "github:ryoppippi/claude-code-overlay";
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";
-    opencode-nix.url = "github:dan-online/opencode-nix";
     llm-agents-nix.url = "github:numtide/llm-agents.nix"; # for crush (charmbracelet)
     gws-cli.url = "github:googleworkspace/cli";
     herdr.url = "github:ogulcancelik/herdr"; # agent multiplexer for AI CLIs (uses its own nixpkgs-unstable)
