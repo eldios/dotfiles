@@ -27,7 +27,12 @@ in {
         substituteInPlace go.mod --replace-fail "go 1.26.9" "go 1.26.8"
       '';
   });
-  multica-desktop = upstream.multica-desktop;
+  # Built from the multica release above, so its pnpm dependencies follow it.
+  multica-desktop = (upstream.multica-desktop.override {inherit (final) multica;}).overrideAttrs (old: {
+    pnpmDeps = old.pnpmDeps.overrideAttrs {
+      outputHash = "sha256-unHlKoU8rno120hOwTP1Rbjw8IlvMqkL1X83BMOdDE8=";
+    };
+  });
   pi = upstream.pi;
 }
 # vim: set ts=2 sw=2 et ai list nu
