@@ -6,7 +6,7 @@
 #
 # Usage:
 #   scripts/update-versions.sh [--check] <package>|all
-# Packages: buzz gitbutler vm-curator omarchy multica omnigent
+# Packages: buzz gitbutler vm-curator omarchy multica
 # --check only reports current vs latest, writes nothing.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -139,16 +139,6 @@ update_multica() {
   eval_ok multica-desktop
 }
 
-update_omnigent() {
-  PKG=omnigent f=modules/aspects/_overlays/omnigent.nix
-  local cur ver
-  cur=$(file_version "$f")
-  ver=$(curl -sf https://pypi.org/pypi/omnigent/json | jq -r .info.version)
-  report "$cur" "$ver" || return 0
-  replace "$f" "version = \"$cur\";" "version = \"$ver\";"
-  eval_ok omnigent
-}
-
 update_omarchy() {
   PKG=omarchy f=flake.nix
   local cur tag
@@ -180,12 +170,11 @@ run() {
     vm-curator) update_vm_curator ;;
     omarchy) update_omarchy ;;
     multica) update_multica ;;
-    omnigent) update_omnigent ;;
     all)
-      for p in buzz vm-curator omarchy multica omnigent gitbutler; do run "$p"; done
+      for p in buzz vm-curator omarchy multica gitbutler; do run "$p"; done
       ;;
     *)
-      echo "usage: $0 [--check] {buzz|gitbutler|vm-curator|omarchy|multica|omnigent|all}" >&2
+      echo "usage: $0 [--check] {buzz|gitbutler|vm-curator|omarchy|multica|all}" >&2
       exit 1
       ;;
   esac
