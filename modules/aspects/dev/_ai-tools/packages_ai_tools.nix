@@ -9,7 +9,6 @@
     multica # Multica CLI and runtime daemon (via multica overlay)
     multica-desktop # Multica desktop app (via multica overlay)
     omnigent # Omnigent CLI, uv-run at a pinned version (via omnigent overlay)
-    opencode # OpenCode (via opencode-nix flake)
     pi # Pi coding agent (via multica overlay, from llm-agents-nix)
     ollama # CPU build, used as a client (OLLAMA_HOST); no ROCm
   ];

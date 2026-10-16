@@ -6,7 +6,6 @@
     (import ./_overlays/unstable-packages.nix {inherit (inputs) nixpkgs-unstable;})
     inputs.claude-code-overlay.overlays.default
     inputs.codex-cli-nix.overlays.default
-    inputs.opencode-nix.overlays.default
     inputs.herdr.overlays.default
     inputs.riso.overlays.default
     (import ./_overlays/crush.nix {inherit (inputs) llm-agents-nix;})
