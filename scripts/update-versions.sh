@@ -129,7 +129,14 @@ update_multica() {
   new=$(fod_hash multica.goModules)
   [[ -n "$new" ]] || { log "vendorHash not found (check the go.mod postPatch)"; return 1; }
   replace "$f" "$FAKE" "$new"
+  log "vendorHash ok, resolving the desktop app's pnpm deps"
+  hashes[2]=$(grep -oP 'outputHash = "\Ksha256-[^"]+' "$f")
+  replace "$f" "${hashes[2]}" "$FAKE"
+  new=$(fod_hash multica-desktop.pnpmDeps)
+  [[ -n "$new" ]] || { log "desktop pnpm hash not found"; return 1; }
+  replace "$f" "$FAKE" "$new"
   eval_ok multica
+  eval_ok multica-desktop
 }
 
 update_omnigent() {
