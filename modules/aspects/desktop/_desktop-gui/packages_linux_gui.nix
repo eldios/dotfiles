@@ -63,7 +63,6 @@
 
         # Communication
         ayugram-desktop # Telegram alt client
-        buzz-desktop # Nostr-based workspace for human/agent collaboration
         contact # Reticulum/LXMF TUI client
         ratspeak # Reticulum/LXMF mesh messaging client
         vm-curator # QEMU/KVM desktop VM TUI (3D accel, no libvirt)
