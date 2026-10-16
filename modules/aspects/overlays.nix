@@ -15,7 +15,6 @@
     (import ./_overlays/ratspeak.nix {inherit (inputs) nix-ratspeak;})
     (import ./_overlays/vm-curator.nix {inherit (inputs) vm-curator;})
     (import ./_overlays/gitbutler.nix)
-    (import ./_overlays/buzz-desktop.nix)
     # Last, so a hotfix wins over anything above.
     (import ./_overlays/tmp-hotfix.nix)
   ];

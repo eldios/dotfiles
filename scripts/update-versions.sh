@@ -6,7 +6,7 @@
 #
 # Usage:
 #   scripts/update-versions.sh [--check] <package>|all
-# Packages: buzz gitbutler vm-curator omarchy multica
+# Packages: gitbutler vm-curator omarchy multica
 # --check only reports current vs latest, writes nothing.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -41,7 +41,6 @@ gh_latest_tag() { # repo [prefix-filter] -> first matching tag
     | jq -r --arg p "${2:-}" '[.[].name | select(startswith($p))][0]'
 }
 
-prefetch_url() { nix store prefetch-file --json "$1" | jq -r .hash; }
 prefetch_github() { nix flake prefetch --json "github:$1" | jq -r .hash; }
 
 file_version() { grep -oP 'version = "\K[^"]+' "$1" | head -1; }
@@ -67,22 +66,6 @@ report() { # current latest -> returns 1 when already up to date
   log "$1 -> $2"
   [[ $CHECK == 1 ]] && return 1
   return 0
-}
-
-update_buzz() {
-  PKG=buzz f=modules/aspects/_overlays/buzz-desktop.nix
-  local cur latest ver url old new
-  cur=$(file_version "$f")
-  latest=$(curl -sf 'https://api.github.com/repos/block/buzz/releases?per_page=15' \
-    | jq -r '[.[].tag_name | select(startswith("desktop-v"))][0]')
-  ver="${latest#desktop-v}"
-  report "$cur" "$ver" || return 0
-  url="https://github.com/block/buzz/releases/download/desktop-v${ver}/Buzz_${ver}_amd64.AppImage"
-  new=$(prefetch_url "$url")
-  old=$(grep -oP 'hash = "\Ksha256-[^"]+' "$f" | head -1)
-  replace "$f" "version = \"$cur\";" "version = \"$ver\";"
-  replace "$f" "$old" "$new"
-  eval_ok buzz-desktop
 }
 
 update_gitbutler() {
@@ -165,16 +148,15 @@ update_vm_curator() {
 
 run() {
   case "$1" in
-    buzz) update_buzz ;;
     gitbutler) update_gitbutler ;;
     vm-curator) update_vm_curator ;;
     omarchy) update_omarchy ;;
     multica) update_multica ;;
     all)
-      for p in buzz vm-curator omarchy multica gitbutler; do run "$p"; done
+      for p in vm-curator omarchy multica gitbutler; do run "$p"; done
       ;;
     *)
-      echo "usage: $0 [--check] {buzz|gitbutler|vm-curator|omarchy|multica|all}" >&2
+      echo "usage: $0 [--check] {gitbutler|vm-curator|omarchy|multica|all}" >&2
       exit 1
       ;;
   esac
