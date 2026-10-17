@@ -42,10 +42,11 @@
       users.groups.i2c.members = ["eldios"];
     };
 
-    # Host-specific Home Manager config for eldios: GPU env, monitors.
+    # Host-specific Home Manager config for eldios: GPU env, monitors, video editing.
     provides.eldios.homeManager = {
       imports = [
         ./_lele8845ace/display.nix
+        ./_lele8845ace/pkgs.nix
       ];
     };
   };
