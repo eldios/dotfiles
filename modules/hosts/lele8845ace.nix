@@ -18,6 +18,7 @@
       den.aspects.gaming
       den.aspects.printing
       den.aspects.ai-tools
+      den.aspects.media-production
       den.aspects.gpu-amd
       den.aspects.tang-server
       den.aspects.clevis-unlock
@@ -41,11 +42,10 @@
       users.groups.i2c.members = ["eldios"];
     };
 
-    # Host-specific Home Manager config for eldios: GPU env, monitors, packages.
+    # Host-specific Home Manager config for eldios: GPU env, monitors.
     provides.eldios.homeManager = {
       imports = [
         ./_lele8845ace/display.nix
-        ./_lele8845ace/pkgs.nix
       ];
     };
   };

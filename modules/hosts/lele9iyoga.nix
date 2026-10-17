@@ -18,6 +18,7 @@
       den.aspects.gaming
       den.aspects.printing
       den.aspects.ai-tools
+      den.aspects.media-production
       den.aspects.gpu-intel
       den.aspects.laptop
     ];
