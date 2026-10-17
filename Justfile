@@ -20,7 +20,7 @@ update-all:
 # Evaluate every host toplevel: catches config errors before any switch
 eval-all:
     for h in $(nix eval --json .#nixosConfigurations --apply builtins.attrNames | jq -r '.[]'); do \
-      nice -n 19 nix eval ".#nixosConfigurations.$h.config.system.build.toplevel.drvPath"; \
+      nice -n 19 nix eval ".#nixosConfigurations.$h.config.system.build.toplevel.drvPath" || exit 1; \
     done
 
 # Format nix files with the flake formatter (alejandra reads stdin when
