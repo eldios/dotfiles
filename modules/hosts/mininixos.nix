@@ -36,6 +36,7 @@
         ./_mininixos/archive-storage.nix
         ./_mininixos/libvirt-vms.nix
         ./_mininixos/portainer.nix
+        ./_mininixos/nix-cache-check.nix
       ];
     };
 
