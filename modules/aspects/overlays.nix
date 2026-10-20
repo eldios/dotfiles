@@ -4,6 +4,7 @@
 {inputs, ...}: {
   den.aspects.overlays.nixos.nixpkgs.overlays = [
     (import ./_overlays/unstable-packages.nix {inherit (inputs) nixpkgs-unstable;})
+    (import ./_overlays/antigravity-cli.nix)
     inputs.claude-code-overlay.overlays.default
     inputs.codex-cli-nix.overlays.default
     inputs.herdr.overlays.default
