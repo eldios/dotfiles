@@ -51,7 +51,7 @@
     # straight from the tree rather than vendoring a curated list. Pinned to
     # the release tag; scripts/update-versions.sh bumps it.
     omarchy-quattro = {
-      url = "github:omacom/omarchy/v4.0.4";
+      url = "github:omacom/omarchy/v4.0.6";
       flake = false;
     };
 
