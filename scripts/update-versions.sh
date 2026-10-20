@@ -6,7 +6,7 @@
 #
 # Usage:
 #   scripts/update-versions.sh [--check] <package>|all
-# Packages: gitbutler vm-curator omarchy multica
+# Packages: antigravity gitbutler vm-curator omarchy multica
 # --check only reports current vs latest, writes nothing.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -41,6 +41,7 @@ gh_latest_tag() { # repo [prefix-filter] -> first matching tag
     | jq -r --arg p "${2:-}" '[.[].name | select(startswith($p))][0]'
 }
 
+prefetch_url() { nix store prefetch-file --json "$1" | jq -r .hash; }
 prefetch_github() { nix flake prefetch --json "github:$1" | jq -r .hash; }
 
 file_version() { grep -oP 'version = "\K[^"]+' "$1" | head -1; }
@@ -66,6 +67,23 @@ report() { # current latest -> returns 1 when already up to date
   log "$1 -> $2"
   [[ $CHECK == 1 ]] && return 1
   return 0
+}
+
+update_antigravity() {
+  PKG=antigravity f=modules/aspects/_overlays/antigravity-cli.nix
+  local cur ver base old_hashes new
+  cur=$(file_version "$f")
+  ver=$(gh_latest_release google-antigravity/antigravity-cli)
+  report "$cur" "$ver" || return 0
+  base="https://github.com/google-antigravity/antigravity-cli/releases/download/${ver}"
+  mapfile -t old_hashes < <(grep -oP 'hash = "\Ksha256-[^"]+' "$f")
+  replace "$f" "version = \"$cur\";" "version = \"$ver\";"
+  # hash order in the file: x64 first, arm64 second
+  new=$(prefetch_url "$base/agy_cli_linux_x64.tar.gz")
+  replace "$f" "${old_hashes[0]}" "$new"
+  new=$(prefetch_url "$base/agy_cli_linux_arm64.tar.gz")
+  replace "$f" "${old_hashes[1]}" "$new"
+  eval_ok antigravity-cli
 }
 
 update_gitbutler() {
@@ -148,15 +166,16 @@ update_vm_curator() {
 
 run() {
   case "$1" in
+    antigravity) update_antigravity ;;
     gitbutler) update_gitbutler ;;
     vm-curator) update_vm_curator ;;
     omarchy) update_omarchy ;;
     multica) update_multica ;;
     all)
-      for p in vm-curator omarchy multica gitbutler; do run "$p"; done
+      for p in antigravity vm-curator omarchy multica gitbutler; do run "$p"; done
       ;;
     *)
-      echo "usage: $0 [--check] {gitbutler|vm-curator|omarchy|multica|all}" >&2
+      echo "usage: $0 [--check] {antigravity|gitbutler|vm-curator|omarchy|multica|all}" >&2
       exit 1
       ;;
   esac

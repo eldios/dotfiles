@@ -1,6 +1,7 @@
 # AI coding assistant CLIs - all tools consolidated in one place.
 {pkgs, ...}: {
   home.packages = with pkgs; [
+    antigravity-cli # Google Antigravity CLI (local fixed-output package)
     claude-code # Anthropic (via claude-code-overlay flake)
     codex # OpenAI (via codex-cli-nix flake)
     crush # Charmbracelet (via llm-agents-nix/crush overlay)
