@@ -23,6 +23,11 @@ eval-all:
       nice -n 19 nix eval ".#nixosConfigurations.$h.config.system.build.toplevel.drvPath" || exit 1; \
     done
 
+# Start the nightly prebuild on Forgejo now and print the run URL
+# (token from FORGEJO_TOKEN, else sops; see the script header)
+prebuild ref="main":
+    ./scripts/prebuild-dispatch.sh {{ref}}
+
 # Format nix files with the flake formatter (alejandra reads stdin when
 # given no path, so the tree is passed explicitly)
 fmt:
