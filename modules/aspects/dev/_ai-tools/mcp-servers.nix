@@ -1,19 +1,5 @@
 {config, ...}: let
   streamableHttpPath = "/mcp";
-  mutxHealthcheckRequest = builtins.toJSON {
-    jsonrpc = "2.0";
-    id = 1;
-    method = "initialize";
-    params = {
-      protocolVersion = "2025-03-26";
-      capabilities = {};
-      clientInfo = {
-        name = "docker-healthcheck";
-        version = "1";
-      };
-    };
-  };
-
   # SSE output from a single stdio MCP process crashes when multiple clients
   # connect concurrently. Use stateful Streamable HTTP for stdio MCP servers
   # shared by Codex, Claude, nvim, and other clients.
@@ -114,75 +100,6 @@
       envSecrets = {
         KAGI_ENGINE = config.sops.placeholder."tokens/mcp/kagi_engine";
         KAGI_API_KEY = config.sops.placeholder."tokens/mcp/kagi_api_key";
-      };
-    };
-
-    mutx = {
-      port = 3030;
-      internalPort = 8000;
-      mcpPath = streamableHttpPath;
-      user = "1000:1000";
-      dockerfile = ''
-        FROM ghcr.io/mutx-net/mutx-link
-      '';
-      command = [
-        "mutx-link"
-        "serve"
-        "--mode"
-        "http"
-        "--bind"
-        "0.0.0.0:8000"
-      ];
-      env = {
-        MUTX_SOCKET_DIR = "/run/mutx";
-      };
-      envSecrets = {};
-      volumes = [
-        "\${XDG_RUNTIME_DIR}/mutx:/run/mutx"
-      ];
-      healthcheck = {
-        test = [
-          "CMD-SHELL"
-          "wget -q -T 3 -O - --header 'Accept: application/json, text/event-stream' --header 'Content-Type: application/json' --post-data '${mutxHealthcheckRequest}' http://127.0.0.1:8000/mcp >/dev/null"
-        ];
-        interval = "30s";
-        timeout = "3s";
-        retries = 3;
-        start_period = "5s";
-      };
-    };
-
-    anytype = {
-      port = 3001;
-      internalPort = 8000;
-      mcpPath = streamableHttpPath;
-      networkMode = "host";
-      dockerfile = ''
-        FROM node:22-alpine AS node
-        RUN npm install -g supergateway
-        FROM ghcr.io/anyproto/anytype-mcp:latest AS anytype
-        FROM node:22-alpine
-        RUN apk add --no-cache tini
-        COPY --from=node /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
-        RUN ln -s /usr/local/lib/node_modules/supergateway/dist/index.js /usr/local/bin/supergateway && chmod +x /usr/local/bin/supergateway
-        COPY --from=anytype /app /app
-        WORKDIR /app
-      '';
-      command =
-        [
-          "supergateway"
-          "--stdio"
-          "node /app/bin/cli.mjs run"
-          "--port"
-          "3001"
-        ]
-        ++ streamableHttpArgs;
-      env = {
-        ANYTYPE_API_BASE_URL = "http://127.0.0.1:31009";
-        OPENAPI_MCP_HEADERS = "\${ANYTYPE_HEADERS}";
-      };
-      envSecrets = {
-        ANYTYPE_HEADERS = config.sops.placeholder."tokens/mcp/anytype_headers";
       };
     };
 
@@ -365,10 +282,37 @@ in {
     mode = "0600";
   };
 
+  # Bearers of the MCP hub on mininixos (mcp.vpn.lele.rip) and of the local
+  # Anytype gateway, read the same way by Claude and Codex.
+  sops.templates."agents/mcp.env" = {
+    content = ''
+      export MCP_HUB_TOKEN=${config.sops.placeholder."tokens/mcp/hub_token"}
+      export MCP_GITHUB_TOKEN=${config.sops.placeholder."tokens/mcp/hub_github_token"}
+      export MCP_RIFFADO_TOKEN=${config.sops.placeholder."tokens/mcp/hub_riffado_token"}
+      export MCP_PLAUD_TOKEN=${config.sops.placeholder."tokens/mcp/hub_plaud_token"}
+      export ANYTYPE_MCP_TOKEN=${config.sops.placeholder."tokens/mcp/anytype_gateway_token"}
+    '';
+    path = "/home/eldios/.config/agents/mcp.env";
+    mode = "0600";
+  };
+
+  # Environment of the Anytype MCP gateway, a compose project kept outside
+  # Nix next to the desktop app it talks to.
+  sops.templates."agents/anytype-mcp.env" = {
+    content = ''
+      OPENAPI_MCP_HEADERS=${config.sops.placeholder."tokens/mcp/anytype_headers"}
+      SUPERGATEWAY_API_KEY=${config.sops.placeholder."tokens/mcp/anytype_gateway_token"}
+    '';
+    path = "/home/eldios/.config/agents/anytype-mcp.env";
+    mode = "0600";
+  };
+
   programs.zsh.initContent = ''
-    if [[ -r "$HOME/.config/agents/hindsight.env" ]]; then
-      source "$HOME/.config/agents/hindsight.env"
-    fi
+    for f in "$HOME/.config/agents/hindsight.env" "$HOME/.config/agents/mcp.env"; do
+      if [[ -r "$f" ]]; then
+        source "$f"
+      fi
+    done
   '';
 
   # Ensure .mcp directory exists with proper permissions
