@@ -8,10 +8,16 @@
   boot = {
     supportedFilesystems = ["btrfs"];
 
-    # Must track linuxPackages_latest: the stable series (6.18) fails to
-    # assemble the /data RAID5 (md rejects a valid superblock, -EINVAL).
-    # Freeze risk is handled via autodefrag removal + watchdog instead.
-    kernelPackages = pkgs.linuxPackages_latest;
+    # Needs a recent series: the stable one (6.18) fails to assemble the /data
+    # RAID5 (md rejects a valid superblock, -EINVAL). Freeze risk is handled
+    # via autodefrag removal + watchdog instead.
+    # Pinned to 7.2 instead of linuxPackages_latest: on 7.3.0 the R9700's SMU
+    # hangs right after "Failed to enable gfxoff" at boot, so power1_cap,
+    # temperatures and fan readings all fail and the GPU runs uncapped.
+    # Same symptom upstream: https://gitlab.freedesktop.org/drm/amd/-/work_items/5965
+    # Go back to linuxPackages_latest once a 7.3.x or later boots without
+    # "SMU is in hanged state" in the kernel log.
+    kernelPackages = pkgs.linuxPackages_7_2;
     kernelParams = [
       "nohibernate"
       "amdgpu.runpm=0" # disable runtime PM: headless server, GPU must stay awake for Ollama
