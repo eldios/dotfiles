@@ -11,12 +11,12 @@
   upstream = llm-agents-nix.packages.${final.stdenv.hostPlatform.system};
 in {
   multica = upstream.multica.overrideAttrs (old: {
-    version = "0.6.4";
+    version = "0.7.0";
     src = final.fetchFromGitHub {
       owner = "multica-ai";
       repo = "multica";
-      tag = "v0.6.4";
-      hash = "sha256-R4Rp+hFZPW+pn/x2AtMnUmNaDkAvxfRGUItYGIT829k=";
+      tag = "v0.7.0";
+      hash = "sha256-iUQIMvhTW53zD2oHvBgZRru1jCKutefXzLeDgQCsdWI=";
     };
     vendorHash = "sha256-KJIrY4kLAQ5CBu/ClcXjLHG0FWvSX1ne06OG+ZkL75E=";
     # go.mod asks for Go 1.26.9, newer than any Nixpkgs toolchain so far; a
@@ -30,7 +30,7 @@ in {
   # Built from the multica release above, so its pnpm dependencies follow it.
   multica-desktop = (upstream.multica-desktop.override {inherit (final) multica;}).overrideAttrs (old: {
     pnpmDeps = old.pnpmDeps.overrideAttrs {
-      outputHash = "sha256-unHlKoU8rno120hOwTP1Rbjw8IlvMqkL1X83BMOdDE8=";
+      outputHash = "sha256-gxcisoTxXQGt7aMmJwdag2OYIFMhbW0gTKWzoLsbNvM=";
     };
   });
   pi = upstream.pi;
