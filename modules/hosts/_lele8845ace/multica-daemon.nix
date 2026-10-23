@@ -8,13 +8,9 @@
 in {
   # The Multica runtime daemon for the agents. Its environment is the agents'
   # only: Claude Code auto-memory is off for agent runs (their memory lives in
-  # Hindsight) and stays on in interactive sessions.
-  sops.templates."agents/hindsight.systemd.env" = {
-    content = "HINDSIGHT_TOKEN=${config.sops.placeholder."tokens/mcp/hindsight_token"}\n";
-    path = "${home}/.config/agents/hindsight.systemd.env";
-    mode = "0600";
-  };
-
+  # Hindsight, reached through the workspace MCP library) and stays on in
+  # interactive sessions.
+  #
   # The unit name is the one `multica daemon autostart` uses: the daemon
   # recognises it and hands a binary update over with exit status 42.
   systemd.user.services.multica-daemon = {
@@ -34,7 +30,6 @@ in {
         "CLAUDE_CODE_DISABLE_AUTO_MEMORY=1"
         "PATH=/run/wrappers/bin:${home}/.nix-profile/bin:/nix/profile/bin:${home}/.local/state/nix/profile/bin:/etc/profiles/per-user/${user}/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
       ];
-      EnvironmentFile = config.sops.templates."agents/hindsight.systemd.env".path;
       Restart = "on-failure";
       RestartSec = 10;
       RestartForceExitStatus = 42;
