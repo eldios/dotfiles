@@ -1,4 +1,4 @@
-{
+{lib, ...}: {
   system = {
     stateVersion = "25.11"; # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     autoUpgrade.enable = false;
@@ -37,6 +37,25 @@
     fileSystems = ["/"]; # scrubs entire BTRFS filesystem including all subvolumes
     # /srv/docker scrub is in srv-storage.nix
   };
+
+  # The module gives every filesystem the same OnCalendar: four parallel
+  # scrubs saturated every HDD for 14 hours and preceded the 2026-10-24
+  # freeze. One filesystem per night; /data (RAID5) and /archive take over
+  # 12 hours each, so they run monthly (the period btrfs-scrub(8)
+  # recommends) in different weeks. The module's AccuracySec=1d lets a run
+  # slip by up to a day; 1h keeps the nights apart.
+  systemd.timers =
+    lib.mapAttrs (_: when: {
+      timerConfig = {
+        OnCalendar = lib.mkForce when;
+        AccuracySec = lib.mkForce "1h";
+      };
+    }) {
+      "btrfs-scrub--" = "Sat *-*-* 04:00:00";
+      "btrfs-scrub-srv-docker" = "Sun *-*-* 04:00:00";
+      "btrfs-scrub-data" = "Tue *-*-01..07 01:00:00";
+      "btrfs-scrub-archive" = "Thu *-*-15..21 01:00:00";
+    };
 
   # Compressed swap in RAM - safety net for OOM
   zramSwap = {
