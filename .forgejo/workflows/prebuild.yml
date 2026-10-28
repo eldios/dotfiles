@@ -1,7 +1,9 @@
-# Nightly cache warm-up: update the flake inputs, build every host's system
-# closure on mininixos (the runner hands builds to the host nix-daemon, whose
-# post-build-hook uploads them to ncps) and commit the new lock to main once
-# every host builds, so the next rebuild on every host is a cache hit.
+# Nightly cache warm-up: update the flake inputs and the custom-packaged
+# versions (scripts/update-versions.sh), build every host's system closure on
+# mininixos (the runner hands builds to the host nix-daemon, whose
+# post-build-hook uploads them to ncps) and commit the new lock and pins to
+# main once every host builds, so the next rebuild on every host is a cache
+# hit.
 #
 # Repository secrets: SECRETS_DEPLOY_KEY (read-only deploy key of the
 # secrets repository, a flake input fetched over ssh) and BOT_SIGNING_KEY
@@ -60,6 +62,15 @@ jobs:
         working-directory: repo
         run: nix flake update
 
+      # A package whose update or build fails keeps its previous pin; the run
+      # still builds and lands the rest, and fails at the end.
+      - name: Update the custom-packaged versions
+        working-directory: repo
+        run: |
+          if ! nix develop --command ./scripts/update-versions.sh --nightly all; then
+            touch ../versions-failed
+          fi
+
       - name: Build every host
         working-directory: repo
         run: |
@@ -69,15 +80,21 @@ jobs:
           done
           nix build --no-link --print-out-paths --max-jobs 2 --cores 16 $targets
 
-      # main may move while the hosts build. The lock commit is replayed on
-      # the new main only if that push left flake.lock alone; otherwise the
-      # job fails and the next night starts over. Never a force push.
-      - name: Commit the lock to main
+      # main may move while the hosts build. The commit is replayed on the
+      # new main only if that push left the lock and the pins alone;
+      # otherwise the job fails and the next night starts over. Never a force
+      # push.
+      - name: Commit the lock and the pins to main
         working-directory: repo
         run: |
-          if git diff --quiet -- flake.lock; then
-            echo "inputs already current, nothing to commit"
+          files="flake.lock flake.nix modules/aspects/_overlays"
+          if git diff --quiet -- $files; then
+            echo "inputs and pins already current, nothing to commit"
             exit 0
+          fi
+          msg="chore(flake): update inputs"
+          if ! git diff --quiet -- flake.nix modules/aspects/_overlays; then
+            msg="chore(flake): update inputs and custom package versions"
           fi
           git config user.name agent
           git config user.email agent@lele.rip
@@ -85,17 +102,24 @@ jobs:
           git config user.signingkey ~/.ssh/signing_key
           git config commit.gpgsign true
           base=$(git rev-parse HEAD)
-          git add flake.lock
-          git commit -m "chore(flake): update inputs"
+          git add $files
+          git commit -m "$msg"
           if git push origin HEAD:refs/heads/main; then
             exit 0
           fi
           git fetch origin main
-          if ! git diff --quiet "$base" origin/main -- flake.lock; then
-            echo "main changed flake.lock meanwhile, lock skipped" >&2
+          if ! git diff --quiet "$base" origin/main -- $files; then
+            echo "main changed the lock or the pins meanwhile, commit skipped" >&2
             exit 1
           fi
           git rebase origin/main
           git push origin HEAD:refs/heads/main
         env:
           FORGEJO_TOKEN: ${{ github.token }}
+
+      - name: Fail on packages that kept their previous pin
+        run: |
+          if [ -e versions-failed ]; then
+            echo "custom package updates failed: see the update step" >&2
+            exit 1
+          fi
