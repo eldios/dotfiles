@@ -75,7 +75,7 @@
       ktop # top-like TUI for Kubernetes nodes
       kubeconform # Kubernetes manifest validator
       kubectx # switch between k8s contexts/namespaces
-      kubectl-oidc_login # kubectl login plugin to use OIDC
+      kubelogin-oidc # kubectl login plugin to use OIDC
       kubernetes-helm # Kubernetes package manager
       kustomize # Kubernetes manifest customization
       kustomize-sops # SOPS integration for Kustomize
