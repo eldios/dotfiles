@@ -12,14 +12,14 @@
   upstream = llm-agents-nix.packages.${final.stdenv.hostPlatform.system};
 in {
   multica = upstream.multica.overrideAttrs (old: {
-    version = "0.7.0";
+    version = "0.7.1";
     src = final.fetchFromGitHub {
       owner = "multica-ai";
       repo = "multica";
-      tag = "v0.7.0";
-      hash = "sha256-iUQIMvhTW53zD2oHvBgZRru1jCKutefXzLeDgQCsdWI=";
+      tag = "v0.7.1";
+      hash = "sha256-Bu4duMk61EUrsHNQDO0mfN6BRGsAIIpTlhRvIIs9z2I=";
     };
-    vendorHash = "sha256-KJIrY4kLAQ5CBu/ClcXjLHG0FWvSX1ne06OG+ZkL75E=";
+    vendorHash = "sha256-36qJllzBV4SPln+vYOy6AJSuls5ZlTCqLAj/WPoSJgY=";
     # go.mod asks for Go 1.26.9, newer than any Nixpkgs toolchain so far; a
     # patch release changes no language or API. Drop once Nixpkgs has it.
     postPatch =
@@ -31,7 +31,7 @@ in {
   # Built from the multica release above, so its pnpm dependencies follow it.
   multica-desktop = (upstream.multica-desktop.override {inherit (final) multica;}).overrideAttrs (old: {
     pnpmDeps = old.pnpmDeps.overrideAttrs {
-      outputHash = "sha256-gxcisoTxXQGt7aMmJwdag2OYIFMhbW0gTKWzoLsbNvM=";
+      outputHash = "sha256-Tw+SQjme0xtkpgZcWaplOxiYpqHLK4Je5nbCDkBwHyw=";
     };
   });
   pi = upstream.pi;
