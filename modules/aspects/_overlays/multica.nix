@@ -5,7 +5,8 @@
 # release the self-hosted server runs, ahead of the flake's version, because
 # the daemon and the server share one protocol.
 #
-# To bump: scripts/update-versions.sh multica
+# Bumped by scripts/update-versions.sh multica, which reads the release from
+# the server itself; the nightly prebuild runs it.
 # Releases: https://github.com/multica-ai/multica/releases
 {llm-agents-nix, ...}: final: _prev: let
   upstream = llm-agents-nix.packages.${final.stdenv.hostPlatform.system};
