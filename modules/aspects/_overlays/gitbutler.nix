@@ -6,6 +6,8 @@
 # the hash-mismatch errors on rebuild.
 # Upstream tags: https://github.com/gitbutlerapp/gitbutler/tags
 final: _prev: let
+  # Held below 0.23 until nixos-unstable rustc builds against LLVM 22+:
+  # https://github.com/NixOS/nixpkgs/pull/578990 (hold in scripts/update-versions.sh).
   version = "0.22.3";
   src = final.unstable.fetchFromGitHub {
     owner = "gitbutlerapp";
