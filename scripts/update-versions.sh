@@ -124,6 +124,14 @@ update_gitbutler() {
   tag=$(gh_latest_release gitbutlerapp/gitbutler)
   ver="${tag#release/}"
   report "$cur" "$ver" || return 0
+  # 0.23.0+ pulls adler32furious, whose AVX512-VNNI intrinsics need rustc on
+  # LLVM 22+; nixpkgs#578990 moves rustc to LLVM 23. Hold until unstable has it.
+  local llvm
+  llvm=$(nix eval --raw ".#nixosConfigurations.$HOST.pkgs.unstable.rustc.unwrapped.llvm.version")
+  if ((${llvm%%.*} < 22)); then
+    log "held: rustc uses LLVM $llvm, $ver needs 22+ (nixpkgs#578990)"
+    return 0
+  fi
   # hash order in the file: src, cargoDeps, pnpmDeps (values are unique)
   mapfile -t hashes < <(grep -oP '(hash|outputHash) = "\Ksha256-[^"]+' "$f")
   replace "$f" "version = \"$cur\";" "version = \"$ver\";"
