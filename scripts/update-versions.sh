@@ -125,7 +125,8 @@ update_gitbutler() {
   ver="${tag#release/}"
   report "$cur" "$ver" || return 0
   # 0.23.0+ pulls adler32furious, whose AVX512-VNNI intrinsics need rustc on
-  # LLVM 22+; nixpkgs#578990 moves rustc to LLVM 23. Hold until unstable has it.
+  # LLVM 22+; https://github.com/NixOS/nixpkgs/pull/578990 moves rustc to
+  # LLVM 23. Hold until unstable has it, then drop this block.
   local llvm
   llvm=$(nix eval --raw ".#nixosConfigurations.$HOST.pkgs.unstable.rustc.unwrapped.llvm.version")
   if ((${llvm%%.*} < 22)); then
