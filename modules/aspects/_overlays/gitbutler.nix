@@ -53,6 +53,20 @@ in {
         --replace-fail 'checkUpdate = tauriCheck;' 'checkUpdate = () => null;'
     '';
 
+    # From 0.23.0 package.json declares devEngines.runtime, so pnpm installs
+    # the upstream Node tarball and node_modules/.bin/node runs it; that
+    # generic dynamic binary has no loader on NixOS. Point it at the nixpkgs
+    # Node already in nativeBuildInputs, before nixpkgs' preBuild runs turbo.
+    preBuild =
+      ''
+        for n in node_modules/.pnpm/node@runtime+*/node_modules/node/bin/node; do
+          if [[ -e $n ]]; then
+            ln -sf ${final.unstable.nodejs}/bin/node "$n"
+          fi
+        done
+      ''
+      + (prev.preBuild or "");
+
     # `builtin-but` makes the one binary act as `but` when invoked by that name.
     tauriBuildFlags =
       prev.tauriBuildFlags
