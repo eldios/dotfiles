@@ -40,9 +40,10 @@ dotfiles/
 │   ├── hosts.nix            # The hosts that exist, with their users
 │   ├── flake-outputs.nix    # formatter and dev shell
 │   ├── aspects/             # One aspect per feature (base, sops, hyprland, ...)
+│   │   ├── neovim.nix       # A feature with both classes in one module
+│   │   └── _neovim/nvim/    # Its Lua files, laid out as in ~/.config/nvim
 │   ├── hosts/<host>.nix     # Which aspects each host includes
-│   ├── users/<user>.nix     # Users are aspects too
-│   └── _assets/             # Files read by modules (ssh keys)
+│   └── users/<user>.nix     # Users are aspects too
 ├── docs/                    # Guides
 ├── scripts/                 # Version bumps for the pinned overlays
 └── Justfile                 # Routine commands
@@ -50,6 +51,17 @@ dotfiles/
 
 Any path starting with `_` is skipped by the module loader and holds plain
 NixOS or Home Manager modules, imported by the aspect or host next to it.
+
+A file lives next to the feature that owns it, whatever its format; there is
+no global assets directory. A compact feature keeps its `nixos` and
+`homeManager` classes in one module, as `modules/aspects/neovim.nix` does.
+Larger features split into plain modules, and long non-Nix content such as Lua
+or scripts goes in the feature's `_<feature>/` directory.
+
+`modules/users/_eldios/ssh/authorized_keys` belongs to the eldios account, but
+root (`modules/aspects/_base/users.nix`) and nimbina
+(`modules/users/nimbina.nix`) read the same file, so a change there reaches all
+three accounts.
 
 ## The model
 
