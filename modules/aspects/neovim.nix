@@ -145,8 +145,6 @@ in {
         ];
 
         package = neovimPackage pkgs;
-
-        extraConfig = "";
       };
     };
   };

@@ -99,7 +99,6 @@
         streamcontroller # Stream Deck controller software
 
         # Graphics & Design
-        # dia # diagram editor
         gimp-with-plugins # image editor
         graph-easy # ASCII/Unicode graph renderer
         graphviz # graph visualization (dot, neato)
