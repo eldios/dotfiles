@@ -19,19 +19,8 @@ in {
     };
 
     secrets = {
-      "tokens/anthropic/key" = {};
-      "tokens/openai/key" = {};
-      "tokens/openrouter/neovim/key" = {};
-      "tokens/openrouter/aider/key" = {};
-      "tokens/gemini/key" = {};
-      "tokens/ollama/key" = {};
-      "tokens/ollama/url" = {};
-      "tokens/litellm/neovim/key" = {};
-      "tokens/litellm/neovim/url" = {};
       "tokens/litellm/aider/key" = {};
       "tokens/litellm/aider/url" = {};
-      "tokens/kagi/key" = {};
-      "tokens/github/nix" = {};
       "keys/anytype/id" = {};
       "keys/anytype/networkId" = {};
       "keys/anytype/host" = {};
@@ -43,18 +32,6 @@ in {
       "keys/anytype/peerId/consensusnode" = {};
 
       # MCP Server tokens
-      "tokens/mcp/dockerhub_token" = {};
-      "tokens/mcp/grafana_token" = {};
-      "tokens/mcp/grafana_url" = {};
-      "tokens/mcp/ha_api_token" = {};
-      "tokens/mcp/ha_host" = {};
-      "tokens/mcp/n8n_api_key" = {};
-      "tokens/mcp/n8n_api_url" = {};
-      "tokens/mcp/unifi_api_key" = {};
-      "tokens/mcp/unifi_api_port" = {};
-      "tokens/mcp/unifi_api_site" = {};
-      "tokens/mcp/unifi_api_verify_ssl" = {};
-      "tokens/mcp/unifi_gateway_ip" = {};
       "tokens/mcp/browser_url" = {};
       "tokens/mcp/hindsight_token" = {};
       "tokens/mcp/hub_token" = {};
@@ -62,10 +39,10 @@ in {
       "tokens/mcp/hub_riffado_token" = {};
       "tokens/mcp/hub_plaud_token" = {};
       "tokens/mcp/anytype_gateway_token" = {};
+      "tokens/mcp/anytype_headers" = {};
 
       # TypeSafe (System One / Jev) API key
       "tokens/typesafe/jev_api_key" = {};
-      "tokens/mcp/anytype_headers" = {};
     };
 
     templates = {
