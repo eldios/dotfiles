@@ -100,7 +100,6 @@
       socat # multipurpose network relay tool
       sshfs # mount remote filesystems via SSH
       sshs # TUI SSH client manager
-      # tmate # instant terminal sharing via SSH - currently broken
 
       # Security & Secrets
       age # modern file encryption tool

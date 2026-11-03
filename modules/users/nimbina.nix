@@ -7,7 +7,7 @@
   lib,
   ...
 }: let
-  authorizedKeys = lib.splitString "\n" (builtins.readFile ../_assets/authorized_keys);
+  authorizedKeys = lib.splitString "\n" (builtins.readFile ./_eldios/ssh/authorized_keys);
 in {
   den.aspects.nimbina = {
     includes = [

@@ -1,7 +1,7 @@
 {inputs, ...}: let
   inherit (import "${inputs.secrets}/network.nix") tailnet;
 in {
-  home.file.".ssh/authorized_keys".source = ../../_assets/authorized_keys;
+  home.file.".ssh/authorized_keys".source = ./ssh/authorized_keys;
 
   home.file.".ssh/config".text = ''
     Include ~/.ssh/*.conf
