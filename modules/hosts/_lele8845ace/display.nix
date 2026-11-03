@@ -3,8 +3,8 @@
   # Declarative so a config reload reapplies the layout instead of
   # reverting to defaults.
   desktop.hyprland.monitors = [
-    "HDMI-A-1,2560x1440,0x0,1"
-    "DP-2,3440x1440,2560x0,1"
+    "HDMI-A-1,2560x1440@143.972,0x0,1"
+    "DP-2,3440x1440@144.000,2560x0,1"
     ",preferred,auto,1" # fallback for any other connected output
   ];
 }
