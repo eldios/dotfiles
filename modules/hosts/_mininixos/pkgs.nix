@@ -1,6 +1,8 @@
 {pkgs, ...}: {
   home = {
     packages = with pkgs.unstable; [
+      # Client only: the runtime daemon runs in the multica-runtime container.
+      pkgs.multica
       # GPU server: this is the only host with the AMD GPU that runs the
       # Ollama server, so the ROCm-accelerated stack lives here, not in the
       # shared CLI package set.

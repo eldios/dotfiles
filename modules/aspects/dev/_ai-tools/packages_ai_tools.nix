@@ -8,7 +8,6 @@
     fabric-ai # Fabric is an open-source AI CLI tool
     gws # Google Workspace CLI (via gws-cli overlay)
     multica # Multica CLI and runtime daemon (via multica overlay)
-    multica-desktop # Multica desktop app (via multica overlay)
     pi # Pi coding agent (via multica overlay, from llm-agents-nix)
     ollama # CPU build, used as a client (OLLAMA_HOST); no ROCm
   ];

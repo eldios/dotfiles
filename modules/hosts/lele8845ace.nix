@@ -18,6 +18,7 @@
       den.aspects.gaming
       den.aspects.printing
       den.aspects.ai-tools
+      den.aspects.ai-tools.multica-desktop
       den.aspects.media-production
       den.aspects.gpu-amd
       den.aspects.tang-server
