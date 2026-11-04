@@ -23,15 +23,11 @@
   };
 in {
   home = {
-    packages = with pkgs;
-      [
-        bpn
-        github-cli
-        lazygit
-      ]
-      ++ (with pkgs.unstable; [
-        entire
-      ]);
+    packages = with pkgs; [
+      bpn
+      github-cli
+      lazygit
+    ];
   };
 
   programs = {
