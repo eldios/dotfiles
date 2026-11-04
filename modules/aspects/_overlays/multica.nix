@@ -33,6 +33,14 @@ in {
     pnpmDeps = old.pnpmDeps.overrideAttrs {
       outputHash = "sha256-/R+/AR5av2h7Ym/AIXiiN/iqUVhe2WMeQs9mASOkehc=";
     };
+    # The wrapper starts Electron on the bundle, so app.isPackaged is false and
+    # the app would run in dev mode: localhost:8080, ignoring desktop.json.
+    postInstall =
+      (old.postInstall or "")
+      + ''
+        substituteInPlace $out/share/multica-desktop/out/main/index.js \
+          --replace-fail 'var is = { dev: !electron.app.isPackaged };' 'var is = { dev: false };'
+      '';
   });
   pi = upstream.pi;
 }

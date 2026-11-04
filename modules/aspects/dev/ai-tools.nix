@@ -15,8 +15,28 @@
     };
 
     provides.multica-desktop = {
-      homeManager = {pkgs, ...}: {
+      homeManager = {
+        lib,
+        pkgs,
+        ...
+      }: {
         home.packages = [pkgs.multica-desktop];
+        # ai.vpn resolves to the tailnet address from any network; ai.casa only
+        # answers on the LAN. Without this file the app targets the hosted cloud.
+        home.file.".multica/desktop.json" = {
+          force = true;
+          text = builtins.toJSON {
+            schemaVersion = 1;
+            apiUrl = "https://ai-vpn.example.invalid";
+          };
+        };
+        # force replaces a file Home Manager did not write: keep a copy of it.
+        home.activation.backupMulticaDesktopConfig = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
+          f="$HOME/.multica/desktop.json"
+          if [ -e "$f" ] && [ ! -L "$f" ]; then
+            run cp -a "$f" "$f.bak-$(date +%Y%m%d-%H%M%S)"
+          fi
+        '';
       };
     };
   };
