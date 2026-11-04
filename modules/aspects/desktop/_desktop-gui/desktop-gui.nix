@@ -100,7 +100,7 @@
   security.pam.services.hyprlock.enableGnomeKeyring = lib.mkDefault true;
 
   # Wayland env vars belong to the compositor module (the hyprland aspect),
-  # not here: set globally they break the X11 sessions sox1x still offers.
+  # not here: set globally they break X11 sessions.
 }
 # vim: set ts=2 sw=2 et ai list nu
 

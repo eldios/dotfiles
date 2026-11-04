@@ -28,7 +28,7 @@ jobs:
   prebuild:
     runs-on: nix
     env:
-      HOSTS: lele8845ace lele9iyoga sox1x mininixos
+      HOSTS: lele8845ace lele9iyoga mininixos
     steps:
       - name: Clone main
         run: |

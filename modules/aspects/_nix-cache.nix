@@ -52,7 +52,6 @@ in {
       "lele8845ace-nix-push-1:Tqs2nfkjeSpDMOOHCDtzjDtpuOD4cWi05k7/lGkXU7E="
       "lele9iyoga-nix-push-1:h2Ip1j6X79KIGnX5vlxU9nlN684SZ+QI7SXyw/2f48c="
       "mininixos-nix-push-1:wAFw+Wz/l+1bm+3v1pDHK2mQUQzmj12EkBszRfa6y28="
-      "sox1x-nix-push-1:0RxMtKvsAVI3MOIDXnHG8g6iFYoS5idNRvzB0KMw9ao="
     ];
 
     # Sign every locally-built path with this host's push key

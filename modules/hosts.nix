@@ -13,12 +13,6 @@
       users.eldios = {};
     };
 
-    # Lenovo ThinkPad X1 Extreme Gen2 laptop, shared with a second account
-    sox1x = {
-      users.eldios = {};
-      users.nimbina.classes = ["user"];
-    };
-
     # Minisforum NUC: storage and services, headless
     mininixos = {
       luksRoot = "M";

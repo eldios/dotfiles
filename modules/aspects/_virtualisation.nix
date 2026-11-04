@@ -61,7 +61,7 @@
     containerd.enable = true;
     docker = {
       enable = true;
-      # mkDefault so hosts on ZFS (e.g. sox1x) can override without mkForce.
+      # mkDefault so hosts on ZFS can override without mkForce.
       storageDriver = lib.mkDefault "overlay2";
       daemon.settings = {
         log-driver = "local";

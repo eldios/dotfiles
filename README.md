@@ -59,9 +59,8 @@ Larger features split into plain modules, and long non-Nix content such as Lua
 or scripts goes in the feature's `_<feature>/` directory.
 
 `modules/users/_eldios/ssh/authorized_keys` belongs to the eldios account, but
-root (`modules/aspects/_base/users.nix`) and nimbina
-(`modules/users/nimbina.nix`) read the same file, so a change there reaches all
-three accounts.
+root (`modules/aspects/_base/users.nix`) reads the same file, so a change there
+reaches both accounts.
 
 ## The model
 
@@ -83,7 +82,6 @@ by sops-nix; there is no `secrets/` directory here.
 |------|------|
 | `lele8845ace` | Desktop workstation |
 | `lele9iyoga` | Laptop |
-| `sox1x` | Laptop, shared with a second account |
 | `mininixos` | Headless server: storage and services |
 
 ## Docs
