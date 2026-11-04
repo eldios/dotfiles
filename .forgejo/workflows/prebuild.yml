@@ -6,8 +6,9 @@
 # hit.
 #
 # Repository secrets: SECRETS_DEPLOY_KEY (read-only deploy key of the
-# secrets repository, a flake input fetched over ssh) and BOT_SIGNING_KEY
-# (the agent account's SSH signing key, so the lock commit is verified).
+# secrets repository, a flake input fetched over ssh), BOT_SIGNING_KEY
+# (the agent account's SSH signing key, so the lock commit is verified) and
+# MULTICA_SERVER (URL of the server whose release the multica pin follows).
 # Either as the key file itself or base64-encoded on one line, which
 # survives the secret form.
 
@@ -66,6 +67,8 @@ jobs:
       # still builds and lands the rest, and fails at the end.
       - name: Update the custom-packaged versions
         working-directory: repo
+        env:
+          MULTICA_SERVER: ${{ secrets.MULTICA_SERVER }}
         run: |
           if ! nix develop --command ./scripts/update-versions.sh --nightly all; then
             touch ../versions-failed

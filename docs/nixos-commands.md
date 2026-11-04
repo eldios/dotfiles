@@ -32,7 +32,8 @@ just lint           # shellcheck scripts/*.sh
 
 `outdated` and `update` drive `scripts/update-versions.sh`; the packages it
 knows are listed in its usage line. `nix develop` provides the tools the
-scripts need.
+scripts need. `multica` also needs `MULTICA_SERVER` in the environment, set to
+the URL of the self-hosted server.
 
 ## Finding packages
 

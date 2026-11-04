@@ -24,7 +24,6 @@ case ${1:-} in
   --nightly) NIGHTLY=1 && shift ;;
 esac
 TARGET="${1:-all}"
-MULTICA_SERVER="${MULTICA_SERVER:-https://ai-vpn.example.invalid}"
 # Everything an update writes: restored as a whole when a nightly one fails.
 PINNED=(modules/aspects/_overlays flake.nix flake.lock)
 FAILED=()
@@ -57,6 +56,7 @@ gh_latest_tag() { # repo [prefix-filter] -> first matching tag
 
 server_release() { # -> multica tag whose commit the server reports
   local commit tag
+  [[ -n ${MULTICA_SERVER:-} ]] || { log "MULTICA_SERVER is not set" >&2; return 1; }
   commit=$(curl -sf --max-time 30 "$MULTICA_SERVER/health" | jq -r '.commit // empty')
   [[ $commit =~ ^[0-9a-f]{40}$ ]] || { log "no commit from $MULTICA_SERVER/health" >&2; return 1; }
   tag=$(curl -sf "https://api.github.com/repos/multica-ai/multica/tags?per_page=100" \
