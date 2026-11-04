@@ -3,8 +3,12 @@
 {
   inputs,
   config,
+  lib,
   ...
-}: {
+}: let
+  inherit (import "${inputs.secrets}/network.nix") portainerHosts;
+  hostRule = lib.concatMapStringsSep " || " (host: "Host(`${host}`)") portainerHosts;
+in {
   # With AGENT_SECRET set, the server signs the secret instead of a default
   # message, and an agent holding the same secret trusts only this server.
   sops.secrets."portainer/agent-secret" = {
@@ -35,7 +39,7 @@
         "--label=traefik.enable=true"
         "--label=traefik.docker.network=proxy"
         "--label=traefik.http.services.portainer.loadbalancer.server.port=9000"
-        "--label=traefik.http.routers.portainer.rule=Host(`portainer-casa.example.invalid`) || Host(`portainer-vpn.example.invalid`)"
+        "--label=traefik.http.routers.portainer.rule=${hostRule}"
         "--label=traefik.http.routers.portainer.tls=true"
         "--label=traefik.http.routers.portainer.tls.certresolver=cloudflare"
       ];

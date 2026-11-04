@@ -881,10 +881,10 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1793227201,
-        "narHash": "sha256-Mv7gadYGwEgQvCIYZUikuT9ushntXdKnDGuQD6uGLsM=",
+        "lastModified": 1793808669,
+        "narHash": "sha256-YFFvcCIFzsIPzhhkN2n7+c9jbc50jEgULFuemsP/B40=",
         "ref": "main",
-        "rev": "1afc56494d42b9a5cee9ab146476d901f6a59e46",
+        "rev": "7d27e30071189fadaab829b89b103d7b447b4c4b",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/eldios/secrets.git"

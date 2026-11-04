@@ -1,5 +1,9 @@
-{config, ...}: let
-  hub = "https://mcp-vpn.example.invalid";
+{
+  config,
+  inputs,
+  ...
+}: let
+  hub = (import "${inputs.secrets}/network.nix").mcpHubUrl;
 
   # Bearers of the MCP hub on mininixos and of the local Anytype gateway,
   # by the variable name the clients read them from.

@@ -4,16 +4,17 @@
 #
 # Token: FORGEJO_TOKEN when set, otherwise tokens.forgejo.agent_token from
 # the sops-encrypted secrets.yaml in SECRETS_DIR. It needs the
-# write:repository scope on eldios/dotfiles.
+# write:repository scope on eldios/dotfiles. The Forgejo URL is forgejoUrl in
+# network.nix in SECRETS_DIR.
 #
 # Usage:
 #   scripts/prebuild-dispatch.sh [ref]   (default: main)
 set -euo pipefail
 
-FORGEJO="https://git-casa.example.invalid"
 REPO="eldios/dotfiles"
 REF="${1:-main}"
 SECRETS_DIR="${SECRETS_DIR:-$HOME/go/src/github.com/eldios/secrets}"
+FORGEJO=$(nix eval --raw --file "$SECRETS_DIR/network.nix" forgejoUrl)
 
 if [[ -z ${FORGEJO_TOKEN:-} ]]; then
   FORGEJO_TOKEN=$(sops decrypt --extract '["tokens"]["forgejo"]["agent_token"]' \

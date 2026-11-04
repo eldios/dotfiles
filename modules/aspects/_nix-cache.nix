@@ -5,7 +5,8 @@
   ...
 }: let
   secretspath = builtins.toString inputs.secrets;
-  cacheUrl = "https://nix-cache-casa.example.invalid";
+  inherit (import "${inputs.secrets}/network.nix") nixCacheHost;
+  cacheUrl = "https://${nixCacheHost}";
 
   # Upload locally-built paths to the local ncps cache.
   # Must never exit non-zero: Nix aborts the build when the hook fails.
@@ -41,9 +42,9 @@ in {
     ];
 
     # Trust the NCPS signing key
-    # Get key with: curl https://nix-cache-casa.example.invalid/pubkey
+    # The name before the colon must match the one ncps signs with.
     trusted-public-keys = [
-      "nix-cache-casa.example.invalid:MIX0pJiXpRwrpCmg4sV804gXPkohMs2+EroVLSOqHKg="
+      "${nixCacheHost}:MIX0pJiXpRwrpCmg4sV804gXPkohMs2+EroVLSOqHKg="
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="

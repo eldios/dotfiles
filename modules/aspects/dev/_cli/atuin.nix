@@ -1,4 +1,4 @@
-{
+{inputs, ...}: {
   programs.atuin = {
     enable = true;
 
@@ -9,7 +9,7 @@
     enableNushellIntegration = true;
     enableZshIntegration = true;
     settings = {
-      sync_address = "https://history.example.invalid";
+      sync_address = (import "${inputs.secrets}/network.nix").atuinSyncUrl;
       sync_frequency = "15m";
     };
   };
