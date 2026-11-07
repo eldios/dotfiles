@@ -107,6 +107,12 @@ hl.config({
     vfr = true,
   },
 
+  render = {
+    -- Keep outputs in SDR: in fullscreen, Chromium-based clients accept the
+    -- offered HDR description even for SDR content, which then looks washed out.
+    cm_auto_hdr = 0,
+  },
+
   cursor = {
     hide_on_key_press = true,
     warp_on_change_workspace = 1,
