@@ -46,7 +46,19 @@ in
     # the switch holds the port in STP learning for ~15-30s after the initrd
     # brings the link up, and a 30s cap killed the fetch right as Tang answered
     # (the service stop also unmounts the ramfs, discarding the fetched key).
-    boot.initrd.systemd.services."cryptsetup-clevis-${luksName}".serviceConfig.TimeoutStartSec = 120;
+    boot.initrd.systemd.services."cryptsetup-clevis-${luksName}" = {
+      serviceConfig.TimeoutStartSec = 120;
+      # Clevis asks Tang once and gives up, and the first request after link-up
+      # can be lost. Retry until Tang answers, then let the unit fetch the key.
+      preStart = ''
+        n=0
+        while [ "$n" -lt 10 ]; do
+          clevis decrypt < /etc/clevis/${luksName}.jwe > /dev/null 2>&1 && break
+          n=$((n + 1))
+          sleep 2
+        done
+      '';
+    };
 
     # Yubikey FIDO2 = manual fallback after Clevis. No-PIN (touch-only) tokens are
     # detected in initrd via boot.initrd.systemd.fido2 (default-on; ships
@@ -77,12 +89,13 @@ in
       ];
       conflicts = ["initrd-switch-root.target" "shutdown.target"];
       unitConfig.DefaultDependencies = "no";
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-      };
+      # No RemainAfterExit: systemd-cryptsetup@ is retried after a failed
+      # prompt, and each retry must run this again in case the key has arrived
+      # in the meantime.
+      serviceConfig.Type = "oneshot";
       script = ''
         key=/clevis-${luksName}/decrypted
+        [ -e /dev/mapper/${luksName} ] && exit 0
         [ -s "$key" ] || exit 0
         cryptsetup open --key-file="$key" ${luksDevice} ${luksName} \
           || echo "clevis key did not open ${luksName}; falling back to FIDO2/passphrase" >&2
