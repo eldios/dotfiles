@@ -11,16 +11,17 @@
     # Needs a recent series: the stable one (6.18) fails to assemble the /data
     # RAID5 (md rejects a valid superblock, -EINVAL). Freeze risk is handled
     # via autodefrag removal + watchdog instead.
-    # Pinned to 7.2 instead of linuxPackages_latest: on 7.3.0 the R9700's SMU
-    # hangs right after "Failed to enable gfxoff" at boot, so power1_cap,
-    # temperatures and fan readings all fail and the GPU runs uncapped.
-    # Same symptom upstream: https://gitlab.freedesktop.org/drm/amd/-/work_items/5965
-    # Go back to linuxPackages_latest once a 7.3.x or later boots without
-    # "SMU is in hanged state" in the kernel log.
-    kernelPackages = pkgs.linuxPackages_7_2;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "nohibernate"
       "amdgpu.runpm=0" # disable runtime PM: headless server, GPU must stay awake for Ollama
+      # GFXOFF disabled (default 0xfff7bfff minus PP_GFXOFF_MASK 0x8000): on
+      # 7.3.0 the R9700's SMU hung right after "Failed to enable gfxoff" at
+      # boot, so power1_cap, temperatures and fan readings all failed and the
+      # GPU ran uncapped. A hung SMU logs "SMU is in hanged state". Upstream
+      # reports of SMU stalls on GFXOFF transitions with this card:
+      # https://gitlab.freedesktop.org/drm/amd/-/work_items/6100
+      "amdgpu.ppfeaturemask=0xfff73fff"
       "pcie_aspm=off" # root NVMe (990 PRO) drops off the PCIe bus under ASPM L1, killing the root fs
     ];
 
