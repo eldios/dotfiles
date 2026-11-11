@@ -180,7 +180,6 @@
       ])
       ++ (with pkgs.unstable; [
         # Web Browsers
-        brave # privacy-focused web browser
 
         # Communication
         beeper # unified messaging (all chats in one app)
