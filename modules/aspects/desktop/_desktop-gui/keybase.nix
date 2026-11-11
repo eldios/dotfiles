@@ -4,7 +4,6 @@
     packages = with pkgs; [
       kbfs
       keybase
-      keybase-gui
     ];
   };
 
