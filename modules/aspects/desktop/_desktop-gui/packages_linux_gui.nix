@@ -192,7 +192,6 @@
 
         # Media & Music
         feishin # multi-app open source music player
-        sonixd # Subsonic/Jellyfin music client
 
         # Cloud Storage
         # pCloud client wrapped with libglvnd + opengl-driver in LD_LIBRARY_PATH
