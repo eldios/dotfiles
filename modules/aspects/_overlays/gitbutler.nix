@@ -40,6 +40,12 @@ in {
     # instead of forcing the system one.
     env = prev.env // {LIBGIT2_NO_VENDOR = 0;};
 
+    # cargoSetupHook otherwise exports LIBGIT2_NO_VENDOR=1 and
+    # AWS_LC_SYS_USE_SYSTEM=1 at preConfigure, over the values in `env`;
+    # nixpkgs ships neither libgit2-experimental nor a system aws-lc for the
+    # aws-lc-sys crate.
+    dontCargoUseSystemLibs = true;
+
     # nixpkgs' 0.19.9 postPatch lists `gitbutler-git-setsid` in externalBin, but
     # upstream dropped that binary; Linux release builds ship askpass only and
     # enable `builtin-but` (scripts/release.sh in the gitbutler repo).
