@@ -12,12 +12,12 @@
   upstream = llm-agents-nix.packages.${final.stdenv.hostPlatform.system};
 in {
   multica = upstream.multica.overrideAttrs (old: {
-    version = "0.8.2";
+    version = "0.9.0";
     src = final.fetchFromGitHub {
       owner = "multica-ai";
       repo = "multica";
-      tag = "v0.8.2";
-      hash = "sha256-QTEoZKWfgddiggaa8HIlcOdTzXfJtaBHQWFneKMYr1w=";
+      tag = "v0.9.0";
+      hash = "sha256-FUlPY1Qotwmtjy2sl1WDrV+TCSaZYTEbiXmumKXpPyQ=";
     };
     vendorHash = "sha256-kFDWoj8uRzVyOePCl9tGVarsuYMe8gWHT162AXW7wmU=";
     # go.mod asks for Go 1.26.9, newer than any Nixpkgs toolchain so far; a
