@@ -45,12 +45,19 @@ open(path, "w").write(s.replace(old, new, 1))
 EOF
 }
 
+# GitHub allows an address 60 API requests an hour, 5000 with a token.
+gh_api() { # path -> JSON, authenticated when GH_API_TOKEN is set
+  local auth=()
+  [[ -n ${GH_API_TOKEN:-} ]] && auth=(-H "Authorization: Bearer $GH_API_TOKEN")
+  curl -sf "${auth[@]}" "https://api.github.com/$1"
+}
+
 gh_latest_release() { # repo -> tag_name
-  curl -sf "https://api.github.com/repos/$1/releases/latest" | jq -r .tag_name
+  gh_api "repos/$1/releases/latest" | jq -r .tag_name
 }
 
 gh_latest_tag() { # repo [prefix-filter] -> first matching tag
-  curl -sf "https://api.github.com/repos/$1/tags?per_page=10" \
+  gh_api "repos/$1/tags?per_page=10" \
     | jq -r --arg p "${2:-}" '[.[].name | select(startswith($p))][0]'
 }
 
@@ -59,7 +66,7 @@ server_release() { # -> multica tag whose commit the server reports
   [[ -n ${MULTICA_SERVER:-} ]] || { log "MULTICA_SERVER is not set" >&2; return 1; }
   commit=$(curl -sf --max-time 30 "$MULTICA_SERVER/health" | jq -r '.commit // empty')
   [[ $commit =~ ^[0-9a-f]{40}$ ]] || { log "no commit from $MULTICA_SERVER/health" >&2; return 1; }
-  tag=$(curl -sf "https://api.github.com/repos/multica-ai/multica/tags?per_page=100" \
+  tag=$(gh_api "repos/multica-ai/multica/tags?per_page=100" \
     | jq -r --arg c "$commit" '[.[] | select(.commit.sha == $c) | .name][0] // empty')
   [[ -n $tag ]] || { log "server commit $commit is no release tag" >&2; return 1; }
   echo "$tag"

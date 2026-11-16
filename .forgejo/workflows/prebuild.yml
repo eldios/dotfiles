@@ -7,9 +7,10 @@
 #
 # Repository secrets: SECRETS_DEPLOY_KEY (read-only deploy key of the
 # secrets repository, a flake input fetched over ssh), BOT_SIGNING_KEY
-# (the agent account's SSH signing key, so the lock commit is verified) and
-# MULTICA_SERVER (URL of the server whose release the multica pin follows).
-# Either as the key file itself or base64-encoded on one line, which
+# (the agent account's SSH signing key, so the lock commit is verified),
+# MULTICA_SERVER (URL of the server whose release the multica pin follows)
+# and GH_API_TOKEN (a GitHub token with read access to public repositories).
+# The keys either as the key file itself or base64-encoded on one line, which
 # survives the secret form.
 
 name: prebuild
@@ -59,6 +60,16 @@ jobs:
           DEPLOY_KEY: ${{ secrets.SECRETS_DEPLOY_KEY }}
           SIGNING_KEY: ${{ secrets.BOT_SIGNING_KEY }}
 
+      # Without a token one address gets 60 GitHub API requests an hour, and
+      # a single run of the two update steps uses most of them.
+      - name: GitHub token for the API lookups
+        run: |
+          umask 077
+          mkdir -p ~/.config/nix
+          printf 'access-tokens = github.com=%s\n' "${TOKEN:?the GH_API_TOKEN secret is not set}" > ~/.config/nix/nix.conf
+        env:
+          TOKEN: ${{ secrets.GH_API_TOKEN }}
+
       - name: Update the flake inputs
         working-directory: repo
         run: nix flake update
@@ -69,6 +80,7 @@ jobs:
         working-directory: repo
         env:
           MULTICA_SERVER: ${{ secrets.MULTICA_SERVER }}
+          GH_API_TOKEN: ${{ secrets.GH_API_TOKEN }}
         run: |
           if ! nix develop --command ./scripts/update-versions.sh --nightly all; then
             touch ../versions-failed
