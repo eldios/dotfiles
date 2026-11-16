@@ -3,16 +3,16 @@ final: _prev: let
   # `version` and refreshing the two hashes:
   #   nix store prefetch-file --json <asset-url> | jq -r .hash
   # Releases: https://github.com/google-antigravity/antigravity-cli/releases
-  version = "1.5.8";
+  version = "1.5.9";
   baseUrl = "https://github.com/google-antigravity/antigravity-cli/releases/download/${version}";
   sources = {
     x86_64-linux = {
       url = "${baseUrl}/agy_cli_linux_x64.tar.gz";
-      hash = "sha256-kF1KzPvWG8AL7oS/ryTFm4XTNMq9eGz5kje2bP4Gq5g=";
+      hash = "sha256-ix9eVnefJDSgrzbxtxWoOSoITeVQ+MaLx5gh+V+r8/o=";
     };
     aarch64-linux = {
       url = "${baseUrl}/agy_cli_linux_arm64.tar.gz";
-      hash = "sha256-DKQHNXZhqiRPvDsOeaHR0mI7LKFRXS4vd6gBw2dr1WI=";
+      hash = "sha256-OhjCOMfuZmHkPffoJKfUwb7Xiu7aCUMJIaDx2/6CW8o=";
     };
   };
   source =
