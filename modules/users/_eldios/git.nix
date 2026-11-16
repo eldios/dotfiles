@@ -21,6 +21,11 @@
       gh pr edit "$branch" --add-assignee @me
     '';
   };
+
+  # Keys whose SSH signatures git accepts when it verifies a commit or tag.
+  allowedSigners = pkgs.writeText "git-allowed-signers" ''
+    agent@lele.rip namespaces="git" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJwjsAy6llZff1EnCq+/sY7TlHGqybo5FgbtFHo0pGR+
+  '';
 in {
   home = {
     packages = with pkgs; [
@@ -98,6 +103,7 @@ in {
         };
         gpg = {
           program = "${pkgs.gnupg}/bin/gpg";
+          ssh.allowedSignersFile = "${allowedSigners}";
         };
         color = {
           ui = true;
