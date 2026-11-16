@@ -21,6 +21,10 @@ in {
   den.schema.host.instantiate = args:
     inputs.nixpkgs.lib.nixosSystem (args // {inherit specialArgs;});
 
+  # A user's aspect also configures the host it lives on (its secrets, groups
+  # and ssh keys), which a host only accepts when it says so.
+  den.schema.host.includes = [den.batteries.user-aspects];
+
   den.default = {
     includes = [den.batteries.hostname];
 
