@@ -24,6 +24,7 @@
       distrobox-tui # TUI for DistroBox
       distroshelf # GUI for Distrobox Containers
       entr # run commands when files change
+      exiftool # manage pics metadata
       ghgrab # Simple tool that lets search and download files from Git repos
       github-cli # GitHub from the terminal
       herdr # agent multiplexer for AI coding agents (via herdr flake overlay)
