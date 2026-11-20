@@ -23,6 +23,12 @@
     };
   };
 
+  # br13-netdev binds to the dongle, so unplugging it tears br13 down, but the
+  # generated unit is only wanted by network.target: nothing brings br13 back
+  # when the dongle shows up late or is plugged in again. Its start script also
+  # re-enslaves the taps of running guests, which puts bsdino back on br13.
+  systemd.services.br13-netdev.wantedBy = ["sys-subsystem-net-devices-lan13.device"];
+
   networking = {
     # With the default lease-everything, the USB dongle on the isolation VLAN
     # wins the default route on metric. Only br0 asks for a lease, declared below.

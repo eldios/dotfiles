@@ -24,6 +24,29 @@
         ExecStop = "${pkgs.bash}/bin/bash -c '${pkgs.libvirt}/bin/virsh shutdown HomeAssistant || true; for i in $(seq 1 60); do ${pkgs.libvirt}/bin/virsh domstate HomeAssistant | grep -q shut && exit 0; sleep 2; done'";
       };
     };
+
+    # bsdino has an interface on br13, and libvirt refuses to start a guest
+    # whose bridge does not exist. When the VLAN 13 dongle is enumerated after
+    # the device timeout, br13 comes up after libvirt autostart has already
+    # failed, so the guest is started from br13-netdev instead of a target.
+    "libvirt-vm-bsdino" = {
+      description = "Libvirt VM: bsdino";
+      wantedBy = ["br13-netdev.service"];
+      wants = ["libvirtd.service"];
+      after = ["libvirtd.service" "br13-netdev.service"];
+      # Re-run every time br13 is recreated. There is no ExecStop on purpose:
+      # losing the bridge must not power off the guest, br13-netdev re-enslaves
+      # its tap when the bridge comes back.
+      partOf = ["libvirtd.service" "br13-netdev.service"];
+
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = "yes";
+        # libvirt autostart may be starting the domain at the same moment, so
+        # a failed start still counts as success once the domain is running.
+        ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.libvirt}/bin/virsh domstate bsdino | grep -q running || ${pkgs.libvirt}/bin/virsh start bsdino || ${pkgs.libvirt}/bin/virsh domstate bsdino | grep -q running'";
+      };
+    };
   };
 }
 # vim: set ts=2 sw=2 et ai list nu
