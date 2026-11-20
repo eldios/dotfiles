@@ -15,6 +15,12 @@
       matchConfig.MACAddress = "24:eb:16:22:86:c5";
       linkConfig.Name = "wlan0";
     };
+    # USB dongle on VLAN 13. The kernel hands out ethN in probe order, so a
+    # second USB NIC can take eth0 first; the name stays outside that space.
+    "10-lan13" = {
+      matchConfig.MACAddress = "6c:1f:f7:71:d8:9f";
+      linkConfig.Name = "lan13";
+    };
   };
 
   networking = {
@@ -25,7 +31,9 @@
     usePredictableInterfaceNames = false; # We handle naming via systemd.network.links
     networkmanager = {
       enable = true;
-      unmanaged = ["eno0" "eno0.50" "br0" "br50" "eth0" "br13"];
+      # type:ethernet keeps any wired NIC not declared here (a dock, a USB
+      # adapter) without a lease and a default route that would beat br0.
+      unmanaged = ["type:ethernet" "eno0" "eno0.50" "br0" "br50" "lan13" "br13"];
       # No insertNameservers here: it lands ahead of 127.0.0.1 in resolv.conf,
       # so every host query skips the local cache. The public resolvers it used
       # to pin are dnsmasq upstreams instead, declared at the top of this file.
@@ -59,7 +67,7 @@
       };
 
       # USB dongle wired to a UDM port on VLAN 13 (isolation network)
-      eth0 = {
+      lan13 = {
         # No IP: the host stays off the isolation network, bsdino reaches it
         # through br13 and is routed by the gateway
       };
@@ -85,7 +93,7 @@
         interfaces = ["eno0.50"]; # VLAN 50 (NAS network)
       };
       br13 = {
-        interfaces = ["eth0"]; # VLAN 13 (isolation network, untagged on the dongle)
+        interfaces = ["lan13"]; # VLAN 13 (isolation network, untagged on the dongle)
       };
     };
 
