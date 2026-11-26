@@ -12,14 +12,14 @@
   upstream = llm-agents-nix.packages.${final.stdenv.hostPlatform.system};
 in {
   multica = upstream.multica.overrideAttrs (old: {
-    version = "0.11.1";
+    version = "0.13.0";
     src = final.fetchFromGitHub {
       owner = "multica-ai";
       repo = "multica";
-      tag = "v0.11.1";
-      hash = "sha256-3zefuRMEuee6P6y6dfY4Nj/bIZedBhFVhYZGaHA5SBs=";
+      tag = "v0.13.0";
+      hash = "sha256-UtUelmn+/1QwJLh3YttZxfbMpf9lZyP692FIIiNAhRg=";
     };
-    vendorHash = "sha256-ivrOEgNrH5Cw1ETXcpxy9CVVJuQohF2zm/9r8ED0bgk=";
+    vendorHash = "sha256-2z2gq3SJwOx3X7U0jQxVBr1f8WYNkfJ5ZhbERDxA3Cw=";
     # go.mod asks for Go 1.26.9, newer than any Nixpkgs toolchain so far; a
     # patch release changes no language or API. Drop once Nixpkgs has it.
     postPatch =
@@ -31,7 +31,7 @@ in {
   # Built from the multica release above, so its pnpm dependencies follow it.
   multica-desktop = (upstream.multica-desktop.override {inherit (final) multica;}).overrideAttrs (old: {
     pnpmDeps = old.pnpmDeps.overrideAttrs {
-      outputHash = "sha256-jTjtaEJQabKmO0vVZXqDpd0jTrLNaLT28Q7fxWfcckw=";
+      outputHash = "sha256-hrR2pwGU8HJRFsK6ZujKj8LaBVLjMz6qbe8DAzA4jFc=";
     };
     # The wrapper starts Electron on the bundle, so app.isPackaged is false and
     # the app would run in dev mode: localhost:8080, ignoring desktop.json.
